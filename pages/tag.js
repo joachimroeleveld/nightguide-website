@@ -11,7 +11,7 @@ import EventGrid from '../components/events/EventGrid';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
-function CityPage(props) {
+function CityTagPage(props) {
   const { citySlug, countrySlug, city, venues, events, articles, tag } = props;
   const baseUrl = `/${countrySlug}/${citySlug}`;
   return (
@@ -86,19 +86,21 @@ function CityPage(props) {
   );
 }
 
-CityPage.getInitialProps = async ctx => {
-  let { country, city, citySlug, countrySlug, tag } = ctx.query;
+CityTagPage.getInitialProps = async ctx => {
+  let { country, city, citySlug, countrySlug, tag: tagSlug } = ctx.query;
+  const tag = await getTagBySlug(tagSlug);
   return {
     citySlug,
     countrySlug,
     city,
+    tag,
     venues: (await getVenues({
       fields: ['name', 'images'],
       query: {
         filter: {
           country,
           city,
-          tag,
+          tag: tag.id,
         },
       },
     })).results,
@@ -107,14 +109,13 @@ CityPage.getInitialProps = async ctx => {
       query: {
         country,
         city,
-        tags: tag,
+        tags: tag.id,
       },
     })).results,
-    articles: await getPostsFiltered(`tag:${citySlug}+tag:${tag}`, {
+    articles: await getPostsFiltered(`tag:${citySlug}+tag:${tag.slug}`, {
       limit: 6,
     }),
-    tag: await getTagBySlug(tag),
   };
 };
 
-export default withPageLayout(CityPage);
+export default withPageLayout(CityTagPage);
