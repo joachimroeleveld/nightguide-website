@@ -24,7 +24,7 @@ function ImageGrid(props) {
         .container {
           display: grid;
           grid-template: 2fr 1fr 1fr / 1fr 1fr;
-          height: 80vh;
+          height: 160vw;
           margin: -3px;
         }
         img {

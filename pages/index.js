@@ -66,6 +66,7 @@ function Home() {
         }
         .phone-container img {
           max-width: 100%;
+          object-fit: contain;
         }
         .city {
           display: flex;
