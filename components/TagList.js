@@ -25,17 +25,12 @@ function TagList(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          margin: 1.5em 0;
+          margin: 1em -0.2em;
           display: flex;
+          flex-wrap: wrap;
         }
         .tag {
-          margin: 0 0.4em;
-        }
-        .tag:first-child {
-          margin-left: 0;
-        }
-        .tag:last-child {
-          margin-right: 0;
+          margin: 0.2em;
         }
         ul {
           margin: 0;
