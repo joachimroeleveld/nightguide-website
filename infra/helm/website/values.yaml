@@ -12,7 +12,7 @@ containers:
     resources: {}
   website:
     repository: gcr.io/nightguide-app-prod/website
-    tag: v2.0.0
+    tag: v2.0.1
     pullPolicy: IfNotPresent
     resources: {}
 
@@ -28,7 +28,7 @@ ingress:
   annotations: {}
   hosts:
     - host: chart-example.local
-      paths: []
+      paths: ["/*"]
 
 nodeSelector: {}
 

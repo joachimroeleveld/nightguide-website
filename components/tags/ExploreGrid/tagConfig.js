@@ -3,10 +3,10 @@ export default {
     'clubs',
     'bars',
     'students',
-    'cocktail_bars',
-    'techno_clubs',
-    'jazz_bars',
-    'craft_beer_bars',
+    'cocktail',
+    'techno',
+    'jazz',
+    'craft_beer',
     'dancing',
   ],
   international: {
@@ -116,5 +116,25 @@ export default {
   wine: {
     imageUrl:
       'https://lh3.googleusercontent.com/dm9exHKn8xlG_gwmq-scpCr6MytUo_lm-BY3pXlEKAJDckatOMpmBsCPar4qt268QX_PwmSvBEPzl8GqxnB_vnArvODgvEGp',
+  },
+  alternative: {
+    imageUrl:
+      'https://lh3.googleusercontent.com/skAnE-B8x8HNBGuU4AkVxtjkXDnB5RD_ndy_80eO8Sa4ivaLhJs16EyNJtwoaZRQ13T7udfcLn96PZb-g3JazthRY4faS1gN',
+  },
+  popular: {
+    imageUrl:
+      'https://lh3.googleusercontent.com/5UYAhhKQUSJW2MW2u2VFpAWlG8dAQXHeMrs2JNyY3NnobVaNNfVC4EiPeLCmP8iM5E_EpOD8kcmANqfPGZU905pzmgOLrlPMjQ',
+  },
+  trendy: {
+    imageUrl:
+      'https://lh3.googleusercontent.com/oIvFXr6Mhi_Mod5En8pEPaYcYppw-M2jA3Jr6blUtf3LRzpN9Km-t1ela8hWp5RYCBQmSs6mPOu0_8EcoXPkJzJzBXBuqGmRPw',
+  },
+  cheap: {
+    imageUrl:
+      'https://lh3.googleusercontent.com/F2NNaVpVmDU0axC8_skc89Hyn9ny3JZWm9AiKEqQA3pQZpjoiDJCJJjgdtJpZic2AOZQfl6TuKJSWNhu5EuEuecqoPILh99G',
+  },
+  dating: {
+    imageUrl:
+      'https://lh3.googleusercontent.com/oElNEVUhDT8vqqh8Hxefo3X5M0Lk1f0lcGEN84Z5k16LkHbRuDo3DD9K-dUyMsUEd5BlDZwplmCzuK4rqK1Sk3-incQtd-_GfA',
   },
 };
