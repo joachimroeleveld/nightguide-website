@@ -17,14 +17,15 @@ function ImageGrid(props) {
   return (
     <div className={`container grid-${images.length}`}>
       {images.map((imgProps, index) => (
-        <img key={index} {...imgProps} />
+        <div className="grid-item" key={index}>
+          <img {...imgProps} />
+        </div>
       ))}
       {/*language=CSS*/}
       <style jsx>{`
         .container {
           display: grid;
           grid-template: 2fr 1fr 1fr / 1fr 1fr;
-          height: 500px;
           margin: -3px;
         }
         img {
@@ -35,26 +36,31 @@ function ImageGrid(props) {
           display: block;
           border: 3px solid ${colors.bg};
         }
-        img:nth-child(1) {
+        .grid-item:nth-child(1) {
           grid-area: 1 / 1 / 2 / 3;
+          height: 300px;
         }
-        @media (min-width: 400px) {
-          .container {
-            height: 600px;
-          }
+        .grid-item {
+          height: 150px;
         }
         @media (min-width: 600px) {
-          .container {
-            height: 800px;
+          .grid-item:nth-child(1) {
+            height: 300px;
+          }
+          .grid-item {
+            height: 150px;
           }
         }
         @media (min-width: 800px) {
           .container {
-            height: 350px;
             grid-template: 1fr 1fr / 2fr 1fr 1fr;
           }
-          img:nth-child(1) {
+          .grid-item {
+            height: 175px;
+          }
+          .grid-item:nth-child(1) {
             grid-area: 1 / 1 / 3 / 2;
+            height: 350px;
           }
         }
       `}</style>
