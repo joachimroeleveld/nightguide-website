@@ -25,9 +25,6 @@ class NightGuideWebsite extends App {
   }
 }
 
-let app = NightGuideWebsite;
-if (process.env.NODE_ENV === 'production') {
-  app = withGA(process.env.REACT_APP_GA_TOKEN, Router)(NightGuideWebsite);
-}
-
-export default app;
+export default withGA(process.env.REACT_APP_GA_TOKEN, Router, {
+  localhost: 'disable',
+})(NightGuideWebsite);
