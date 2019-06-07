@@ -1,17 +1,34 @@
-const { parsed: localConf } = require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
 
-const publicRuntimeConfig = Object.keys(localConf)
-  .filter(key => key.indexOf('PUBLIC_') === 0)
+// Load .env
+require('dotenv').config();
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
+// Load .env.$NODE_ENV
+let publicEnv = {};
+const publicEnvPath = path.resolve(
+  process.cwd(),
+  `.env.${process.env.NODE_ENV}`
+);
+if (fs.existsSync(publicEnvPath)) {
+  const { parsed: parsedEnv } = require('dotenv').config({
+    path: publicEnvPath,
+  });
+  publicEnv = parsedEnv;
+}
+
+const publicEnvFiltered = Object.keys(publicEnv)
+  .filter(key => key.indexOf('REACT_APP_') === 0)
   .reduce(
     (conf, key) => ({
       ...conf,
-      [key]: localConf[key],
+      [key]: publicEnv[key],
     }),
     {}
   );
 
-// next.config.js
 module.exports = {
-  serverRuntimeConfig: process.env,
-  publicRuntimeConfig,
+  env: publicEnvFiltered,
 };
