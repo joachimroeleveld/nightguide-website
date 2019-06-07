@@ -30,5 +30,8 @@ const publicEnvFiltered = Object.keys(publicEnv)
   );
 
 module.exports = {
-  env: publicEnvFiltered,
+  env: {
+    ...publicEnvFiltered,
+    NODE_ENV: process.env.NODE_ENV,
+  },
 };
