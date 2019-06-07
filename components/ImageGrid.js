@@ -24,7 +24,7 @@ function ImageGrid(props) {
         .container {
           display: grid;
           grid-template: 2fr 1fr 1fr / 1fr 1fr;
-          height: 160vw;
+          height: 500px;
           margin: -3px;
         }
         img {
@@ -37,6 +37,16 @@ function ImageGrid(props) {
         }
         img:nth-child(1) {
           grid-area: 1 / 1 / 2 / 3;
+        }
+        @media (min-width: 400px) {
+          .container {
+            height: 600px;
+          }
+        }
+        @media (min-width: 600px) {
+          .container {
+            height: 800px;
+          }
         }
         @media (min-width: 800px) {
           .container {
