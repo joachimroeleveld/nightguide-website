@@ -1,10 +1,17 @@
-const { parsed: localEnv } = require('dotenv').config();
-const webpack = require('webpack');
+const { parsed: localConf } = require('dotenv').config();
 
+const publicRuntimeConfig = Object.keys(localConf)
+  .filter(key => key.indexOf('PUBLIC_') === 0)
+  .reduce(
+    (conf, key) => ({
+      ...conf,
+      [key]: localConf[key],
+    }),
+    {}
+  );
+
+// next.config.js
 module.exports = {
-  webpack(config) {
-    config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
-
-    return config;
-  },
+  serverRuntimeConfig: process.env,
+  publicRuntimeConfig,
 };

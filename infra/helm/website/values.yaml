@@ -7,12 +7,12 @@ replicaCount: 1
 containers:
   nginx:
     repository: nginx
-    tag: stable
+    tag: 1.17-alpine
     pullPolicy: IfNotPresent
     resources: {}
   website:
     repository: gcr.io/nightguide-app-prod/website
-    tag: v2.0.2
+    tag: v2.0.3
     pullPolicy: IfNotPresent
     resources: {}
 

@@ -3,7 +3,7 @@ export default {
     'clubs',
     'bars',
     'students',
-    'cocktail',
+    'cocktails',
     'techno',
     'jazz',
     'craft_beer',
