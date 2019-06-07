@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["prettier", "react"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "globals": {
+    "document": true,
+    "window": true,
+    "process": true,
+    "fetch": false
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "rules": {
+    "no-console": 1,
+    "prettier/prettier": "warn",
+    "react/react-in-jsx-scope": 0,
+    "no-unused-vars": 1,
+    "react/prop-types": 0
+  }
+}
