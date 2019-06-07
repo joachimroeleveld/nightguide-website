@@ -13,7 +13,7 @@ function PrivacyPolicyPage(props) {
 }
 
 PrivacyPolicyPage.getInitialProps = async () => ({
-  ghostPage: await getGhostPageById('5cd2e29a774a930001b2b021'),
+  ghostPage: await getGhostPageById('5cf8e1dd372b3200012d8942'),
 });
 
 export default withPageLayout(PrivacyPolicyPage);
