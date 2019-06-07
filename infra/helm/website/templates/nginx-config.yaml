@@ -46,6 +46,9 @@ data:
         server_name localhost;
 
         location / {
+          if ($http_x_forwarded_proto = "http") {
+            return 301 https://$server_name$request_uri;
+          }
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header HOST $http_host;
           proxy_pass http://localhost:8080;
