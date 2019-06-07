@@ -11,8 +11,8 @@ containers:
     pullPolicy: IfNotPresent
     resources: {}
   website:
-    repository: gcr.io/nightguide-infra/website
-    tag: 1.0.0
+    repository: gcr.io/nightguide-app-prod/website
+    tag: v2.0.0
     pullPolicy: IfNotPresent
     resources: {}
 

@@ -20,9 +20,9 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: nginx
+          image: "{{ .Values.containers.nginx.repository }}:{{ .Values.containers.nginx.tag }}"
+          imagePullPolicy: {{ .Values.containers.nginx.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
@@ -35,8 +35,53 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              name: nginx-conf
+              readOnly: false
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.containers.nginx.resources | nindent 12 }}
+        - name: website
+          image: "{{ .Values.containers.website.repository }}:{{ .Values.containers.website.tag }}"
+          imagePullPolicy: {{ .Values.containers.website.pullPolicy }}
+          ports:
+            - name: app
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: app
+          readinessProbe:
+            httpGet:
+              path: /
+              port: app
+          volumeMounts:
+            - mountPath: /var/cache/nginx
+              name: nginx-cache
+          env:
+            - name: BLOG_URL
+              value: https://blog.nightguide.app/ghost/api/v2/content
+            - name: BLOG_API_KEY
+              value: 2f723111f699b7c3ce899ac4e3
+            - name: API_URL
+              value: https://api.nightguide.app
+            - name: API_KEY
+              value: nyfuUiZg9D@G^CFX^LtB
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "8080"
+          resources:
+            {{- toYaml .Values.containers.website.resources | nindent 12 }}
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: website-nginx-config
+        - name: nginx-cache
+          persistentVolumeClaim:
+            claimName: website-nginx-cache
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
