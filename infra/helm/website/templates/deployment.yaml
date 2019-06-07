@@ -61,14 +61,6 @@ spec:
             - mountPath: /var/cache/nginx
               name: nginx-cache
           env:
-            - name: BLOG_URL
-              value: https://blog.nightguide.app/ghost/api/v2/content
-            - name: BLOG_API_KEY
-              value: 2f723111f699b7c3ce899ac4e3
-            - name: API_URL
-              value: https://api.nightguide.app
-            - name: API_KEY
-              value: nyfuUiZg9D@G^CFX^LtB
             - name: NODE_ENV
               value: production
             - name: PORT
