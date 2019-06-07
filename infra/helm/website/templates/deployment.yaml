@@ -61,10 +61,11 @@ spec:
             - mountPath: /var/cache/nginx
               name: nginx-cache
           env:
-            - name: NODE_ENV
-              value: production
             - name: PORT
               value: "8080"
+          envFrom:
+            - secretRef:
+                name: website-env
           resources:
             {{- toYaml .Values.containers.website.resources | nindent 12 }}
       volumes:
