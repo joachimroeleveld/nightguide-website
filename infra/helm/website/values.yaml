@@ -29,6 +29,8 @@ ingress:
   hosts:
     - host: chart-example.local
       paths: ["/*"]
+    - host: chart-example.local
+      paths: ["/*"]
 
 nodeSelector: {}
 
