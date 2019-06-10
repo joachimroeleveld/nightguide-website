@@ -27,9 +27,9 @@ ingress:
   enabled: false
   annotations: {}
   hosts:
-    - host: chart-example.local
+    - host: nightguide.app
       paths: ["/*"]
-    - host: chart-example.local
+    - host: www.nightguide.app
       paths: ["/*"]
 
 nodeSelector: {}
