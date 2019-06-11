@@ -3,8 +3,11 @@ import React from 'react';
 import colors from '../styles/colors';
 
 function PrimaryButton(props) {
-  const { title, onClick, href } = props;
-  const aProps = href ? { href } : { onClick };
+  const { title, onClick, href, ...otherProps } = props;
+  const aProps = {
+    ...otherProps,
+    ...(href ? { href } : { onClick }),
+  };
   return (
     <React.Fragment>
       <a {...aProps}>{title}</a>

@@ -1,5 +1,3 @@
-import Head from 'next/head';
-
 import Header from './Header';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -9,9 +7,6 @@ const withPageLayout = Page => {
   function PageLayout(props) {
     return (
       <div className={'page-container'}>
-        <Head>
-          <link rel="stylesheet" href="https://use.typekit.net/adw5jeb.css" />
-        </Head>
         <div className="header">
           <Header />
         </div>

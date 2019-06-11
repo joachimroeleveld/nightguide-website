@@ -141,13 +141,20 @@ function VenuePage(props) {
             <div className={'labeled-text links'}>
               <strong>{__('venuePage.links')}</strong>
               {!!website && (
-                <a href={website} className="website">
+                <a
+                  href={website}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="website"
+                >
                   {__('venuePage.website')}
                 </a>
               )}
               {instagram && instagram.id && (
                 <a
                   href={`https://instagram.com/${instagram.id}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
                   className="instagram"
                 >
                   {__('venuePage.instagram')}
@@ -156,6 +163,8 @@ function VenuePage(props) {
               {facebook && facebook.id && (
                 <a
                   href={`https://facebook.com/${facebook.id}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
                   className="facebook"
                 >
                   {__('venuePage.facebook')}
@@ -164,6 +173,8 @@ function VenuePage(props) {
             </div>
             <div className="maps-link">
               <PrimaryButton
+                rel="noopener noreferrer"
+                target="_blank"
                 href={mapsUrl}
                 title={__('venuePage.googleMaps')}
               />

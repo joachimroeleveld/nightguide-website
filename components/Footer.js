@@ -24,6 +24,7 @@ function Footer() {
       <footer className={'bottom'}>
         <div className={'app-buttons'}>
           <a
+            rel="noreferrer"
             target={'_blank'}
             href={
               'https://itunes.apple.com/us/app/nightguide/id1453033103?l=nl&ls=1&mt=8'
@@ -36,6 +37,7 @@ function Footer() {
             />
           </a>
           <a
+            rel="noreferrer"
             target={'_blank'}
             href={
               'http://play.google.com/store/apps/details?id=app.nightguide.app1'

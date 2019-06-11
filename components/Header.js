@@ -3,7 +3,7 @@ import Link from 'next/link';
 function Header() {
   return (
     <header className={'container'}>
-      <Link href="/">
+      <Link href="/nl/utrecht">
         <a>
           <img src="/static/img/logo.svg" alt="NightGuide" className={'logo'} />
         </a>

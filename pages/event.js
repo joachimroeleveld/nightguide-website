@@ -98,7 +98,8 @@ function EventPage(props) {
                 <a
                   className={'facebook-page'}
                   href={`https://facebook.com/events/${facebook.id}`}
-                  target={'_blank'}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   {__('eventPage.facebookPage')}
                 </a>
