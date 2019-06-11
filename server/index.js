@@ -17,6 +17,10 @@ app
   .then(() => {
     const server = express();
 
+    server.get('/health', (req, res) => {
+      res.json({ status: 'OK' });
+    });
+
     server.get('/', (req, res) => {
       res.redirect('/nl/utrecht');
     });
