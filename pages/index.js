@@ -18,10 +18,7 @@ function Home() {
     <div className={'container'}>
       <Head>
         <title>{__('homePage.meta.title')}</title>
-        <meta
-          property="description"
-          content={__('homePage.meta.description')}
-        />
+        <meta name="description" content={__('homePage.meta.description')} />
       </Head>
 
       <main>
@@ -35,7 +32,10 @@ function Home() {
             {CITIES.map(city => (
               <Link key={city.name} href={city.url}>
                 <a className="city">
-                  <Tile title={city.name} imgProps={{ src: city.imgSrc }} />
+                  <Tile
+                    title={city.name}
+                    imgProps={{ url: city.imgSrc, widths: [320] }}
+                  />
                 </a>
               </Link>
             ))}

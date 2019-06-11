@@ -1,7 +1,5 @@
 const express = require('express');
 
-const { asyncMiddleware } = require('../lib/express');
-
 module.exports = app => {
   const router = express.Router({ mergeParams: true });
 

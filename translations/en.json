@@ -41,6 +41,11 @@
     "articles": "Articles",
     "venues": "Venues"
   },
+  "articlePage": {
+    "meta": {
+      "title": "{{title}} | NightGuide"
+    }
+  },
   "cityArticlesPage": {
     "meta": {
       "title": "Read about nightlife in {{city}} - where to go out | NightGuide",

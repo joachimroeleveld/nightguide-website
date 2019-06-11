@@ -20,7 +20,7 @@ function CityEventsPage(props) {
       <Head>
         <title>{__('cityEventsPage.meta.title', { city })}</title>
         <meta
-          property="description"
+          name="description"
           content={__('cityEventsPage.meta.description', { city })}
         />
       </Head>

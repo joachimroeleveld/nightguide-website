@@ -7,7 +7,7 @@ import colors from '../styles/colors';
 import { getFutureEventDates } from '../lib/events';
 import __ from '../lib/i18n';
 import dimensions from '../styles/dimensions';
-import { generateImgPropsFromServingUrl } from '../components/Image';
+import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 
 function EventPage(props) {
@@ -28,7 +28,7 @@ function EventPage(props) {
           })}
         </title>
         <meta
-          property="description"
+          name="description"
           content={
             facebook.description
               .slice(0, 160)
@@ -44,8 +44,16 @@ function EventPage(props) {
           <div className="info">
             <figure className={'event-image'}>
               {!!images.length && (
-                <img
-                  {...generateImgPropsFromServingUrl(images[0].url, [320])}
+                <ResponsiveImage
+                  lazy={false}
+                  url={images[0].url}
+                  widths={[320]}
+                  imgStyle={{
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  alt={title || facebook.title}
                 />
               )}
             </figure>

@@ -18,10 +18,7 @@ function CityTagPage(props) {
     <main>
       <Head>
         <title>{__(`tag.meta.title.${tag.slug}`)}</title>
-        <meta
-          property="description"
-          content={__(`tag.descriptions.${tag.slug}`)}
-        />
+        <meta name="description" content={__(`tag.descriptions.${tag.slug}`)} />
       </Head>
 
       <h1>

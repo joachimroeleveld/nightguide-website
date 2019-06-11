@@ -1,4 +1,6 @@
 import find from 'lodash/find';
+import Head from 'next/head';
+import { useMemo } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getGhostPostBySlug } from '../lib/ghost';
@@ -7,28 +9,34 @@ import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
 import moment from 'moment';
 import TagList from '../components/TagList';
-import { generateImgPropsFromServingUrl } from '../components/Image';
+import ResponsiveImage from '../components/ResponsiveImage';
+import __ from '../lib/i18n';
 
 const IMAGE_URL_REGEX = /<img.*src="(https:\/\/lh3\.googleusercontent\.com.*?)".*?>/gm;
 
-const replaceImages = html => {
-  let newHtml = html;
-  let indexOffset = 0;
+const generateHtml = html => {
+  let Html = [];
   let match;
+  let lastIndex = 0;
   while ((match = IMAGE_URL_REGEX.exec(html)) !== null) {
-    const { src, srcSet, sizes } = generateImgPropsFromServingUrl(
-      match[1],
-      [360, 640, 1000, 2000],
-      '(max-width: 900px) calc(100vw - 4em), 716px'
+    Html.push(
+      <div
+        dangerouslySetInnerHTML={{ __html: html.slice(lastIndex, match.index) }}
+      />
     );
-    const newImg = `<img src="${src}" srcset="${srcSet}" sizes="${sizes}">`;
-    newHtml =
-      newHtml.slice(0, match.index + indexOffset) +
-      newImg +
-      newHtml.slice(match.index + match[0].length + indexOffset);
-    indexOffset = indexOffset + (newImg.length - match[0].length);
+    Html.push(
+      <ResponsiveImage
+        url={match[1]}
+        widths={[360, 640, 1000, 2000]}
+        sizes={'(max-width: 900px) calc(100vw - 4em), 716px'}
+      />
+    );
+    lastIndex = match.index + match[0].length;
   }
-  return newHtml;
+  Html.push(
+    <div dangerouslySetInnerHTML={{ __html: html.slice(lastIndex) }} />
+  );
+  return Html;
 };
 
 function ArticlePage(props) {
@@ -37,17 +45,21 @@ function ArticlePage(props) {
 
   const { title, html, feature_image, created_at, tags: ghostTags } = ghostPage;
 
+  const Html = useMemo(() => generateHtml(html), [html]);
+
   return (
     <main>
+      <Head>
+        <title>{__('articlePage.meta.title', { title })}</title>
+      </Head>
       <article>
         <header className={'banner'}>
-          <img
-            {...generateImgPropsFromServingUrl(
-              feature_image,
-              [640, 1000, 2000],
-              '(max-width: 900px) 100vw, max(calc(60vh * 1.5), 576px)',
-              title
-            )}
+          <ResponsiveImage
+            url={feature_image}
+            widths={[640, 1000, 2000]}
+            sizes={'(max-width: 900px) 100vw, max(calc(60vh * 1.5), 576px)'}
+            alt={title}
+            imgStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
           <div className="text">
             <div className="tags">
@@ -60,10 +72,7 @@ function ArticlePage(props) {
             <time dateTime={created_at}>{moment(created_at).fromNow()}</time>
           </div>
         </header>
-        <div
-          className="article-content content"
-          dangerouslySetInnerHTML={{ __html: replaceImages(html) }}
-        />
+        <div className="article-content content">{Html}</div>
       </article>
       {/*language=CSS*/}
       <style jsx>{`
@@ -80,12 +89,6 @@ function ArticlePage(props) {
         .banner .text {
           bottom: 0;
           padding: 3em ${dimensions.bodyPadding} 1em;
-        }
-        .banner img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 6px;
         }
         .banner time {
           display: block;

@@ -27,7 +27,6 @@ function CityPage(props) {
     citySlug,
     countrySlug,
     city,
-    venues,
     events,
     blogs,
     tags,
@@ -39,7 +38,7 @@ function CityPage(props) {
       <Head>
         <title>{__('cityPage.meta.title', { city })}</title>
         <meta
-          property="description"
+          name="description"
           content={__('cityPage.meta.description', { city })}
         />
       </Head>

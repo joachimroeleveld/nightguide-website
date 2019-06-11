@@ -10,13 +10,25 @@ const routes = require('./routes');
 
 const { PORT } = process.env;
 
+const STATIC_ROUTES = ['expert-chat', 'privacy-policy'];
+
 app
   .prepare()
   .then(() => {
     const server = express();
 
+    server.get('/', (req, res) => {
+      res.redirect('/nl/utrecht');
+    });
+
     Object.keys(routes).forEach(basePath => {
       server.use(`/${basePath}`, routes[basePath](app));
+    });
+
+    STATIC_ROUTES.forEach(route => {
+      server.get(`/${route}`, (req, res) => {
+        app.render(req, res, `/${route}`);
+      });
     });
 
     server.get('*', (req, res) => {

@@ -7,7 +7,7 @@ import { _o } from '../../../lib/i18n';
 import dimensions from '../../../styles/dimensions';
 import Grid from '../../Grid';
 import TAG_CONFIG from './tagConfig';
-import { generateImgPropsFromServingUrl } from '../../Image';
+import ResponsiveImage from '../../ResponsiveImage';
 
 function ExploreGrid(props) {
   const { tags, baseUrl, limitItems = null } = props;
@@ -23,24 +23,42 @@ function ExploreGrid(props) {
   const renderItem = tag => {
     const tagConfig = TAG_CONFIG[tag.slug];
 
-    let bgImgProps;
-    if (tagConfig) {
-      const bgImgUrl = TAG_CONFIG[tag.slug].imageUrl;
-      bgImgProps = generateImgPropsFromServingUrl(
-        bgImgUrl,
-        [215, 500, 1000],
-        '(max-width: 41rem) calc(50vw - 39px), (max-width: 56rem) calc(33vw - 20px), 214px',
-        _o(tag.name)
-      );
-    }
     return (
       <Link key={tag.id} href={`${baseUrl}/tags/${tag.slug}`}>
         <a className="tag">
-          {!!bgImgProps && (
-            <Fragment>
-              <img className="bg-img" {...bgImgProps} />
-              <div className="shadow" />
-            </Fragment>
+          {!!tagConfig && (
+            <div className="bg-img">
+              <ResponsiveImage
+                url={TAG_CONFIG[tag.slug].imageUrl}
+                widths={[215, 500, 1000]}
+                sizes={
+                  '(max-width: 41rem) calc(50vw - 39px), (max-width: 56rem) calc(33vw - 20px), 214px'
+                }
+                alt={_o(tag.name)}
+                showOverlay={true}
+                /*language=CSS*/
+                {...css.resolve`
+                    .container {
+                      display: block;
+                      width: 100%;
+                      height: 100%;
+                    }
+                    img {
+                      object-fit: cover;
+                      width: 100%;
+                      height: 100%;
+                    }
+                    .overlay {
+                      border-radius: ${dimensions.tileRadius};
+                      background-image: linear-gradient(
+                        231deg,
+                        rgba(0, 0, 0, 0) 28%,
+                        #000000 99%
+                      );
+                    }
+                  `}
+              />
+            </div>
           )}
           <span className="name">{_o(tag.name)}</span>
           {/*language=CSS*/}
@@ -56,30 +74,17 @@ function ExploreGrid(props) {
             }
             .bg-img {
               position: absolute;
-              object-fit: cover;
-              width: 100%;
-              height: 100%;
               border-radius: ${dimensions.tileRadius};
+              overflow: hidden;
               left: 0;
               top: 0;
               opacity: 0.8;
+              width: 100%;
+              height: 100%;
             }
             .name {
               position: relative;
               z-index: 1;
-            }
-            .shadow {
-              position: absolute;
-              width: 100%;
-              height: 100%;
-              left: 0;
-              top: 0;
-              border-radius: ${dimensions.tileRadius};
-              background-image: linear-gradient(
-                231deg,
-                rgba(0, 0, 0, 0) 28%,
-                #000000 99%
-              );
             }
           `}</style>
         </a>

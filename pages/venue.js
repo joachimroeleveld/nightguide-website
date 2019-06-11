@@ -87,7 +87,7 @@ function VenuePage(props) {
           })}
         </title>
         <meta
-          property="description"
+          name="description"
           content={
             _o(description)
               .slice(0, 160)

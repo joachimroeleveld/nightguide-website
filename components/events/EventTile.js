@@ -2,19 +2,16 @@ import Link from 'next/link';
 import React from 'react';
 
 import Tile from '../Tile';
-import { generateImgPropsFromServingUrl } from '../Image';
 
 function EventTile(props) {
   const { baseUrl, event, imgWidths, imgSizes } = props;
   const { title, facebook = {}, images = [], id } = event;
-  const imgProps =
-    !!images.length &&
-    generateImgPropsFromServingUrl(
-      images[0].url,
-      imgWidths,
-      imgSizes,
-      title || facebook.title
-    );
+  const imgProps = !!images.length && {
+    url: images[0].url,
+    widths: imgWidths,
+    sizes: imgSizes,
+    alt: title || facebook.title,
+  };
   return (
     <React.Fragment>
       <Link href={`${baseUrl}/${id}`}>

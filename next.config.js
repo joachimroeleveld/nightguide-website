@@ -30,6 +30,7 @@ const publicEnvFiltered = Object.keys(publicEnv)
   );
 
 module.exports = {
+  useFileSystemPublicRoutes: false,
   env: {
     ...publicEnvFiltered,
   },

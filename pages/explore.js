@@ -18,7 +18,7 @@ function CityExplorePage(props) {
           {__('cityExplorePage.meta.title', { city, tagCount: tags.length })}
         </title>
         <meta
-          property="description"
+          name="description"
           content={__('cityExplorePage.meta.description', { city })}
         />
       </Head>

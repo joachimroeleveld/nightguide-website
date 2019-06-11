@@ -2,17 +2,16 @@ import Link from 'next/link';
 import React from 'react';
 
 import Tile from '../Tile';
-import { generateImgPropsFromServingUrl } from '../Image';
 
 function ArticleTile(props) {
   const { baseUrl, article, style, imgWidths, imgSizes } = props;
   const { title, slug, feature_image } = article;
-  let imgProps = generateImgPropsFromServingUrl(
-    feature_image,
-    imgWidths,
-    imgSizes,
-    title
-  );
+  let imgProps = {
+    url: feature_image,
+    widths: imgWidths,
+    sizes: imgSizes,
+    alt: title,
+  };
   return (
     <React.Fragment>
       <Link href={`${baseUrl}/${slug}`}>
