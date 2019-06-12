@@ -36,18 +36,18 @@ function Breadcrumbs(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          display: flex;
+          margin-top: 1em;
         }
         li {
+          display: inline-block;
           list-style: none;
-          display: flex;
           align-items: center;
           color: ${colors.textSecondary};
           font-size: 0.9em;
         }
         .arrow {
           font-size: 0.8em;
-          display: block;
+          display: inline-block;
           margin: 0 1em;
         }
       `}</style>

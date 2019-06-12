@@ -29,8 +29,6 @@ const withPageLayout = getBreadcrumbs => Page => {
         <GlobalStyles />
         {/*language=CSS*/}
         <style jsx>{`
-          .header {
-          }
           .page {
             max-width: 56rem;
             padding: 0 ${dimensions.bodyPadding};
