@@ -23,8 +23,7 @@ const IMAGE_ORDER = [
 ];
 
 function VenuePage(props) {
-  const { venue, countrySlug, citySlug } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { venue, baseUrl } = props;
 
   const {
     name,
@@ -129,9 +128,11 @@ function VenuePage(props) {
         </div>
         <aside className={'info'}>
           <div className={'card'}>
-            <div className="opening-hours">
-              <VenueOpeningHours schedule={timeSchedule.open} />
-            </div>
+            {!!timeSchedule.open && (
+              <div className="opening-hours">
+                <VenueOpeningHours schedule={timeSchedule.open} />
+              </div>
+            )}
             <div className={'labeled-text'}>
               <strong>{__('venuePage.address')}</strong>
               <span>{[address1, address2].join(' ')}</span>
@@ -259,10 +260,8 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue, citySlug, countrySlug } = ctx.query;
+  const { venue } = ctx.query;
   return {
-    citySlug,
-    countrySlug,
     venue: await getVenue(venue),
   };
 };

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 import dimensions from '../styles/dimensions';
 
@@ -35,29 +35,44 @@ function InfiniteGrid(props) {
     keyExtractor,
     className,
     itemHeight,
+    usePage,
   } = props;
 
+  const page = useRef(0);
   const [offset, setOffset] = useState(props.items.length);
   const [loading, setLoading] = useState(false);
+  const [limit, setLimit] = useState(null);
   const [items, setItems] = useState(props.items);
   const [itemDimensions, setItemDimensions] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState(null);
   const [endReached, setEndReached] = useState(false);
 
-  const getLimit = () => {
-    const itemsInHeight = Math.round(
-      window.innerHeight / (itemDimensions.height + 14)
-    );
-    const itemsInWidth = Math.round(
-      containerDimensions.width / itemDimensions.width
-    );
-    return itemsInHeight * itemsInWidth;
-  };
+  // Determine limit and fetch all items within viewport
+  useEffect(() => {
+    if (itemDimensions && containerDimensions) {
+      const itemsInHeight = Math.round(
+        window.innerHeight / (itemDimensions.height + 14)
+      );
+      const itemsInWidth = Math.round(
+        containerDimensions.width / itemDimensions.width
+      );
+      const limit = itemsInHeight * itemsInWidth;
 
-  const getNextPage = async () => {
-    if (itemDimensions && containerDimensions && !loading && !endReached) {
+      setLimit(limit);
+
+      if (items.length < limit) {
+        getNextPage(usePage, limit);
+      }
+    }
+  }, [itemDimensions, containerDimensions]);
+
+  const getNextPage = async (replace = false, limit = limit) => {
+    if (!loading && !endReached) {
       setLoading(true);
-      const results = await getItems(offset, getLimit());
+      const results = await getItems(
+        usePage ? page.current + 1 : offset,
+        limit
+      );
       setEndReached(
         totalCount
           ? totalCount === items.length + results.length
@@ -65,20 +80,15 @@ function InfiniteGrid(props) {
       );
       setOffset(offset + results.length);
       setLoading(false);
-      setItems(items.concat(results));
+      setItems(replace ? results : items.concat(results));
+      page.current++;
     }
   };
 
-  useEffect(() => {
-    getNextPage();
-  }, [itemDimensions, containerDimensions]);
-
-  const observerOptions = {
-    onChange: ({ isIntersecting }) => {
-      if (isIntersecting) {
-        getNextPage();
-      }
-    },
+  const onIntersect = ({ isIntersecting }) => {
+    if (isIntersecting) {
+      getNextPage();
+    }
   };
 
   const setContainerRef = ref => {
@@ -94,7 +104,7 @@ function InfiniteGrid(props) {
 
   return (
     <Fragment>
-      <Observer {...observerOptions}>
+      <Observer onChange={onIntersect}>
         <div className={`grid ${className}`} ref={setContainerRef}>
           {items.map((item, index) => (
             <div

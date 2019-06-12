@@ -8,11 +8,10 @@ import CityTitleButton from '../components/CityTitleButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
 
 function CityArticlesPage(props) {
-  const { citySlug, countrySlug, country, city, articles } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { city, articles, baseUrl } = props;
 
-  const getItems = (offset, limit) => {
-    return getArticlesPage(country, city, offset, limit);
+  const getItems = (page, limit) => {
+    return getArticlesPage(city, page, limit);
   };
 
   return (
@@ -50,19 +49,17 @@ function CityArticlesPage(props) {
 }
 
 CityArticlesPage.getInitialProps = async ctx => {
-  const { country, city, citySlug, countrySlug } = ctx.query;
+  const { city, citySlug } = ctx.query;
   return {
     city,
-    citySlug,
-    countrySlug,
     articles: await getArticlesPage(citySlug),
   };
 };
 
-async function getArticlesPage(citySlug, offset = 0, limit = 6) {
+async function getArticlesPage(citySlug, page = 1, limit = 6) {
   return await getPostsFiltered(`tags:${citySlug}`, {
     limit,
-    offset,
+    page,
   });
 }
 

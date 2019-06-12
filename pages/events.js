@@ -8,8 +8,7 @@ import CityTitleButton from '../components/CityTitleButton';
 import EventGrid from '../components/events/EventGrid';
 
 function CityEventsPage(props) {
-  const { citySlug, countrySlug, country, city, events } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { country, city, events, baseUrl } = props;
 
   const getItems = async (offset, limit) => {
     return (await getEventsPage(country, city, offset, limit)).results;
@@ -50,11 +49,9 @@ function CityEventsPage(props) {
 }
 
 CityEventsPage.getInitialProps = async ctx => {
-  const { country, city, citySlug, countrySlug } = ctx.query;
+  const { country, city } = ctx.query;
   return {
     city,
-    citySlug,
-    countrySlug,
     events: await getEventsPage(country, city),
   };
 };

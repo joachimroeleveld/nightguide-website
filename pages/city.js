@@ -23,16 +23,7 @@ const SPOTLIGHT_EVENTS = [
 ];
 
 function CityPage(props) {
-  const {
-    citySlug,
-    countrySlug,
-    city,
-    events,
-    blogs,
-    tags,
-    spotlightEvents,
-  } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { baseUrl, city, events, blogs, tags, spotlightEvents } = props;
   return (
     <main>
       <Head>
@@ -170,10 +161,8 @@ function CityPage(props) {
 }
 
 CityPage.getInitialProps = async ctx => {
-  let { country, city, citySlug, countrySlug } = ctx.query;
+  let { country, city, citySlug } = ctx.query;
   return {
-    citySlug,
-    countrySlug,
     city,
     spotlightEvents: (await getEvents({
       fields: ['title', 'images', 'facebook'],

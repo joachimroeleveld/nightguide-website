@@ -40,8 +40,7 @@ const generateHtml = html => {
 };
 
 function ArticlePage(props) {
-  const { ghostPage, tags, citySlug, countrySlug } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { ghostPage, tags, baseUrl } = props;
 
   const { title, html, feature_image, created_at, tags: ghostTags } = ghostPage;
 
@@ -108,7 +107,7 @@ function ArticlePage(props) {
           .banner {
             display: grid;
             grid-template-columns: 60% 40%;
-            height: 60vh;
+            min-height: 60vh;
           }
           .banner .text {
             position: static;
@@ -152,10 +151,8 @@ function ArticlePage(props) {
 }
 
 ArticlePage.getInitialProps = async ctx => {
-  const { article, citySlug, countrySlug } = ctx.query;
+  const { article } = ctx.query;
   return {
-    citySlug,
-    countrySlug,
     ghostPage: await getGhostPostBySlug(article, {
       query: { include: 'tags' },
     }),

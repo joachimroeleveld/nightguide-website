@@ -8,8 +8,7 @@ import CityTitleButton from '../components/CityTitleButton';
 import ExploreGrid from '../components/tags/ExploreGrid';
 
 function CityExplorePage(props) {
-  const { citySlug, countrySlug, country, city, tags } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { baseUrl, city, tags } = props;
 
   return (
     <main>
@@ -42,12 +41,10 @@ function CityExplorePage(props) {
 }
 
 CityExplorePage.getInitialProps = async ctx => {
-  const { country, city, citySlug, countrySlug } = ctx.query;
+  const { city } = ctx.query;
   return {
-    tags: (await getTags()).results,
     city,
-    citySlug,
-    countrySlug,
+    tags: (await getTags()).results,
   };
 };
 

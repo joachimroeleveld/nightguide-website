@@ -2,14 +2,13 @@ import Header from './Header';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
 import dimensions from '../styles/dimensions';
+import { withNavigation } from './Navigation';
 
 const withPageLayout = Page => {
   function PageLayout(props) {
     return (
       <div className={'page-container'}>
-        <div className="header">
-          <Header />
-        </div>
+        <Header />
         <div className="page">
           <Page {...props} />
         </div>
@@ -22,7 +21,6 @@ const withPageLayout = Page => {
         {/*language=CSS*/}
         <style jsx>{`
           .header {
-            padding: 1.5rem 2rem 0;
           }
           .page {
             max-width: 56rem;
@@ -45,7 +43,7 @@ const withPageLayout = Page => {
 
   PageLayout.getInitialProps = Page.getInitialProps;
 
-  return PageLayout;
+  return withNavigation(PageLayout);
 };
 
 export default withPageLayout;

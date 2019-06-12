@@ -11,9 +11,7 @@ import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 
 function EventPage(props) {
-  const { event, citySlug, countrySlug } = props;
-
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { event, baseUrl } = props;
 
   const { title, facebook, images, dates, location, tags } = event;
   const futureDates = getFutureEventDates(dates);
@@ -201,11 +199,9 @@ function EventPage(props) {
 }
 
 EventPage.getInitialProps = async ctx => {
-  const { citySlug, countrySlug, event } = ctx.query;
+  const { event } = ctx.query;
 
   return {
-    citySlug,
-    countrySlug,
     event: await getEvent(event),
   };
 };

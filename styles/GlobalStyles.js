@@ -1,31 +1,9 @@
-import React, { useEffect } from 'react';
-import FontFaceObserver from 'fontfaceobserver';
+import React from 'react';
 
 import TextStyles from './TextStyles';
 import colors from './colors';
 
 function GlobalStyles() {
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://use.typekit.net/adw5jeb.css';
-    link.rel = 'stylesheet';
-
-    document.head.appendChild(link);
-
-    const showFont = () => document.documentElement.classList.add('noto-sans');
-
-    if (!localStorage.getItem('noto-sans-loaded')) {
-      const notoSans = new FontFaceObserver('noto-sans');
-
-      notoSans.load().then(() => {
-        localStorage.setItem('noto-sans-loaded', '1');
-        showFont();
-      });
-    } else {
-      showFont();
-    }
-  });
-
   return (
     <React.Fragment>
       <TextStyles />

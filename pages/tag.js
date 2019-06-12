@@ -12,8 +12,7 @@ import ArticleGrid from '../components/articles/ArticleGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
 function CityTagPage(props) {
-  const { citySlug, countrySlug, city, venues, events, articles, tag } = props;
-  const baseUrl = `/${countrySlug}/${citySlug}`;
+  const { city, venues, events, articles, tag, baseUrl } = props;
   return (
     <main>
       <Head>
@@ -22,11 +21,7 @@ function CityTagPage(props) {
       </Head>
 
       <h1>
-        <span
-          dangerouslySetInnerHTML={{
-            __html: __('cityTagPage.exploreTagIn', { tag: _o(tag.name) }),
-          }}
-        />
+        {__(`tag.titles.${tag.slug}`)}
         &nbsp;
         <CityTitleButton href={baseUrl} city={city} />
       </h1>
@@ -84,11 +79,9 @@ function CityTagPage(props) {
 }
 
 CityTagPage.getInitialProps = async ctx => {
-  let { country, city, citySlug, countrySlug, tag: tagSlug } = ctx.query;
+  let { citySlug, country, city, tag: tagSlug } = ctx.query;
   const tag = await getTagBySlug(tagSlug);
   return {
-    citySlug,
-    countrySlug,
     city,
     tag,
     venues: (await getVenues({

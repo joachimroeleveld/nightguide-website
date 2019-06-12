@@ -32,6 +32,7 @@ function ArticleGrid(props) {
     <React.Fragment>
       <Grid
         {...gridProps}
+        usePage={true}
         keyExtractor={keyExtractor}
         items={articles}
         renderItem={renderItem}

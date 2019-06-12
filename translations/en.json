@@ -1,4 +1,9 @@
 {
+  "menu": {
+    "blog": "Blog",
+    "explore": "Explore",
+    "events": "Events"
+  },
   "homePage": {
     "meta": {
       "title": "Explore nightlife in your city | NightGuide",
@@ -141,6 +146,40 @@
         "alternative": "The best Alternative places in Utrecht  - where to go out | NightGuide",
         "whisky": "The best Whisky bars in Utrecht - where to go out | NightGuide"
       }
+    },
+    "titles": {
+      "casinos": "The best Casino's in",
+      "gay": "The best Gay bars in",
+      "international": "The best bars and pubs for Internationals",
+      "locals": "Where do Locals go out in",
+      "students": "The best Student Bars in",
+      "jazz": "The best Jazz bars in",
+      "live_music": "The best places for Live music in",
+      "rock": "The best places for Rock music in",
+      "techno": "The best Techno clubs in",
+      "salsa": "The best places for Salsa in",
+      "electronic": "The best places for Electronic in",
+      "bars": "The best Bars in",
+      "clubs": "The best Clubs in",
+      "cocktails": "The best Cocktail Bars in",
+      "comedy": "The best Comedy Clubs in",
+      "concerts": "The best Concert Venues in",
+      "dancing": "The best places for going out dancing in",
+      "hookah": "The best Hookah Bars in",
+      "irish_pubs": "The best Irish Pubs in",
+      "karaoke": "The best Karaoke Bars in",
+      "piano": "The best Piano Bars in",
+      "craft_beer": "The best Craft Beer bars in",
+      "sports": "The best Sports Bars in",
+      "wine": "The best in Wine Bars in",
+      "beach_vibes": "The best beach clubs in",
+      "shots": "The best Shot Bars in",
+      "trendy": "Trendy places in",
+      "cheap": "The best cheap places to go out in",
+      "popular": "The most popular places to go out in",
+      "dating": "The best places to go on a Date in",
+      "alternative": "The best Alternative places in ",
+      "whisky": "The best Whisky bars in"
     },
     "descriptions": {
       "casinos": "Driking, dancing or eating not what you're in the mood for? Then play the night away at Utrecht's top Casinos. Check out our top picks here!",
