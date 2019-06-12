@@ -67,7 +67,7 @@ function Header(props) {
           padding: 0.7rem 1rem 0;
           display: flex;
           align-items: center;
-          transition: padding 0.1s;
+          transition: all 0.1s;
         }
         .container.sticky > .inner {
           position: fixed;
@@ -77,6 +77,7 @@ function Header(props) {
           width: 100%;
           background: ${colors.bg};
           box-sizing: border-box;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
         }
         .logo {
           display: block;
