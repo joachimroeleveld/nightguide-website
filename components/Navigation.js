@@ -6,16 +6,21 @@ export const NavigationProvider = NavigationContext.Provider;
 
 export function withNavigation(Component) {
   function NavigationComponent(props) {
-    const { query, pathName } = useContext(NavigationContext);
+    const { query } = useContext(NavigationContext);
 
-    const { citySlug, countrySlug } = query;
+    const { citySlug, countrySlug, city } = query;
 
     const navProps = {
       baseUrl: '',
+      breadcrumbs: [],
     };
 
-    if (citySlug && countrySlug) {
+    if (citySlug && countrySlug && city) {
       navProps.baseUrl = `/${countrySlug}/${citySlug}`;
+      navProps.breadcrumbs.push({
+        label: city,
+        url: `${countrySlug}/${citySlug}`,
+      });
     }
 
     return <Component {...props} {...navProps} />;

@@ -68,4 +68,6 @@ async function getEventsPage(country, city, offset = 0, limit = 8) {
   });
 }
 
-export default withPageLayout(CityEventsPage);
+const getBreadcrumbs = () => [{ key: 'events', url: 'events' }];
+
+export default withPageLayout(getBreadcrumbs)(CityEventsPage);

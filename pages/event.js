@@ -206,4 +206,9 @@ EventPage.getInitialProps = async ctx => {
   };
 };
 
-export default withPageLayout(EventPage);
+const getBreadcrumbs = ({ event }) => [
+  { key: 'events', url: 'events' },
+  { key: 'event', url: event.id, title: event.title || event.facebook.title },
+];
+
+export default withPageLayout(getBreadcrumbs)(EventPage);

@@ -144,4 +144,4 @@ function ExpertChatPage() {
   );
 }
 
-export default withPageLayout(ExpertChatPage);
+export default withPageLayout()(ExpertChatPage);

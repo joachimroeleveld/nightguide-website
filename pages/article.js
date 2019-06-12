@@ -40,9 +40,9 @@ const generateHtml = html => {
 };
 
 function ArticlePage(props) {
-  const { ghostPage, tags, baseUrl } = props;
+  const { article, tags, baseUrl } = props;
 
-  const { title, html, feature_image, created_at, tags: ghostTags } = ghostPage;
+  const { title, html, feature_image, created_at, tags: ghostTags } = article;
 
   const Html = useMemo(() => generateHtml(html), [html]);
 
@@ -145,6 +145,11 @@ function ArticlePage(props) {
         .article-content a:hover {
           border-color: ${colors.linkText};
         }
+        .article-content ul,
+        .article-content ol {
+          margin: 1em 0;
+          padding-left: 40px;
+        }
       `}</style>
     </main>
   );
@@ -153,11 +158,16 @@ function ArticlePage(props) {
 ArticlePage.getInitialProps = async ctx => {
   const { article } = ctx.query;
   return {
-    ghostPage: await getGhostPostBySlug(article, {
+    article: await getGhostPostBySlug(article, {
       query: { include: 'tags' },
     }),
     tags: (await getTags()).results,
   };
 };
 
-export default withPageLayout(ArticlePage);
+const getBreadcrumbs = ({ article }) => [
+  { key: 'articles', url: 'articles' },
+  { key: 'article', url: article.id, title: article.title },
+];
+
+export default withPageLayout(getBreadcrumbs)(ArticlePage);

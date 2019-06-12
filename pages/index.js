@@ -90,4 +90,4 @@ function Home() {
   );
 }
 
-export default withPageLayout(Home);
+export default withPageLayout()(Home);

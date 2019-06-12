@@ -2,7 +2,13 @@
   "menu": {
     "blog": "Blog",
     "explore": "Explore",
-    "events": "Events"
+    "events": "Events",
+    "venues": "Venues",
+    "venue": "{{title}}",
+    "articles": "Articles",
+    "article": "{{title}}",
+    "event": "{{title}}",
+    "tag": "{{name}}"
   },
   "homePage": {
     "meta": {

@@ -108,4 +108,9 @@ CityTagPage.getInitialProps = async ctx => {
   };
 };
 
-export default withPageLayout(CityTagPage);
+const getBreadcrumbs = ({ tag }) => [
+  { key: 'explore', url: 'explore' },
+  { key: 'tag', url: tag.slug, name: _o(tag.name) },
+];
+
+export default withPageLayout(getBreadcrumbs)(CityTagPage);

@@ -1,15 +1,28 @@
+import { useEffect, useState } from 'react';
+
 import Header from './Header';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
 import dimensions from '../styles/dimensions';
 import { withNavigation } from './Navigation';
+import Breadcrumbs from './Breadcrumbs';
 
-const withPageLayout = Page => {
+const withPageLayout = getBreadcrumbs => Page => {
   function PageLayout(props) {
+    const [breadcrumbs, setBreadcrumbs] = useState(props.breadcrumbs);
+
+    useEffect(() => {
+      if (getBreadcrumbs) {
+        const pageBreadcrumbs = getBreadcrumbs(props);
+        setBreadcrumbs((props.breadcrumbs || []).concat(pageBreadcrumbs));
+      }
+    }, [props.breadcrumbs, getBreadcrumbs]);
+
     return (
       <div className={'page-container'}>
         <Header />
         <div className="page">
+          {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
           <Page {...props} />
         </div>
         <div className="footer">

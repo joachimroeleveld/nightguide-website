@@ -32,6 +32,11 @@ function GlobalStyles() {
         figure {
           margin: 0;
         }
+        ul,
+        ol {
+          margin: 0;
+          padding: 0;
+        }
       `}</style>
       {/*language=CSS*/}
       <style jsx global>{`

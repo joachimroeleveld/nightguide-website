@@ -18,9 +18,7 @@ function TagButton(props) {
           border-radius: 14px;
           box-shadow: 1px 1px 0 0 #000000;
           cursor: pointer;
-          text-transform: uppercase;
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 0.9rem;
         }
       `}</style>
     </React.Fragment>

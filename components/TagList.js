@@ -32,10 +32,6 @@ function TagList(props) {
         .tag {
           margin: 0.2em;
         }
-        ul {
-          margin: 0;
-          padding: 0;
-        }
         li {
           padding: 0;
           list-style: none;

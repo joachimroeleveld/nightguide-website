@@ -183,4 +183,4 @@ CityPage.getInitialProps = async ctx => {
   };
 };
 
-export default withPageLayout(CityPage);
+export default withPageLayout()(CityPage);
