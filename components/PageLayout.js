@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import Header from './Header';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -9,14 +7,12 @@ import Breadcrumbs from './Breadcrumbs';
 
 const withPageLayout = getBreadcrumbs => Page => {
   function PageLayout(props) {
-    const [breadcrumbs, setBreadcrumbs] = useState(props.breadcrumbs);
+    let breadcrumbs = props.breadcrumbs || [];
 
-    useEffect(() => {
-      if (getBreadcrumbs) {
-        const pageBreadcrumbs = getBreadcrumbs(props);
-        setBreadcrumbs((props.breadcrumbs || []).concat(pageBreadcrumbs));
-      }
-    }, [props.breadcrumbs, getBreadcrumbs]);
+    if (getBreadcrumbs) {
+      const pageBreadcrumbs = getBreadcrumbs(props);
+      breadcrumbs = breadcrumbs.concat(pageBreadcrumbs);
+    }
 
     return (
       <div className={'page-container'}>
