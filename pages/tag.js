@@ -85,7 +85,7 @@ CityTagPage.getInitialProps = async ctx => {
     city,
     tag,
     venues: (await getVenues({
-      fields: ['name', 'images'],
+      fields: ['name', 'images', 'description'],
       query: {
         filter: {
           country,

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import css from 'styled-jsx/css';
 
 import Tile from '../Tile';
 
@@ -16,15 +17,18 @@ function ArticleTile(props) {
     <React.Fragment>
       <Link href={`${baseUrl}/${slug}`}>
         <a style={style}>
-          <Tile title={title} imgProps={imgProps} />
+          <Tile
+            title={title}
+            imgProps={imgProps}
+            /*language=CSS*/
+            {...css.resolve`
+              .top {
+                height: 10em;
+              }
+            `}
+          />
         </a>
       </Link>
-      {/*language=CSS*/}
-      <style jsx>{`
-        a {
-          height: 100%;
-        }
-      `}</style>
     </React.Fragment>
   );
 }

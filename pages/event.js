@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Head from 'next/head';
 import moment from 'moment';
 
@@ -57,9 +58,17 @@ function EventPage(props) {
             </figure>
             <div className="dates">
               {futureDates.slice(0, 3).map((date, index) => (
-                <time className={'date'} key={index} dateTime={date}>
-                  {moment(date).format('LLL')}
-                </time>
+                <Fragment key={index}>
+                  <time className={'date'} dateTime={date.from}>
+                    <span>{moment(date.from).format('LLL')}</span>
+                    {!!date.to && (
+                      <span>
+                        {' - '}
+                        {moment(date.to).format('LLL')}
+                      </span>
+                    )}
+                  </time>
+                </Fragment>
               ))}
               {futureDates.length > 3 && (
                 <span className={'more-dates'}>

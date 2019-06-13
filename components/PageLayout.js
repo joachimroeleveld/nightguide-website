@@ -1,3 +1,6 @@
+import { withRouter } from 'next/router';
+import Head from 'next/head';
+
 import Header from './Header';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -5,8 +8,9 @@ import dimensions from '../styles/dimensions';
 import { withNavigation } from './Navigation';
 import Breadcrumbs from './Breadcrumbs';
 
-const withPageLayout = getBreadcrumbs => Page => {
+const withPageLayout = (getBreadcrumbs, meta = {}) => Page => {
   function PageLayout(props) {
+    const { router } = props;
     let breadcrumbs = props.breadcrumbs || [];
 
     if (getBreadcrumbs) {
@@ -14,8 +18,14 @@ const withPageLayout = getBreadcrumbs => Page => {
       breadcrumbs = breadcrumbs.concat(pageBreadcrumbs);
     }
 
+    const url = `${process.env.REACT_APP_HOST}${router.asPath.split('?')[0]}`;
+
     return (
       <div className={'page-container'}>
+        <Head>
+          <link rel="canonical" href={meta.canonical || url} />
+          <link rel="alternate" href={url} hrefLang="x-default" />
+        </Head>
         <Header />
         <div className="page">
           {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
@@ -50,7 +60,7 @@ const withPageLayout = getBreadcrumbs => Page => {
 
   PageLayout.getInitialProps = Page.getInitialProps;
 
-  return withNavigation(PageLayout);
+  return withRouter(withNavigation(PageLayout));
 };
 
 export default withPageLayout;

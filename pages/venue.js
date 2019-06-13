@@ -225,6 +225,7 @@ function VenuePage(props) {
           margin: 0 -${dimensions.cardPadding} 1.5em;
           padding: 0.3em ${dimensions.cardPadding} 1.3em;
           border-bottom: 1px solid ${colors.cardSeparator};
+          border-bottom: 1px solid ${colors.cardSeparator};
         }
         .maps-link {
           margin-top: 1.5em;
@@ -267,7 +268,7 @@ VenuePage.getInitialProps = async ctx => {
 };
 
 const getBreadcrumbs = ({ venue }) => [
-  { key: 'venues', url: 'venues' },
+  // { key: 'venues', url: 'venues' },
   { key: 'venue', url: venue.id, title: venue.name },
 ];
 

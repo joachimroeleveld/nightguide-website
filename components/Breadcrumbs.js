@@ -24,7 +24,7 @@ function Breadcrumbs(props) {
   return (
     <ol className="container">
       {breadcrumbs.map(({ key, url, label }, index) => (
-        <li key={key}>
+        <li key={index}>
           <Link href={url}>
             <a>{label}</a>
           </Link>
@@ -49,6 +49,10 @@ function Breadcrumbs(props) {
           font-size: 0.8em;
           display: inline-block;
           margin: 0 1em;
+        }
+        a:active,
+        a:hover {
+          text-decoration: underline;
         }
       `}</style>
     </ol>

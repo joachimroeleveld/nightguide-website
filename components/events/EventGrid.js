@@ -19,12 +19,6 @@ function EventGrid(props) {
         event={event}
         baseUrl={`${baseUrl}/events`}
       />
-      {/*language=CSS*/}
-      <style jsx>{`
-        .event {
-          height: 8em;
-        }
-      `}</style>
     </div>
   );
 

@@ -1,10 +1,19 @@
 import Link from 'next/link';
 import React from 'react';
+import css from 'styled-jsx/css';
 
 import Tile from '../Tile';
 
 function EventTile(props) {
-  const { baseUrl, event, imgWidths, imgSizes } = props;
+  const {
+    baseUrl,
+    event,
+    imgWidths,
+    imgSizes,
+    className,
+    styles = null,
+    height = '8em',
+  } = props;
   const { title, facebook = {}, images = [], id } = event;
   const imgProps = !!images.length && {
     url: images[0].url,
@@ -13,19 +22,21 @@ function EventTile(props) {
     alt: title || facebook.title,
   };
   return (
-    <React.Fragment>
-      <Link href={`${baseUrl}/${id}`}>
-        <a>
-          <Tile title={title || facebook.title} imgProps={imgProps || {}} />
-        </a>
-      </Link>
-      {/*language=CSS*/}
-      <style jsx>{`
-        a {
-          height: 100%;
-        }
-      `}</style>
-    </React.Fragment>
+    <Link href={`${baseUrl}/${id}`}>
+      <a className={className}>
+        <Tile
+          title={title || facebook.title}
+          imgProps={imgProps || {}}
+          /*language=CSS*/
+          {...css.resolve`
+            .top {
+              height: ${height};
+            }
+          `}
+        />
+        {styles}
+      </a>
+    </Link>
   );
 }
 

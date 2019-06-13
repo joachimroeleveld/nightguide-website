@@ -10,22 +10,15 @@ function VenueGrid(props) {
   const keyExtractor = venue => venue.id;
 
   const renderItem = venue => (
-    <div key={venue.id} className="venue">
-      <VenueTile
-        imgWidths={[290, 580, 1000, 2000]}
-        imgSizes={
-          '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
-        }
-        venue={venue}
-        baseUrl={`${baseUrl}/venues`}
-      />
-      {/*language=CSS*/}
-      <style jsx>{`
-        .venue {
-          height: 10em;
-        }
-      `}</style>
-    </div>
+    <VenueTile
+      key={venue.id}
+      imgWidths={[290, 580, 1000, 2000]}
+      imgSizes={
+        '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
+      }
+      venue={venue}
+      baseUrl={`${baseUrl}/venues`}
+    />
   );
 
   return (

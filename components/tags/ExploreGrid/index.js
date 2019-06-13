@@ -5,6 +5,7 @@ import find from 'lodash/find';
 
 import { _o } from '../../../lib/i18n';
 import dimensions from '../../../styles/dimensions';
+import colors from '../../../styles/colors';
 import Grid from '../../Grid';
 import TAG_CONFIG from './tagConfig';
 import ResponsiveImage from '../../ResponsiveImage';
@@ -71,6 +72,7 @@ function ExploreGrid(props) {
               box-sizing: border-box;
               border-radius: ${dimensions.tileRadius};
               position: relative;
+              box-shadow: ${colors.tileShadow};
             }
             .bg-img {
               position: absolute;

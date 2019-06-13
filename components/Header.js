@@ -85,11 +85,8 @@ function Header(props) {
         }
         .logo img {
           transition: width 0.2s;
-          width: 4em;
-          display: block;
-        }
-        .container.sticky .logo img {
           width: 3.5em;
+          display: block;
         }
         li {
           list-style: none;
@@ -102,10 +99,14 @@ function Header(props) {
           padding: 0 0.3em;
           font-size: 0.9em;
         }
+        .menu a:active,
+        .menu a:hover {
+          text-decoration: underline;
+        }
         .explore {
           color: ${colors.textDark};
           background-color: ${colors.primaryButton};
-          padding: 0.2em 0;
+          padding: 0.1em 0;
           margin-left: 0.7em;
           border-radius: 10px;
         }
@@ -114,13 +115,18 @@ function Header(props) {
             padding: 0.7rem 2rem 0;
           }
           .logo img {
-            width: 6.5em;
+            width: 5em;
           }
           .container.sticky .logo img {
             width: 5em;
           }
           .menu a {
             padding: 0 1em;
+          }
+        }
+        @media (min-width: 940px) {
+          .logo img {
+            width: 6.5em;
           }
         }
       `}</style>

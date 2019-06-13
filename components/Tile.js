@@ -6,45 +6,63 @@ import dimensions from '../styles/dimensions';
 import ResponsiveImage from './ResponsiveImage';
 
 function Tile(props) {
-  const { title, imgProps, style = {} } = props;
+  const {
+    title,
+    imgProps,
+    styles = null,
+    className,
+    BodyContents = null,
+    ContainerElem = 'article',
+  } = props;
   return (
-    <div className="tile" style={style}>
-      <span className={'title'}>{title}</span>
-      {!!imgProps && (
-        <div className="img">
-          <ResponsiveImage
-            showOverlay={true}
-            /*language=CSS*/
-            {...css.resolve`
-            .container {
-              display: block;
-              width: 100%;  
-              height: 100%;
-            }
-            img {
-              object-fit: cover;
-              width: 100%;
-              height: 100%;
-            }
-            .overlay {
-              top: 20%;
-              height: 80%;
-              width: 100%;
-              background: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1));
-            }
-          `}
-            {...imgProps}
-          />
-        </div>
+    <ContainerElem className={['container', className].join(' ')}>
+      <header className={['top', className].join(' ')}>
+        <span className={'title'}>{title}</span>
+        {!!imgProps && (
+          <div className="img">
+            <ResponsiveImage
+              showOverlay={true}
+              /*language=CSS*/
+              {...css.resolve`
+                .container {
+                  display: block;
+                  width: 100%;  
+                  height: 100%;
+                }
+                img {
+                  object-fit: cover;
+                  width: 100%;
+                  height: 100%;
+                }
+                .overlay {
+                  top: 20%;
+                  height: 80%;
+                  width: 100%;
+                  background: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1));
+                }
+              `}
+              {...imgProps}
+            />
+          </div>
+        )}
+      </header>
+      {BodyContents && (
+        <div className={['body', className].join(' ')}>{BodyContents}</div>
       )}
+      {styles}
       {/*language=CSS*/}
       <style jsx>{`
-        .tile {
+        .container {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+        .top {
           position: relative;
           display: flex;
           background: ${colors.tileBg};
-          height: 100%;
-          border-radius: ${dimensions.tileRadius};
+          border-top-left-radius: ${dimensions.tileRadius};
+          border-top-right-radius: ${dimensions.tileRadius};
           overflow: hidden;
           align-items: flex-end;
         }
@@ -55,6 +73,9 @@ function Tile(props) {
           width: 100%;
           height: 100%;
           z-index: 0;
+          border-bottom-left-radius: ${dimensions.tileRadius};
+          border-bottom-right-radius: ${dimensions.tileRadius};
+          overflow: hidden;
         }
         .title {
           margin: ${dimensions.tilePadding};
@@ -68,8 +89,18 @@ function Tile(props) {
           display: block;
           overflow: hidden;
         }
+        .body {
+          font-size: 0.85em;
+          color: #ababab;
+          padding: 0.7em 1em;
+          border-bottom-left-radius: ${dimensions.tileRadius};
+          border-bottom-right-radius: ${dimensions.tileRadius};
+          background: ${colors.cardBg};
+          box-shadow: ${colors.tileShadow};
+          flex-grow: 1;
+        }
       `}</style>
-    </div>
+    </ContainerElem>
   );
 }
 

@@ -23,6 +23,7 @@ function PrimaryButton(props) {
           border-radius: 20px;
           box-shadow: 1px 1px 0 0 #000000;
           cursor: pointer;
+          transition: transform 0.3s;
         }
       `}</style>
     </React.Fragment>

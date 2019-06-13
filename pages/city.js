@@ -2,19 +2,18 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import dimensions from '../styles/dimensions';
 import colors from '../styles/dimensions';
 import { getEvents, getTags } from '../lib/api';
 import __ from '../lib/i18n';
 import { getPostsFiltered } from '../lib/ghost';
 import SectionHeader from '../components/SectionHeader';
-import EventTile from '../components/events/EventTile';
 import PrimaryButton from '../components/PrimaryButton';
 import CityTitleButton from '../components/CityTitleButton';
 import Card from '../components/Card';
 import ExploreGrid from '../components/tags/ExploreGrid';
 import EventGrid from '../components/events/EventGrid';
 import ArticleGrid from '../components/articles/ArticleGrid';
+import { CitySpotlight } from '../components/CitySpotlight';
 
 const SPOTLIGHT_EVENTS = [
   '5cdaae3708f408100d6896f0',
@@ -42,24 +41,7 @@ function CityPage(props) {
         <CityTitleButton href={baseUrl} city={city} />
       </h1>
       <section className={'spotlight'}>
-        <div className="event-1">
-          <EventTile
-            baseUrl={baseUrl + '/events'}
-            imgWidths={[588, 1000, 1500]}
-            imgSizes="(max-width: 41rem) 100vw - 4em, (max-width: 960px) 66vw - calc((2em * 2 + 14px) / 3 * 2), 588px"
-            event={spotlightEvents[0] || {}}
-          />
-        </div>
-        {[2, 3].map(event => (
-          <div key={event} className={`event-${event}`}>
-            <EventTile
-              baseUrl={baseUrl + '/events'}
-              imgWidths={[294, 640, 1200]}
-              imgSizes="(max-width: 41rem) 50vw - 2em, (max-width: 960px) 33vw - calc((2em * 2 + 14px) / 3 * 1), 294px"
-              event={spotlightEvents[event - 1] || {}}
-            />
-          </div>
-        ))}
+        <CitySpotlight events={spotlightEvents} baseUrl={baseUrl} />
       </section>
       <section className={'explore'}>
         <SectionHeader
@@ -109,16 +91,6 @@ function CityPage(props) {
           padding: 1em 0;
           line-height: 1.6;
         }
-        .spotlight {
-          display: grid;
-          min-height: 20em;
-          grid-template-rows: 2fr 1fr;
-          grid-template-columns: 1fr 1fr;
-          grid-gap: ${dimensions.gridGap};
-        }
-        .event-1 {
-          grid-area: 1 / 1 / 2 / 3;
-        }
         .chat-wrapper {
           margin: 3em 0;
         }
@@ -146,13 +118,6 @@ function CityPage(props) {
           }
           .ask-staff {
             margin-bottom: 0em;
-          }
-          .spotlight {
-            grid-template-rows: auto;
-            grid-template-columns: 2fr 1fr;
-          }
-          .event-1 {
-            grid-area: 1 / 1 / 3 / 2;
           }
         }
       `}</style>

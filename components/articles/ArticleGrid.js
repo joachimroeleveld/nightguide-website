@@ -19,12 +19,6 @@ function ArticleGrid(props) {
         article={article}
         baseUrl={`${baseUrl}/articles`}
       />
-      {/*language=CSS*/}
-      <style jsx>{`
-        .article {
-          height: 10em;
-        }
-      `}</style>
     </div>
   );
 
