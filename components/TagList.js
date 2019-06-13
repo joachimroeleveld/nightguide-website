@@ -15,7 +15,7 @@ function TagList(props) {
     <React.Fragment>
       <ul className={'container'}>
         {tags.map(tag => (
-          <Link href={`${baseUrl}/tags/${tag.slug}`} key={tag.id}>
+          <Link href={`${baseUrl}/tags/${tag.slug}`} key={tag.slug}>
             <li className="tag">
               <TagButton title={_o(tag.name)} />
             </li>

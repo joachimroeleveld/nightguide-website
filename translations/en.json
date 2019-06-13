@@ -85,6 +85,8 @@
     "facebook": "Facebook",
     "googleMaps": "Google Maps",
     "facilities": "Facilities",
+    "events": "Events",
+    "similarVenues": "Similar venues",
     "priceClass": "Price class:",
     "tiles": {
       "bouncers": "Bouncers",

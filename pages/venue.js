@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import { getVenue } from '../lib/api';
+import { getVenue, getEvents } from '../lib/api';
 import __, { _o } from '../lib/i18n';
 import ImageGrid from '../components/ImageGrid';
 import colors from '../styles/colors';
@@ -12,6 +12,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import VenueTiles from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
 import TagList from '../components/TagList';
+import EventGrid from '../components/events/EventGrid';
 
 const IMAGE_ORDER = [
   'from_bar',
@@ -23,7 +24,7 @@ const IMAGE_ORDER = [
 ];
 
 function VenuePage(props) {
-  const { venue, baseUrl } = props;
+  const { venue, baseUrl, events } = props;
 
   const {
     name,
@@ -100,6 +101,7 @@ function VenuePage(props) {
         <ImageGrid images={imageUrls} />
         <h1>{name}</h1>
       </header>
+
       <div className="content">
         <div className="main-content">
           <div className="tags">
@@ -126,6 +128,7 @@ function VenuePage(props) {
             />
           </section>
         </div>
+
         <aside className={'info'}>
           <div className={'card'}>
             {!!timeSchedule.open && (
@@ -183,6 +186,14 @@ function VenuePage(props) {
           </div>
         </aside>
       </div>
+
+      {!!events.length && (
+        <section>
+          <h2 className="facilities">{__('venuePage.events')}</h2>
+          <EventGrid baseUrl={baseUrl} events={events} />
+        </section>
+      )}
+
       {/*language=CSS*/}
       <style jsx>{`
         .header {
@@ -264,6 +275,13 @@ VenuePage.getInitialProps = async ctx => {
   const { venue } = ctx.query;
   return {
     venue: await getVenue(venue),
+    events: (await getEvents({
+      fields: ['title', 'images', 'facebook'],
+      limit: 8,
+      query: {
+        venue,
+      },
+    })).results,
   };
 };
 
