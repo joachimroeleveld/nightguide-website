@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import colors from '../styles/dimensions';
 import { getEvents, getTags } from '../lib/api';
 import __ from '../lib/i18n';
 import { getPostsFiltered } from '../lib/ghost';
@@ -14,6 +13,7 @@ import ExploreGrid from '../components/tags/ExploreGrid';
 import EventGrid from '../components/events/EventGrid';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import { CitySpotlight } from '../components/CitySpotlight';
+import colors from '../styles/colors';
 
 const SPOTLIGHT_EVENTS = [
   '5cdaae3708f408100d6896f0',
@@ -22,7 +22,20 @@ const SPOTLIGHT_EVENTS = [
 ];
 
 function CityPage(props) {
-  const { baseUrl, city, events, blogs, tags, spotlightEvents } = props;
+  const {
+    baseUrl,
+    city,
+    events,
+    blogs,
+    tags,
+    spotlightEvents,
+    citySlug,
+    countrySlug,
+  } = props;
+
+  const __city = (scope, ...args) =>
+    __(`city.${countrySlug}.${citySlug}.${scope}`, ...args);
+
   return (
     <main>
       <Head>
@@ -40,15 +53,20 @@ function CityPage(props) {
         &nbsp;
         <CityTitleButton href={baseUrl} city={city} />
       </h1>
+      <p className="intro">{__city('intro')}</p>
+
       <section className={'spotlight'}>
+        <SectionHeader title={__('cityPage.trendingEvents')} TitleElem={'h2'} />
         <CitySpotlight events={spotlightEvents} baseUrl={baseUrl} />
       </section>
+
       <section className={'explore'}>
         <SectionHeader
           seeAllHref={`${baseUrl}/explore`}
           title={__('cityPage.explore')}
-          TitleElem={'h3'}
+          TitleElem={'h2'}
         />
+        <p className="intro">{__city('exploreIntro')}</p>
         <ExploreGrid limitItems={8} baseUrl={baseUrl} tags={tags} />
         <div className="chat-wrapper">
           <Card>
@@ -63,32 +81,35 @@ function CityPage(props) {
           </Card>
         </div>
       </section>
+
       <section className={'events'}>
         <SectionHeader
           seeAllHref={`${baseUrl}/events`}
           title={__('cityPage.events')}
-          TitleElem={'h3'}
+          TitleElem={'h2'}
         />
+        <p className="intro">{__city('eventsIntro')}</p>
         <div className={'content'}>
           <EventGrid baseUrl={baseUrl} events={events} />
         </div>
       </section>
+
       <section className={'articles'}>
         <SectionHeader
           seeAllHref={`${baseUrl}/articles`}
           title={__('cityPage.articles')}
-          TitleElem={'h3'}
+          TitleElem={'h2'}
         />
+        <p className="intro">{__city('articlesIntro')}</p>
         <div className={'content'}>
           <ArticleGrid baseUrl={baseUrl} articles={blogs} />
         </div>
       </section>
+
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
-          margin: 0 0 1em;
-          border-bottom: 1px solid ${colors.separator};
-          padding: 1em 0;
+          margin: 1.2em 0;
           line-height: 1.6;
         }
         .chat-wrapper {
@@ -112,6 +133,20 @@ function CityPage(props) {
         .explore {
           margin: 2em 0;
         }
+        .intro {
+          font-size: 0.9em;
+          color: ${colors.textSecondary};
+        }
+        .articles .intro,
+        .events .intro,
+        .explore .intro {
+          margin: -0.7em 0 2em;
+        }
+        @media (min-width: 800px) {
+          .intro {
+            font-size: 0.95em;
+          }
+        }
         @media (min-width: 41rem) {
           .chat {
             grid-template-columns: 1fr 1fr;
@@ -126,8 +161,10 @@ function CityPage(props) {
 }
 
 CityPage.getInitialProps = async ctx => {
-  let { country, city, citySlug } = ctx.query;
+  let { country, city, citySlug, countrySlug } = ctx.query;
   return {
+    citySlug,
+    countrySlug,
     city,
     spotlightEvents: (await getEvents({
       fields: ['title', 'images', 'facebook'],

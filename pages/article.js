@@ -76,7 +76,7 @@ function ArticlePage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
-          font-size: 40px;
+          font-size: 2em;
           line-height: 1.3;
           margin: 0 0 0.3em;
         }
@@ -92,11 +92,9 @@ function ArticlePage(props) {
         .banner time {
           display: block;
         }
-        .content {
-          font-size: 20px;
-        }
         @media (min-width: 900px) {
           h1 {
+            font-size: 2.5em;
             margin: 0;
             padding: 0 10% 0.5em;
             border-bottom: 1px solid ${colors.separator};
@@ -119,6 +117,7 @@ function ArticlePage(props) {
             padding: 1em 10%;
           }
           .content {
+            font-size: 1.25em;
             width: 80%;
             margin: 0 auto;
           }
@@ -133,6 +132,10 @@ function ArticlePage(props) {
           font-size: 0.8em;
           margin: 0.4em;
           color: ${colors.textSecondary};
+        }
+        .article-content h2,
+        .article-content h3 {
+          margin-top: 2em;
         }
         .article-content img {
           max-width: 100%;

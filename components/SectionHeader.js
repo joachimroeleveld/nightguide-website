@@ -26,6 +26,7 @@ function SectionHeader(props) {
           position: relative;
           display: flex;
           align-items: center;
+          margin-bottom: 0.6em;
         }
         .container::before {
           content: '';
@@ -37,12 +38,13 @@ function SectionHeader(props) {
         }
         .separator {
           flex-grow: 1;
-          margin: 2em;
+          margin-left: 2em;
           height: 1px;
           background: ${colors.separator};
         }
         .expandLink {
           text-decoration: none;
+          margin-left: 2em;
           font-size: 17px;
           padding: 0.5em 1.5em 0.5em 0;
           background: no-repeat right center;

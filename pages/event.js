@@ -1,18 +1,18 @@
-import { Fragment } from 'react';
 import Head from 'next/head';
 import moment from 'moment';
 
 import withPageLayout from '../components/PageLayout';
-import { getEvent } from '../lib/api';
+import { getEvent, getVenue } from '../lib/api';
 import colors from '../styles/colors';
 import { getFutureEventDates } from '../lib/events';
 import __ from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
+import VenueTile from '../components/venues/VenueTile';
 
 function EventPage(props) {
-  const { event, baseUrl } = props;
+  const { event, baseUrl, venue } = props;
 
   const { title, facebook, images, dates, location, tags } = event;
   const futureDates = getFutureEventDates(dates);
@@ -58,17 +58,15 @@ function EventPage(props) {
             </figure>
             <div className="dates">
               {futureDates.slice(0, 3).map((date, index) => (
-                <Fragment key={index}>
-                  <time className={'date'} dateTime={date.from}>
-                    <span>{moment(date.from).format('LLL')}</span>
-                    {!!date.to && (
-                      <span>
-                        {' - '}
-                        {moment(date.to).format('LLL')}
-                      </span>
-                    )}
-                  </time>
-                </Fragment>
+                <div className={'date'} key={index}>
+                  <span>{moment(date.from).format('LLL')}</span>
+                  {!!date.to && (
+                    <span>
+                      {' - '}
+                      {moment(date.to).format('LLL')}
+                    </span>
+                  )}
+                </div>
               ))}
               {futureDates.length > 3 && (
                 <span className={'more-dates'}>
@@ -114,6 +112,17 @@ function EventPage(props) {
             </div>
           </div>
         </aside>
+        <aside className="organiser">
+          <h2>{__('eventPage.organiser')}</h2>
+          <div className="venue">
+            <VenueTile
+              venue={venue}
+              baseUrl={baseUrl + '/venues'}
+              imgWidths={[600, 1000, 2000]}
+              imgSizes="(min-width: 900px) calc(100vw - 2rem), 300px"
+            />
+          </div>
+        </aside>
         <div className="description-container">
           <TagList baseUrl={baseUrl} tags={tags} />
           <div
@@ -133,6 +142,7 @@ function EventPage(props) {
         }
         .content {
           display: grid;
+          grid-template-rows: repeat(3, auto);
         }
         .info {
           display: grid;
@@ -145,7 +155,7 @@ function EventPage(props) {
           max-width: 100%;
         }
         .info .dates {
-          padding: ${dimensions.cardPadding};
+          padding: 0.8em ${dimensions.cardPadding};
           border-bottom: 1px solid ${colors.cardSeparator};
         }
         .info .date {
@@ -155,6 +165,7 @@ function EventPage(props) {
         .info .more-dates {
           display: block;
           margin: 0.5em 0;
+          color: ${colors.textSecondary};
           color: ${colors.textSecondary};
         }
         .additional-info {
@@ -177,6 +188,12 @@ function EventPage(props) {
           display: block;
           margin: 2em 0 1em;
         }
+        .organiser {
+          margin-top: 1em;
+        }
+        .description-container {
+          grid-area: 2 / 1 / 3 / 2;
+        }
         @media (min-width: 500px) {
           .event-image {
             grid-area: 1 / 1 / 2 / 3;
@@ -193,9 +210,11 @@ function EventPage(props) {
             grid-area: auto;
           }
           .content {
+            grid-template-rows: auto auto;
             grid-template-columns: 1fr 2fr;
           }
           .description-container {
+            grid-area: 1 / 2 / 3 / 3;
             padding: 1em 2em 0;
           }
           .description {
@@ -208,10 +227,18 @@ function EventPage(props) {
 }
 
 EventPage.getInitialProps = async ctx => {
-  const { event } = ctx.query;
+  const { event: eventId } = ctx.query;
+
+  const event = await getEvent(eventId);
+
+  let venue = null;
+  if (event.organiser.venue) {
+    venue = await getVenue(event.organiser.venue);
+  }
 
   return {
-    event: await getEvent(event),
+    event,
+    venue,
   };
 };
 

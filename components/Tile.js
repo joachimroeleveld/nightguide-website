@@ -22,6 +22,7 @@ function Tile(props) {
           <div className="img">
             <ResponsiveImage
               showOverlay={true}
+              scale={true}
               /*language=CSS*/
               {...css.resolve`
                 .container {
@@ -91,7 +92,7 @@ function Tile(props) {
         }
         .body {
           font-size: 0.85em;
-          color: #ababab;
+          color: ${colors.textSoft};
           padding: 0.7em 1em;
           border-bottom-left-radius: ${dimensions.tileRadius};
           border-bottom-right-radius: ${dimensions.tileRadius};

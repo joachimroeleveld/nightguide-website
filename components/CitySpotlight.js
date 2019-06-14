@@ -17,7 +17,7 @@ export function CitySpotlight(props) {
         <EventTile
           baseUrl={baseUrl + '/events'}
           imgWidths={[588, 1000, 1500]}
-          imgSizes="(max-width: 41rem) 100vw - 4em, (max-width: 960px) 66vw - calc((2em * 2 + 14px) / 3 * 2), 588px"
+          imgSizes="(max-width: 41rem) calc(100vw - 4em), (max-width: 960px) calc(66vw - (2em * 2 + 14px) / 3 * 2), 588px"
           event={events[0] || {}}
           height={'100%'}
           {...tileStyles}
@@ -28,7 +28,7 @@ export function CitySpotlight(props) {
           <EventTile
             baseUrl={baseUrl + '/events'}
             imgWidths={[294, 640, 1200]}
-            imgSizes="(max-width: 41rem) 50vw - 2em, (max-width: 960px) 33vw - calc((2em * 2 + 14px) / 3 * 1), 294px"
+            imgSizes="(max-width: 41rem) calc(50vw - 2em), (max-width: 960px) calc(33vw - (2em * 2 + 14px) / 3 * 1), 294px"
             event={events[event - 1] || {}}
             height={'100%'}
             {...tileStyles}

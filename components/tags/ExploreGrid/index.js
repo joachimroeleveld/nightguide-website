@@ -37,6 +37,7 @@ function ExploreGrid(props) {
                 }
                 alt={_o(tag.name)}
                 showOverlay={true}
+                scale={true}
                 /*language=CSS*/
                 {...css.resolve`
                     .container {

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import { getVenue, getEvents } from '../lib/api';
+import { getVenue, getEvents, getVenues } from '../lib/api';
 import __, { _o } from '../lib/i18n';
 import ImageGrid from '../components/ImageGrid';
 import colors from '../styles/colors';
@@ -13,6 +13,7 @@ import VenueTiles from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
 import TagList from '../components/TagList';
 import EventGrid from '../components/events/EventGrid';
+import VenueGrid from '../components/venues/VenueGrid';
 
 const IMAGE_ORDER = [
   'from_bar',
@@ -24,7 +25,7 @@ const IMAGE_ORDER = [
 ];
 
 function VenuePage(props) {
-  const { venue, baseUrl, events } = props;
+  const { venue, baseUrl, events, similarVenues } = props;
 
   const {
     name,
@@ -189,10 +190,17 @@ function VenuePage(props) {
 
       {!!events.length && (
         <section>
-          <h2 className="facilities">{__('venuePage.events')}</h2>
+          <h2>{__('venuePage.events')}</h2>
           <EventGrid baseUrl={baseUrl} events={events} />
         </section>
       )}
+
+      {/*{!!similarVenues.length && (*/}
+      {/*  <section>*/}
+      {/*    <h2>{__('venuePage.similarVenues')}</h2>*/}
+      {/*    <VenueGrid baseUrl={baseUrl} venues={similarVenues} />*/}
+      {/*  </section>*/}
+      {/*)}*/}
 
       {/*language=CSS*/}
       <style jsx>{`
@@ -244,7 +252,7 @@ function VenuePage(props) {
         .main-content {
           padding-right: 2em;
         }
-        .facilities {
+        h2 {
           margin-top: 2em;
         }
         .price-class {
@@ -272,16 +280,24 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue } = ctx.query;
+  const { venue: venueId } = ctx.query;
+  const venue = await getVenue(venueId);
   return {
-    venue: await getVenue(venue),
+    venue,
     events: (await getEvents({
       fields: ['title', 'images', 'facebook'],
       limit: 8,
       query: {
-        venue,
+        venue: venue.id,
       },
     })).results,
+    // similarVenues: (await getVenues({
+    //   fields: ['name', 'images', 'description'],
+    //   limit: 3,
+    //   query: {
+    //     tags: venue.tags,
+    //   },
+    // })).results,
   };
 };
 

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import colors from '../styles/dimensions';
+import colors from '../styles/colors';
 import { getEvents, getTagBySlug, getVenues } from '../lib/api';
 import __, { _o } from '../lib/i18n';
 import { getPostsFiltered } from '../lib/ghost';
@@ -54,7 +54,6 @@ function CityTagPage(props) {
       <style jsx>{`
         h1 {
           margin: 0;
-          border-bottom: 1px solid ${colors.separator};
           padding: 1em 0 0.5em;
           line-height: 1.6;
         }
@@ -67,11 +66,6 @@ function CityTagPage(props) {
         .events,
         .articles {
           margin: 2em 0;
-        }
-        @media (min-width: 38em) {
-          .intro {
-            width: 60%;
-          }
         }
       `}</style>
     </main>

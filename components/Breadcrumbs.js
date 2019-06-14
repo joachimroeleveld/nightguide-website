@@ -36,7 +36,8 @@ function Breadcrumbs(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          margin-top: 1em;
+          font-size: 0.9em;
+          margin-top: 1rem;
         }
         li {
           display: inline-block;
@@ -53,6 +54,11 @@ function Breadcrumbs(props) {
         a:active,
         a:hover {
           text-decoration: underline;
+        }
+        @media (min-width: 800px) {
+          .container {
+            font-size: 1em;
+          }
         }
       `}</style>
     </ol>

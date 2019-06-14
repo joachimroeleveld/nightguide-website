@@ -26,6 +26,7 @@ export default function ResponsiveImage(props) {
     showOverlay = false,
     styles = null,
     className = null,
+    scale = false,
   } = props;
 
   if (!url) {
@@ -54,6 +55,9 @@ export default function ResponsiveImage(props) {
   }
   if (!lazy || loaded) {
     containerClasses.push('loaded');
+  }
+  if (scale) {
+    containerClasses.push('scale');
   }
 
   const progressiveImgUrl = `${url}=s10-c-fSoften=1,100,0`;
@@ -104,6 +108,12 @@ export default function ResponsiveImage(props) {
             width: 100%;
             height: 100%;
             z-index: 1;
+          }
+          .container.scale:hover img {
+            transform: scale(1.05);
+          }
+          img {
+            transition: transform 0.3s;
           }
         `}</style>
         {styles}

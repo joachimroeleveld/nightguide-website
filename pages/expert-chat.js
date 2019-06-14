@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
+import CityTitleButton from '../components/CityTitleButton';
 
 function ExpertChatPage() {
   useEffect(() => {
@@ -41,7 +42,7 @@ function ExpertChatPage() {
       <div className="container">
         <h2>
           Ask a human expert where to go out in{' '}
-          <span className="city">Utrecht</span>
+          <CityTitleButton city="Utrecht" href="/nl/utrecht" />
         </h2>
         <p>We&apos;ll do our best to provide you with the best advice</p>
         <div className="input" id="chat-input" />

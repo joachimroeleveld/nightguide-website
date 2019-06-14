@@ -83,7 +83,7 @@ function Footer() {
           text-decoration: none;
         }
         .links {
-          padding: 0;
+          margin-top: 1em;
         }
         .links li {
           list-style: none;
