@@ -76,7 +76,7 @@ export default function ResponsiveImage(props) {
         {visible && (
           <Fragment>
             <img
-              src={`${url}-rj`}
+              src={`${url}=s600-rj`}
               className={className}
               alt={alt}
               style={imgStyle}
