@@ -4,15 +4,18 @@ import Link from 'next/link';
 import colors from '../styles/colors';
 
 function CityTitleButton(props) {
-  const { city, href } = props;
+  const { city, href, disabled = false } = props;
   return (
     <React.Fragment>
-      <Link href={href}>
-        <a>{city}</a>
-      </Link>
+      {!disabled && (
+        <Link href={href}>
+          <a className="button">{city}</a>
+        </Link>
+      )}
+      {disabled && <span className="button">{city}</span>}
       {/*language=CSS*/}
       <style jsx>{`
-        a {
+        .button {
           border: 2px solid ${colors.tagButtonBorderColor};
           border-radius: 10px;
           padding: 0 0.3em;

@@ -63,6 +63,6 @@ async function getArticlesPage(citySlug, page = 1, limit = 6) {
   });
 }
 
-const getBreadcrumbs = () => [{ key: 'articles', url: 'articles' }];
+const getBreadcrumbs = () => [{ key: 'articles' }];
 
 export default withPageLayout(getBreadcrumbs)(CityArticlesPage);

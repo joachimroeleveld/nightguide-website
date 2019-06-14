@@ -195,12 +195,12 @@ function VenuePage(props) {
         </section>
       )}
 
-      {/*{!!similarVenues.length && (*/}
-      {/*  <section>*/}
-      {/*    <h2>{__('venuePage.similarVenues')}</h2>*/}
-      {/*    <VenueGrid baseUrl={baseUrl} venues={similarVenues} />*/}
-      {/*  </section>*/}
-      {/*)}*/}
+      {!!similarVenues.length && (
+        <section>
+          <h2>{__('venuePage.similarVenues')}</h2>
+          <VenueGrid baseUrl={baseUrl} venues={similarVenues} />
+        </section>
+      )}
 
       {/*language=CSS*/}
       <style jsx>{`
@@ -291,19 +291,19 @@ VenuePage.getInitialProps = async ctx => {
         venue: venue.id,
       },
     })).results,
-    // similarVenues: (await getVenues({
-    //   fields: ['name', 'images', 'description'],
-    //   limit: 3,
-    //   query: {
-    //     tags: venue.tags,
-    //   },
-    // })).results,
+    similarVenues: (await getVenues({
+      fields: ['name', 'images', 'description'],
+      limit: 3,
+      query: {
+        tags: venue.tags,
+      },
+    })).results,
   };
 };
 
 const getBreadcrumbs = ({ venue }) => [
-  // { key: 'venues', url: 'venues' },
-  { key: 'venue', url: venue.id, title: venue.name },
+  { key: 'venues', url: 'venues', disabled: true },
+  { key: 'venue', title: venue.name },
 ];
 
 export default withPageLayout(getBreadcrumbs)(VenuePage);

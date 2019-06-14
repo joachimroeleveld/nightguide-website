@@ -51,7 +51,7 @@ function CityPage(props) {
           dangerouslySetInnerHTML={{ __html: __('cityPage.discoverBarsClubs') }}
         />
         &nbsp;
-        <CityTitleButton href={baseUrl} city={city} />
+        <CityTitleButton href={baseUrl} city={city} disabled={true} />
       </h1>
       <p className="intro">{__city('intro')}</p>
 

@@ -8,31 +8,45 @@ import colors from '../styles/colors';
 function Breadcrumbs(props) {
   const { items } = props;
 
-  const breadcrumbs = items.map(({ key, label, url, ...params }, index) => {
-    url = range(0, index + 1).reduce((url, index) => {
-      const part = items[index].url;
-      return `${url}/${part}`;
-    }, '');
+  const breadcrumbs = items.map(
+    ({ key, label, url, disabled, ...params }, index) => {
+      if (url) {
+        url = range(0, index + 1).reduce((url, index) => {
+          const part = items[index].url;
+          return `${url}/${part}`;
+        }, '');
+      }
 
-    if (!label && key) {
-      label = __(`menu.${key}`, params);
+      if (!label && key) {
+        label = __(`menu.${key}`, params);
+      }
+
+      return { key, label, url, disabled };
     }
-
-    return { key, label, url };
-  });
+  );
 
   return (
     <ol className="container">
-      {breadcrumbs.map(({ key, url, label }, index) => (
-        <li key={index}>
-          <Link href={url}>
-            <a>{label}</a>
-          </Link>
-          {index !== breadcrumbs.length - 1 && (
-            <span className="arrow">{'>'}</span>
-          )}
-        </li>
-      ))}
+      {breadcrumbs.map(({ key, url, label, disabled }, index) => {
+        let elem;
+        if (!disabled && index !== breadcrumbs.length - 1) {
+          elem = (
+            <Link href={url}>
+              <a>{label}</a>
+            </Link>
+          );
+        } else {
+          elem = <span>{label}</span>;
+        }
+        return (
+          <li key={index}>
+            {elem}
+            {index !== breadcrumbs.length - 1 && (
+              <span className="arrow">{'>'}</span>
+            )}
+          </li>
+        );
+      })}
       {/*language=CSS*/}
       <style jsx>{`
         .container {

@@ -48,6 +48,6 @@ CityExplorePage.getInitialProps = async ctx => {
   };
 };
 
-const getBreadcrumbs = () => [{ key: 'explore', url: 'explore' }];
+const getBreadcrumbs = () => [{ key: 'explore' }];
 
 export default withPageLayout(getBreadcrumbs)(CityExplorePage);
