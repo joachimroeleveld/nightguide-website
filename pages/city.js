@@ -16,9 +16,9 @@ import { CitySpotlight } from '../components/CitySpotlight';
 import colors from '../styles/colors';
 
 const SPOTLIGHT_EVENTS = [
-  '5cdaae3708f408100d6896f0',
-  '5cdaace708f408100d66ae04',
-  '5cdaad5308f408100d6736a7',
+  '5cdaad3a08f408100d67156f',
+  '5d026f50c50e7ce9e68db305',
+  '5cdaae3708f408100d6896c4',
 ];
 
 function CityPage(props) {
