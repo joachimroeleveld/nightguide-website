@@ -18,7 +18,7 @@ import colors from '../styles/colors';
 const SPOTLIGHT_EVENTS = [
   '5cdaad3a08f408100d67156f',
   '5d026f50c50e7ce9e68db305',
-  '5cdaae3708f408100d6896c4',
+  '5d026e21c50e7ce9e68c7e1c',
 ];
 
 function CityPage(props) {

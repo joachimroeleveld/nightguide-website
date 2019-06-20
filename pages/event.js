@@ -210,7 +210,7 @@ function EventPage(props) {
             grid-area: auto;
           }
           .content {
-            grid-template-rows: auto auto;
+            grid-template-rows: min-content 1fr;
             grid-template-columns: 1fr 2fr;
           }
           .description-container {
