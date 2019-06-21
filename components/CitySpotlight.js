@@ -23,13 +23,13 @@ export function CitySpotlight(props) {
           {...tileStyles}
         />
       </div>
-      {[1, 2].map(event => (
+      {[2, 3].map(event => (
         <div key={event} className={`event-${event}`}>
           <EventTile
             baseUrl={baseUrl + '/events'}
             imgWidths={[294, 640, 1200]}
             imgSizes="(max-width: 41rem) calc(50vw - 2em), (max-width: 960px) calc(33vw - (2em * 2 + 14px) / 3 * 1), 294px"
-            event={events[event] || { id: eventIds[event] }}
+            event={events[event - 1] || { id: eventIds[event - 1] }}
             height={'100%'}
             {...tileStyles}
           />
