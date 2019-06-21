@@ -2,7 +2,7 @@ import Head from 'next/head';
 import moment from 'moment';
 
 import withPageLayout from '../components/PageLayout';
-import { getEvent, getVenue } from '../lib/api';
+import { getEvent, getEvents, getVenue } from '../lib/api';
 import colors from '../styles/colors';
 import { getFutureEventDates } from '../lib/events';
 import __ from '../lib/i18n';
@@ -10,9 +10,10 @@ import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 import VenueTile from '../components/venues/VenueTile';
+import EventGrid from '../components/events/EventGrid';
 
 function EventPage(props) {
-  const { event, baseUrl, venue } = props;
+  const { event, baseUrl, venue, similarEvents } = props;
 
   const { title, facebook, images, dates, location, tags } = event;
   const futureDates = getFutureEventDates(dates);
@@ -132,6 +133,13 @@ function EventPage(props) {
             }}
           />
         </div>
+
+        {!!similarEvents.length && (
+          <section className="similar-events">
+            <h2>{__('eventPage.similarEvents')}</h2>
+            <EventGrid baseUrl={baseUrl} events={similarEvents} />
+          </section>
+        )}
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -142,7 +150,10 @@ function EventPage(props) {
         }
         .content {
           display: grid;
-          grid-template-rows: repeat(3, auto);
+          grid-template-rows: repeat(4, auto);
+        }
+        .organiser {
+          grid-area: 4 / 1 / 5 / 2;
         }
         .info {
           display: grid;
@@ -188,11 +199,9 @@ function EventPage(props) {
           display: block;
           margin: 2em 0 1em;
         }
-        .organiser {
+        .organiser,
+        .similar-events {
           margin-top: 1em;
-        }
-        .description-container {
-          grid-area: 2 / 1 / 3 / 2;
         }
         @media (min-width: 500px) {
           .event-image {
@@ -210,11 +219,20 @@ function EventPage(props) {
             grid-area: auto;
           }
           .content {
-            grid-template-rows: min-content 1fr;
+            grid-template-rows: max-content 1fr;
             grid-template-columns: 1fr 2fr;
           }
+          .organiser {
+            grid-area: 2 / 1 / 3 / 2;
+          }
+          .similar-events {
+            margin-left: 2em;
+          }
+          .similar-events {
+            grid-area: 2 / 2 / 4 / 3;
+          }
           .description-container {
-            grid-area: 1 / 2 / 3 / 3;
+            grid-area: 1 / 2 / 2 / 3;
             padding: 1em 2em 0;
           }
           .description {
@@ -227,7 +245,7 @@ function EventPage(props) {
 }
 
 EventPage.getInitialProps = async ctx => {
-  const { event: eventId } = ctx.query;
+  const { event: eventId, city, country } = ctx.query;
 
   const event = await getEvent(eventId);
 
@@ -239,6 +257,16 @@ EventPage.getInitialProps = async ctx => {
   return {
     event,
     venue,
+    similarEvents: (await getEvents({
+      fields: ['title', 'images', 'facebook'],
+      limit: 4,
+      query: {
+        city: city,
+        country: country,
+        exclude: event.id,
+        tags: event.tags.map(tag => tag.id),
+      },
+    })).results,
   };
 };
 

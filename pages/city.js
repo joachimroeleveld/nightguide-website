@@ -57,7 +57,11 @@ function CityPage(props) {
 
       <section className={'spotlight'}>
         <SectionHeader title={__('cityPage.trendingEvents')} TitleElem={'h2'} />
-        <CitySpotlight events={spotlightEvents} baseUrl={baseUrl} />
+        <CitySpotlight
+          events={spotlightEvents}
+          eventIds={SPOTLIGHT_EVENTS}
+          baseUrl={baseUrl}
+        />
       </section>
 
       <section className={'explore'}>

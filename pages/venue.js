@@ -195,12 +195,12 @@ function VenuePage(props) {
         </section>
       )}
 
-      {/*{!!similarVenues.length && (*/}
-      {/*  <section>*/}
-      {/*    <h2>{__('venuePage.similarVenues')}</h2>*/}
-      {/*    <VenueGrid baseUrl={baseUrl} venues={similarVenues} />*/}
-      {/*  </section>*/}
-      {/*)}*/}
+      {!!similarVenues.length && (
+        <section>
+          <h2>{__('venuePage.similarVenues')}</h2>
+          <VenueGrid baseUrl={baseUrl} venues={similarVenues} />
+        </section>
+      )}
 
       {/*language=CSS*/}
       <style jsx>{`
@@ -280,7 +280,7 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue: venueId } = ctx.query;
+  const { venue: venueId, city, country } = ctx.query;
   const venue = await getVenue(venueId);
   return {
     venue,
@@ -291,13 +291,16 @@ VenuePage.getInitialProps = async ctx => {
         venue: venue.id,
       },
     })).results,
-    // similarVenues: (await getVenues({
-    //   fields: ['name', 'images', 'description'],
-    //   limit: 3,
-    //   query: {
-    //     tags: venue.tags,
-    //   },
-    // })).results,
+    similarVenues: (await getVenues({
+      fields: ['name', 'images', 'description'],
+      limit: 3,
+      query: {
+        city,
+        country,
+        exclude: venue.id,
+        tags: venue.tags.map(tag => tag.id),
+      },
+    })).results,
   };
 };
 

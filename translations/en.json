@@ -74,7 +74,8 @@
     "noGoing": "Going",
     "location": "Location",
     "facebookPage": "Facebook page",
-    "organiser": "Organiser"
+    "organiser": "Organiser",
+    "similarEvents": "Similar events"
   },
   "venuePage": {
     "meta": {

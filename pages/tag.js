@@ -93,7 +93,7 @@ CityTagPage.getInitialProps = async ctx => {
       query: {
         country,
         city,
-        tags: tag.id,
+        tag: tag.id,
       },
     })).results,
     articles: await getPostsFiltered(`tag:${citySlug}+tag:${tag.slug}`, {
