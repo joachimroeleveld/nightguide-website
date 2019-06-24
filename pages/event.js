@@ -58,6 +58,9 @@ function EventPage(props) {
               )}
             </figure>
             <div className="dates">
+              {!futureDates.length && (
+                <span>{__('nDatesInPast', { dates: dates.length })}</span>
+              )}
               {futureDates.slice(0, 3).map((date, index) => (
                 <div className={'date'} key={index}>
                   <span>{moment(date.from).format('LLL')}</span>

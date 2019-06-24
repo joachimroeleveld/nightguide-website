@@ -69,6 +69,7 @@
     "meta": {
       "title": "{{event}} - events in {{city}} | NightGuide"
     },
+    "nDatesInPast": "{{n}} dates in past",
     "nMoreDates": "+{{n}} more dates",
     "noInterested": "Interested",
     "noGoing": "Going",
