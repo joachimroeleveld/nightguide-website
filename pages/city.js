@@ -55,14 +55,14 @@ function CityPage(props) {
       </h1>
       <p className="intro">{__city('intro')}</p>
 
-      <section className={'spotlight'}>
-        <SectionHeader title={__('cityPage.trendingEvents')} TitleElem={'h2'} />
-        <CitySpotlight
-          events={spotlightEvents}
-          eventIds={SPOTLIGHT_EVENTS}
-          baseUrl={baseUrl}
-        />
-      </section>
+      {/*<section className={'spotlight'}>*/}
+      {/*  <SectionHeader title={__('cityPage.trendingEvents')} TitleElem={'h2'} />*/}
+      {/*  <CitySpotlight*/}
+      {/*    events={spotlightEvents}*/}
+      {/*    eventIds={SPOTLIGHT_EVENTS}*/}
+      {/*    baseUrl={baseUrl}*/}
+      {/*  />*/}
+      {/*</section>*/}
 
       <section className={'explore'}>
         <SectionHeader
