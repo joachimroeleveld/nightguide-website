@@ -285,7 +285,6 @@ VenuePage.getInitialProps = async ctx => {
   return {
     venue,
     events: (await getEvents({
-      fields: ['title', 'images', 'facebook'],
       limit: 8,
       query: {
         venue: venue.id,

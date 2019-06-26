@@ -182,6 +182,7 @@ CityPage.getInitialProps = async ctx => {
         country,
         city,
         tagged: true,
+        sortBy: 'facebook.goingCount:desc',
       },
     })).results,
     blogs: await getPostsFiltered(`tags:${citySlug}`, { limit: 6 }),

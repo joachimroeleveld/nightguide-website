@@ -87,7 +87,6 @@ CityTagPage.getInitialProps = async ctx => {
       },
     })).results,
     events: (await getEvents({
-      fields: ['title', 'images', 'facebook'],
       query: {
         country,
         city,
