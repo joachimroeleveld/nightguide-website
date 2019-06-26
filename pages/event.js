@@ -2,7 +2,7 @@ import Head from 'next/head';
 import moment from 'moment';
 
 import withPageLayout from '../components/PageLayout';
-import { getEvent, getEvents, getVenue } from '../lib/api';
+import { getEvent, getEvents } from '../lib/api';
 import colors from '../styles/colors';
 import { getFutureEventDates } from '../lib/events';
 import __ from '../lib/i18n';
@@ -13,9 +13,10 @@ import VenueTile from '../components/venues/VenueTile';
 import EventGrid from '../components/events/EventGrid';
 
 function EventPage(props) {
-  const { event, baseUrl, venue, similarEvents } = props;
+  const { event, baseUrl, similarEvents } = props;
 
-  const { title, facebook, images, dates, location, tags } = event;
+  const { title, facebook, images, dates, location, tags, organiser } = event;
+  const venue = organiser.venue;
   const futureDates = getFutureEventDates(dates);
 
   return (
@@ -252,16 +253,9 @@ EventPage.getInitialProps = async ctx => {
 
   const event = await getEvent(eventId);
 
-  let venue = null;
-  if (event.organiser.venue) {
-    venue = await getVenue(event.organiser.venue);
-  }
-
   return {
     event,
-    venue,
     similarEvents: (await getEvents({
-      fields: ['title', 'images', 'facebook'],
       limit: 4,
       query: {
         city: city,

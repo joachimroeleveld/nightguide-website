@@ -15,4 +15,5 @@ export default {
   cardShadow: '0 0 5px 0 rgba(0,0,0,0.3)',
   cardSeparator: '#3D3D3D',
   tagButtonBorderColor: '#7A7A7A',
+  yellowTextColor: '#FFD731',
 };

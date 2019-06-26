@@ -178,10 +178,10 @@ CityPage.getInitialProps = async ctx => {
     })).results,
     events: (await getEvents({
       limit: 8,
-      fields: ['title', 'images', 'facebook'],
       query: {
         country,
         city,
+        tagged: true,
       },
     })).results,
     blogs: await getPostsFiltered(`tags:${citySlug}`, { limit: 6 }),

@@ -5,5 +5,5 @@ export default {
   articleHeight: '10em',
   cardPadding: '1.3em',
   tileRadius: '3px',
-  tilePadding: '1em',
+  tilePadding: '0.8em',
 };

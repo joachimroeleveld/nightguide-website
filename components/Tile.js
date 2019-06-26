@@ -79,7 +79,9 @@ function Tile(props) {
           overflow: hidden;
         }
         .title {
-          margin: ${dimensions.tilePadding};
+          margin: 0.6em ${dimensions.tilePadding};
+          font-weight: 600;
+          font-size: 0.9em;
           line-height: 1.4;
           width: 100%;
           position: relative;
@@ -93,7 +95,7 @@ function Tile(props) {
         .body {
           font-size: 0.85em;
           color: ${colors.textSoft};
-          padding: 0.7em 1em;
+          padding: 0.5em 0.8em;
           border-bottom-left-radius: ${dimensions.tileRadius};
           border-bottom-right-radius: ${dimensions.tileRadius};
           background: ${colors.cardBg};

@@ -60,7 +60,6 @@ async function getEventsPage(country, city, offset = 0, limit = 8) {
   return await getEvents({
     limit,
     offset,
-    fields: ['title', 'images', 'facebook'],
     query: {
       country,
       city,
