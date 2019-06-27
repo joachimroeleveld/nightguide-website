@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import moment from 'moment';
 
 import withPageLayout from '../components/PageLayout';
 import { getEvent, getEvents, getVenue } from '../lib/api';
@@ -11,6 +10,7 @@ import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 import VenueTile from '../components/venues/VenueTile';
 import EventGrid from '../components/events/EventGrid';
+import { formatEventDate } from '../lib/dates';
 
 function EventPage(props) {
   const { event, baseUrl, similarEvents, venue } = props;
@@ -63,13 +63,10 @@ function EventPage(props) {
               )}
               {futureDates.slice(0, 3).map((date, index) => (
                 <div className={'date'} key={index}>
-                  <span>{moment(date.from).format('LLL')}</span>
-                  {!!date.to && (
-                    <span>
-                      {' - '}
-                      {moment(date.to).format('LLL')}
-                    </span>
-                  )}
+                  <span>{formatEventDate(date.from, date.to)}</span>
+                  {/*{!!date.interestedCount && (*/}
+                  {/*  <span>{` (${date.interestedCount})`}</span>*/}
+                  {/*)}*/}
                 </div>
               ))}
               {futureDates.length > 3 && (
@@ -79,18 +76,6 @@ function EventPage(props) {
               )}
             </div>
             <div className="additional-info">
-              {facebook.goingCount !== undefined && (
-                <div className={'labeled-text'}>
-                  <strong>{__('eventPage.noGoing')}</strong>
-                  <span>{facebook.goingCount}</span>
-                </div>
-              )}
-              {facebook.interestedCount !== undefined && (
-                <div className={'labeled-text'}>
-                  <strong>{__('eventPage.noInterested')}</strong>
-                  <span>{facebook.interestedCount}</span>
-                </div>
-              )}
               {location && (
                 <div className={'labeled-text'}>
                   <strong>{__('eventPage.location')}</strong>

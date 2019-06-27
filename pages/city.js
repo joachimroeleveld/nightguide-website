@@ -171,7 +171,6 @@ CityPage.getInitialProps = async ctx => {
     countrySlug,
     city,
     spotlightEvents: (await getEvents({
-      fields: ['title', 'images', 'facebook'],
       query: {
         ids: SPOTLIGHT_EVENTS,
       },

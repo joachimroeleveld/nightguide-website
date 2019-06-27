@@ -291,7 +291,6 @@ VenuePage.getInitialProps = async ctx => {
       },
     })).results,
     similarVenues: (await getVenues({
-      fields: ['name', 'images', 'description'],
       limit: 3,
       query: {
         city,

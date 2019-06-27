@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import React from 'react';
 import css from 'styled-jsx/css';
-import moment from 'moment';
 
 import { _o } from '../../lib/i18n';
 import { getFutureEventDates } from '../../lib/events';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
+import { formatEventDate } from '../../lib/dates';
 
 const EventTileBody = props => {
   const { event } = props;
@@ -16,7 +16,7 @@ const EventTileBody = props => {
   return (
     <div className="container">
       <div className="date">
-        {futureDates.length && moment(futureDates[0].from).format('LLL')}
+        {futureDates.length && formatEventDate(futureDates[0].from)}
       </div>
       <div className="venue">{organiser.venue.name}</div>
       <div className="tags">
