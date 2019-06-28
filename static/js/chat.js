@@ -1649,7 +1649,7 @@
             if (
               n.nodeType < 11 &&
               (a
-                ? -1 < a.index(n)
+                ? -1 < a.home(n)
                 : 1 === n.nodeType && E.find.matchesSelector(n, e))
             ) {
               o.push(n);
@@ -2711,7 +2711,7 @@
             for (o = [], a = {}, n = 0; n < u; n++)
               void 0 === a[(i = (r = t[n]).selector + ' ')] &&
                 (a[i] = r.needsContext
-                  ? -1 < E(i, this).index(l)
+                  ? -1 < E(i, this).home(l)
                   : E.find(i, this, null, [l]).length),
                 a[i] && o.push(r);
             o.length && s.push({ elem: l, handlers: o });

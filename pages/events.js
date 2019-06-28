@@ -8,25 +8,27 @@ import CityTitleButton from '../components/CityTitleButton';
 import EventGrid from '../components/events/EventGrid';
 
 function CityEventsPage(props) {
-  const { country, city, events, baseUrl } = props;
+  const { pageSlug, events, baseUrl } = props;
 
   const getItems = async (offset, limit) => {
-    return (await getEventsPage(country, city, offset, limit)).results;
+    return (await getEventsPage(pageSlug, offset, limit)).results;
   };
+
+  const cityName = __(`city.${pageSlug}.name`);
 
   return (
     <main>
       <Head>
-        <title>{__('cityEventsPage.meta.title', { city })}</title>
+        <title>{__('cityEventsPage.meta.title', { city: cityName })}</title>
         <meta
           name="description"
-          content={__('cityEventsPage.meta.description', { city })}
+          content={__('cityEventsPage.meta.description', { city: cityName })}
         />
       </Head>
 
       <h1>
         {__('cityEventsPage.eventsIn')}{' '}
-        <CityTitleButton href={baseUrl} city={city} />
+        <CityTitleButton href={baseUrl} city={cityName} />
       </h1>
 
       <EventGrid
@@ -49,20 +51,19 @@ function CityEventsPage(props) {
 }
 
 CityEventsPage.getInitialProps = async ctx => {
-  const { country, city } = ctx.query;
+  const { pageSlug } = ctx.query;
   return {
-    city,
-    events: await getEventsPage(country, city),
+    pageSlug,
+    events: await getEventsPage(pageSlug),
   };
 };
 
-async function getEventsPage(country, city, offset = 0, limit = 8) {
+async function getEventsPage(pageSlug, offset = 0, limit = 8) {
   return await getEvents({
     limit,
     offset,
     query: {
-      country,
-      city,
+      pageSlug,
     },
   });
 }

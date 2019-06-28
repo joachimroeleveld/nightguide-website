@@ -11,9 +11,14 @@ const CITIES = [
     url: '/nl/utrecht',
     imgSrc: '/static/img/city-utrecht.jpg',
   },
+  {
+    name: 'Ibiza',
+    url: '/es/ibiza',
+    imgSrc: '/static/img/city-ibiza.jpg',
+  },
 ];
 
-function Home() {
+function Index() {
   return (
     <div className={'container'}>
       <Head>
@@ -42,9 +47,6 @@ function Home() {
           </nav>
         </section>
       </main>
-      <picture className={'phone-container'}>
-        <img src="/static/img/app.png" alt="NightGuide app" />
-      </picture>
       {/*language=CSS*/}
       <style jsx>{`
         .container {
@@ -59,15 +61,6 @@ function Home() {
         main {
           padding-top: 3em;
         }
-        .phone-container {
-          padding-top: 4em;
-          display: flex;
-          justify-content: center;
-        }
-        .phone-container img {
-          max-width: 100%;
-          object-fit: contain;
-        }
         .city {
           display: flex;
         }
@@ -81,13 +74,10 @@ function Home() {
           main {
             padding-top: 7em;
           }
-          .phone-container {
-            margin-top: -1em;
-          }
         }
       `}</style>
     </div>
   );
 }
 
-export default withPageLayout()(Home);
+export default withPageLayout()(Index);

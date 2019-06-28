@@ -60,9 +60,6 @@ spec:
           volumeMounts:
             - mountPath: /var/cache/nginx
               name: nginx-cache
-          env:
-            - name: PORT
-              value: "8080"
           envFrom:
             - secretRef:
                 name: website-env

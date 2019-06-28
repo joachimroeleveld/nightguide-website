@@ -8,25 +8,27 @@ import CityTitleButton from '../components/CityTitleButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
 
 function CityArticlesPage(props) {
-  const { city, articles, baseUrl } = props;
+  const { pageSlug, articles, baseUrl } = props;
 
   const getItems = (page, limit) => {
-    return getArticlesPage(city, page, limit);
+    return getArticlesPage(pageSlug, page, limit);
   };
+
+  const cityName = __(`city.${pageSlug}.name`);
 
   return (
     <main>
       <Head>
-        <title>{__('cityArticlesPage.meta.title', { city })}</title>
+        <title>{__('cityArticlesPage.meta.title', { cityName })}</title>
         <meta
           name="description"
-          content={__('cityArticlesPage.meta.description', { city })}
+          content={__('cityArticlesPage.meta.description', { cityName })}
         />
       </Head>
 
       <h1>
         {__('cityArticlesPage.articlesAbout')}{' '}
-        <CityTitleButton href={baseUrl} city={city} />
+        <CityTitleButton href={baseUrl} city={cityName} />
       </h1>
 
       <ArticleGrid
@@ -49,15 +51,15 @@ function CityArticlesPage(props) {
 }
 
 CityArticlesPage.getInitialProps = async ctx => {
-  const { city, citySlug } = ctx.query;
+  const { pageSlug } = ctx.query;
   return {
-    city,
-    articles: await getArticlesPage(citySlug),
+    pageSlug,
+    articles: await getArticlesPage(pageSlug),
   };
 };
 
-async function getArticlesPage(citySlug, page = 1, limit = 6) {
-  return await getPostsFiltered(`tags:${citySlug}`, {
+async function getArticlesPage(pageSlug, page = 1, limit = 6) {
+  return await getPostsFiltered(`tags:${pageSlug.replace('/', '-')}`, {
     limit,
     page,
   });

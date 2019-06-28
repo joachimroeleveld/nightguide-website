@@ -251,13 +251,12 @@
     }
   },
   "city": {
-    "nl": {
-      "utrecht": {
-        "intro": "Utrecht's nightlife has lots to see and do. Dynamic as it is, the city is full of bars, clubs, cafes, and more importantly things to do. With new events every week, it's hard to keep up with what's trending, what's new, or just plain and simple where to go out. Start by checking out our Trending Events.",
-        "exploreIntro": "You know what kind of person you are but have no idea what Utrecht has to offer? Then our Explorer categories were made for you. Click the one that you think fits your mood best and NightGuide will show you the best places to go.",
-        "articlesIntro": "Sometimes knowing where it is, or what's going on is not enough. Maybe you're new in town and you want to get to know how things work around here, or maybe you're an Utrecht veteran just looking for some inspiration. In any case, our Stories are here for you.",
-        "eventsIntro": "They add that little extra special to your go-to places. They are the social magnets of every season. Special events are all the rage and every place that's worth something keeps their agenda full of those evenings that are a little more out of the ordinary."
-      }
+    "nl/utrecht": {
+      "name": "Utrecht",
+      "intro": "Utrecht's nightlife has lots to see and do. Dynamic as it is, the city is full of bars, clubs, cafes, and more importantly things to do. With new events every week, it's hard to keep up with what's trending, what's new, or just plain and simple where to go out. Start by checking out our Trending Events.",
+      "exploreIntro": "You know what kind of person you are but have no idea what Utrecht has to offer? Then our Explorer categories were made for you. Click the one that you think fits your mood best and NightGuide will show you the best places to go.",
+      "articlesIntro": "Sometimes knowing where it is, or what's going on is not enough. Maybe you're new in town and you want to get to know how things work around here, or maybe you're an Utrecht veteran just looking for some inspiration. In any case, our Stories are here for you.",
+      "eventsIntro": "They add that little extra special to your go-to places. They are the social magnets of every season. Special events are all the rage and every place that's worth something keeps their agenda full of those evenings that are a little more out of the ordinary."
     }
   },
   "seeAll": "See all",

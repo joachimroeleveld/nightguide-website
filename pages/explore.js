@@ -8,23 +8,28 @@ import CityTitleButton from '../components/CityTitleButton';
 import ExploreGrid from '../components/tags/ExploreGrid';
 
 function CityExplorePage(props) {
-  const { baseUrl, city, tags } = props;
+  const { baseUrl, pageSlug, tags } = props;
+
+  const cityName = __(`city.${pageSlug}.name`);
 
   return (
     <main>
       <Head>
         <title>
-          {__('cityExplorePage.meta.title', { city, tagCount: tags.length })}
+          {__('cityExplorePage.meta.title', {
+            city: cityName,
+            tagCount: tags.length,
+          })}
         </title>
         <meta
           name="description"
-          content={__('cityExplorePage.meta.description', { city })}
+          content={__('cityExplorePage.meta.description', { city: cityName })}
         />
       </Head>
 
       <h1>
         {__('cityExplorePage.explore')}{' '}
-        <CityTitleButton href={baseUrl} city={city} />
+        <CityTitleButton href={baseUrl} city={cityName} />
       </h1>
 
       <ExploreGrid baseUrl={baseUrl} tags={tags} />
@@ -41,9 +46,9 @@ function CityExplorePage(props) {
 }
 
 CityExplorePage.getInitialProps = async ctx => {
-  const { city } = ctx.query;
+  const { pageSlug } = ctx.query;
   return {
-    city,
+    pageSlug,
     tags: (await getTags()).results,
   };
 };

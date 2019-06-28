@@ -1,3 +1,3 @@
 module.exports = {
-  ':country(nl)/:city(utrecht)': require('./city'),
+  city: require('./city'),
 };

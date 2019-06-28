@@ -13,26 +13,24 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const routes = require('./routes');
+const { getCityConfig } = require('./lib/api');
 
 const { PORT } = process.env;
 
-const STATIC_ROUTES = ['expert-chat', 'privacy-policy'];
+const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy'];
 
 app
   .prepare()
-  .then(() => {
+  .then(async () => {
     const server = express();
 
     server.get('/health', (req, res) => {
       res.json({ status: 'OK' });
     });
 
-    server.get('/', (req, res) => {
-      res.redirect('/nl/utrecht');
-    });
-
-    Object.keys(routes).forEach(basePath => {
-      server.use(`/${basePath}`, routes[basePath](app));
+    const cityConfig = await getCityConfig();
+    Object.keys(cityConfig).forEach(slug => {
+      server.use(`/${slug}`, routes.city(app, slug));
     });
 
     STATIC_ROUTES.forEach(route => {
