@@ -1,7 +1,6 @@
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import colors from '../styles/colors';
 import { getEvents, getTagBySlug, getVenues } from '../lib/api';
 import __, { _o } from '../lib/i18n';
 import { getPostsFiltered } from '../lib/ghost';
@@ -12,7 +11,10 @@ import ArticleGrid from '../components/articles/ArticleGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
 function CityTagPage(props) {
-  const { city, venues, events, articles, tag, baseUrl } = props;
+  const { venues, events, articles, tag, baseUrl, pageSlug } = props;
+
+  const cityName = __(`city.${pageSlug}.name`);
+
   return (
     <main>
       <Head>
@@ -23,7 +25,7 @@ function CityTagPage(props) {
       <h1>
         {__(`tag.titles.${tag.slug}`)}
         &nbsp;
-        <CityTitleButton href={baseUrl} city={city} />
+        <CityTitleButton href={baseUrl} city={cityName} />
       </h1>
       <p className={'intro'}>{__(`tag.descriptions.${tag.slug}`)}</p>
       {!!venues.length && (
@@ -73,28 +75,29 @@ function CityTagPage(props) {
 }
 
 CityTagPage.getInitialProps = async ctx => {
-  let { citySlug, country, city, tag: tagSlug } = ctx.query;
+  let { pageSlug, tag: tagSlug } = ctx.query;
   const tag = await getTagBySlug(tagSlug);
   return {
-    city,
+    pageSlug,
     tag,
     venues: (await getVenues({
       query: {
-        country,
-        city,
+        pageSlug,
         tag: tag.id,
       },
     })).results,
     events: (await getEvents({
       query: {
-        country,
-        city,
+        pageSlug,
         tag: tag.id,
       },
     })).results,
-    articles: await getPostsFiltered(`tag:${citySlug}+tag:${tag.slug}`, {
-      limit: 6,
-    }),
+    articles: await getPostsFiltered(
+      `tag:${pageSlug.replace('/', '-')}+tag:${tag.slug}`,
+      {
+        limit: 6,
+      }
+    ),
   };
 };
 

@@ -22,27 +22,18 @@ const SPOTLIGHT_EVENTS = [
 ];
 
 function CityPage(props) {
-  const {
-    baseUrl,
-    city,
-    events,
-    blogs,
-    tags,
-    spotlightEvents,
-    citySlug,
-    countrySlug,
-  } = props;
+  const { baseUrl, events, blogs, tags, pageSlug, spotlightEvents } = props;
 
-  const __city = (scope, ...args) =>
-    __(`city.${countrySlug}.${citySlug}.${scope}`, ...args);
+  const __city = (scope, ...args) => __(`city.${pageSlug}.${scope}`, ...args);
+  const cityName = __city('name');
 
   return (
     <main>
       <Head>
-        <title>{__('cityPage.meta.title', { city })}</title>
+        <title>{__('cityPage.meta.title', { city: cityName })}</title>
         <meta
           name="description"
-          content={__('cityPage.meta.description', { city })}
+          content={__('cityPage.meta.description', { city: cityName })}
         />
       </Head>
 
@@ -51,7 +42,7 @@ function CityPage(props) {
           dangerouslySetInnerHTML={{ __html: __('cityPage.discoverBarsClubs') }}
         />
         &nbsp;
-        <CityTitleButton href={baseUrl} city={city} disabled={true} />
+        <CityTitleButton href={baseUrl} city={cityName} disabled={true} />
       </h1>
       <p className="intro">{__city('intro')}</p>
 
@@ -165,11 +156,9 @@ function CityPage(props) {
 }
 
 CityPage.getInitialProps = async ctx => {
-  let { country, city, citySlug, countrySlug } = ctx.query;
+  let { pageSlug } = ctx.query;
   return {
-    citySlug,
-    countrySlug,
-    city,
+    pageSlug,
     spotlightEvents: (await getEvents({
       query: {
         ids: SPOTLIGHT_EVENTS,
@@ -178,13 +167,13 @@ CityPage.getInitialProps = async ctx => {
     events: (await getEvents({
       limit: 8,
       query: {
-        country,
-        city,
+        pageSlug,
         tagged: true,
-        sortBy: 'facebook.goingCount:desc',
       },
     })).results,
-    blogs: await getPostsFiltered(`tags:${citySlug}`, { limit: 6 }),
+    blogs: await getPostsFiltered(`tags:${pageSlug.replace('/', '-')}`, {
+      limit: 6,
+    }),
     tags: (await getTags()).results,
   };
 };

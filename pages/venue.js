@@ -280,7 +280,7 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue: venueId, city, country } = ctx.query;
+  const { venue: venueId, pageSlug } = ctx.query;
   const venue = await getVenue(venueId);
   return {
     venue,
@@ -293,8 +293,7 @@ VenuePage.getInitialProps = async ctx => {
     similarVenues: (await getVenues({
       limit: 3,
       query: {
-        city,
-        country,
+        pageSlug,
         exclude: venue.id,
         tags: venue.tags.map(tag => tag.id),
       },

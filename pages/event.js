@@ -247,6 +247,7 @@ EventPage.getInitialProps = async ctx => {
         country: country,
         exclude: event.id,
         tags: event.tags.map(tag => tag.id),
+        sortBy: 'tagsMatchScore:desc',
       },
     })).results,
   };
