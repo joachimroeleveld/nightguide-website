@@ -156,7 +156,7 @@ function CityPage(props) {
 }
 
 CityPage.getInitialProps = async ctx => {
-  let { pageSlug } = ctx.query;
+  let { pageSlug = '' } = ctx.query;
   return {
     pageSlug,
     spotlightEvents: (await getEvents({

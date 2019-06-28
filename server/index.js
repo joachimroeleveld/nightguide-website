@@ -29,6 +29,7 @@ app
     });
 
     const cityConfig = await getCityConfig();
+    // Create routes for all city pages
     Object.keys(cityConfig).forEach(slug => {
       server.use(`/${slug}`, routes.city(app, slug));
     });
