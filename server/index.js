@@ -17,7 +17,7 @@ const { getCityConfig } = require('./lib/api');
 
 const { PORT } = process.env;
 
-const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy'];
+const STATIC_ROUTES = ['expert-chat', 'privacy-policy'];
 
 app
   .prepare()
@@ -26,6 +26,10 @@ app
 
     server.get('/health', (req, res) => {
       res.json({ status: 'OK' });
+    });
+
+    server.get('/', (req, res) => {
+      res.redirect('/nl/utrecht');
     });
 
     const cityConfig = await getCityConfig();
