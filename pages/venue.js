@@ -132,7 +132,7 @@ function VenuePage(props) {
 
         <aside className={'info'}>
           <div className={'card'}>
-            {!!timeSchedule.open && (
+            {timeSchedule && timeSchedule.open && (
               <div className="opening-hours">
                 <VenueOpeningHours schedule={timeSchedule.open} />
               </div>
