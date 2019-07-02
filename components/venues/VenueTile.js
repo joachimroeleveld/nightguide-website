@@ -28,6 +28,7 @@ function VenueTile(props) {
               description ? (
                 <div>
                   {_o(description)
+                    .replace(/(<([^>]+)>)/gi, '')
                     .slice(0, 130)
                     .trim() + '...'}
                 </div>
