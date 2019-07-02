@@ -36,11 +36,13 @@ function Header(props) {
       style={{ height: containerHeight }}
     >
       <div className="inner" ref={innerRef}>
-        <Link href={'/'}>
-          <a className="logo">
-            <img src="/static/img/logo.svg" alt="NightGuide" />
-          </a>
-        </Link>
+        <div className="logo-container">
+          <Link href={'/'}>
+            <a className="logo">
+              <img src="/static/img/logo.svg" alt="NightGuide" />
+            </a>
+          </Link>
+        </div>
         {baseUrl !== '' && baseUrl !== '/es/ibiza' && (
           <ul className="menu">
             <li>
@@ -79,9 +81,11 @@ function Header(props) {
           box-sizing: border-box;
           box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
         }
-        .logo {
-          display: block;
+        .logo-container {
           flex-grow: 1;
+        }
+        .logo {
+          display: inline-block;
         }
         .logo img {
           transition: width 0.2s;

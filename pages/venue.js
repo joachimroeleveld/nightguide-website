@@ -51,6 +51,7 @@ function VenuePage(props) {
     address1,
     address2,
     postalCode,
+    city,
     coordinates,
     googlePlaceId,
   } = location;
@@ -87,15 +88,17 @@ function VenuePage(props) {
             city: location.city,
           })}
         </title>
-        <meta
-          name="description"
-          content={
-            _o(description)
-              .slice(0, 160)
-              .replace('\n', ' ')
-              .replace('  ', ' ') + '...'
-          }
-        />
+        {description && (
+          <meta
+            name="description"
+            content={
+              _o(description)
+                .slice(0, 160)
+                .replace('\n', ' ')
+                .replace('  ', ' ') + '...'
+            }
+          />
+        )}
       </Head>
 
       <header className={'header'}>
@@ -108,7 +111,12 @@ function VenuePage(props) {
           <div className="tags">
             <TagList baseUrl={baseUrl} tags={tags} />
           </div>
-          <p className={'description'}>{_o(description)}</p>
+          {description && (
+            <div
+              className="description"
+              dangerouslySetInnerHTML={{ __html: _o(description) }}
+            />
+          )}
           {priceClass && (
             <section className="price-class">
               <strong className="label">{__('venuePage.priceClass')}</strong>
@@ -139,7 +147,7 @@ function VenuePage(props) {
             )}
             <div className={'labeled-text'}>
               <strong>{__('venuePage.address')}</strong>
-              <span>{[address1, address2].join(' ')}</span>
+              <span>{[address1, address2, city].join(' ')}</span>
               <br />
               <span>{postalCode}</span>
             </div>
@@ -291,14 +299,16 @@ VenuePage.getInitialProps = async ctx => {
         venue: venue.id,
       },
     })).results,
-    similarVenues: (await getVenues({
-      limit: 3,
-      query: {
-        pageSlug,
-        exclude: venue.id,
-        tags: venue.tags.map(tag => tag.id),
-      },
-    })).results,
+    similarVenues: venue.tags.length
+      ? (await getVenues({
+          limit: 3,
+          query: {
+            pageSlug,
+            exclude: venue.id,
+            tags: venue.tags.map(tag => tag.id),
+          },
+        })).results
+      : [],
   };
 };
 

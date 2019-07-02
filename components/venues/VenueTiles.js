@@ -102,7 +102,7 @@ function VenueTiles({
     });
   }
 
-  if (doorPolicy.policy || doorPolicy.description) {
+  if (doorPolicy.policy) {
     const subtitle = doorPolicy.policy
       ? __(`venuePage.tiles.doorPolicy${pascalCase(doorPolicy.policy)}`)
       : __('venuePage.tiles.doorPolicyNonStrict');
