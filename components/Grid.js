@@ -114,9 +114,11 @@ function InfiniteGrid(props) {
             {renderItem(item)}
           </div>
         ))}
-        <Observer onChange={onIntersect} treshold={0.25}>
-          <div />
-        </Observer>
+        {limit !== null && (
+          <Observer onChange={onIntersect} treshold={0.25}>
+            <div />
+          </Observer>
+        )}
       </div>
       {/*language=CSS*/}
       <style jsx>{`

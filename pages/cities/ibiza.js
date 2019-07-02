@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import withPageLayout from '../../components/PageLayout';
 import { getEvents } from '../../lib/api';
 import CityTitleButton from '../../components/CityTitleButton';
@@ -9,7 +11,8 @@ import EventGrid from '../../components/events/EventGrid';
 function IbizaCityPage(props) {
   const { pageSlug, events, baseUrl } = props;
 
-  const cityName = __(`city.${pageSlug}.name`);
+  const __city = (scope, ...args) => __(`city.${pageSlug}.${scope}`, ...args);
+  const cityName = __city('name');
 
   const getItems = async (offset, limit) => {
     return (await getEventsPage(pageSlug, offset, limit)).results;
@@ -17,6 +20,11 @@ function IbizaCityPage(props) {
 
   return (
     <main>
+      <Head>
+        <title>{__city('meta.title')}</title>
+        <meta name="description" content={__city('meta.description')} />
+      </Head>
+
       <h1>
         {__('cityEventsPage.eventsIn')}
         <CityTitleButton disabled={true} href={baseUrl} city={cityName} />

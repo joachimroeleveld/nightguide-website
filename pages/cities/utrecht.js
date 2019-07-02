@@ -169,7 +169,6 @@ UtrechtCityPage.getInitialProps = async ctx => {
       limit: 8,
       query: {
         pageSlug,
-        tagged: true,
       },
     })).results,
     blogs: await getPostsFiltered(`tags:${pageSlug.replace('/', '-')}`, {
