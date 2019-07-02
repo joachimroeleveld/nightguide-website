@@ -36,12 +36,12 @@ function Header(props) {
       style={{ height: containerHeight }}
     >
       <div className="inner" ref={innerRef}>
-        <Link href={'/nl/utrecht'}>
+        <Link href={'/'}>
           <a className="logo">
             <img src="/static/img/logo.svg" alt="NightGuide" />
           </a>
         </Link>
-        {baseUrl !== '' && (
+        {baseUrl !== '' && baseUrl !== '/es/ibiza' && (
           <ul className="menu">
             <li>
               <Link href={`${baseUrl}/events`}>

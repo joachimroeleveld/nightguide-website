@@ -280,9 +280,10 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue: venueId, pageSlug } = ctx.query;
+  const { venue: venueId, pageSlug, baseUrl } = ctx.query;
   const venue = await getVenue(venueId);
   return {
+    baseUrl,
     venue,
     events: (await getEvents({
       limit: 8,

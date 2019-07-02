@@ -1,19 +1,19 @@
 import Link from 'next/link';
 import Head from 'next/head';
 
-import withPageLayout from '../components/PageLayout';
-import { getEvents, getTags } from '../lib/api';
-import __ from '../lib/i18n';
-import { getPostsFiltered } from '../lib/ghost';
-import SectionHeader from '../components/SectionHeader';
-import PrimaryButton from '../components/PrimaryButton';
-import CityTitleButton from '../components/CityTitleButton';
-import Card from '../components/Card';
-import ExploreGrid from '../components/tags/ExploreGrid';
-import EventGrid from '../components/events/EventGrid';
-import ArticleGrid from '../components/articles/ArticleGrid';
-import { CitySpotlight } from '../components/CitySpotlight';
-import colors from '../styles/colors';
+import withPageLayout from '../../components/PageLayout';
+import { getEvents, getTags } from '../../lib/api';
+import __ from '../../lib/i18n';
+import { getPostsFiltered } from '../../lib/ghost';
+import SectionHeader from '../../components/SectionHeader';
+import PrimaryButton from '../../components/PrimaryButton';
+import CityTitleButton from '../../components/CityTitleButton';
+import Card from '../../components/Card';
+import ExploreGrid from '../../components/tags/ExploreGrid';
+import EventGrid from '../../components/events/EventGrid';
+import ArticleGrid from '../../components/articles/ArticleGrid';
+import { CitySpotlight } from '../../components/CitySpotlight';
+import colors from '../../styles/colors';
 
 const SPOTLIGHT_EVENTS = [
   '5cdaad3a08f408100d67156f',
@@ -21,7 +21,7 @@ const SPOTLIGHT_EVENTS = [
   '5d026e21c50e7ce9e68c7e1c',
 ];
 
-function CityPage(props) {
+function UtrechtCityPage(props) {
   const { baseUrl, events, blogs, tags, pageSlug, spotlightEvents } = props;
 
   const __city = (scope, ...args) => __(`city.${pageSlug}.${scope}`, ...args);
@@ -155,9 +155,10 @@ function CityPage(props) {
   );
 }
 
-CityPage.getInitialProps = async ctx => {
-  let { pageSlug } = ctx.query;
+UtrechtCityPage.getInitialProps = async ctx => {
+  let { pageSlug, baseUrl } = ctx.query;
   return {
+    baseUrl,
     pageSlug,
     spotlightEvents: (await getEvents({
       query: {
@@ -178,4 +179,4 @@ CityPage.getInitialProps = async ctx => {
   };
 };
 
-export default withPageLayout()(CityPage);
+export default withPageLayout()(UtrechtCityPage);

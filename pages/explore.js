@@ -46,8 +46,9 @@ function CityExplorePage(props) {
 }
 
 CityExplorePage.getInitialProps = async ctx => {
-  const { pageSlug } = ctx.query;
+  const { baseUrl, pageSlug } = ctx.query;
   return {
+    baseUrl,
     pageSlug,
     tags: (await getTags()).results,
   };

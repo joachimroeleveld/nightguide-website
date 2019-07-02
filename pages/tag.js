@@ -75,9 +75,10 @@ function CityTagPage(props) {
 }
 
 CityTagPage.getInitialProps = async ctx => {
-  let { pageSlug, tag: tagSlug } = ctx.query;
+  let { pageSlug, tag: tagSlug, baseUrl } = ctx.query;
   const tag = await getTagBySlug(tagSlug);
   return {
+    baseUrl,
     pageSlug,
     tag,
     venues: (await getVenues({

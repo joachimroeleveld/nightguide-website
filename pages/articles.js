@@ -51,8 +51,9 @@ function CityArticlesPage(props) {
 }
 
 CityArticlesPage.getInitialProps = async ctx => {
-  const { pageSlug } = ctx.query;
+  const { pageSlug, baseUrl } = ctx.query;
   return {
+    baseUrl,
     pageSlug,
     articles: await getArticlesPage(pageSlug),
   };

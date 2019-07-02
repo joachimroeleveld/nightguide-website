@@ -159,8 +159,9 @@ function ArticlePage(props) {
 }
 
 ArticlePage.getInitialProps = async ctx => {
-  const { article } = ctx.query;
+  const { article, baseUrl } = ctx.query;
   return {
+    baseUrl,
     article: await getGhostPostBySlug(article, {
       query: { include: 'tags' },
     }),

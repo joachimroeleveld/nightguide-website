@@ -2,19 +2,23 @@ import withPageLayout from '../components/PageLayout';
 import Head from 'next/head';
 import Link from 'next/link';
 
+import css from 'styled-jsx/css';
 import __ from '../lib/i18n';
 import Tile from '../components/Tile';
+import dimensions from '../styles/dimensions';
 
 const CITIES = [
   {
-    name: 'Utrecht',
-    url: '/nl/utrecht',
-    imgSrc: '/static/img/city-utrecht.jpg',
-  },
-  {
     name: 'Ibiza',
     url: '/es/ibiza',
-    imgSrc: '/static/img/city-ibiza.jpg',
+    imgSrc:
+      'https://lh3.googleusercontent.com/zmoy9Xzv6KsYUnkfnufIXwjmk2pHoaqokyMxlIHP60sPkkqx8L7nGUpRIWpTwxExVC6vULI2c1v0In4JKPzDlEzueXr5Qpov',
+  },
+  {
+    name: 'Utrecht',
+    url: '/nl/utrecht',
+    imgSrc:
+      'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
   },
 ];
 
@@ -40,6 +44,12 @@ function Index() {
                   <Tile
                     title={city.name}
                     imgProps={{ url: city.imgSrc, widths: [320] }}
+                    {...css.resolve`
+                      .top {
+                        height: 10em;
+                      }
+                    `}
+                    imgWidths={[300, 600, 1000]}
                   />
                 </a>
               </Link>
@@ -62,15 +72,19 @@ function Index() {
           padding-top: 3em;
         }
         .city {
-          display: flex;
+          display: block;
+          max-width: 20em;
+          flex-basis: 20em;
+          flex-wrap: wrap;
+          margin-right: ${dimensions.gridGap};
         }
         .cities {
           padding: 1em 0;
         }
+        .cities nav {
+          display: flex;
+        }
         @media (min-width: 50em) {
-          .container {
-            grid-template-columns: 1fr 1fr;
-          }
           main {
             padding-top: 7em;
           }

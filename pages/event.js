@@ -236,20 +236,23 @@ EventPage.getInitialProps = async ctx => {
   const { event: eventId, city, country } = ctx.query;
 
   const event = await getEvent(eventId);
+  const tags = event.tags || [];
 
   return {
     event,
     venue: await getVenue(event.organiser.venue.id),
-    similarEvents: (await getEvents({
-      limit: 4,
-      query: {
-        city: city,
-        country: country,
-        exclude: event.id,
-        tags: event.tags.map(tag => tag.id),
-        sortBy: 'tagsMatchScore:desc',
-      },
-    })).results,
+    similarEvents: tags.length
+      ? (await getEvents({
+          limit: 4,
+          query: {
+            city: city,
+            country: country,
+            exclude: event.id,
+            tags: event.tags.map(tag => tag.id),
+            sortBy: 'tagsMatchScore:desc',
+          },
+        })).results
+      : [],
   };
 };
 

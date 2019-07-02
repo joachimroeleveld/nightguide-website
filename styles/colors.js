@@ -16,4 +16,5 @@ export default {
   cardSeparator: '#3D3D3D',
   tagButtonBorderColor: '#7A7A7A',
   yellowTextColor: '#FFD731',
+  secondaryButtonBorder: '#979797',
 };

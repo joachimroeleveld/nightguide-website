@@ -66,12 +66,12 @@ function InfiniteGrid(props) {
     }
   }, [itemDimensions, containerDimensions]);
 
-  const getNextPage = async (replace = false, limit = limit) => {
+  const getNextPage = async (replace = false, limitOverride) => {
     if (!loading && !endReached) {
       setLoading(true);
       const results = await getItems(
         usePage ? page.current + 1 : offset,
-        limit
+        limitOverride || limit
       );
       setEndReached(
         totalCount
@@ -104,19 +104,20 @@ function InfiniteGrid(props) {
 
   return (
     <Fragment>
-      <Observer onChange={onIntersect}>
-        <div className={`grid ${className}`} ref={setContainerRef}>
-          {items.map((item, index) => (
-            <div
-              ref={index === 0 ? setEventRef : null}
-              key={(keyExtractor && keyExtractor(item)) || index}
-              style={{ height: itemHeight }}
-            >
-              {renderItem(item)}
-            </div>
-          ))}
-        </div>
-      </Observer>
+      <div className={`grid ${className}`} ref={setContainerRef}>
+        {items.map((item, index) => (
+          <div
+            ref={index === 0 ? setEventRef : null}
+            key={(keyExtractor && keyExtractor(item)) || index}
+            style={{ height: itemHeight }}
+          >
+            {renderItem(item)}
+          </div>
+        ))}
+        <Observer onChange={onIntersect} treshold={0.25}>
+          <div />
+        </Observer>
+      </div>
       {/*language=CSS*/}
       <style jsx>{`
         .grid {

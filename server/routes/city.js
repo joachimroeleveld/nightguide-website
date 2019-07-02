@@ -8,7 +8,12 @@ module.exports = (app, pageSlug) => {
   };
 
   router.get('/', (req, res) => {
-    const actualPage = '/city';
+    let actualPage;
+    if (pageSlug === 'nl/utrecht') {
+      actualPage = '/cities/utrecht';
+    } else if (pageSlug === 'es/ibiza') {
+      actualPage = '/cities/ibiza';
+    }
     app.render(req, res, actualPage, baseParams);
   });
 
