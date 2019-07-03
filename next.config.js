@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const withCss = require('@zeit/next-css');
 
 // Load .env
 require('dotenv').config();
@@ -30,11 +31,9 @@ const reactAppEnv = Object.keys(defaultEnv)
     {}
   );
 
-module.exports = {
+module.exports = withCss({
+  cssModules: false,
   useFileSystemPublicRoutes: false,
-  env: {
-    ...reactAppEnv,
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -43,4 +42,7 @@ module.exports = {
 
     return config;
   },
-};
+  env: {
+    ...reactAppEnv,
+  },
+});

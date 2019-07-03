@@ -5,7 +5,7 @@ import { getEvents } from '../../lib/api';
 import CityTitleButton from '../../components/CityTitleButton';
 import __ from '../../lib/i18n';
 import colors from '../../styles/colors';
-import EventDateFilterBar from '../../components/EventDateFilterBar';
+import EventDateFilterBar from '../../components/events/EventDateFilterBar';
 import EventGrid from '../../components/events/EventGrid';
 
 function IbizaCityPage(props) {
@@ -18,6 +18,8 @@ function IbizaCityPage(props) {
     return (await getEventsPage(pageSlug, offset, limit)).results;
   };
 
+  const onDateChange = range => {};
+
   return (
     <main>
       <Head>
@@ -29,7 +31,9 @@ function IbizaCityPage(props) {
         {__('cityEventsPage.eventsIn')}
         <CityTitleButton disabled={true} href={baseUrl} city={cityName} />
       </h1>
-      {/*<EventDateFilterBar  />*/}
+      <div className="filter">
+        <EventDateFilterBar onChange={onDateChange} />
+      </div>
       <EventGrid
         baseUrl={baseUrl}
         infinite={true}
@@ -43,6 +47,9 @@ function IbizaCityPage(props) {
           margin: 0 0 1.5em;
           border-bottom: 1px solid ${colors.separator};
           padding: 1em 0;
+        }
+        .filter {
+          margin-bottom: 3em;
         }
       `}</style>
     </main>
