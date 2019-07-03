@@ -11,11 +11,21 @@ import TagList from '../components/TagList';
 import VenueTile from '../components/venues/VenueTile';
 import EventGrid from '../components/events/EventGrid';
 import { formatEventDate } from '../lib/dates';
+import PrimaryButton from '../components/PrimaryButton';
+import { generateTicketRedirectUrl } from '../components/events/util';
 
 function EventPage(props) {
   const { event, baseUrl, similarEvents, venue } = props;
 
-  const { title, facebook, images, dates, location, tags } = event;
+  const {
+    title,
+    facebook,
+    images,
+    dates,
+    location,
+    tags,
+    tickets = {},
+  } = event;
   const futureDates = getFutureEventDates(dates);
 
   return (
@@ -98,6 +108,16 @@ function EventPage(props) {
                   {__('eventPage.facebookPage')}
                 </a>
               )}
+              <div className="tickets-button">
+                {!!tickets.checkoutUrl && (
+                  <PrimaryButton
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={generateTicketRedirectUrl(event.id)}
+                    title={__('buyTickets')}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </aside>
@@ -145,6 +165,7 @@ function EventPage(props) {
         }
         .info {
           display: grid;
+          font-size: 0.95em;
           background-color: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
         }
@@ -168,7 +189,7 @@ function EventPage(props) {
           color: ${colors.textSecondary};
         }
         .additional-info {
-          padding: 1em ${dimensions.cardPadding};
+          padding: 0.5em ${dimensions.cardPadding} 1.5em;
         }
         .info .labeled-text {
           margin: 0.9em 0;
@@ -185,7 +206,10 @@ function EventPage(props) {
         .facebook-page {
           color: ${colors.linkText};
           display: block;
-          margin: 2em 0 1em;
+          margin: 1em 0 1em;
+        }
+        .tickets-button {
+          margin-top: 2em;
         }
         .organiser,
         .similar-events {
@@ -233,7 +257,7 @@ function EventPage(props) {
 }
 
 EventPage.getInitialProps = async ctx => {
-  const { event: eventId, city, country } = ctx.query;
+  const { event: eventId, pageSlug } = ctx.query;
 
   const event = await getEvent(eventId);
   const tags = event.tags || [];
@@ -245,8 +269,7 @@ EventPage.getInitialProps = async ctx => {
       ? (await getEvents({
           limit: 4,
           query: {
-            city: city,
-            country: country,
+            pageSlug: pageSlug,
             exclude: event.id,
             tags: event.tags.map(tag => tag.id),
             sortBy: 'tagsMatchScore:desc',

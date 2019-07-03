@@ -85,7 +85,7 @@ function Header(props) {
           flex-grow: 1;
         }
         .logo {
-          display: inline-block;
+          float: left;
         }
         .logo img {
           transition: width 0.2s;

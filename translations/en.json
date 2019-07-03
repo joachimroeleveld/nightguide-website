@@ -122,6 +122,10 @@
       "terraceHeated": "Heated"
     }
   },
+  "ticketRedirectPage": {
+    "thanksAlmostThere": "Thanks, we're almost there",
+    "youreRedirected": "You are redirected to the ticket page:"
+  },
   "tag": {
     "meta": {
       "title": {
@@ -271,5 +275,6 @@
   "today": "Today",
   "tomorrow": "Tomorrow",
   "thisWeekend": "This weekend",
-  "pickDate": "Pick date"
+  "pickDate": "Pick date",
+  "buyTickets": "Buy tickets"
 }

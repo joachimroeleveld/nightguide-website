@@ -17,7 +17,7 @@ const { getCityConfig } = require('./lib/api');
 
 const { PORT } = process.env;
 
-const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy'];
+const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy', 'ticket-redirect'];
 
 app
   .prepare()
@@ -36,7 +36,7 @@ app
 
     STATIC_ROUTES.forEach(route => {
       server.get(`/${route}`, (req, res) => {
-        app.render(req, res, `/${route}`);
+        app.render(req, res, `/${route}`, req.query);
       });
     });
 
