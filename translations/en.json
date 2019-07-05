@@ -276,5 +276,6 @@
   "tomorrow": "Tomorrow",
   "thisWeekend": "This weekend",
   "pickDate": "Pick date",
-  "buyTickets": "Buy tickets"
+  "buyTickets": "Buy tickets",
+  "noEventsForDates": "No events exist for these dates"
 }

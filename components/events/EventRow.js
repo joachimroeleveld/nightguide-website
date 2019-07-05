@@ -2,8 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import EventGrid from './EventGrid';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
+
+import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
 import dimensions from '../../styles/dimensions';
+import colors from '../../styles/colors';
 
 function EventRow(props) {
   const { baseUrl, initialEvents, filter, sortBy } = props;
@@ -164,6 +167,9 @@ function EventRow(props) {
             );
           })}
         </div>
+        {!items.length && (
+          <span className="empty-message">{__('noEventsForDates')}</span>
+        )}
       </div>
       <div className="next-page">
         <button
@@ -181,6 +187,10 @@ function EventRow(props) {
           flex-grow: 1;
           overflow: hidden;
           min-height: 200px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
         .items {
           display: grid;
@@ -211,6 +221,9 @@ function EventRow(props) {
         }
         .prev-page button {
           transform: rotate(180deg);
+        }
+        .empty-message {
+          color: ${colors.textSecondary};
         }
       `}</style>
     </div>
