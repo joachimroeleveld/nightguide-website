@@ -4,7 +4,7 @@ import withPageLayout from '../components/PageLayout';
 import { getEvent, getEvents, getVenue } from '../lib/api';
 import colors from '../styles/colors';
 import { getFutureEventDates } from '../lib/events';
-import __ from '../lib/i18n';
+import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
@@ -25,6 +25,7 @@ function EventPage(props) {
     location,
     tags,
     tickets = {},
+    description = {},
   } = event;
   const futureDates = getFutureEventDates(dates);
 
@@ -137,7 +138,10 @@ function EventPage(props) {
           <div
             className="description"
             dangerouslySetInnerHTML={{
-              __html: facebook.description.replace(/(\/n)/g, '<br/>'),
+              __html: (_o(description) || facebook.description).replace(
+                /(\/n)/g,
+                '<br/>'
+              ),
             }}
           />
         </div>
