@@ -15,16 +15,21 @@ import EventRow from '../../components/events/EventRow';
 import SectionHeader from '../../components/SectionHeader';
 
 const VENUE_SECTION_ORDER = [
-  '5d1affe8bd44b9001205a73d',
-  '5d1affd9bd44b9001205a736',
-  '5d1affd3bd44b9001205a733',
-  '5d1affeebd44b9001205a740',
-  '5d1affc0bd44b9001205a729',
-  '5d1affc5bd44b9001205a72c',
-  '5d1affebbd44b9001205a73f',
-  '5d1affb9bd44b9001205a726',
-  '5d1affd1bd44b9001205a732',
-  '5d1affe3bd44b9001205a73b',
+  '5d1affe8bd44b9001205a73d', // Pacha
+  '5d1affd9bd44b9001205a736', // Ushuaia
+  '5d1affd3bd44b9001205a733', // Amnesia
+  '5d1affc5bd44b9001205a72c', // Eden
+  '5d1affc3bd44b9001205a72b', // Privilege
+  '5d1affb9bd44b9001205a726', // Hi
+  '5d1afff3bd44b9001205a743', // DC-10
+  '5d1affdabd44b9001205a737', // Es Paradis
+  '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
+  '5d1affadbd44b9001205a720', // Heart
+  '5d1affd5bd44b9001205a734', // Ibiza Rocks
+  '5d1affd7bd44b9001205a735', // Oceanbeat pier
+  '5d1affbebd44b9001205a728', // Octan
+  '5d1a2d82bd44b9001205a71c', // Pikes
+  '5d1affc0bd44b9001205a729', // Lio
 ];
 
 const TIME_SECTIONS = {
