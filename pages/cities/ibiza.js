@@ -139,15 +139,19 @@ function IbizaCityPage(props) {
         limit: VENUE_SECTION_ORDER.length,
         query: { ids: VENUE_SECTION_ORDER },
       });
+      result.results.sort((a, b) => {
+        const indexA = a.indexOf(VENUE_SECTION_ORDER);
+        const indexB = b.indexOf(VENUE_SECTION_ORDER);
+        if (indexA === indexB) return 0;
+        return indexA > indexB ? 1 : -1;
+      });
     } else {
       result = await getVenues({
         offset: venues.length,
         query: { pageSlug, sortBy: 'name' },
       });
     }
-    if (result.totalCount !== venues.length + result.results.length) {
-      setFetchingVenues(false);
-    }
+    setFetchingVenues(false);
     setVenues(venues.concat(result.results));
     return result.results;
   };
@@ -191,11 +195,11 @@ function IbizaCityPage(props) {
     }
   });
 
-  console.log('sections', sections);
-  console.log('loadedSections', loadedSections);
-  console.log('venues', venues);
-  console.log('fetchingVenues', fetchingVenues);
-  console.log('=========');
+  // console.log('sections', sections);
+  // console.log('loadedSections', loadedSections);
+  // console.log('venues', venues);
+  // console.log('fetchingVenues', fetchingVenues);
+  // console.log('=========');
 
   return (
     <main>
