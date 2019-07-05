@@ -148,7 +148,7 @@ function IbizaCityPage(props) {
     } else {
       result = await getVenues({
         offset: venues.length,
-        query: { pageSlug, sortBy: 'name' },
+        query: { pageSlug, sortBy: 'name', exclude: VENUE_SECTION_ORDER },
       });
     }
     setFetchingVenues(false);
