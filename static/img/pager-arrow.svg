@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="12px" viewBox="0 0 7 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Events" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-1005.000000, -426.000000)" fill="#B9B9B9" fill-rule="nonzero">
+            <g id="flaticon1562230193-svg-copy" transform="translate(1008.500000, 432.000000) scale(-1, 1) translate(-1008.500000, -432.000000) translate(1005.000000, 426.000000)">
+                <path d="M0.863903761,5.99968565 L6.56157049,0.58029025 C6.70169872,0.447005815 6.70169872,0.23324776 6.56157049,0.0999633258 C6.42144226,-0.0333211086 6.19670831,-0.0333211086 6.05658008,0.0999633258 L0.105096173,5.76077959 C-0.0350320576,5.89406402 -0.0350320576,6.10782208 0.105096173,6.24110651 L6.05658008,11.899408 C6.12532223,11.9647928 6.21785974,12 6.30775332,12 C6.3976469,12 6.49018441,11.9673076 6.55892656,11.899408 C6.6990548,11.7661235 6.6990548,11.5523655 6.55892656,11.419081 L0.863903761,5.99968565 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>
