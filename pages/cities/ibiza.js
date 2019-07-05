@@ -140,8 +140,8 @@ function IbizaCityPage(props) {
         query: { ids: VENUE_SECTION_ORDER },
       });
       result.results.sort((a, b) => {
-        const indexA = a.indexOf(VENUE_SECTION_ORDER);
-        const indexB = b.indexOf(VENUE_SECTION_ORDER);
+        const indexA = VENUE_SECTION_ORDER.indexOf(a);
+        const indexB = VENUE_SECTION_ORDER.indexOf(b);
         if (indexA === indexB) return 0;
         return indexA > indexB ? 1 : -1;
       });
