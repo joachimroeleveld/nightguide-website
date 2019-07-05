@@ -3,7 +3,14 @@ import Observer from '@researchgate/react-intersection-observer';
 import dimensions from '../styles/dimensions';
 
 function FiniteGrid(props) {
-  const { className, itemHeight, keyExtractor, renderItem, items } = props;
+  const {
+    className,
+    itemHeight,
+    keyExtractor,
+    renderItem,
+    items,
+    setGridItemRef,
+  } = props;
   return (
     <Fragment>
       <div className={`grid ${className}`}>
@@ -11,6 +18,7 @@ function FiniteGrid(props) {
           <div
             key={(keyExtractor && keyExtractor(item)) || index}
             style={{ height: itemHeight }}
+            ref={ref => setGridItemRef && setGridItemRef(index, ref)}
           >
             {renderItem(item)}
           </div>
@@ -36,6 +44,7 @@ function InfiniteGrid(props) {
     className,
     itemHeight,
     usePage,
+    setGridItemRef,
   } = props;
 
   const page = useRef(0);
@@ -96,9 +105,14 @@ function InfiniteGrid(props) {
       setContainerDimensions(ref.getBoundingClientRect());
     }
   };
-  const setEventRef = ref => {
-    if (ref && !itemDimensions) {
-      setItemDimensions(ref.getBoundingClientRect());
+  const setEventRef = (index, ref) => {
+    if (ref) {
+      if (!itemDimensions) {
+        setItemDimensions(ref.getBoundingClientRect());
+      }
+      if (setGridItemRef) {
+        setGridItemRef(index, ref);
+      }
     }
   };
 
@@ -107,7 +121,7 @@ function InfiniteGrid(props) {
       <div className={`grid ${className}`} ref={setContainerRef}>
         {items.map((item, index) => (
           <div
-            ref={index === 0 ? setEventRef : null}
+            ref={ref => setEventRef(index, ref)}
             key={(keyExtractor && keyExtractor(item)) || index}
             style={{ height: itemHeight }}
           >

@@ -32,8 +32,7 @@
     "react-dom": "^16.8.6",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "styled-jsx": "^3.2.1",
-    "swiper": "^4.5.0"
+    "styled-jsx": "^3.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

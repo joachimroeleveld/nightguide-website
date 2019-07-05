@@ -2,7 +2,6 @@ import React from 'react';
 import css from 'styled-jsx/css';
 
 import __, { _o } from '../../lib/i18n';
-import { getFutureEventDates } from '../../lib/events';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
@@ -10,15 +9,12 @@ import { generateTicketRedirectUrl } from './util';
 
 const EventTileBody = props => {
   const { event, eventUrl } = props;
-  const { dates, tags, organiser, tickets = {} } = event;
-  const futureDates = getFutureEventDates(dates);
+  const { date, tags, organiser, tickets = {} } = event;
 
   return (
     <div className="container">
       <a href={eventUrl}>
-        <div className="date">
-          {futureDates.length && formatEventDate(futureDates[0].from)}
-        </div>
+        <div className="date">{formatEventDate(date.from)}</div>
         <div className="venue">{organiser.venue.name}</div>
         <div className="tags">
           {tags.map((tag, index) => (

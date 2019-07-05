@@ -23,6 +23,7 @@ function TicketRedirectPage(props) {
       <div className="redirect-notice">
         <span className="notice">
           {__('ticketRedirectPage.youreRedirected')}
+          <br />
           <a href={tickets.checkoutUrl}>{tickets.checkoutUrl.split('?')[0]}</a>
         </span>
         <div className="loading-container">
@@ -59,7 +60,6 @@ function TicketRedirectPage(props) {
           justify-content: center;
         }
         .redirect-notice a {
-          display: block;
           text-decoration: underline;
         }
         .ticket {

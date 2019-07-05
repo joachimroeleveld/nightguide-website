@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
 import { getEvents, getTagBySlug, getVenues } from '../lib/api';
-import __, { _o } from '../lib/i18n';
+import __, { _o, __city } from '../lib/i18n';
 import { getPostsFiltered } from '../lib/ghost';
 import SectionHeader from '../components/SectionHeader';
 import CityTitleButton from '../components/CityTitleButton';
@@ -13,13 +13,14 @@ import VenueGrid from '../components/venues/VenueGrid';
 function CityTagPage(props) {
   const { venues, events, articles, tag, baseUrl, pageSlug } = props;
 
-  const cityName = __(`city.${pageSlug}.name`);
+  const cityName = __city(pageSlug)('name');
+  const description = __city(pageSlug)(`tagDescriptions.${tag.slug}`);
 
   return (
     <main>
       <Head>
         <title>{__(`tag.meta.title.${tag.slug}`)}</title>
-        <meta name="description" content={__(`tag.descriptions.${tag.slug}`)} />
+        {!!description && <meta name="description" content={description} />}
       </Head>
 
       <h1>
@@ -27,7 +28,7 @@ function CityTagPage(props) {
         &nbsp;
         <CityTitleButton href={baseUrl} city={cityName} />
       </h1>
-      <p className={'intro'}>{__(`tag.descriptions.${tag.slug}`)}</p>
+      {!!description && <p className={'intro'}>{description}</p>}
       {!!venues.length && (
         <section className={'venues'}>
           <SectionHeader title={__('cityTagPage.venues')} TitleElem={'h3'} />

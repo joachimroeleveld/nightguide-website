@@ -37,6 +37,10 @@ function GlobalStyles() {
           margin: 0;
           padding: 0;
         }
+        button {
+          border: none;
+          background: none;
+        }
       `}</style>
       {/*language=CSS*/}
       <style jsx global>{`

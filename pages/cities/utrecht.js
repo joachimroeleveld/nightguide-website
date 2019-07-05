@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import withPageLayout from '../../components/PageLayout';
 import { getEvents, getTags } from '../../lib/api';
-import __ from '../../lib/i18n';
+import __, { __city } from '../../lib/i18n';
 import { getPostsFiltered } from '../../lib/ghost';
 import SectionHeader from '../../components/SectionHeader';
 import PrimaryButton from '../../components/PrimaryButton';
@@ -24,8 +24,7 @@ const SPOTLIGHT_EVENTS = [
 function UtrechtCityPage(props) {
   const { baseUrl, events, blogs, tags, pageSlug, spotlightEvents } = props;
 
-  const __city = (scope, ...args) => __(`city.${pageSlug}.${scope}`, ...args);
-  const cityName = __city('name');
+  const cityName = __city(pageSlug)('name');
 
   return (
     <main>
@@ -44,7 +43,7 @@ function UtrechtCityPage(props) {
         &nbsp;
         <CityTitleButton href={baseUrl} city={cityName} disabled={true} />
       </h1>
-      <p className="intro">{__city('intro')}</p>
+      <p className="intro">{__city(pageSlug)('intro')}</p>
 
       {/*<section className={'spotlight'}>*/}
       {/*  <SectionHeader title={__('cityPage.trendingEvents')} TitleElem={'h2'} />*/}
@@ -61,7 +60,7 @@ function UtrechtCityPage(props) {
           title={__('cityPage.explore')}
           TitleElem={'h2'}
         />
-        <p className="intro">{__city('exploreIntro')}</p>
+        <p className="intro">{__city(pageSlug)('exploreIntro')}</p>
         <ExploreGrid limitItems={8} baseUrl={baseUrl} tags={tags} />
         <div className="chat-wrapper">
           <Card>
@@ -83,7 +82,7 @@ function UtrechtCityPage(props) {
           title={__('cityPage.events')}
           TitleElem={'h2'}
         />
-        <p className="intro">{__city('eventsIntro')}</p>
+        <p className="intro">{__city(pageSlug)('eventsIntro')}</p>
         <div className={'content'}>
           <EventGrid baseUrl={baseUrl} events={events} />
         </div>
@@ -95,7 +94,7 @@ function UtrechtCityPage(props) {
           title={__('cityPage.articles')}
           TitleElem={'h2'}
         />
-        <p className="intro">{__city('articlesIntro')}</p>
+        <p className="intro">{__city(pageSlug)('articlesIntro')}</p>
         <div className={'content'}>
           <ArticleGrid baseUrl={baseUrl} articles={blogs} />
         </div>

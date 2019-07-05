@@ -1,30 +1,210 @@
 import Head from 'next/head';
+import moment from 'moment';
+import { useState, useMemo, useEffect } from 'react';
+import memoize from 'lodash/memoize';
+import range from 'lodash/range';
+import Observer from '@researchgate/react-intersection-observer';
 
+import { getVenues } from '../../lib/api';
 import withPageLayout from '../../components/PageLayout';
-import { getEvents } from '../../lib/api';
 import CityTitleButton from '../../components/CityTitleButton';
-import __ from '../../lib/i18n';
+import __, { __city } from '../../lib/i18n';
 import colors from '../../styles/colors';
 import EventDateFilterBar from '../../components/events/EventDateFilterBar';
-import EventGrid from '../../components/events/EventGrid';
+import EventRow from '../../components/events/EventRow';
+import SectionHeader from '../../components/SectionHeader';
+
+const VENUE_SECTION_ORDER = [
+  '5d1affe8bd44b9001205a73d',
+  '5d1affd9bd44b9001205a736',
+  '5d1affd3bd44b9001205a733',
+  '5d1affeebd44b9001205a740',
+  '5d1affc0bd44b9001205a729',
+  '5d1affc5bd44b9001205a72c',
+  '5d1affebbd44b9001205a73f',
+  '5d1affb9bd44b9001205a726',
+  '5d1affd1bd44b9001205a732',
+  '5d1affe3bd44b9001205a73b',
+];
+
+const TIME_SECTIONS = {
+  today: {
+    title: __('today'),
+    filter: {
+      dateTo: moment()
+        .set({ hour: 23, minute: 59 })
+        .toDate(),
+    },
+  },
+  tomorrow: {
+    title: __('tomorrow'),
+    filter: {
+      dateFrom: moment()
+        .add(1, 'days')
+        .set({ hour: 0, minute: 0 })
+        .toDate(),
+      dateTo: moment()
+        .add(1, 'days')
+        .set({ hour: 23, minute: 59 })
+        .toDate(),
+    },
+  },
+  weekend: {
+    title: __('thisWeekend'),
+    filter: {
+      dateFrom: moment()
+        .set({ day: 5, hour: 15, minute: 0 })
+        .toDate(),
+      dateTo: moment()
+        .set({ day: 7, hour: 23, minute: 59 })
+        .toDate(),
+    },
+  },
+};
+
+const INITIAL_LOADED_SECTIONS = 3;
 
 function IbizaCityPage(props) {
-  const { pageSlug, events, baseUrl } = props;
+  const { pageSlug, baseUrl } = props;
 
-  const __city = (scope, ...args) => __(`city.${pageSlug}.${scope}`, ...args);
-  const cityName = __city('name');
+  const [dateFilter, setDateFilter] = useState(null);
+  const [venues, setVenues] = useState([]);
+  const [fetchingVenues, setFetchingVenues] = useState(false);
+  const [loadedSections, setLoadedSections] = useState(
+    range(0, INITIAL_LOADED_SECTIONS)
+  );
 
-  const getItems = async (offset, limit) => {
-    return (await getEventsPage(pageSlug, offset, limit)).results;
+  const cityName = __city(pageSlug)('name');
+
+  useEffect(() => {
+    setLoadedSections(range(0, INITIAL_LOADED_SECTIONS));
+  }, [dateFilter]);
+
+  const dateSections = useMemo(() => {
+    const sections = [];
+
+    // No date applied
+    if (!dateFilter) {
+      const dow = moment().get('days');
+      const isWeekend = dow >= 5 && dow <= 7;
+
+      sections.push(TIME_SECTIONS['today']);
+      sections.push(TIME_SECTIONS['tomorrow']);
+      if (!isWeekend) sections.push(TIME_SECTIONS['weekend']);
+    }
+
+    // Date filter applied
+    if (dateFilter) {
+      const dateFrom = moment(dateFilter[0]).set({ hour: 0, minute: 0 });
+      const amountDays = Math.abs(dateFrom.diff(dateFilter[1], 'days')) + 1;
+
+      // If not today/tomorrow and not more than 3 days
+      if (dateFrom.isAfter(moment().add(1, 'day')) && amountDays <= 3) {
+        const daySections = range(0, amountDays).map(day => {
+          // Localized form of day and month
+          const date = moment(dateFrom).add(day, 'days');
+          return {
+            title: date
+              .format('ll')
+              .match(/^(\w+ \w+)/)
+              .pop(),
+            filter: {
+              dateFrom: date,
+              dateTo: moment(date).set({ hour: 23, minute: 59 }),
+            },
+          };
+        });
+        sections.push(...daySections);
+      }
+    }
+
+    return sections;
+  }, [dateFilter]);
+
+  const sortBy = useMemo(() => {
+    const dateFilterDiff =
+      dateFilter && moment(dateFilter[0]).diff(dateFilter[1], 'days');
+    if (!(dateFilter && dateFilterDiff <= 7)) {
+      return 'date.interestedCount';
+    }
+    return 'date';
+  }, [dateFilter]);
+
+  const loadVenues = async () => {
+    if (fetchingVenues) return;
+    setFetchingVenues(true);
+    let result;
+    if (venues.length < VENUE_SECTION_ORDER.length) {
+      result = await getVenues({
+        limit: VENUE_SECTION_ORDER.length,
+        query: { ids: VENUE_SECTION_ORDER },
+      });
+    } else {
+      result = await getVenues({
+        offset: venues.length,
+        query: { pageSlug, sortBy: 'name' },
+      });
+    }
+    if (result.totalCount !== venues.length + result.results.length) {
+      setFetchingVenues(false);
+    }
+    setVenues(venues.concat(result.results));
+    return result.results;
   };
 
-  const onDateChange = range => {};
+  const sections = useMemo(() => {
+    const venueSections = venues.map(venue => ({
+      title: venue.name,
+      filter: { venue: venue.id },
+    }));
+    const availableSections = [...dateSections, ...venueSections];
+    if (loadedSections.length >= availableSections.length) {
+      loadVenues();
+    }
+    return availableSections.slice(0, loadedSections.length);
+  }, [dateFilter, venues, loadedSections]);
+
+  const getSectionFilter = useMemo(
+    () =>
+      memoize(index => {
+        const filter = Object.assign({}, sections[index].filter);
+        // Apply date filter
+        if (dateFilter && !filter.dateFrom) {
+          filter.dateFrom = dateFilter[0];
+          filter.dateTo = dateFilter[1];
+        }
+        // Apply max dates for sections without day filter
+        if (!filter.dateTo) {
+          filter.dateTo = moment().add(1, 'week');
+        }
+        return {
+          ...filter,
+          pageSlug,
+        };
+      }),
+    [sections]
+  );
+
+  const getAddSection = memoize(index => ({ isIntersecting }) => {
+    if (isIntersecting && index === loadedSections.length - 1) {
+      setLoadedSections(range(0, index + 2));
+    }
+  });
+
+  console.log('sections', sections);
+  console.log('loadedSections', loadedSections);
+  console.log('venues', venues);
+  console.log('fetchingVenues', fetchingVenues);
+  console.log('=========');
 
   return (
     <main>
       <Head>
-        <title>{__city('meta.title')}</title>
-        <meta name="description" content={__city('meta.description')} />
+        <title>{__city(pageSlug)('meta.title')}</title>
+        <meta
+          name="description"
+          content={__city(pageSlug)('meta.description')}
+        />
       </Head>
 
       <h1>
@@ -32,15 +212,23 @@ function IbizaCityPage(props) {
         <CityTitleButton disabled={true} href={baseUrl} city={cityName} />
       </h1>
       <div className="filter">
-        <EventDateFilterBar onChange={onDateChange} />
+        <EventDateFilterBar onChange={setDateFilter} />
       </div>
-      <EventGrid
-        baseUrl={baseUrl}
-        infinite={true}
-        events={events.results}
-        totalCount={events.totalCount}
-        getItems={getItems}
-      />
+      {sections.slice(0, loadedSections.length).map((section, index) => {
+        const filter = getSectionFilter(index);
+        return (
+          <section
+            className="event-section"
+            key={JSON.stringify(dateFilter) + index}
+          >
+            <SectionHeader title={section.title} TitleElem={'h2'} />
+            <EventRow filter={filter} baseUrl={baseUrl} sortBy={sortBy} />
+            <Observer onChange={getAddSection(index)} treshold={0.25}>
+              <div />
+            </Observer>
+          </section>
+        );
+      })}
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
@@ -49,7 +237,10 @@ function IbizaCityPage(props) {
           padding: 1em 0;
         }
         .filter {
-          margin-bottom: 3em;
+          margin-bottom: 2em;
+        }
+        .event-section:not(:first-of-type) {
+          margin-top: 2em;
         }
       `}</style>
     </main>
@@ -61,18 +252,7 @@ IbizaCityPage.getInitialProps = async ctx => {
   return {
     baseUrl,
     pageSlug,
-    events: await getEventsPage(pageSlug),
   };
 };
-
-async function getEventsPage(pageSlug, offset = 0, limit = 8) {
-  return await getEvents({
-    limit,
-    offset,
-    query: {
-      pageSlug,
-    },
-  });
-}
 
 export default withPageLayout()(IbizaCityPage);

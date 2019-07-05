@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import find from 'lodash/find';
+import debounce from 'lodash/debounce';
 import css from 'styled-jsx/css';
 import 'react-dates/initialize';
 import { DayPickerRangeController } from 'react-dates';
@@ -64,9 +65,21 @@ function EventDateFilterBar(props) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [fullscreenMode, setFullScreenMode] = useState(true);
+
+  useEffect(() => {
+    const resizeListener = debounce(() => {
+      setFullScreenMode(window.innerWidth < 700);
+    }, 100);
+    window.addEventListener('resize', resizeListener);
+    resizeListener();
+    return () => window.removeEventListener('resize', resizeListener);
+  }, []);
 
   const onClick = key => () => {
-    if (!currentButton) {
+    reset();
+
+    if (key !== currentButton) {
       if (key !== 'custom') {
         const val = find(FILTER_ITEMS, { key }).value;
         onChange(val);
@@ -74,8 +87,6 @@ function EventDateFilterBar(props) {
       } else {
         togglePicker();
       }
-    } else {
-      reset();
     }
   };
 
@@ -106,12 +117,23 @@ function EventDateFilterBar(props) {
 
   const getTitle = key => {
     if (key === 'custom' && currentButton === key) {
-      const format = date => date.format('ll').split(',')[0];
+      // Localized form of day and month
+      const format = date =>
+        date
+          .format('LL')
+          .match(/^(\w+ \w+)/)
+          .pop();
       return `${format(startDate)} - ${format(endDate)}`;
     } else {
       return find(FILTER_ITEMS, { key }).label;
     }
   };
+
+  const dynamicPickerProps = {};
+
+  if (fullscreenMode) {
+    dynamicPickerProps.orientation = 'verticalScrollable';
+  }
 
   return (
     <div className="container">
@@ -137,7 +159,9 @@ function EventDateFilterBar(props) {
       ))}
 
       {showDatePicker && (
-        <div className="picker">
+        <div
+          className={['picker', fullscreenMode ? 'fullscreen' : ''].join(' ')}
+        >
           <DayPickerRangeController
             startDate={startDate}
             endDate={endDate}
@@ -146,6 +170,8 @@ function EventDateFilterBar(props) {
             onFocusChange={onFocusChange}
             onOutsideClick={togglePicker}
             numberOfMonths={2}
+            hideKeyboardShortcutsPanel={true}
+            {...dynamicPickerProps}
           />
         </div>
       )}
@@ -154,6 +180,7 @@ function EventDateFilterBar(props) {
       <style jsx>{`
         .container {
           display: flex;
+          flex-wrap: wrap;
           margin: -0.25em;
           position: relative;
         }
@@ -165,6 +192,13 @@ function EventDateFilterBar(props) {
           top: 100%;
           left: 0;
           z-index: 150;
+        }
+        .picker.fullscreen {
+          position: fixed;
+          top: 10%;
+          width: 80%;
+          height: 80%;
+          left: 10%;
         }
       `}</style>
     </div>
