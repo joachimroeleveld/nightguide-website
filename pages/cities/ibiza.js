@@ -100,9 +100,9 @@ function IbizaCityPage(props) {
 
     // No date applied
     if (!dateFilter) {
-      sections.push(TIME_SECTIONS['today']);
+      // sections.push(TIME_SECTIONS['today']);
       sections.push(TIME_SECTIONS['tomorrow']);
-      if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
+      // if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
     }
 
     // Date filter applied
@@ -136,10 +136,13 @@ function IbizaCityPage(props) {
   const sortBy = useMemo(() => {
     const dateFilterDiff =
       dateFilter && moment(dateFilter[0]).diff(dateFilter[1], 'days');
+    let sortItems = [];
     if (!(dateFilter && dateFilterDiff <= 7)) {
-      return 'date.interestedCount';
+      sortItems.push('date.interestedCount:desc');
     }
-    return 'date';
+    sortItems.push('date.from');
+    sortItems.push('_id');
+    return sortItems.join(',');
   }, [dateFilter]);
 
   const loadVenues = async () => {
