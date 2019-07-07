@@ -40,7 +40,7 @@ function Tile(props) {
                 }
                 .overlay {
                   top: 20%;
-                  height: 80%;
+                  height: 81%;
                   width: 100%;
                   background: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1));
                 }

@@ -110,7 +110,7 @@ function IbizaCityPage(props) {
           const date = moment(dateFrom).add(day, 'days');
           return {
             title: date
-              .format('ll')
+              .format('LL')
               .match(/^(\w+ \w+)/)
               .pop(),
             filter: {
@@ -141,12 +141,11 @@ function IbizaCityPage(props) {
     let result;
     if (venues.length < VENUE_SECTION_ORDER.length) {
       result = await getVenues({
-        limit: VENUE_SECTION_ORDER.length,
         query: { ids: VENUE_SECTION_ORDER },
       });
       result.results.sort((a, b) => {
-        const indexA = VENUE_SECTION_ORDER.indexOf(a);
-        const indexB = VENUE_SECTION_ORDER.indexOf(b);
+        const indexA = VENUE_SECTION_ORDER.indexOf(a.id);
+        const indexB = VENUE_SECTION_ORDER.indexOf(b.id);
         if (indexA === indexB) return 0;
         return indexA > indexB ? 1 : -1;
       });
