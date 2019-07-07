@@ -136,7 +136,10 @@ function EventRow(props) {
           onClick={() => scrollToPage(page - 1)}
         />
       </div>
-      <div ref={containerRef} className="container">
+      <div
+        ref={containerRef}
+        className={['container', !items.length ? 'empty' : null].join(' ')}
+      >
         <div
           className="items"
           style={{
@@ -187,6 +190,8 @@ function EventRow(props) {
           flex-grow: 1;
           overflow: hidden;
           min-height: 200px;
+        }
+        .container.empty {
           display: flex;
           flex-direction: column;
           justify-content: center;
