@@ -32,6 +32,13 @@ const VENUE_SECTION_ORDER = [
   '5d1affc0bd44b9001205a729', // Lio
 ];
 
+const DOW = moment().day();
+const IS_WEEKEND = moment().isAfter(
+  moment()
+    .subtract(DOW === 0 ? 1 : 0, 'week')
+    .set({ day: 5, hour: 15, minute: 0 })
+);
+
 const TIME_SECTIONS = {
   today: {
     title: __('today'),
@@ -57,10 +64,13 @@ const TIME_SECTIONS = {
   weekend: {
     title: __('thisWeekend'),
     filter: {
-      dateFrom: moment()
-        .set({ day: 5, hour: 15, minute: 0 })
-        .toDate(),
+      dateFrom: !IS_WEEKEND
+        ? moment()
+            .set({ day: 5, hour: 15, minute: 0 })
+            .toDate()
+        : new Date(),
       dateTo: moment()
+        .subtract(DOW === 0 ? 1 : 0, 'week')
         .set({ day: 7, hour: 23, minute: 59 })
         .toDate(),
     },
@@ -90,12 +100,9 @@ function IbizaCityPage(props) {
 
     // No date applied
     if (!dateFilter) {
-      const dow = moment().get('days');
-      const isWeekend = dow >= 5 && dow <= 7;
-
       sections.push(TIME_SECTIONS['today']);
       sections.push(TIME_SECTIONS['tomorrow']);
-      if (!isWeekend) sections.push(TIME_SECTIONS['weekend']);
+      if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
     }
 
     // Date filter applied

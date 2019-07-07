@@ -12,6 +12,13 @@ import './react_dates_overrides.css';
 import SecondaryButton from '../../SecondaryButton';
 import __ from '../../../lib/i18n';
 
+const DOW = moment().day();
+const IS_WEEKEND = moment().isAfter(
+  moment()
+    .subtract(DOW === 0 ? 1 : 0, 'week')
+    .set({ day: 5, hour: 15, minute: 0 })
+);
+
 const FILTER_ITEMS = [
   {
     key: 'today',
@@ -40,13 +47,14 @@ const FILTER_ITEMS = [
   {
     key: 'thisWeekend',
     value: [
+      IS_WEEKEND
+        ? new Date()
+        : moment()
+            .set({ day: 5, hour: 15, minute: 0 })
+            .toDate(),
       moment()
-        .day(5)
-        .set({ hour: 17, minute: 0 })
-        .toDate(),
-      moment()
-        .day(7)
-        .set({ hour: 23, minute: 59 })
+        .subtract(DOW === 0 ? 1 : 0, 'week')
+        .set({ day: 7, hour: 23, minute: 59 })
         .toDate(),
     ],
     label: __('thisWeekend'),
