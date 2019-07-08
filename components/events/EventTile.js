@@ -9,7 +9,7 @@ import { generateTicketRedirectUrl } from './util';
 
 const EventTileBody = props => {
   const { event, eventUrl } = props;
-  const { date, tags, organiser, tickets = {} } = event;
+  const { date, tags, organiser, tickets = {}, dateIndex } = event;
 
   return (
     <div className="container">
@@ -28,7 +28,7 @@ const EventTileBody = props => {
         <a
           rel="nofollow"
           target="_blank"
-          href={generateTicketRedirectUrl(event.id)}
+          href={generateTicketRedirectUrl(event.id, dateIndex)}
           className="buy-tickets"
         >
           {__('buyTickets')}

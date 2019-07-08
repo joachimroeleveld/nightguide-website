@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useState } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getEvent, getEvents, getVenue } from '../lib/api';
@@ -17,6 +18,8 @@ import { generateTicketRedirectUrl } from '../components/events/util';
 function EventPage(props) {
   const { event, baseUrl, similarEvents, venue } = props;
 
+  const [showAllDates, setShowAllDates] = useState(false);
+
   const {
     title,
     facebook,
@@ -28,6 +31,8 @@ function EventPage(props) {
     description = {},
   } = event;
   const futureDates = getFutureEventDates(dates);
+
+  const toggleShowAllDates = () => setShowAllDates(!showAllDates);
 
   return (
     <main>
@@ -72,18 +77,17 @@ function EventPage(props) {
               {!futureDates.length && (
                 <span>{__('nDatesInPast', { dates: dates.length })}</span>
               )}
-              {futureDates.slice(0, 3).map((date, index) => (
-                <div className={'date'} key={index}>
-                  <span>{formatEventDate(date.from, date.to)}</span>
-                  {/*{!!date.interestedCount && (*/}
-                  {/*  <span>{` (${date.interestedCount})`}</span>*/}
-                  {/*)}*/}
-                </div>
-              ))}
-              {futureDates.length > 3 && (
-                <span className={'more-dates'}>
+              {futureDates
+                .slice(0, showAllDates ? futureDates.length : 3)
+                .map((date, index) => (
+                  <div className={'date'} key={index}>
+                    <span>{formatEventDate(date.from, date.to)}</span>
+                  </div>
+                ))}
+              {!showAllDates && futureDates.length > 3 && (
+                <a onClick={toggleShowAllDates} className={'more-dates'}>
                   {__('eventPage.nMoreDates', { n: futureDates.length - 3 })}
-                </span>
+                </a>
               )}
             </div>
             <div className="additional-info">
@@ -188,6 +192,7 @@ function EventPage(props) {
         }
         .info .more-dates {
           display: block;
+          text-decoration: underline;
           margin: 0.5em 0;
           color: ${colors.textSecondary};
           color: ${colors.textSecondary};
@@ -206,6 +211,7 @@ function EventPage(props) {
         }
         .description {
           padding: 1em 0 0;
+          word-break: break-word;
         }
         .facebook-page {
           color: ${colors.linkText};

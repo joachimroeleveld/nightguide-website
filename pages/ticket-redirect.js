@@ -40,7 +40,7 @@ function TicketRedirectPage(props) {
         <Card>
           <div className="ticket-inner">
             <strong className="title">{facebook.title || title}</strong>
-            <span className="date">{formatEventDate(date)}</span>
+            <span className="date">{formatEventDate(date.from, date.to)}</span>
           </div>
         </Card>
       </div>
@@ -118,7 +118,7 @@ function TicketRedirectPage(props) {
 TicketRedirectPage.getInitialProps = async ctx => {
   const { dateIndex, event } = ctx.query;
   return {
-    dateIndex,
+    dateIndex: parseInt(dateIndex),
     event: await getEvent(event),
   };
 };
