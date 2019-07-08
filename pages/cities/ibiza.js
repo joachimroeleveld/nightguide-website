@@ -100,9 +100,9 @@ function IbizaCityPage(props) {
 
     // No date applied
     if (!dateFilter) {
-      // sections.push(TIME_SECTIONS['today']);
+      sections.push(TIME_SECTIONS['today']);
       sections.push(TIME_SECTIONS['tomorrow']);
-      // if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
+      if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
     }
 
     // Date filter applied
