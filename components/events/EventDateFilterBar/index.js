@@ -137,6 +137,27 @@ function EventDateFilterBar(props) {
     }
   };
 
+  const renderCalendarInfo = () => (
+    <React.Fragment>
+      <div className={['info', fullscreenMode ? 'fullscreen' : ''].join(' ')}>
+        ❕ {__('pickTwoDates')}
+      </div>
+      {/*language=CSS*/}
+      <style jsx>{`
+        .info {
+          color: #000;
+          font-size: 14px;
+          padding: 10px 21px;
+          background-color: #d5d5d5;
+        }
+        .info.fullscreen {
+          position: relative;
+          top: -41px;
+        }
+      `}</style>
+    </React.Fragment>
+  );
+
   const dynamicPickerProps = {};
 
   if (fullscreenMode) {
@@ -171,6 +192,7 @@ function EventDateFilterBar(props) {
           className={['picker', fullscreenMode ? 'fullscreen' : ''].join(' ')}
         >
           <DayPickerRangeController
+            calendarInfoPosition={fullscreenMode ? 'bottom' : 'top'}
             startDate={startDate}
             endDate={endDate}
             onDatesChange={onPickerDateChange}
@@ -179,6 +201,7 @@ function EventDateFilterBar(props) {
             onOutsideClick={togglePicker}
             numberOfMonths={2}
             hideKeyboardShortcutsPanel={true}
+            renderCalendarInfo={renderCalendarInfo}
             {...dynamicPickerProps}
           />
         </div>

@@ -124,7 +124,7 @@
   },
   "ticketRedirectPage": {
     "thanksAlmostThere": "Thanks, we're almost there",
-    "youreRedirected": "You are redirected to the ticket page:"
+    "youreRedirected": "You are redirected to the ticket provider"
   },
   "tag": {
     "meta": {
@@ -275,7 +275,8 @@
   "today": "Today",
   "tomorrow": "Tomorrow",
   "thisWeekend": "This weekend",
-  "pickDate": "Pick date",
+  "pickDate": "Pick dates",
+  "pickTwoDates": "Pick two dates",
   "buyTickets": "Buy tickets",
   "noEventsForDates": "No events exist for these dates"
 }

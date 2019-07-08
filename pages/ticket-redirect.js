@@ -22,9 +22,10 @@ function TicketRedirectPage(props) {
       <h1>{__('ticketRedirectPage.thanksAlmostThere')}</h1>
       <div className="redirect-notice">
         <span className="notice">
-          {__('ticketRedirectPage.youreRedirected')}
-          <br />
-          <a href={tickets.checkoutUrl}>{tickets.checkoutUrl.split('?')[0]}</a>
+          {__('ticketRedirectPage.youreRedirected') + ' '}
+          <a className="ticket-link" href={tickets.checkoutUrl}>
+            {tickets.checkoutUrl.match(/:\/\/((?:[^/:]+))/).pop()}
+          </a>
         </span>
         <div className="loading-container">
           <div className="loading">
@@ -86,6 +87,9 @@ function TicketRedirectPage(props) {
         }
         .loading-3 {
           animation-delay: 0.66s !important;
+        }
+        .ticket-link {
+          word-break: break-all;
         }
         @media (min-width: 700px) {
           .container {

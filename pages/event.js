@@ -118,7 +118,10 @@ function EventPage(props) {
                   <PrimaryButton
                     rel="noopener noreferrer"
                     target="_blank"
-                    href={generateTicketRedirectUrl(event.id)}
+                    href={generateTicketRedirectUrl(
+                      event.id,
+                      dates.indexOf(futureDates[0])
+                    )}
                     title={__('buyTickets')}
                   />
                 )}
