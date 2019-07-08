@@ -15,15 +15,6 @@ import TagList from '../components/TagList';
 import EventGrid from '../components/events/EventGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
-const IMAGE_ORDER = [
-  'from_bar',
-  'front_stage',
-  'front_bar',
-  'from_stage',
-  'atmosphere',
-  'front_venue',
-];
-
 function VenuePage(props) {
   const { venue, baseUrl, events, similarVenues } = props;
 
@@ -63,22 +54,6 @@ function VenuePage(props) {
     mapsUrl += `&query_place_id=${googlePlaceId}`;
   }
 
-  const imageUrls = useMemo(
-    () =>
-      images
-        .slice(0, 5)
-        .sort((a, b) => {
-          const indexA = IMAGE_ORDER.indexOf(a.perspective);
-          const indexB = IMAGE_ORDER.indexOf(b.perspective);
-          if (indexA === -1) {
-            return -1;
-          }
-          return indexA < indexB ? -1 : 1;
-        })
-        .map(({ url }) => ({ url })),
-    [images]
-  );
-
   return (
     <main>
       <Head>
@@ -102,7 +77,7 @@ function VenuePage(props) {
       </Head>
 
       <header className={'header'}>
-        <ImageGrid images={imageUrls} />
+        <ImageGrid images={images} />
         <h1>{name}</h1>
       </header>
 

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 import css from 'styled-jsx/css';
-import find from 'lodash/find';
 
 import Tile from '../Tile';
 import { _o } from '../../lib/i18n';
@@ -9,7 +8,6 @@ import { _o } from '../../lib/i18n';
 function VenueTile(props) {
   const { baseUrl, venue, imgWidths, imgSizes } = props;
   const { name, images, id, description } = venue;
-  const image = find(images, { perspective: 'from_bar' }) || images[0];
   return (
     <React.Fragment>
       <Link href={`${baseUrl}/${id}`}>
@@ -18,7 +16,7 @@ function VenueTile(props) {
             title={name}
             imgProps={
               !!images.length && {
-                url: image.url,
+                url: images[0].url,
                 widths: imgWidths,
                 sizes: imgSizes,
                 alt: name,

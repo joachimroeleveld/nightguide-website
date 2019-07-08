@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import EventGrid from './EventGrid';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
+import Swipe from 'react-easy-swipe';
 
 import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
@@ -140,36 +141,43 @@ function EventRow(props) {
         ref={containerRef}
         className={['container', !items.length ? 'empty' : null].join(' ')}
       >
-        <div
-          className="items"
-          style={{
-            gridTemplateColumns: '1fr '.repeat(loadedPages),
-            height: containerDimensions.height,
-            width: loadedPages * containerDimensions.width,
-            transform: `translateX(-${(page - 1) *
-              (containerDimensions.width + 14)}px)`,
-          }}
+        <Swipe
+          onSwipeLeft={() => scrollToPage(page + 1)}
+          onSwipeRight={() => scrollToPage(page - 1)}
         >
-          {range(1, loadedPages + 1).map(page => {
-            const events = items.slice(
-              (page - 1) * itemsInWidth,
-              page * itemsInWidth
-            );
-            return (
-              <div
-                key={page}
-                className="page"
-                style={{ width: containerDimensions.width }}
-              >
-                <EventGrid
-                  baseUrl={baseUrl}
-                  events={events}
-                  setGridItemRef={(index, ref) => setItemRef(page, index, ref)}
-                />
-              </div>
-            );
-          })}
-        </div>
+          <div
+            className="items"
+            style={{
+              gridTemplateColumns: '1fr '.repeat(loadedPages),
+              height: containerDimensions.height,
+              width: loadedPages * containerDimensions.width,
+              transform: `translateX(-${(page - 1) *
+                (containerDimensions.width + 14)}px)`,
+            }}
+          >
+            {range(1, loadedPages + 1).map(page => {
+              const events = items.slice(
+                (page - 1) * itemsInWidth,
+                page * itemsInWidth
+              );
+              return (
+                <div
+                  key={page}
+                  className="page"
+                  style={{ width: containerDimensions.width }}
+                >
+                  <EventGrid
+                    baseUrl={baseUrl}
+                    events={events}
+                    setGridItemRef={(index, ref) =>
+                      setItemRef(page, index, ref)
+                    }
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </Swipe>
         {!items.length && (
           <span className="empty-message">{__('noEventsForDates')}</span>
         )}
