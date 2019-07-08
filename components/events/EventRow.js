@@ -142,6 +142,7 @@ function EventRow(props) {
         className={['container', !items.length ? 'empty' : null].join(' ')}
       >
         <Swipe
+          tolerance={15}
           onSwipeLeft={() => scrollToPage(page + 1)}
           onSwipeRight={() => scrollToPage(page - 1)}
         >
