@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useState, useMemo, useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
+import debounce from 'lodash/debounce';
 import findIndex from 'lodash/findIndex';
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -91,6 +92,7 @@ function IbizaCityPage(props) {
   const [dateFilter, setDateFilter] = useState(null);
   const [venues, setVenues] = useState([]);
   const [fetchingVenues, setFetchingVenues] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(false);
   const [loadedSections, setLoadedSections] = useState(
     range(0, INITIAL_LOADED_SECTIONS)
   );
@@ -100,6 +102,14 @@ function IbizaCityPage(props) {
   useEffect(() => {
     setLoadedSections(range(0, INITIAL_LOADED_SECTIONS));
   }, [dateFilter]);
+
+  useEffect(() => {
+    const resizeListener = debounce(() => {
+      setWindowWidth(window.innerWidth);
+    }, 100);
+    window.addEventListener('resize', resizeListener);
+    return () => window.removeEventListener('resize', resizeListener);
+  }, []);
 
   const dateSections = useMemo(() => {
     const sections = [];
@@ -137,18 +147,6 @@ function IbizaCityPage(props) {
     }
 
     return sections;
-  }, [dateFilter]);
-
-  const sortBy = useMemo(() => {
-    const dateFilterDiff =
-      dateFilter && moment(dateFilter[0]).diff(dateFilter[1], 'days');
-    let sortItems = [];
-    if (!(dateFilter && dateFilterDiff <= 7)) {
-      sortItems.push('date.interestedCount:desc');
-    }
-    sortItems.push('date.from');
-    sortItems.push('_id');
-    return sortItems.join(',');
   }, [dateFilter]);
 
   const loadVenues = async () => {
@@ -242,7 +240,15 @@ function IbizaCityPage(props) {
       {sections.slice(0, loadedSections.length).map((section, index) => {
         const isFirstVenueSection =
           findIndex(sections, section => section.venue) === index;
+
         const filter = getSectionFilter(index);
+
+        const sortBy = [];
+        if (!section.venue) {
+          sortBy.push('date.interestedCount:desc');
+        }
+        sortBy.push('date.from:asc', '_id');
+
         return (
           <section
             className={[
@@ -274,12 +280,10 @@ function IbizaCityPage(props) {
               )}
               <div className="row">
                 <EventRow
-                  rowCount={
-                    section.venue ? (window.innerWidth > 800 ? 2 : 1) : 1
-                  }
+                  rowCount={section.venue ? (windowWidth > 800 ? 2 : 1) : 1}
                   filter={filter}
                   baseUrl={baseUrl}
-                  sortBy={sortBy}
+                  sortBy={sortBy.join(',')}
                 />
               </div>
             </div>

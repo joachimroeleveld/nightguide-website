@@ -3,7 +3,6 @@ import EventGrid from './EventGrid';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import Swipe from 'react-easy-swipe';
-import sum from 'lodash/sum';
 
 import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
@@ -30,7 +29,12 @@ function EventRow(props) {
     }
   }, [items]);
 
-  useEffect(() => calculateDimensions(), [containerRef.current, items, page]);
+  useEffect(() => calculateDimensions(), [
+    containerRef.current,
+    items,
+    page,
+    rowCount,
+  ]);
 
   useEffect(() => {
     const resizeListener = debounce(() => {
@@ -55,21 +59,7 @@ function EventRow(props) {
     const itemsPerPage = columnCount * rowCount;
     setItemsPerPage(itemsPerPage);
 
-    // Get items per column
-    const columns = range(1, columnCount + 1).map(columnNo =>
-      range(1, rowCount + 1)
-        .map(rowNo => columnCount * rowNo - columnCount + columnNo - 1)
-        .map(index => itemRefs.current[page][index])
-    );
-    const height =
-      sum(columns[0].map(item => item && item.getBoundingClientRect().height)) +
-      // Grid gap
-      (rowCount - 1) * 14;
-
-    setContainerDimensions({
-      width,
-      height,
-    });
+    setContainerDimensions({ width });
 
     let loadedPages;
     if (reachedEnd) {
@@ -151,9 +141,7 @@ function EventRow(props) {
             <div
               className="items"
               style={{
-                gridTemplateRows: '1fr '.repeat(rowCount),
                 gridTemplateColumns: '1fr '.repeat(loadedPages),
-                height: containerDimensions.height,
                 width: loadedPages * containerDimensions.width,
                 transform: `translateX(-${(page - 1) *
                   (containerDimensions.width + 14)}px)`,

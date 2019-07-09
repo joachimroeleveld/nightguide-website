@@ -54,6 +54,7 @@ const EventTileBody = props => {
           margin-top: 0.2em;
         }
         .event-link {
+          display: block;
           flex-grow: 1;
         }
         .buy-tickets {
