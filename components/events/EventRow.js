@@ -46,9 +46,11 @@ function EventRow(props) {
 
     const width = containerRef.current.getBoundingClientRect().width;
 
+    const columnWidth = itemRefs.current['1']['0'].getBoundingClientRect()
+      .width;
     const columnCount = Math.round(
       // Assuming equal column width
-      width / itemRefs.current['1']['0'].getBoundingClientRect().width
+      width / (columnWidth || 1)
     );
     const itemsPerPage = columnCount * rowCount;
     setItemsPerPage(itemsPerPage);

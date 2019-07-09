@@ -36,6 +36,11 @@ const EventTileBody = props => {
       )}
       {/*language=CSS*/}
       <style jsx>{`
+        .container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
         .venue {
           color: #fff;
           margin: 0.1em 0;
@@ -49,6 +54,7 @@ const EventTileBody = props => {
           margin-top: 0.2em;
         }
         .buy-tickets {
+          flex-grow: 1;
           background-color: ${colors.primaryButton};
           display: block;
           color: ${colors.textDark};

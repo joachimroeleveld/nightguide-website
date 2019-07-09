@@ -176,13 +176,17 @@ function VenueSliderTile(props) {
         }
         .slide-name,
         .slide-description {
-          padding: 0 1.5em 2em;
+          justify-content: center;
+          align-items: flex-end;
+          padding: 0 3em;
           height: 100%;
           display: flex;
-          align-items: flex-end;
+          padding-bottom: 2em;
           box-sizing: border-box;
         }
         .slide-name {
+          align-items: flex-end;
+          padding-bottom: 2em;
           font-size: 1.2em;
           font-weight: 600;
         }
