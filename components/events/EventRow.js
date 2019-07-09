@@ -41,12 +41,13 @@ function EventRow(props) {
   }, [items]);
 
   const calculateDimensions = () => {
-    if (!containerRef.current || !items.length) return;
+    if (!containerRef.current || !items.length || !itemRefs.current['1']['0'])
+      return;
 
     const width = containerRef.current.getBoundingClientRect().width;
 
     const columnCount = Math.round(
-      // Assuming equal width
+      // Assuming equal column width
       width / itemRefs.current['1']['0'].getBoundingClientRect().width
     );
     const itemsPerPage = columnCount * rowCount;

@@ -15,7 +15,7 @@ const handle = app.getRequestHandler();
 const routes = require('./routes');
 const { getCityConfig } = require('./lib/api');
 
-const { PORT, HOST = 'localhost' } = process.env;
+const { PORT, HOST = undefined } = process.env;
 
 const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy', 'ticket-redirect'];
 
