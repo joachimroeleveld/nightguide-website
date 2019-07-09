@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 import EventGrid from './EventGrid';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import Swipe from 'react-easy-swipe';
+import sum from 'lodash/sum';
 
 import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
@@ -10,11 +11,18 @@ import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 
 function EventRow(props) {
-  const { baseUrl, initialEvents, filter, sortBy } = props;
+  const {
+    baseUrl,
+    initialEvents,
+    filter,
+    sortBy,
+    rowCount = 1,
+    showEmptyMessage = false,
+  } = props;
 
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({});
-  const [itemsInWidth, setItemsInWidth] = useState(4);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const [loadedPages, setLoadedPages] = useState(1);
   const [page, setPage] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -43,41 +51,44 @@ function EventRow(props) {
     if (!containerRef.current || !items.length) return;
 
     const width = containerRef.current.getBoundingClientRect().width;
-    // Get highest item on current page
-    const height = Object.keys(itemRefs.current[page]).reduce(
-      (maxHeight, item) => {
-        const itemHeight = itemRefs.current[page][item].getBoundingClientRect()
-          .height;
-        return itemHeight > maxHeight ? itemHeight : maxHeight;
-      },
-      0
+
+    const columnCount = Math.round(
+      // Assuming equal width
+      width / itemRefs.current['1']['0'].getBoundingClientRect().width
     );
+    const itemsPerPage = columnCount * rowCount;
+    setItemsPerPage(itemsPerPage);
+
+    // Get items per column
+    const columns = range(1, columnCount + 1).map(columnNo =>
+      range(1, rowCount + 1)
+        .map(rowNo => columnCount * rowNo - columnCount + columnNo - 1)
+        .map(index => itemRefs.current[page][index])
+    );
+    const height =
+      sum(columns[0].map(item => item && item.getBoundingClientRect().height)) +
+      // Grid gap
+      (rowCount - 1) * 14;
 
     setContainerDimensions({
       width,
       height,
     });
 
-    const itemsInWidth = Math.round(
-      width / itemRefs.current['1']['0'].getBoundingClientRect().width
-    );
-    // Assuming equal width
-    setItemsInWidth(itemsInWidth);
-
     let loadedPages;
     if (reachedEnd) {
-      loadedPages = Math.ceil(items.length / itemsInWidth);
+      loadedPages = Math.ceil(items.length / itemsPerPage);
     } else {
-      loadedPages = Math.floor(items.length / itemsInWidth);
+      loadedPages = Math.floor(items.length / itemsPerPage);
     }
     setLoadedPages(loadedPages);
 
-    let adjustedPage = Math.floor(offset / itemsInWidth) + 1;
+    let adjustedPage = Math.floor(offset / itemsPerPage) + 1;
     adjustedPage = Math.min(loadedPages, adjustedPage);
     setPage(Math.max(1, adjustedPage));
 
     if (loadedPages === adjustedPage) {
-      loadNextPage(itemsInWidth);
+      loadNextPage(itemsPerPage);
     }
   };
 
@@ -85,10 +96,10 @@ function EventRow(props) {
     if (newPage === 0 || newPage > loadedPages) return;
 
     setPage(newPage);
-    setOffset((newPage - 1) * itemsInWidth);
+    setOffset((newPage - 1) * itemsPerPage);
   };
 
-  const loadNextPage = async (limit = itemsInWidth) => {
+  const loadNextPage = async (limit = itemsPerPage) => {
     if (fetching || reachedEnd) {
       return;
     }
@@ -122,7 +133,7 @@ function EventRow(props) {
   };
 
   // console.log('loadedPages', loadedPages);
-  // console.log('itemsInWidth', itemsInWidth);
+  // console.log('itemsPerPage', itemsPerPage);
   // console.log('offset', offset);
   // console.log('items.length', items.length);
   // console.log('page', page);
@@ -130,77 +141,87 @@ function EventRow(props) {
   // console.log('===========');
 
   return (
-    <div className="root">
-      <div className="prev-page">
-        <button
-          className={page === 1 ? 'hide' : ''}
-          onClick={() => scrollToPage(page - 1)}
-        />
-      </div>
-      <div
-        ref={containerRef}
-        className={['container', !items.length ? 'empty' : null].join(' ')}
-      >
-        <Swipe
-          tolerance={15}
-          onSwipeLeft={() => scrollToPage(page + 1)}
-          onSwipeRight={() => scrollToPage(page - 1)}
+    <Fragment>
+      <div className={'root'}>
+        <div
+          ref={containerRef}
+          className={['container', !items.length ? 'empty' : null].join(' ')}
         >
-          <div
-            className="items"
-            style={{
-              gridTemplateColumns: '1fr '.repeat(loadedPages),
-              height: containerDimensions.height,
-              width: loadedPages * containerDimensions.width,
-              transform: `translateX(-${(page - 1) *
-                (containerDimensions.width + 14)}px)`,
-            }}
+          <Swipe
+            tolerance={30}
+            onSwipeLeft={() => scrollToPage(page + 1)}
+            onSwipeRight={() => scrollToPage(page - 1)}
           >
-            {range(1, loadedPages + 1).map(page => {
-              const events = items.slice(
-                (page - 1) * itemsInWidth,
-                page * itemsInWidth
-              );
-              return (
-                <div
-                  key={page}
-                  className="page"
-                  style={{ width: containerDimensions.width }}
-                >
-                  <EventGrid
-                    baseUrl={baseUrl}
-                    events={events}
-                    setGridItemRef={(index, ref) =>
-                      setItemRef(page, index, ref)
-                    }
-                  />
-                </div>
-              );
-            })}
+            <div
+              className="items"
+              style={{
+                gridTemplateRows: '1fr '.repeat(rowCount),
+                gridTemplateColumns: '1fr '.repeat(loadedPages),
+                height: containerDimensions.height,
+                width: loadedPages * containerDimensions.width,
+                transform: `translateX(-${(page - 1) *
+                  (containerDimensions.width + 14)}px)`,
+              }}
+            >
+              {range(1, loadedPages + 1).map(page => {
+                const events = items.slice(
+                  (page - 1) * itemsPerPage,
+                  page * itemsPerPage
+                );
+                return (
+                  <div
+                    key={page}
+                    className="page"
+                    style={{ width: containerDimensions.width }}
+                  >
+                    <EventGrid
+                      double={rowCount === 2}
+                      baseUrl={baseUrl}
+                      events={events}
+                      setGridItemRef={(index, ref) =>
+                        setItemRef(page, index, ref)
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </Swipe>
+          {!items.length && (
+            <span className="empty-message">{__('noEventsForDates')}</span>
+          )}
+        </div>
+        {!!items.length && (
+          <div className="pager">
+            <button
+              className={['prev', page === 1 ? 'disabled' : ''].join(' ')}
+              onClick={() => scrollToPage(page - 1)}
+            />
+            <button
+              className={[
+                'next',
+                reachedEnd && loadedPages === page ? 'disabled' : '',
+              ].join(' ')}
+              onClick={() => scrollToPage(page + 1)}
+            />
           </div>
-        </Swipe>
-        {!items.length && (
-          <span className="empty-message">{__('noEventsForDates')}</span>
         )}
-      </div>
-      <div className="next-page">
-        <button
-          className={reachedEnd && loadedPages === page ? 'hide' : ''}
-          onClick={() => scrollToPage(page + 1)}
-        />
       </div>
       {/*language=CSS*/}
       <style jsx>{`
         .root {
-          display: flex;
-          margin: 0 -2em;
+          position: relative;
+          height: 100%;
+          box-sizing: border-box;
         }
         .container {
+          height: 100%;
           flex-grow: 1;
           overflow: hidden;
-          min-height: 200px;
+          min-height: 188px;
         }
         .container.empty {
+          min-height: auto;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -211,36 +232,35 @@ function EventRow(props) {
           grid-gap: ${dimensions.gridGap};
           transition: ease-out 0.3s;
         }
-        .prev-page,
-        .next-page {
-          flex-shrink: 0;
-          width: 2em;
+        .pager {
+          position: absolute;
+          width: 100%;
           display: flex;
-          align-items: center;
-          justify-content: center;
+          justify-content: flex-end;
+          margin-top: 0.5em;
         }
-        .prev-page button,
-        .next-page button {
-          width: 1em;
-          margin: 0 0.5em;
-          height: 60px;
+        .pager button {
+          width: 2em;
+          height: 2em;
           border: 1px solid #595959;
           border-radius: 3px;
           background: url(/static/img/pager-arrow.svg) no-repeat center center;
           transition: opacity 0.2s;
         }
-        .prev-page button.hide,
-        .next-page button.hide {
-          opacity: 0;
+        .pager button.disabled {
+          opacity: 0.5;
         }
-        .prev-page button {
+        .pager .prev {
           transform: rotate(180deg);
+        }
+        .pager .next {
+          margin-left: 0.3em;
         }
         .empty-message {
           color: ${colors.textSecondary};
         }
       `}</style>
-    </div>
+    </Fragment>
   );
 }
 

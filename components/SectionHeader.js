@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
-import dimensions from '../styles/dimensions';
 
 function SectionHeader(props) {
   const {
@@ -27,14 +26,6 @@ function SectionHeader(props) {
           display: flex;
           align-items: center;
           margin-bottom: 0.6em;
-        }
-        .container::before {
-          content: '';
-          width: 10px;
-          height: 2.5em;
-          background: ${colors.thickBorder};
-          position: absolute;
-          left: -${dimensions.bodyPadding};
         }
         .separator {
           flex-grow: 1;

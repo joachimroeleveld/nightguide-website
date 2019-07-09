@@ -5,7 +5,7 @@ import Grid from '../Grid';
 import EventTile from './EventTile';
 
 function EventGrid(props) {
-  const { events, baseUrl, ...gridProps } = props;
+  const { events, baseUrl, double, ...gridProps } = props;
 
   const keyExtractor = event => event.id;
 
@@ -19,8 +19,16 @@ function EventGrid(props) {
         event={event}
         baseUrl={`${baseUrl}/events`}
       />
+      {/*language=CSS*/}
+      <style jsx>{`
+        .event {
+          height: 100%;
+        }
+      `}</style>
     </div>
   );
+
+  const styles = double ? gridStylesDouble : gridStyles;
 
   return (
     <React.Fragment>
@@ -29,9 +37,10 @@ function EventGrid(props) {
         keyExtractor={keyExtractor}
         items={events}
         renderItem={renderItem}
-        className={gridStyles.className}
+        className={styles.className}
       />
-      {gridStyles.styles}
+      {!double && styles.styles}
+      {double && styles.styles}
     </React.Fragment>
   );
 }
@@ -49,6 +58,19 @@ const gridStyles = css.resolve`
   @media (min-width: 56rem) {
     .grid {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+`;
+
+/*language=CSS*/
+const gridStylesDouble = css.resolve`
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 56rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
     }
   }
 `;

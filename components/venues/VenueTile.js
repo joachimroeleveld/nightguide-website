@@ -4,6 +4,7 @@ import css from 'styled-jsx/css';
 
 import Tile from '../Tile';
 import { _o } from '../../lib/i18n';
+import { removeTags } from '../../lib/util';
 
 function VenueTile(props) {
   const { baseUrl, venue, imgWidths, imgSizes } = props;
@@ -25,8 +26,7 @@ function VenueTile(props) {
             BodyContents={
               description ? (
                 <div>
-                  {_o(description)
-                    .replace(/(<([^>]+)>)/gi, '')
+                  {removeTags(_o(description))
                     .slice(0, 130)
                     .trim() + '...'}
                 </div>

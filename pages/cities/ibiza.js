@@ -13,24 +13,29 @@ import colors from '../../styles/colors';
 import EventDateFilterBar from '../../components/events/EventDateFilterBar';
 import EventRow from '../../components/events/EventRow';
 import SectionHeader from '../../components/SectionHeader';
+import VenueSliderTile from '../../components/venues/VenueSliderTile';
+import dimensions from '../../styles/dimensions';
 
-const VENUE_SECTION_ORDER = [
-  '5d1affe8bd44b9001205a73d', // Pacha
-  '5d1affd9bd44b9001205a736', // Ushuaia
-  '5d1affd3bd44b9001205a733', // Amnesia
-  '5d1affc5bd44b9001205a72c', // Eden
-  '5d1affc3bd44b9001205a72b', // Privilege
-  '5d1affb9bd44b9001205a726', // Hi
-  '5d1afff3bd44b9001205a743', // DC-10
-  '5d1affdabd44b9001205a737', // Es Paradis
-  '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
-  '5d1affadbd44b9001205a720', // Heart
-  '5d1affd5bd44b9001205a734', // Ibiza Rocks
-  '5d1affd7bd44b9001205a735', // Oceanbeat pier
-  '5d1affbebd44b9001205a728', // Octan
-  '5d1a2d82bd44b9001205a71c', // Pikes
-  '5d1affc0bd44b9001205a729', // Lio
-];
+const VENUE_SECTION_ORDER =
+  process.env.NODE_ENV === 'production'
+    ? [
+        '5d1affe8bd44b9001205a73d', // Pacha
+        '5d1affd9bd44b9001205a736', // Ushuaia
+        '5d1affd3bd44b9001205a733', // Amnesia
+        '5d1affc5bd44b9001205a72c', // Eden
+        '5d1affc3bd44b9001205a72b', // Privilege
+        '5d1affb9bd44b9001205a726', // Hi
+        '5d1afff3bd44b9001205a743', // DC-10
+        '5d1affdabd44b9001205a737', // Es Paradis
+        '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
+        '5d1affadbd44b9001205a720', // Heart
+        '5d1affd5bd44b9001205a734', // Ibiza Rocks
+        '5d1affd7bd44b9001205a735', // Oceanbeat pier
+        '5d1affbebd44b9001205a728', // Octan
+        '5d1a2d82bd44b9001205a71c', // Pikes
+        '5d1affc0bd44b9001205a729', // Lio
+      ]
+    : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
 
 const DOW = moment().day();
 const IS_WEEKEND = moment().isAfter(
@@ -173,6 +178,7 @@ function IbizaCityPage(props) {
   const sections = useMemo(() => {
     const venueSections = venues.map(venue => ({
       title: venue.name,
+      venue,
       filter: { venue: venue.id },
     }));
     const availableSections = [...dateSections, ...venueSections];
@@ -236,11 +242,33 @@ function IbizaCityPage(props) {
         const filter = getSectionFilter(index);
         return (
           <section
-            className="event-section"
+            className={[
+              'event-section',
+              section.venue ? 'venue-section' : '',
+            ].join(' ')}
             key={JSON.stringify(dateFilter) + index}
           >
-            <SectionHeader title={section.title} TitleElem={'h2'} />
-            <EventRow filter={filter} baseUrl={baseUrl} sortBy={sortBy} />
+            {!section.venue && (
+              <SectionHeader title={section.title} TitleElem={'h2'} />
+            )}
+            {section.venue && (
+              <div className="venue">
+                <VenueSliderTile
+                  imgWidths={[600, 1000, 20000]}
+                  imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
+                  baseUrl={baseUrl}
+                  venue={section.venue}
+                />
+              </div>
+            )}
+            <div className="row">
+              <EventRow
+                rowCount={section.venue ? 2 : 1}
+                filter={filter}
+                baseUrl={baseUrl}
+                sortBy={sortBy}
+              />
+            </div>
             <Observer onChange={getAddSection(index)} treshold={0.25}>
               <div />
             </Observer>
@@ -259,6 +287,29 @@ function IbizaCityPage(props) {
         }
         .event-section:not(:first-of-type) {
           margin-top: 2em;
+        }
+        .event-section.venue-section {
+          display: grid;
+          grid-gap: ${dimensions.gridGap};
+          grid-template-rows: 15em auto;
+          grid-template-columns: 100%;
+          border-top: 1px solid ${colors.separator};
+          padding-top: 3em;
+          margin-top: 4em;
+        }
+        @media (min-width: 800px) {
+          .event-section.venue-section {
+            display: grid;
+            grid-gap: ${dimensions.gridGap};
+            grid-template-columns: repeat(2, calc(50% - 7px));
+            grid-template-rows: auto;
+          }
+          .event-section .venue {
+            height: 448px;
+          }
+          .event-section .row {
+            height: 100%;
+          }
         }
       `}</style>
     </main>

@@ -40,6 +40,8 @@ function GlobalStyles() {
         button {
           border: none;
           background: none;
+          padding: 0;
+          font-size: 1em;
         }
       `}</style>
       {/*language=CSS*/}
