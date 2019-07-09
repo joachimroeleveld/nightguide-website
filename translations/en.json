@@ -37,7 +37,8 @@
       "title": "Events in {{city}} - where to go out | NightGuide",
       "description": "Explore events in {{city}}."
     },
-    "eventsIn": "Events in"
+    "eventsIn": "Events in",
+    "clubs": "Clubs"
   },
   "cityExplorePage": {
     "meta": {

@@ -13,7 +13,7 @@ const EventTileBody = props => {
 
   return (
     <div className="container">
-      <a href={eventUrl}>
+      <a href={eventUrl} className="event-link">
         <div className="date">{formatEventDate(date.from)}</div>
         <div className="venue">{organiser.venue.name}</div>
         <div className="tags">
@@ -53,8 +53,10 @@ const EventTileBody = props => {
         .tags {
           margin-top: 0.2em;
         }
-        .buy-tickets {
+        .event-link {
           flex-grow: 1;
+        }
+        .buy-tickets {
           background-color: ${colors.primaryButton};
           display: block;
           color: ${colors.textDark};

@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useState, useMemo, useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
+import findIndex from 'lodash/findIndex';
 import Observer from '@researchgate/react-intersection-observer';
 
 import { getVenues } from '../../lib/api';
@@ -239,35 +240,48 @@ function IbizaCityPage(props) {
         <EventDateFilterBar onChange={setDateFilter} />
       </div>
       {sections.slice(0, loadedSections.length).map((section, index) => {
+        const isFirstVenueSection =
+          findIndex(sections, section => section.venue) === index;
         const filter = getSectionFilter(index);
         return (
           <section
             className={[
               'event-section',
               section.venue ? 'venue-section' : '',
+              isFirstVenueSection ? 'first-venue' : '',
             ].join(' ')}
             key={JSON.stringify(dateFilter) + index}
           >
+            {isFirstVenueSection && (
+              <SectionHeader
+                title={__('cityEventsPage.clubs')}
+                TitleElem={'h2'}
+              />
+            )}
             {!section.venue && (
               <SectionHeader title={section.title} TitleElem={'h2'} />
             )}
-            {section.venue && (
-              <div className="venue">
-                <VenueSliderTile
-                  imgWidths={[600, 1000, 20000]}
-                  imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
+            <div className="content">
+              {section.venue && (
+                <div className="venue">
+                  <VenueSliderTile
+                    imgWidths={[600, 1000, 20000]}
+                    imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
+                    baseUrl={baseUrl}
+                    venue={section.venue}
+                  />
+                </div>
+              )}
+              <div className="row">
+                <EventRow
+                  rowCount={
+                    section.venue ? (window.innerWidth > 800 ? 2 : 1) : 1
+                  }
+                  filter={filter}
                   baseUrl={baseUrl}
-                  venue={section.venue}
+                  sortBy={sortBy}
                 />
               </div>
-            )}
-            <div className="row">
-              <EventRow
-                rowCount={section.venue ? 2 : 1}
-                filter={filter}
-                baseUrl={baseUrl}
-                sortBy={sortBy}
-              />
             </div>
             <Observer onChange={getAddSection(index)} treshold={0.25}>
               <div />
@@ -288,17 +302,19 @@ function IbizaCityPage(props) {
         .event-section:not(:first-of-type) {
           margin-top: 2em;
         }
-        .event-section.venue-section {
+        .venue-section .content {
           display: grid;
           grid-gap: ${dimensions.gridGap};
           grid-template-rows: 15em auto;
           grid-template-columns: 100%;
+        }
+        .venue-section:not(.first-venue) .content {
           border-top: 1px solid ${colors.separator};
           padding-top: 3em;
           margin-top: 4em;
         }
         @media (min-width: 800px) {
-          .event-section.venue-section {
+          .event-section.venue-section .content {
             display: grid;
             grid-gap: ${dimensions.gridGap};
             grid-template-columns: repeat(2, calc(50% - 7px));
