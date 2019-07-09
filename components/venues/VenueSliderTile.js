@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
+import Swipe from 'react-easy-swipe';
 
 import ResponsiveImage from '../ResponsiveImage';
 import { _o } from '../../lib/i18n';
@@ -75,57 +76,64 @@ function VenueSliderTile(props) {
 
   return (
     <React.Fragment>
-      <div className="container" ref={containerRef}>
-        {!!containerDimensions && (
-          <div
-            className="carousel"
-            style={{ width: containerDimensions.width }}
-          >
-            <div className="prev">
-              <button onClick={() => goToSlide(currentSlide - 1)} />
+      <Swipe
+        style={{ height: '100%' }}
+        tolerance={30}
+        onSwipeLeft={() => goToSlide(currentSlide + 1)}
+        onSwipeRight={() => goToSlide(currentSlide - 1)}
+      >
+        <div className="container" ref={containerRef}>
+          {!!containerDimensions && (
+            <div
+              className="carousel"
+              style={{ width: containerDimensions.width }}
+            >
+              <div className="prev">
+                <button onClick={() => goToSlide(currentSlide - 1)} />
+              </div>
+              <Link href={`${baseUrl}/${id}`}>
+                <a className="venue-link">
+                  <div
+                    className="slides"
+                    style={{
+                      gridTemplateColumns: `${
+                        containerDimensions.width
+                      }px `.repeat(slidesCount),
+                      width: containerDimensions.width * slidesCount,
+                      height: containerDimensions.height,
+                      transform: `translateX(${-currentSlide *
+                        containerDimensions.width}px)`,
+                    }}
+                  >
+                    <div className="slide-name">{name}</div>
+                    {!!trimmedDescription && (
+                      <div className="slide-description">
+                        {trimmedDescription}
+                      </div>
+                    )}
+                    {images.slice(1).map(image => (
+                      <div key={image.url} className="slide-image">
+                        <Img url={image.url} {...imgProps} />
+                      </div>
+                    ))}
+                  </div>
+                </a>
+              </Link>
+              <div className="next">
+                <button onClick={() => goToSlide(currentSlide + 1)} />
+              </div>
+              <div className="pager">
+                <Pager itemCount={slidesCount} currentIndex={currentSlide} />
+              </div>
+              <div className="bg-image">
+                {images.length && (
+                  <Img bigOverlay={true} url={images[0].url} {...imgProps} />
+                )}
+              </div>
             </div>
-            <Link href={`${baseUrl}/${id}`}>
-              <a className="venue-link">
-                <div
-                  className="slides"
-                  style={{
-                    gridTemplateColumns: `${
-                      containerDimensions.width
-                    }px `.repeat(slidesCount),
-                    width: containerDimensions.width * slidesCount,
-                    height: containerDimensions.height,
-                    transform: `translateX(${-currentSlide *
-                      containerDimensions.width}px)`,
-                  }}
-                >
-                  <div className="slide-name">{name}</div>
-                  {!!trimmedDescription && (
-                    <div className="slide-description">
-                      {trimmedDescription}
-                    </div>
-                  )}
-                  {images.slice(1).map(image => (
-                    <div key={image.url} className="slide-image">
-                      <Img url={image.url} {...imgProps} />
-                    </div>
-                  ))}
-                </div>
-              </a>
-            </Link>
-            <div className="next">
-              <button onClick={() => goToSlide(currentSlide + 1)} />
-            </div>
-            <div className="pager">
-              <Pager itemCount={slidesCount} currentIndex={currentSlide} />
-            </div>
-            <div className="bg-image">
-              {images.length && (
-                <Img bigOverlay={true} url={images[0].url} {...imgProps} />
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </Swipe>
       {/*language=CSS*/}
       <style jsx>{`
         .venue-link {

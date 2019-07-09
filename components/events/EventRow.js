@@ -11,14 +11,7 @@ import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 
 function EventRow(props) {
-  const {
-    baseUrl,
-    initialEvents,
-    filter,
-    sortBy,
-    rowCount = 1,
-    showEmptyMessage = false,
-  } = props;
+  const { baseUrl, initialEvents, filter, sortBy, rowCount = 1 } = props;
 
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({});

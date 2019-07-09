@@ -15,7 +15,7 @@ const handle = app.getRequestHandler();
 const routes = require('./routes');
 const { getCityConfig } = require('./lib/api');
 
-const { PORT } = process.env;
+const { PORT, HOST = 'localhost' } = process.env;
 
 const STATIC_ROUTES = ['', 'expert-chat', 'privacy-policy', 'ticket-redirect'];
 
@@ -44,9 +44,9 @@ app
       return handle(req, res);
     });
 
-    server.listen(PORT, err => {
+    server.listen(PORT, HOST, err => {
       if (err) throw err;
-      console.log(`> Ready on http://localhost:${PORT}`);
+      console.log(`> Ready on http://${HOST}:${PORT}`);
     });
   })
   .catch(ex => {
