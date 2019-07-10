@@ -58,9 +58,10 @@ function VideoModal(props) {
         <ReactPlayer
           width={contentWidth}
           height={videoHeight}
+          controls={true}
           url={url}
-          playing
           onEnded={onClose}
+          playing
         />
       </div>
       {modalStyles.styles}
