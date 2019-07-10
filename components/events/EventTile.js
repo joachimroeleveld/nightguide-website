@@ -149,8 +149,9 @@ function EventTile(props) {
           width: 100%;
           height: 100%;
           padding: 0.3em;
-          background: url(/static/img/video-icon.svg) no-repeat center center;
-          background-size: 70%;
+          background: url(/static/img/video-icon.svg) no-repeat right 0.5em top
+            0.5em;
+          background-size: 45%;
         }
       `}</style>
     </div>

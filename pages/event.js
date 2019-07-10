@@ -218,10 +218,11 @@ function EventPage(props) {
           justify-content: flex-end;
         }
         .video-button button {
-          width: 39px;
-          height: 28px;
-          margin: 0.5em;
+          width: 30px;
+          height: 30px;
+          margin: 0.7em;
           background: url(/static/img/video-icon.svg) no-repeat center center;
+          background-size: cover;
         }
         .info .dates {
           padding: 0.8em ${dimensions.cardPadding};
