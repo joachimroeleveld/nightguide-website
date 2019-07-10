@@ -9,6 +9,10 @@ function GlobalStyles() {
       <TextStyles />
       {/*language=CSS*/}
       <style jsx global>{`
+        #__next {
+          position: relative;
+          z-index: 0;
+        }
         html {
           font-family: sans-serif;
         }

@@ -1,4 +1,5 @@
 export default {
+  pageWidth: '56rem',
   bodyPadding: '2rem',
   gridGap: '14px',
   eventHeight: '8em',

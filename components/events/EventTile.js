@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import css from 'styled-jsx/css';
 
 import __, { _o } from '../../lib/i18n';
@@ -6,6 +6,7 @@ import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
+import VideoModal from '../VideoModal';
 
 const EventTileBody = props => {
   const { event, eventUrl } = props;
@@ -77,31 +78,81 @@ const EventTileBody = props => {
 
 function EventTile(props) {
   const { baseUrl, event, imgWidths, imgSizes, height = '8em' } = props;
-  const { title, facebook = {}, images = [], id } = event;
-  const imgProps = images.length
-    ? {
-        url: images[0].url,
-        widths: imgWidths,
-        sizes: imgSizes,
-        alt: title || facebook.title,
-      }
-    : undefined;
+  const { title, facebook = {}, images = [], id, videoUrl } = event;
+
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const toggleVideoModal = () => setShowVideoModal(!showVideoModal);
+
+  const imgProps = useMemo(
+    () =>
+      images.length
+        ? {
+            url: images[0].url,
+            widths: imgWidths,
+            sizes: imgSizes,
+            alt: title || facebook.title,
+          }
+        : undefined,
+    [images]
+  );
+
   const eventUrl = `${baseUrl}/${id}`;
+
   return (
-    <Tile
-      title={title || facebook.title}
-      imgProps={imgProps}
-      href={eventUrl}
-      linkBody={false}
-      /*language=CSS*/
-      {...css.resolve`
-        .top {
-          height: ${height};
+    <div className="container">
+      <Tile
+        title={title || facebook.title}
+        imgProps={imgProps}
+        href={eventUrl}
+        linkBody={false}
+        /*language=CSS*/
+        {...css.resolve`
+          .top {
+            height: ${height};
+          }
+        `}
+        BodyContents={<EventTileBody eventUrl={eventUrl} event={event} />}
+      />
+      {!!videoUrl && (
+        <div className="video-button">
+          <button onClick={toggleVideoModal} />
+          <VideoModal
+            url={videoUrl}
+            isOpen={showVideoModal}
+            onClose={toggleVideoModal}
+          />
+        </div>
+      )}
+      {/*language=CSS*/}
+      <style jsx>{`
+        .container {
+          position: relative;
         }
-      `}
-      BodyContents={<EventTileBody eventUrl={eventUrl} event={event} />}
-    />
+        .video-button {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 50px;
+          height: 37px;
+          background-image: linear-gradient(
+            212deg,
+            #000000 0%,
+            rgba(0, 0, 0, 0) 50%
+          );
+          display: flex;
+          justify-content: flex-end;
+        }
+        .video-button button {
+          width: 100%;
+          height: 100%;
+          padding: 0.3em;
+          background: url(/static/img/video-icon.svg) no-repeat center center;
+          background-size: 70%;
+        }
+      `}</style>
+    </div>
   );
 }
 
-export default EventTile;
+export default memo(EventTile);

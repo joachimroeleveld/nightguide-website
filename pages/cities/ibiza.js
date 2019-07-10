@@ -235,7 +235,7 @@ function IbizaCityPage(props) {
         <div className="img">
           <ResponsiveImage
             url="https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg"
-            widths={[600, 1000, 2000]}
+            widths={[300, 600, 1000, 2000]}
             sizes="(max-width: 800px) 100vw, 960px"
             imgStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />

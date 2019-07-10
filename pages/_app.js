@@ -2,6 +2,9 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import Router from 'next/router';
 import withGA from 'next-ga';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#__next');
 
 import Fonts from '../components/Fonts';
 import { NavigationProvider } from '../components/Navigation';

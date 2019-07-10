@@ -40,7 +40,7 @@ const withPageLayout = (getBreadcrumbs, meta = {}) => Page => {
         {/*language=CSS*/}
         <style jsx>{`
           .page {
-            max-width: 56rem;
+            max-width: ${dimensions.pageWidth};
             padding: 0 ${dimensions.bodyPadding};
             margin: auto;
           }
