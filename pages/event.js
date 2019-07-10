@@ -14,11 +14,15 @@ import EventGrid from '../components/events/EventGrid';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
+import VideoModal from '../components/VideoModal';
 
 function EventPage(props) {
   const { event, baseUrl, similarEvents, venue } = props;
 
   const [showAllDates, setShowAllDates] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
+  const toggleVideoModal = () => setShowVideoModal(!showVideoModal);
 
   const {
     title,
@@ -29,6 +33,7 @@ function EventPage(props) {
     tags,
     tickets = {},
     description = {},
+    videoUrl,
   } = event;
   const futureDates = getFutureEventDates(dates);
 
@@ -71,6 +76,16 @@ function EventPage(props) {
                   }}
                   alt={title || facebook.title}
                 />
+              )}
+              {!!videoUrl && (
+                <div className="video-button">
+                  <button onClick={toggleVideoModal} />
+                  <VideoModal
+                    url={videoUrl}
+                    isOpen={showVideoModal}
+                    onClose={toggleVideoModal}
+                  />
+                </div>
               )}
             </figure>
             <div className="dates">
@@ -180,10 +195,33 @@ function EventPage(props) {
           background-color: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
         }
+        .event-image {
+          position: relative;
+        }
         .event-image img {
           margin: 0 auto;
           display: block;
           max-width: 100%;
+        }
+        .video-button {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 50%;
+          height: 60%;
+          background-image: linear-gradient(
+            212deg,
+            #000000 0%,
+            rgba(0, 0, 0, 0) 46%
+          );
+          display: flex;
+          justify-content: flex-end;
+        }
+        .video-button button {
+          width: 39px;
+          height: 28px;
+          margin: 0.5em;
+          background: url(/static/img/video-icon.svg) no-repeat center center;
         }
         .info .dates {
           padding: 0.8em ${dimensions.cardPadding};

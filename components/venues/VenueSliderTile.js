@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
@@ -41,23 +41,22 @@ const Img = ({ bigOverlay, ...imgProps }) => (
 function VenueSliderTile(props) {
   const { baseUrl, venue, imgWidths, imgSizes } = props;
   const { name, images, id, description } = venue;
-  const imgProps = { imgWidths, imgSizes };
+  const imgProps = { widths: imgWidths, sizes: imgSizes };
 
-  const containerRef = useRef(null);
+  const [containerRef, setContainerRef] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const resizeListener = debounce(() => calculateDimensions(), 100);
     window.addEventListener('resize', resizeListener);
+    resizeListener();
     return () => window.removeEventListener('resize', resizeListener);
-  }, []);
-
-  useEffect(() => calculateDimensions(), [containerRef.current]);
+  }, [containerRef]);
 
   const calculateDimensions = () => {
-    if (containerRef.current) {
-      setContainerDimensions(containerRef.current.getBoundingClientRect());
+    if (containerRef) {
+      setContainerDimensions(containerRef.getBoundingClientRect());
     }
   };
 
@@ -83,7 +82,7 @@ function VenueSliderTile(props) {
         onSwipeLeft={() => goToSlide(currentSlide + 1)}
         onSwipeRight={() => goToSlide(currentSlide - 1)}
       >
-        <div className="container" ref={containerRef}>
+        <div className="container" ref={setContainerRef}>
           {!!containerDimensions && (
             <div
               className="carousel"

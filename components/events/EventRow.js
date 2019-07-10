@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import sum from 'lodash/sum';
 import Swipe from 'react-easy-swipe';
+import get from 'lodash/get';
 
 import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
@@ -13,7 +14,8 @@ import colors from '../../styles/colors';
 function EventRow(props) {
   const { baseUrl, initialEvents, filter, sortBy, rowCount = 1 } = props;
 
-  const containerRef = useRef(null);
+  const itemRefs = useRef({});
+  const [containerRef, setContainerRef] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [loadedPages, setLoadedPages] = useState(1);
@@ -22,7 +24,6 @@ function EventRow(props) {
   const [items, setItems] = useState(initialEvents || []);
   const [fetching, setFetching] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(props.reachedEnd || false);
-  const itemRefs = useRef({});
 
   useEffect(() => {
     if (!items.length && !fetching && !reachedEnd) {
@@ -30,26 +31,21 @@ function EventRow(props) {
     }
   }, [items]);
 
-  useEffect(() => calculateDimensions(), [
-    containerRef.current,
-    items,
-    page,
-    rowCount,
-  ]);
-
   useEffect(() => {
     const resizeListener = debounce(() => {
       calculateDimensions();
     }, 100);
+    resizeListener();
     window.addEventListener('resize', resizeListener);
     return () => window.removeEventListener('resize', resizeListener);
-  }, [items]);
+  }, [containerRef, items, page, rowCount]);
 
   const calculateDimensions = () => {
-    if (!containerRef.current || !items.length || !itemRefs.current['1']['0'])
+    if (!containerRef || !items.length || !get(itemRefs.current, '1.0')) {
       return;
+    }
 
-    const width = containerRef.current.getBoundingClientRect().width;
+    const width = containerRef.getBoundingClientRect().width;
 
     const columnWidth = itemRefs.current['1']['0'].getBoundingClientRect()
       .width;
@@ -126,10 +122,13 @@ function EventRow(props) {
 
   const setItemRef = (page, index, ref) => {
     if (ref) {
-      if (!itemRefs.current[page]) {
-        itemRefs.current[page] = {};
-      }
-      itemRefs.current[page][index] = ref;
+      itemRefs.current = {
+        ...itemRefs.current,
+        [page]: {
+          ...(itemRefs.current[page] || {}),
+          [index]: ref,
+        },
+      };
     }
   };
 
@@ -145,7 +144,7 @@ function EventRow(props) {
     <Fragment>
       <div className={'root'}>
         <div
-          ref={containerRef}
+          ref={setContainerRef}
           className={['container', !items.length ? 'empty' : null].join(' ')}
         >
           <Swipe
@@ -158,7 +157,9 @@ function EventRow(props) {
               className="items"
               style={{
                 gridTemplateColumns: '1fr '.repeat(loadedPages),
-                width: loadedPages * containerDimensions.width,
+                width: containerDimensions.width
+                  ? loadedPages * containerDimensions.width
+                  : 'auto',
                 height: containerDimensions.height,
                 transform: `translateX(-${(page - 1) *
                   (containerDimensions.width + 14)}px)`,

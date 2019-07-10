@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
@@ -10,20 +10,20 @@ import colors from '../styles/colors';
 function Header(props) {
   const { baseUrl } = props;
 
-  const innerRef = useRef(null);
+  const [innerRef, setInnerRef] = useState(null);
   const [sticky, setSticky] = useState(false);
   const [containerHeight, setContainerHeight] = useState(null);
 
   useEffect(() => {
     const resizeListener = debounce(() => {
-      if (innerRef.current) {
-        setContainerHeight(innerRef.current.getBoundingClientRect().height);
+      if (innerRef) {
+        setContainerHeight(innerRef.getBoundingClientRect().height);
       }
     }, 100);
     resizeListener();
     window.addEventListener('resize', resizeListener);
     return () => window.removeEventListener('resize', resizeListener);
-  }, [innerRef.current]);
+  }, [innerRef]);
 
   useEffect(() => {
     const onScroll = throttle(() => {
@@ -42,7 +42,7 @@ function Header(props) {
       className={[sticky ? 'sticky' : '', 'container'].join(' ').trim()}
       style={{ height: containerHeight }}
     >
-      <div className="inner" ref={innerRef}>
+      <div className="inner" ref={setInnerRef}>
         <div className="logo-container">
           <Link href={'/'}>
             <a className="logo">

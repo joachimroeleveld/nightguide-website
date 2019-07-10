@@ -70,7 +70,7 @@ const gridStylesDouble = css.resolve`
   @media (min-width: 56rem) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
     }
   }
 `;

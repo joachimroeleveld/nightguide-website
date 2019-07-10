@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import css from 'styled-jsx/css';
 import Link from 'next/link';
@@ -150,4 +151,4 @@ Tile.propTypes = {
   imgProps: PropTypes.object,
 };
 
-export default Tile;
+export default memo(Tile);
