@@ -94,6 +94,9 @@ if (!IS_WEEKEND) {
   });
 }
 
+const SORT_DATE = 'date.from:asc,_id';
+const SORT_POPULARITY = 'date.interestedCount:desc,' + SORT_DATE;
+
 function IbizaCityPage(props) {
   const { pageSlug, baseUrl, preloadedEvents, preloadedVenues } = props;
 
@@ -253,12 +256,6 @@ function IbizaCityPage(props) {
 
         const filter = getSectionFilter(sectionIndex);
 
-        const sortBy = [];
-        if (!venue) {
-          sortBy.push('date.interestedCount:desc');
-        }
-        sortBy.push('date.from:asc', '_id');
-
         return (
           <section
             className={[
@@ -297,7 +294,7 @@ function IbizaCityPage(props) {
                     preloadedEvents.results.length ===
                       preloadedEvents.totalCount
                   }
-                  sortBy={sortBy.join(',')}
+                  sortBy={venue ? SORT_POPULARITY : SORT_DATE}
                 />
               </div>
             </div>
@@ -381,6 +378,7 @@ IbizaCityPage.getInitialProps = async ctx => {
     PRELOAD_SECTIONS.map(
       async ({ filter }) =>
         await getEvents({
+          sortBy: SORT_POPULARITY,
           limit: 8,
           query: {
             pageSlug,
