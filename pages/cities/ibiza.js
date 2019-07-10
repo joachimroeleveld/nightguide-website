@@ -294,7 +294,7 @@ function IbizaCityPage(props) {
                     preloadedEvents.results.length ===
                       preloadedEvents.totalCount
                   }
-                  sortBy={venue ? SORT_POPULARITY : SORT_DATE}
+                  sortBy={!venue ? SORT_POPULARITY : SORT_DATE}
                 />
               </div>
             </div>
