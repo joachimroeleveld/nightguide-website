@@ -279,7 +279,7 @@ function IbizaCityPage(props) {
               {venue && (
                 <div className="venue">
                   <VenueSliderTile
-                    imgWidths={[600, 1000, 20000]}
+                    imgWidths={[600, 1000, 2000]}
                     imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
                     baseUrl={baseUrl}
                     venue={venue}
