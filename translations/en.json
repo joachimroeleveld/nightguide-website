@@ -13,7 +13,7 @@
   "homePage": {
     "meta": {
       "title": "Explore nightlife in your city | NightGuide",
-      "description": "Find the best bars, clubs & events for a great night out. Currently available in Utrecht."
+      "description": "Find the best bars, clubs & events for a great night out. Currently available in Ibiza and Utrecht."
     },
     "title": "Explore nightlife",
     "subtitle": "Find the best <strong>bars</strong>, <strong>clubs</strong> and <strong>events</strong> for a great night out.",
@@ -38,6 +38,7 @@
       "description": "Explore events in {{city}}."
     },
     "eventsIn": "Events in",
+    "eventsInCity": "Events in {{city}}",
     "clubs": "Clubs"
   },
   "cityExplorePage": {

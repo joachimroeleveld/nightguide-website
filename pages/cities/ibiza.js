@@ -7,9 +7,8 @@ import debounce from 'lodash/debounce';
 import findIndex from 'lodash/findIndex';
 import Observer from '@researchgate/react-intersection-observer';
 
-import { getVenues } from '../../lib/api';
+import { getEvents, getVenues } from '../../lib/api';
 import withPageLayout from '../../components/PageLayout';
-import CityTitleButton from '../../components/CityTitleButton';
 import __, { __city } from '../../lib/i18n';
 import colors from '../../styles/colors';
 import EventDateFilterBar from '../../components/events/EventDateFilterBar';
@@ -37,6 +36,10 @@ const VENUE_SECTION_ORDER =
         '5d1affbebd44b9001205a728', // Octan
         '5d1a2d82bd44b9001205a71c', // Pikes
         '5d1affc0bd44b9001205a729', // Lio
+        '5d1b5cc0bd44b9001205a755', // El Patio - Bora Bora
+        '5d1b5cc0bd44b9001205a755', // Ibiza Underground
+        '5d1b5cc6bd44b9001205a756', // Swag
+        '5d1b0002bd44b9001205a74a', // Veto social club
       ]
     : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
 
@@ -47,8 +50,9 @@ const IS_WEEKEND = moment().isAfter(
     .set({ day: 5, hour: 15, minute: 0 })
 );
 
-const TIME_SECTIONS = {
-  today: {
+const PRELOAD_SECTIONS = [
+  // Today
+  {
     title: __('today'),
     filter: {
       dateTo: moment()
@@ -56,7 +60,8 @@ const TIME_SECTIONS = {
         .toDate(),
     },
   },
-  tomorrow: {
+  // Tomorrow
+  {
     title: __('tomorrow'),
     filter: {
       dateFrom: moment()
@@ -69,7 +74,11 @@ const TIME_SECTIONS = {
         .toDate(),
     },
   },
-  weekend: {
+];
+
+if (!IS_WEEKEND) {
+  // This weekend
+  PRELOAD_SECTIONS.push({
     title: __('thisWeekend'),
     filter: {
       dateFrom: !IS_WEEKEND
@@ -82,26 +91,25 @@ const TIME_SECTIONS = {
         .set({ day: 7, hour: 23, minute: 59 })
         .toDate(),
     },
-  },
-};
-
-const INITIAL_LOADED_SECTIONS = 3;
+  });
+}
 
 function IbizaCityPage(props) {
-  const { pageSlug, baseUrl } = props;
+  const { pageSlug, baseUrl, preloadedEvents, preloadedVenues } = props;
 
   const [dateFilter, setDateFilter] = useState(null);
-  const [venues, setVenues] = useState([]);
+  const [venues, setVenues] = useState(preloadedVenues);
   const [fetchingVenues, setFetchingVenues] = useState(false);
   const [windowWidth, setWindowWidth] = useState(false);
   const [loadedSections, setLoadedSections] = useState(
-    range(0, INITIAL_LOADED_SECTIONS)
+    range(0, PRELOAD_SECTIONS.length)
   );
 
   const cityName = __city(pageSlug)('name');
 
+  // Reset loaded sections after date filter
   useEffect(() => {
-    setLoadedSections(range(0, INITIAL_LOADED_SECTIONS));
+    setLoadedSections(range(0, PRELOAD_SECTIONS.length));
   }, [dateFilter]);
 
   useEffect(() => {
@@ -118,9 +126,12 @@ function IbizaCityPage(props) {
 
     // No date applied
     if (!dateFilter) {
-      sections.push(TIME_SECTIONS['today']);
-      sections.push(TIME_SECTIONS['tomorrow']);
-      if (!IS_WEEKEND) sections.push(TIME_SECTIONS['weekend']);
+      sections.push(
+        ...Object.values(PRELOAD_SECTIONS).map((section, index) => ({
+          preloadedEvents: preloadedEvents[index],
+          ...section,
+        }))
+      );
     }
 
     // Date filter applied
@@ -154,23 +165,10 @@ function IbizaCityPage(props) {
   const loadVenues = async () => {
     if (fetchingVenues) return;
     setFetchingVenues(true);
-    let result;
-    if (venues.length < VENUE_SECTION_ORDER.length) {
-      result = await getVenues({
-        query: { ids: VENUE_SECTION_ORDER },
-      });
-      result.results.sort((a, b) => {
-        const indexA = VENUE_SECTION_ORDER.indexOf(a.id);
-        const indexB = VENUE_SECTION_ORDER.indexOf(b.id);
-        if (indexA === indexB) return 0;
-        return indexA > indexB ? 1 : -1;
-      });
-    } else {
-      result = await getVenues({
-        offset: venues.length,
-        query: { pageSlug, sortBy: 'name', exclude: VENUE_SECTION_ORDER },
-      });
-    }
+    const result = await getVenues({
+      offset: venues.length,
+      query: { pageSlug, sortBy: 'name', exclude: VENUE_SECTION_ORDER },
+    });
     setFetchingVenues(false);
     setVenues(venues.concat(result.results));
     return result.results;
@@ -233,10 +231,7 @@ function IbizaCityPage(props) {
       </Head>
 
       <header className="header">
-        <h1>
-          {__('cityEventsPage.eventsIn')}
-          <CityTitleButton disabled={true} href={baseUrl} city={cityName} />
-        </h1>
+        <h1>{__('cityEventsPage.eventsInCity', { city: cityName })}</h1>
         <div className="img">
           <ResponsiveImage
             url="https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg"
@@ -249,14 +244,16 @@ function IbizaCityPage(props) {
       <div className="filter">
         <EventDateFilterBar onChange={setDateFilter} />
       </div>
-      {sections.slice(0, loadedSections.length).map((section, index) => {
-        const isFirstVenueSection =
-          findIndex(sections, section => section.venue) === index;
+      {sections.slice(0, loadedSections.length).map((section, sectionIndex) => {
+        const { preloadedEvents, venue, title } = section;
 
-        const filter = getSectionFilter(index);
+        const isFirstVenueSection =
+          findIndex(sections, section => section.venue) === sectionIndex;
+
+        const filter = getSectionFilter(sectionIndex);
 
         const sortBy = [];
-        if (!section.venue) {
+        if (!venue) {
           sortBy.push('date.interestedCount:desc');
         }
         sortBy.push('date.from:asc', '_id');
@@ -265,10 +262,10 @@ function IbizaCityPage(props) {
           <section
             className={[
               'event-section',
-              section.venue ? 'venue-section' : '',
+              venue ? 'venue-section' : '',
               isFirstVenueSection ? 'first-venue' : '',
             ].join(' ')}
-            key={JSON.stringify(dateFilter) + index}
+            key={JSON.stringify(dateFilter) + sectionIndex}
           >
             {isFirstVenueSection && (
               <SectionHeader
@@ -276,30 +273,34 @@ function IbizaCityPage(props) {
                 TitleElem={'h2'}
               />
             )}
-            {!section.venue && (
-              <SectionHeader title={section.title} TitleElem={'h2'} />
-            )}
+            {!venue && <SectionHeader title={title} TitleElem={'h2'} />}
             <div className="content">
-              {section.venue && (
+              {venue && (
                 <div className="venue">
                   <VenueSliderTile
                     imgWidths={[600, 1000, 20000]}
                     imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
                     baseUrl={baseUrl}
-                    venue={section.venue}
+                    venue={venue}
                   />
                 </div>
               )}
               <div className="row">
                 <EventRow
-                  rowCount={section.venue ? (windowWidth > 800 ? 2 : 1) : 1}
+                  rowCount={venue ? (windowWidth > 800 ? 2 : 1) : 1}
                   filter={filter}
                   baseUrl={baseUrl}
+                  initialEvents={preloadedEvents && preloadedEvents.results}
+                  reachedEnd={
+                    preloadedEvents &&
+                    preloadedEvents.results.length ===
+                      preloadedEvents.totalCount
+                  }
                   sortBy={sortBy.join(',')}
                 />
               </div>
             </div>
-            <Observer onChange={getAddSection(index)} treshold={0.25}>
+            <Observer onChange={getAddSection(sectionIndex)} treshold={0.25}>
               <div />
             </Observer>
           </section>
@@ -374,9 +375,35 @@ function IbizaCityPage(props) {
 
 IbizaCityPage.getInitialProps = async ctx => {
   const { pageSlug, baseUrl } = ctx.query;
+
+  const preloadedEvents = await Promise.all(
+    PRELOAD_SECTIONS.map(
+      async ({ filter }) =>
+        await getEvents({
+          limit: 8,
+          query: {
+            pageSlug,
+            ...filter,
+          },
+        })
+    )
+  );
+  const preloadedVenues = (await getVenues({
+    query: { ids: VENUE_SECTION_ORDER },
+  })).results
+    // Sort by venue order
+    .sort((a, b) => {
+      const indexA = VENUE_SECTION_ORDER.indexOf(a.id);
+      const indexB = VENUE_SECTION_ORDER.indexOf(b.id);
+      if (indexA === indexB) return 0;
+      return indexA > indexB ? 1 : -1;
+    });
+
   return {
     baseUrl,
     pageSlug,
+    preloadedEvents,
+    preloadedVenues,
   };
 };
 

@@ -21,7 +21,7 @@ function EventRow(props) {
   const [offset, setOffset] = useState(0);
   const [items, setItems] = useState(initialEvents || []);
   const [fetching, setFetching] = useState(false);
-  const [reachedEnd, setReachedEnd] = useState(false);
+  const [reachedEnd, setReachedEnd] = useState(props.reachedEnd || false);
   const itemRefs = useRef({});
 
   useEffect(() => {

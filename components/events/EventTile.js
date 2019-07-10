@@ -78,17 +78,19 @@ const EventTileBody = props => {
 function EventTile(props) {
   const { baseUrl, event, imgWidths, imgSizes, height = '8em' } = props;
   const { title, facebook = {}, images = [], id } = event;
-  const imgProps = !!images.length && {
-    url: images[0].url,
-    widths: imgWidths,
-    sizes: imgSizes,
-    alt: title || facebook.title,
-  };
+  const imgProps = images.length
+    ? {
+        url: images[0].url,
+        widths: imgWidths,
+        sizes: imgSizes,
+        alt: title || facebook.title,
+      }
+    : undefined;
   const eventUrl = `${baseUrl}/${id}`;
   return (
     <Tile
       title={title || facebook.title}
-      imgProps={imgProps || {}}
+      imgProps={imgProps}
       href={eventUrl}
       linkBody={false}
       /*language=CSS*/

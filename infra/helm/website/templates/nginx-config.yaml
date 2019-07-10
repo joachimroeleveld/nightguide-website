@@ -52,9 +52,8 @@ data:
       proxy_read_timeout 5s;
       proxy_cache_path /var/cache/nginx/cache_content levels=1:2 keys_zone=cache_content:10m inactive=1d max_size=100m;
       proxy_cache cache_content;
-      proxy_cache_valid 200 1h;
+      proxy_cache_valid 200 1m;
       proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
-      proxy_cache_background_update on;
 
       server {
         listen 80;
