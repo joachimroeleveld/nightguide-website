@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 import EventGrid from './EventGrid';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
+import sum from 'lodash/sum';
 import Swipe from 'react-easy-swipe';
 
 import __ from '../../lib/i18n';
@@ -59,7 +60,21 @@ function EventRow(props) {
     const itemsPerPage = columnCount * rowCount;
     setItemsPerPage(itemsPerPage);
 
-    setContainerDimensions({ width });
+    // Get items per column
+    const columns = range(1, columnCount + 1).map(columnNo =>
+      range(1, rowCount + 1)
+        .map(rowNo => columnCount * rowNo - columnCount + columnNo - 1)
+        .map(index => itemRefs.current[page][index])
+    );
+    const height =
+      sum(columns[0].map(item => item && item.getBoundingClientRect().height)) +
+      // Grid gap
+      (rowCount - 1) * 14;
+
+    setContainerDimensions({
+      width,
+      height,
+    });
 
     let loadedPages;
     if (reachedEnd) {
@@ -134,6 +149,7 @@ function EventRow(props) {
           className={['container', !items.length ? 'empty' : null].join(' ')}
         >
           <Swipe
+            allowMouseEvents={true}
             tolerance={30}
             onSwipeLeft={() => scrollToPage(page + 1)}
             onSwipeRight={() => scrollToPage(page - 1)}
@@ -143,6 +159,7 @@ function EventRow(props) {
               style={{
                 gridTemplateColumns: '1fr '.repeat(loadedPages),
                 width: loadedPages * containerDimensions.width,
+                height: containerDimensions.height,
                 transform: `translateX(-${(page - 1) *
                   (containerDimensions.width + 14)}px)`,
               }}

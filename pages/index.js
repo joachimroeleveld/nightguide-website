@@ -12,7 +12,7 @@ const CITIES = [
     name: 'Ibiza',
     url: '/es/ibiza',
     imgSrc:
-      'https://lh3.googleusercontent.com/zmoy9Xzv6KsYUnkfnufIXwjmk2pHoaqokyMxlIHP60sPkkqx8L7nGUpRIWpTwxExVC6vULI2c1v0In4JKPzDlEzueXr5Qpov',
+      'https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg',
   },
   {
     name: 'Utrecht',

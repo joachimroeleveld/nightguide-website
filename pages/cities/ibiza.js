@@ -17,6 +17,7 @@ import EventRow from '../../components/events/EventRow';
 import SectionHeader from '../../components/SectionHeader';
 import VenueSliderTile from '../../components/venues/VenueSliderTile';
 import dimensions from '../../styles/dimensions';
+import ResponsiveImage from '../../components/ResponsiveImage';
 
 const VENUE_SECTION_ORDER =
   process.env.NODE_ENV === 'production'
@@ -108,6 +109,7 @@ function IbizaCityPage(props) {
       setWindowWidth(window.innerWidth);
     }, 100);
     window.addEventListener('resize', resizeListener);
+    resizeListener();
     return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
@@ -230,10 +232,20 @@ function IbizaCityPage(props) {
         />
       </Head>
 
-      <h1>
-        {__('cityEventsPage.eventsIn')}
-        <CityTitleButton disabled={true} href={baseUrl} city={cityName} />
-      </h1>
+      <header className="header">
+        <h1>
+          {__('cityEventsPage.eventsIn')}
+          <CityTitleButton disabled={true} href={baseUrl} city={cityName} />
+        </h1>
+        <div className="img">
+          <ResponsiveImage
+            url="https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg"
+            widths={[600, 1000, 2000]}
+            sizes="(max-width: 800px) 100vw, 960px"
+            imgStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          />
+        </div>
+      </header>
       <div className="filter">
         <EventDateFilterBar onChange={setDateFilter} />
       </div>
@@ -295,10 +307,31 @@ function IbizaCityPage(props) {
       })}
       {/*language=CSS*/}
       <style jsx>{`
-        h1 {
-          margin: 0 0 1.5em;
-          border-bottom: 1px solid ${colors.separator};
-          padding: 1em 0;
+        .header {
+          height: 300px;
+          margin: 0 -2em 1em;
+          display: flex;
+          align-items: flex-end;
+          position: relative;
+        }
+        .header h1 {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          margin: 0;
+          padding: 3em 2rem 1em;
+          background-image: linear-gradient(
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.9) 100%
+          );
+        }
+        .header .img {
+          z-index: 0;
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 100%;
         }
         .filter {
           margin-bottom: 2em;
@@ -318,6 +351,9 @@ function IbizaCityPage(props) {
           margin-top: 4em;
         }
         @media (min-width: 800px) {
+          .header {
+            height: 30vh;
+          }
           .event-section.venue-section .content {
             display: grid;
             grid-gap: ${dimensions.gridGap};

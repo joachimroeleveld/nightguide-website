@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 
 import { withNavigation } from './Navigation';
 import __ from '../lib/i18n';
@@ -9,8 +10,20 @@ import colors from '../styles/colors';
 function Header(props) {
   const { baseUrl } = props;
 
+  const innerRef = useRef(null);
   const [sticky, setSticky] = useState(false);
   const [containerHeight, setContainerHeight] = useState(null);
+
+  useEffect(() => {
+    const resizeListener = debounce(() => {
+      if (innerRef.current) {
+        setContainerHeight(innerRef.current.getBoundingClientRect().height);
+      }
+    }, 100);
+    resizeListener();
+    window.addEventListener('resize', resizeListener);
+    return () => window.removeEventListener('resize', resizeListener);
+  }, [innerRef.current]);
 
   useEffect(() => {
     const onScroll = throttle(() => {
@@ -23,12 +36,6 @@ function Header(props) {
 
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const innerRef = ref => {
-    if (ref && containerHeight === null) {
-      setContainerHeight(ref.getBoundingClientRect().height);
-    }
-  };
 
   return (
     <header
@@ -66,7 +73,7 @@ function Header(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container > .inner {
-          padding: 0.7rem 1rem 0;
+          padding: 0.7rem 1rem;
           display: flex;
           align-items: center;
           transition: all 0.1s;
@@ -116,7 +123,7 @@ function Header(props) {
         }
         @media (min-width: 400px) {
           .container > .inner {
-            padding: 0.7rem 2rem 0;
+            padding: 0.7rem 2rem;
           }
           .logo img {
             width: 5em;
@@ -128,7 +135,10 @@ function Header(props) {
             padding: 0 1em;
           }
         }
-        @media (min-width: 940px) {
+        @media (min-width: 1300px) {
+          .container > .inner {
+            padding-bottom: 0;
+          }
           .logo img {
             width: 6.5em;
           }

@@ -79,6 +79,7 @@ function VenueSliderTile(props) {
       <Swipe
         style={{ height: '100%' }}
         tolerance={30}
+        allowMouseEvents={true}
         onSwipeLeft={() => goToSlide(currentSlide + 1)}
         onSwipeRight={() => goToSlide(currentSlide - 1)}
       >
