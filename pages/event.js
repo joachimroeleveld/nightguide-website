@@ -15,6 +15,7 @@ import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
 import VideoModal from '../components/VideoModal';
+import ReadMoreLess from '../components/ReadMoreLess';
 
 function EventPage(props) {
   const { event, baseUrl, similarEvents, venue } = props;
@@ -157,15 +158,17 @@ function EventPage(props) {
         </aside>
         <div className="description-container">
           <TagList baseUrl={baseUrl} tags={tags} />
-          <div
-            className="description"
-            dangerouslySetInnerHTML={{
-              __html: (_o(description) || facebook.description).replace(
-                /(\/n)/g,
-                '<br/>'
-              ),
-            }}
-          />
+          <ReadMoreLess initialHeight={500}>
+            <div
+              className="description"
+              dangerouslySetInnerHTML={{
+                __html: (_o(description) || facebook.description).replace(
+                  /(\/n)/g,
+                  '<br/>'
+                ),
+              }}
+            />
+          </ReadMoreLess>
         </div>
 
         {!!similarEvents.length && (

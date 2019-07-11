@@ -6,6 +6,7 @@ import range from 'lodash/range';
 import debounce from 'lodash/debounce';
 import findIndex from 'lodash/findIndex';
 import Observer from '@researchgate/react-intersection-observer';
+import css from 'styled-jsx/css';
 
 import { getEvents, getVenues } from '../../lib/api';
 import withPageLayout from '../../components/PageLayout';
@@ -237,11 +238,22 @@ function IbizaCityPage(props) {
         <h1>{__('cityEventsPage.eventsInCity', { city: cityName })}</h1>
         <div className="img">
           <ResponsiveImage
-            lazy={false}
             url="https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg"
             widths={[300, 600, 1000, 2000]}
             sizes="(max-width: 800px) 100vw, 960px"
-            imgStyle={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            /*language=CSS*/
+            {...css.resolve`
+              .container {
+                display: block;
+                width: 100%;  
+                height: 100%;
+              }
+              img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+              }
+            `}
           />
         </div>
       </header>
@@ -379,7 +391,7 @@ IbizaCityPage.getInitialProps = async ctx => {
       async ({ filter }) =>
         await getEvents({
           sortBy: SORT_POPULARITY,
-          limit: 8,
+          limit: 4,
           query: {
             pageSlug,
             ...filter,

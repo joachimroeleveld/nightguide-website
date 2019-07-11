@@ -11,6 +11,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@crossfield/react-read-more": "^0.2.0",
     "@researchgate/react-intersection-observer": "^1.0.0",
     "@sentry/node": "^5.4.0",
     "@tryghost/content-api": "^1.2.2",

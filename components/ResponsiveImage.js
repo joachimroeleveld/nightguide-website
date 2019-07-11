@@ -95,7 +95,7 @@ export default function ResponsiveImage(props) {
             position: relative;
             z-index: 0;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
             vertical-align: middle;
           }
           .loaded img {
@@ -111,9 +111,6 @@ export default function ResponsiveImage(props) {
           }
           .container.scale:hover img {
             transform: scale(1.05);
-          }
-          img {
-            transition: transform 0.3s;
           }
         `}</style>
         {styles}
