@@ -10,6 +10,7 @@ import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
 import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
+import Spinner from '../Spinner';
 
 function EventRow(props) {
   const { baseUrl, initialEvents, filter, sortBy, rowCount = 1 } = props;
@@ -202,10 +203,13 @@ function EventRow(props) {
             <button
               className={[
                 'next',
+                fetching && loadedPages === page ? 'fetching' : '',
                 reachedEnd && loadedPages === page ? 'disabled' : '',
               ].join(' ')}
               onClick={() => scrollToPage(page + 1)}
-            />
+            >
+              {fetching && loadedPages === page && <Spinner size={10} />}
+            </button>
           </div>
         )}
       </div>
@@ -248,6 +252,12 @@ function EventRow(props) {
           border-radius: 3px;
           background: url(/static/img/pager-arrow.svg) no-repeat center center;
           transition: opacity 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .pager button.fetching {
+          background: none;
         }
         .pager button.disabled {
           opacity: 0.5;
