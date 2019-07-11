@@ -13,6 +13,7 @@ export function withNavigation(Component) {
     const { pageSlug } = query;
 
     const navProps = {
+      query,
       baseUrl: '',
       breadcrumbs: [],
     };

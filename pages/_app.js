@@ -8,6 +8,7 @@ Modal.setAppElement('#__next');
 
 import Fonts from '../components/Fonts';
 import { NavigationProvider } from '../components/Navigation';
+import TimezoneManager from '../components/TimezoneManager';
 
 class NightGuideWebsite extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -33,6 +34,7 @@ class NightGuideWebsite extends App {
       <Container>
         <Fonts />
         <NavigationProvider value={navigationProps}>
+          <TimezoneManager />
           <Component {...pageProps} />
         </NavigationProvider>
       </Container>

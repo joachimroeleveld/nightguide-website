@@ -85,7 +85,7 @@ if (!IS_WEEKEND) {
         ? moment()
             .set({ day: 5, hour: 15, minute: 0 })
             .toDate()
-        : new Date(),
+        : moment().toDate(),
       dateTo: moment()
         .subtract(DOW === 0 ? 1 : 0, 'week')
         .set({ day: 7, hour: 23, minute: 59 })

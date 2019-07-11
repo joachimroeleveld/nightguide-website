@@ -23,7 +23,7 @@ const FILTER_ITEMS = [
   {
     key: 'today',
     value: [
-      new Date(),
+      moment().toDate(),
       moment()
         .set({ hour: 23, minute: 59 })
         .toDate(),
@@ -48,7 +48,7 @@ const FILTER_ITEMS = [
     key: 'thisWeekend',
     value: [
       IS_WEEKEND
-        ? new Date()
+        ? moment.toDate()
         : moment()
             .set({ day: 5, hour: 15, minute: 0 })
             .toDate(),
