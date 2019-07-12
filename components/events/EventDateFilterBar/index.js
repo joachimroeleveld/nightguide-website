@@ -48,7 +48,7 @@ const FILTER_ITEMS = [
     key: 'thisWeekend',
     value: [
       IS_WEEKEND
-        ? moment.toDate()
+        ? moment().toDate()
         : moment()
             .set({ day: 5, hour: 15, minute: 0 })
             .toDate(),
@@ -201,6 +201,7 @@ function EventDateFilterBar(props) {
             onOutsideClick={togglePicker}
             numberOfMonths={2}
             hideKeyboardShortcutsPanel={true}
+            minimumNights={0}
             renderCalendarInfo={renderCalendarInfo}
             {...dynamicPickerProps}
           />
