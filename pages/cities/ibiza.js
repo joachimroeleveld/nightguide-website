@@ -45,9 +45,6 @@ const VENUE_SECTION_ORDER =
     : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
 
 const DOW = moment().day();
-const IS_WEEKEND = moment().isAfter(
-  moment({ day: 5, hour: 15, minute: 0 }).subtract(DOW === 0 ? 1 : 0, 'week')
-);
 
 const PRELOAD_SECTIONS = [
   // Today
@@ -74,19 +71,19 @@ if (DOW !== 5) {
   });
 }
 
-if (!IS_WEEKEND) {
+if (![6, 7, 0].includes(DOW)) {
   // This weekend
   PRELOAD_SECTIONS.push({
     title: __('thisWeekend'),
     filter: {
-      dateFrom: !IS_WEEKEND
-        ? moment()
-            .set({ day: 5, hour: 15, minute: 0 })
-            .toDate()
-        : moment().toDate(),
-      dateTo: moment()
+      dateFrom: moment(
+        DOW === 5 ? { hour: 0, minute: 0 } : { hour: 15, minute: 0 }
+      )
+        .day(DOW === 5 ? 6 : 5)
+        .toDate(),
+      dateTo: moment({ hour: 23, minute: 59 })
+        .day(7)
         .subtract(DOW === 0 ? 1 : 0, 'week')
-        .set({ day: 7, hour: 23, minute: 59 })
         .toDate(),
     },
   });
@@ -128,7 +125,7 @@ function IbizaCityPage(props) {
     // No date applied
     if (!dateFilter) {
       sections.push(
-        ...Object.values(PRELOAD_SECTIONS).map((section, index) => ({
+        ...PRELOAD_SECTIONS.map((section, index) => ({
           preloadedEvents: preloadedEvents[index],
           ...section,
         }))
