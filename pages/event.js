@@ -119,16 +119,16 @@ function EventPage(props) {
                   </span>
                 </div>
               )}
-              {!!facebook.id && (
-                <a
-                  className={'facebook-page'}
-                  href={`https://facebook.com/events/${facebook.id}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {__('eventPage.facebookPage')}
-                </a>
-              )}
+              {/*{!!facebook.id && (*/}
+              {/*  <a*/}
+              {/*    className={'facebook-page'}*/}
+              {/*    href={`https://facebook.com/events/${facebook.id}`}*/}
+              {/*    rel="noopener noreferrer"*/}
+              {/*    target="_blank"*/}
+              {/*  >*/}
+              {/*    {__('eventPage.facebookPage')}*/}
+              {/*  </a>*/}
+              {/*)}*/}
               <div className="tickets-button">
                 {!!tickets.checkoutUrl && (
                   <PrimaryButton
