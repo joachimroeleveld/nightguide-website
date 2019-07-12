@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import moment from 'moment-timezone';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
 import debounce from 'lodash/debounce';
@@ -44,70 +44,80 @@ const VENUE_SECTION_ORDER =
       ]
     : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
 
-const DOW = moment().day();
+const getPreloadSections = () => {
+  const dow = moment().day();
 
-const PRELOAD_SECTIONS = [
-  // Today
-  {
-    title: __('today'),
-    filter: {
-      dateTo: moment({ hour: 23, minute: 59 }).toDate(),
+  const sections = [
+    // Today
+    {
+      title: __('today'),
+      filter: {
+        dateTo: moment({ hour: 23, minute: 59 }).toDate(),
+      },
     },
-  },
-];
+  ];
 
-if (DOW !== 5) {
-  PRELOAD_SECTIONS.push({
-    // Tomorrow
-    title: __('tomorrow'),
-    filter: {
-      dateFrom: moment({ hour: 0, minute: 0 })
-        .add(1, 'days')
-        .toDate(),
-      dateTo: moment({ hour: 23, minute: 59 })
-        .add(1, 'days')
-        .toDate(),
-    },
-  });
-}
+  if (dow !== 5) {
+    sections.push({
+      // Tomorrow
+      title: __('tomorrow'),
+      filter: {
+        dateFrom: moment({ hour: 0, minute: 0 })
+          .add(1, 'days')
+          .toDate(),
+        dateTo: moment({ hour: 23, minute: 59 })
+          .add(1, 'days')
+          .toDate(),
+      },
+    });
+  }
 
-if (![6, 7, 0].includes(DOW)) {
-  // This weekend
-  PRELOAD_SECTIONS.push({
-    title: __('thisWeekend'),
-    filter: {
-      dateFrom: moment(
-        DOW === 5 ? { hour: 0, minute: 0 } : { hour: 15, minute: 0 }
-      )
-        .day(DOW === 5 ? 6 : 5)
-        .toDate(),
-      dateTo: moment({ hour: 23, minute: 59 })
-        .day(7)
-        .subtract(DOW === 0 ? 1 : 0, 'week')
-        .toDate(),
-    },
-  });
-}
+  if (![6, 7, 0].includes(dow)) {
+    // This weekend
+    sections.push({
+      title: __('thisWeekend'),
+      filter: {
+        dateFrom: moment(
+          dow === 5 ? { hour: 0, minute: 0 } : { hour: 15, minute: 0 }
+        )
+          .day(dow === 5 ? 6 : 5)
+          .toDate(),
+        dateTo: moment({ hour: 23, minute: 59 })
+          .day(7)
+          .subtract(dow === 0 ? 1 : 0, 'week')
+          .toDate(),
+      },
+    });
+  }
+
+  return sections;
+};
 
 const SORT_DATE = 'date.from:asc,_id';
 const SORT_POPULARITY = 'date.interestedCount:desc,' + SORT_DATE;
 
 function IbizaCityPage(props) {
-  const { pageSlug, baseUrl, preloadedEvents, preloadedVenues } = props;
+  const {
+    pageSlug,
+    baseUrl,
+    preloadedSections,
+    preloadedEvents,
+    preloadedVenues,
+  } = props;
 
   const [dateFilter, setDateFilter] = useState(null);
   const [venues, setVenues] = useState(preloadedVenues);
   const [fetchingVenues, setFetchingVenues] = useState(false);
   const [windowWidth, setWindowWidth] = useState(false);
   const [loadedSections, setLoadedSections] = useState(
-    range(0, PRELOAD_SECTIONS.length)
+    range(0, preloadedSections.length)
   );
 
   const cityName = __city(pageSlug)('name');
 
   // Reset loaded sections after date filter
   useEffect(() => {
-    setLoadedSections(range(0, PRELOAD_SECTIONS.length));
+    setLoadedSections(range(0, preloadedSections.length));
   }, [dateFilter]);
 
   useEffect(() => {
@@ -125,7 +135,7 @@ function IbizaCityPage(props) {
     // No date applied
     if (!dateFilter) {
       sections.push(
-        ...PRELOAD_SECTIONS.map((section, index) => ({
+        ...preloadedSections.map((section, index) => ({
           preloadedEvents: preloadedEvents[index],
           ...section,
         }))
@@ -380,8 +390,10 @@ function IbizaCityPage(props) {
 IbizaCityPage.getInitialProps = async ctx => {
   const { pageSlug, baseUrl } = ctx.query;
 
+  const preloadedSections = getPreloadSections();
+
   const preloadedEvents = await Promise.all(
-    PRELOAD_SECTIONS.map(
+    preloadedSections.map(
       async ({ filter }) =>
         await getEvents({
           sortBy: SORT_POPULARITY,
@@ -409,6 +421,7 @@ IbizaCityPage.getInitialProps = async ctx => {
     pageSlug,
     preloadedEvents,
     preloadedVenues,
+    preloadedSections,
   };
 };
 
