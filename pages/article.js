@@ -7,7 +7,7 @@ import { getGhostPostBySlug } from '../lib/ghost';
 import { getTags } from '../lib/api';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import TagList from '../components/TagList';
 import ResponsiveImage from '../components/ResponsiveImage';
 import __ from '../lib/i18n';

@@ -1,3 +1,8 @@
 .DayPicker_weekHeader__verticalScrollable {
   box-sizing: border-box;
 }
+
+.CalendarDay__today {
+  box-shadow: inset 0 0 2px 1px rgba(54, 54, 54, 0.36);
+  font-weight: bold;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import find from 'lodash/find';
 import debounce from 'lodash/debounce';
 import css from 'styled-jsx/css';

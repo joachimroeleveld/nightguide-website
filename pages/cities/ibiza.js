@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { useState, useMemo, useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
@@ -46,9 +46,7 @@ const VENUE_SECTION_ORDER =
 
 const DOW = moment().day();
 const IS_WEEKEND = moment().isAfter(
-  moment()
-    .subtract(DOW === 0 ? 1 : 0, 'week')
-    .set({ day: 5, hour: 15, minute: 0 })
+  moment({ day: 5, hour: 15, minute: 0 }).subtract(DOW === 0 ? 1 : 0, 'week')
 );
 
 const PRELOAD_SECTIONS = [
@@ -56,26 +54,25 @@ const PRELOAD_SECTIONS = [
   {
     title: __('today'),
     filter: {
-      dateTo: moment()
-        .set({ hour: 23, minute: 59 })
-        .toDate(),
-    },
-  },
-  // Tomorrow
-  {
-    title: __('tomorrow'),
-    filter: {
-      dateFrom: moment()
-        .add(1, 'days')
-        .set({ hour: 0, minute: 0 })
-        .toDate(),
-      dateTo: moment()
-        .add(1, 'days')
-        .set({ hour: 23, minute: 59 })
-        .toDate(),
+      dateTo: moment({ hour: 23, minute: 59 }).toDate(),
     },
   },
 ];
+
+if (DOW !== 5) {
+  PRELOAD_SECTIONS.push({
+    // Tomorrow
+    title: __('tomorrow'),
+    filter: {
+      dateFrom: moment({ hour: 0, minute: 0 })
+        .add(1, 'days')
+        .toDate(),
+      dateTo: moment({ hour: 23, minute: 59 })
+        .add(1, 'days')
+        .toDate(),
+    },
+  });
+}
 
 if (!IS_WEEKEND) {
   // This weekend
