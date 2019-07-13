@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import moment from 'moment-timezone';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
 import debounce from 'lodash/debounce';
@@ -158,8 +158,10 @@ function IbizaCityPage(props) {
               .match(/^(\w+ \w+)/)
               .pop(),
             filter: {
-              dateFrom: date,
-              dateTo: moment(date).set({ hour: 23, minute: 59 }),
+              dateFrom: date.toDate(),
+              dateTo: moment(date)
+                .set({ hour: 23, minute: 59 })
+                .toDate(),
             },
           };
         });
@@ -397,7 +399,7 @@ IbizaCityPage.getInitialProps = async ctx => {
       async ({ filter }) =>
         await getEvents({
           sortBy: SORT_POPULARITY,
-          limit: 4,
+          limit: 2,
           query: {
             pageSlug,
             ...filter,
