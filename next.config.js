@@ -35,6 +35,20 @@ module.exports = withCss({
   cssModules: false,
   useFileSystemPublicRoutes: false,
   webpack(config) {
+    const originalEntry = config.entry;
+    config.entry = async () => {
+      const entries = await originalEntry();
+
+      if (
+        entries['main.js'] &&
+        !entries['main.js'].includes('./static/js/polyfills.js')
+      ) {
+        entries['main.js'].unshift('./static/js/polyfills.js');
+      }
+
+      return entries;
+    };
+
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
