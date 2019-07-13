@@ -144,7 +144,7 @@ function IbizaCityPage(props) {
 
     // Date filter applied
     if (dateFilter) {
-      const dateFrom = moment(dateFilter[0]).set({ hour: 0, minute: 0 });
+      const dateFrom = moment(dateFilter[0]);
       const amountDays = Math.abs(dateFrom.diff(dateFilter[1], 'days')) + 1;
 
       // If not today/tomorrow and not more than 3 days
@@ -159,9 +159,7 @@ function IbizaCityPage(props) {
               .pop(),
             filter: {
               dateFrom: date.toDate(),
-              dateTo: moment(date)
-                .set({ hour: 23, minute: 59 })
-                .toDate(),
+              dateTo: moment(date).toDate(),
             },
           };
         });
@@ -203,12 +201,14 @@ function IbizaCityPage(props) {
         const filter = Object.assign({}, sections[index].filter);
         // Apply date filter
         if (dateFilter && !filter.dateFrom) {
-          filter.dateFrom = dateFilter[0];
-          filter.dateTo = dateFilter[1];
+          filter.dateFrom = moment(dateFilter[0]).toDate();
+          filter.dateTo = moment(dateFilter[1]).toDate();
         }
         // Apply max dates for sections without day filter
         if (!filter.dateTo) {
-          filter.dateTo = moment().add(1, 'week');
+          filter.dateTo = moment()
+            .add(1, 'week')
+            .toDate();
         }
         return {
           ...filter,

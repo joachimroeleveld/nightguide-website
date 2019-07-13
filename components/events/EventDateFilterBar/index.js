@@ -113,7 +113,10 @@ function EventDateFilterBar(props) {
     setStartDate(startDate);
     setEndDate(endDate);
     if (endDate) {
-      onChange([startDate, endDate]);
+      onChange([
+        moment(startDate).set({ hour: 0, minute: 0 }),
+        moment(endDate).set({ hour: 23, minute: 59 }),
+      ]);
       setCurrentButton('custom');
       togglePicker();
     }
@@ -131,7 +134,11 @@ function EventDateFilterBar(props) {
           .format('LL')
           .match(/^(\w+ \w+)/)
           .pop();
-      return `${format(startDate)} - ${format(endDate)}`;
+      if (!startDate.isSame(endDate, 'day')) {
+        return `${format(startDate)} - ${format(endDate)}`;
+      } else {
+        return `${format(startDate)}`;
+      }
     } else {
       return find(FILTER_ITEMS, { key }).label;
     }
@@ -140,7 +147,7 @@ function EventDateFilterBar(props) {
   const renderCalendarInfo = () => (
     <React.Fragment>
       <div className={['info', fullscreenMode ? 'fullscreen' : ''].join(' ')}>
-        ❕ {__('pickTwoDates')}
+        ❕ {__('pickADateRange')}
       </div>
       {/*language=CSS*/}
       <style jsx>{`

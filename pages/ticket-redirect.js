@@ -24,7 +24,7 @@ function TicketRedirectPage(props) {
         <span className="notice">
           {__('ticketRedirectPage.youreRedirected') + ' '}
           <a className="ticket-link" href={tickets.checkoutUrl}>
-            {tickets.checkoutUrl.match(/^(?:https?:\/\/)?((?:[^\/:]+))/).pop()}
+            {tickets.checkoutUrl.match(/^(?:https?:\/\/)((?:[^/:]+))/).pop()}
           </a>
         </span>
         <div className="loading-container">

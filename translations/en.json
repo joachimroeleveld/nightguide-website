@@ -278,7 +278,7 @@
   "tomorrow": "Tomorrow",
   "thisWeekend": "This weekend",
   "pickDate": "Pick dates",
-  "pickTwoDates": "Select two dates",
+  "pickADateRange": "Select a date range",
   "buyTickets": "Buy tickets",
   "noEventsForDates": "No events exist for these dates"
 }

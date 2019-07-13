@@ -24,7 +24,6 @@ function VenuePage(props) {
     timeSchedule,
     location,
     website,
-    facebook,
     instagram,
     facilities,
     dresscode,
@@ -76,7 +75,7 @@ function VenuePage(props) {
       </Head>
 
       <header className={'header'}>
-        <ImageGrid images={images} />
+        <ImageGrid images={images.slice(0, 5)} />
         <h1>{name}</h1>
       </header>
 
@@ -145,16 +144,6 @@ function VenuePage(props) {
                   className="instagram"
                 >
                   {__('venuePage.instagram')}
-                </a>
-              )}
-              {facebook && facebook.id && (
-                <a
-                  href={`https://facebook.com/${facebook.id}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className="facebook"
-                >
-                  {__('venuePage.facebook')}
                 </a>
               )}
             </div>

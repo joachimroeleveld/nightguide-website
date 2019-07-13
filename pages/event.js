@@ -119,16 +119,6 @@ function EventPage(props) {
                   </span>
                 </div>
               )}
-              {/*{!!facebook.id && (*/}
-              {/*  <a*/}
-              {/*    className={'facebook-page'}*/}
-              {/*    href={`https://facebook.com/events/${facebook.id}`}*/}
-              {/*    rel="noopener noreferrer"*/}
-              {/*    target="_blank"*/}
-              {/*  >*/}
-              {/*    {__('eventPage.facebookPage')}*/}
-              {/*  </a>*/}
-              {/*)}*/}
               <div className="tickets-button">
                 {!!tickets.checkoutUrl && (
                   <PrimaryButton
@@ -257,11 +247,6 @@ function EventPage(props) {
         .description {
           padding: 1em 0 0;
           word-break: break-word;
-        }
-        .facebook-page {
-          color: ${colors.linkText};
-          display: block;
-          margin: 1em 0 1em;
         }
         .tickets-button {
           margin-top: 2em;
