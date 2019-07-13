@@ -28,6 +28,10 @@ class NGDocument extends Document {
             href="/static/img/favicon-16x16.png"
           />
           <link rel="manifest" href="/static/img/site.webmanifest" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          />
         </Head>
         <body>
           <Main />
