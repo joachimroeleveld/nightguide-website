@@ -148,11 +148,7 @@ function IbizaCityPage(props) {
       const amountDays = Math.abs(dateFrom.diff(dateFilter[1], 'days')) + 1;
 
       // If not today/tomorrow and not more than 3 days
-      if (
-        (dateFrom.isAfter(moment().add(1, 'day')) ||
-          dateFilter[1].isBefore(moment({ hour: 0, minute: 0 }))) &&
-        amountDays <= 3
-      ) {
+      if (amountDays <= 3) {
         const daySections = range(0, amountDays).map(day => {
           // Localized form of day and month
           const date = moment(dateFrom).add(day, 'days');
