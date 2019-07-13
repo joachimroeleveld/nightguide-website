@@ -399,7 +399,7 @@ IbizaCityPage.getInitialProps = async ctx => {
       async ({ filter }) =>
         await getEvents({
           sortBy: SORT_POPULARITY,
-          limit: 2,
+          limit: 8,
           query: {
             pageSlug,
             ...filter,
