@@ -18,6 +18,7 @@ import SectionHeader from '../../components/SectionHeader';
 import VenueSliderTile from '../../components/venues/VenueSliderTile';
 import dimensions from '../../styles/dimensions';
 import ResponsiveImage from '../../components/ResponsiveImage';
+import Spinner from '../../components/Spinner';
 
 const VENUE_SECTION_ORDER =
   process.env.NODE_ENV === 'production'
@@ -324,6 +325,11 @@ function IbizaCityPage(props) {
           </section>
         );
       })}
+      {fetchingVenues && (
+        <div className="spinner">
+          <Spinner />
+        </div>
+      )}
       {/*language=CSS*/}
       <style jsx>{`
         .header {
@@ -367,6 +373,11 @@ function IbizaCityPage(props) {
         .venue-section:not(.first-venue) .content {
           border-top: 1px solid ${colors.separator};
           padding-top: 3em;
+          margin-top: 4em;
+        }
+        .spinner {
+          display: flex;
+          justify-content: center;
           margin-top: 4em;
         }
         @media (min-width: 800px) {

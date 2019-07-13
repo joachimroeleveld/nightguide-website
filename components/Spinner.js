@@ -1,5 +1,5 @@
 function Spinner(props) {
-  const { size = 16 } = props;
+  const { size = 20 } = props;
   return (
     <div className="spinner">
       {/*language=CSS*/}

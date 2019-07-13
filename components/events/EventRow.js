@@ -191,7 +191,12 @@ function EventRow(props) {
             </div>
           </Swipe>
           {!items.length && (
-            <span className="empty-message">{__('noEventsForDates')}</span>
+            <Fragment>
+              {fetching && <Spinner size={14} />}
+              {!fetching && (
+                <span className="empty-message">{__('noEventsForDates')}</span>
+              )}
+            </Fragment>
           )}
         </div>
         {!!items.length && (

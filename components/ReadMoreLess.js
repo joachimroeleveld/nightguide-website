@@ -1,6 +1,8 @@
 import { Fragment, useState, useEffect, useRef } from 'react';
 import colors from '../styles/colors';
 
+import __ from '../lib/i18n';
+
 function ReadMoreLess(props) {
   const { children, initialHeight, overhangSize = 80 } = props;
 
@@ -67,7 +69,7 @@ function ReadMoreLess(props) {
 
       {!hideReadMore && (
         <button className="toggle" onClick={toggle}>
-          {props.open ? 'Read Less' : 'Read More'}
+          {open ? __('readLess') : __('readMore')}
           <div
             className="caret"
             style={{
