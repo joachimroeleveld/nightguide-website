@@ -25,23 +25,30 @@ const VENUE_SECTION_ORDER =
     ? [
         '5d1affe8bd44b9001205a73d', // Pacha
         '5d1affd9bd44b9001205a736', // Ushuaia
-        '5d1affd3bd44b9001205a733', // Amnesia
-        '5d1affc5bd44b9001205a72c', // Eden
-        '5d1affc3bd44b9001205a72b', // Privilege
         '5d1affb9bd44b9001205a726', // Hi
+        '5d1affd3bd44b9001205a733', // Amnesia
+        '5d1affc3bd44b9001205a72b', // Privilege
+        '5d1affadbd44b9001205a720', // Heart
+        '5d1affc5bd44b9001205a72c', // Eden
         '5d1afff3bd44b9001205a743', // DC-10
+        '5d1affbebd44b9001205a728', // Octan
+        '5d1afff5bd44b9001205a744', // Destino
         '5d1affdabd44b9001205a737', // Es Paradis
         '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
-        '5d1affadbd44b9001205a720', // Heart
         '5d1affd5bd44b9001205a734', // Ibiza Rocks
         '5d1affd7bd44b9001205a735', // Oceanbeat pier
-        '5d1affbebd44b9001205a728', // Octan
+        '5d1afff1bd44b9001205a742', // Cova Santa
+        '5d1affcfbd44b9001205a731', // Santos
+        '5d1b5cc0bd44b9001205a755', // El Patio - Bora Bora
+        '5d1affddbd44b9001205a738', // Las Dalias
         '5d1a2d82bd44b9001205a71c', // Pikes
         '5d1affc0bd44b9001205a729', // Lio
-        '5d1b5cc0bd44b9001205a755', // El Patio - Bora Bora
-        '5d1b5cc0bd44b9001205a755', // Ibiza Underground
         '5d1b5cc6bd44b9001205a756', // Swag
+        '5d1affc9bd44b9001205a72e', // Boat club
         '5d1b0002bd44b9001205a74a', // Veto social club
+        '5d1b5cc0bd44b9001205a755', // Ibiza Underground
+        '5d1afff7bd44b9001205a745', // Nikki Beach
+        '5d278ac118f84579f8e9b91c', // Hard Rock hotel
       ]
     : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
 
@@ -177,8 +184,9 @@ function IbizaCityPage(props) {
     if (fetchingVenues) return;
     setFetchingVenues(true);
     const result = await getVenues({
+      limit: VENUE_SECTION_ORDER.length,
       offset: venues.length,
-      query: { pageSlug, sortBy: 'name', exclude: VENUE_SECTION_ORDER },
+      query: { pageSlug, sortBy: 'name:asc,_id', exclude: VENUE_SECTION_ORDER },
     });
     setFetchingVenues(false);
     setVenues(venues.concat(result.results));
