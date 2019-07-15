@@ -39,7 +39,6 @@ const VENUE_SECTION_ORDER =
         '5d1affd5bd44b9001205a734', // Ibiza Rocks
         '5d1affd7bd44b9001205a735', // Oceanbeat pier
         '5d1afff1bd44b9001205a742', // Cova Santa
-        '5d1affcfbd44b9001205a731', // Santos
         '5d1affddbd44b9001205a738', // Las Dalias
         '5d1a2d82bd44b9001205a71c', // Pikes
         '5d1affc9bd44b9001205a72e', // Boat club
