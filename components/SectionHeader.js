@@ -1,5 +1,4 @@
-import Link from 'next/link';
-
+import { Link } from '../routes';
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
 
@@ -7,15 +6,16 @@ function SectionHeader(props) {
   const {
     title,
     TitleElem = 'h3',
-    seeAllHref,
+    seeAllRoute,
+    routeParams,
     seeAllText = __('seeAll'),
   } = props;
   return (
     <header className={'container'}>
       <TitleElem className={'title'}>{title}</TitleElem>
       <div className="separator" />
-      {!!seeAllHref && (
-        <Link href={seeAllHref}>
+      {!!seeAllRoute && (
+        <Link route={seeAllRoute} params={routeParams}>
           <a className={'expandLink'}>{seeAllText}</a>
         </Link>
       )}

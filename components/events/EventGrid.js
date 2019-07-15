@@ -5,7 +5,7 @@ import Grid from '../Grid';
 import EventTile from './EventTile';
 
 function EventGrid(props) {
-  const { events, baseUrl, double, ...gridProps } = props;
+  const { events, double, routeParams, ...gridProps } = props;
 
   const keyExtractor = event => event.id;
 
@@ -17,7 +17,7 @@ function EventGrid(props) {
           '(max-width: 41rem) calc(50vw - 39px), (max-width: 56rem) calc(33vw - 20px), 214px'
         }
         event={event}
-        baseUrl={`${baseUrl}/events`}
+        routeParams={routeParams}
       />
       {/*language=CSS*/}
       <style jsx>{`

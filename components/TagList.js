@@ -1,24 +1,36 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useMemo } from 'react';
+import memoize from 'lodash/memoize';
 
+import { Link } from '../routes';
 import TagButton from './TagButton';
 import { _o } from '../lib/i18n';
 
 function TagList(props) {
-  const { tags, baseUrl } = props;
+  const { tags, routeParams } = props;
 
   if (!tags.length) {
     return null;
   }
 
+  const getLinkParams = useMemo(
+    () =>
+      memoize(tagSlug => ({
+        ...routeParams,
+        tag: tagSlug,
+      })),
+    [routeParams]
+  );
+
   return (
     <React.Fragment>
       <ul className={'container'}>
         {tags.map(tag => (
-          <Link href={`${baseUrl}/tags/${tag.slug}`} key={tag.slug}>
-            <li className="tag">
-              <TagButton title={_o(tag.name)} />
-            </li>
+          <Link key={tag.slug} route="tag" params={getLinkParams(tag.slug)}>
+            <a>
+              <li className="tag">
+                <TagButton title={_o(tag.name)} />
+              </li>
+            </a>
           </Link>
         ))}
       </ul>

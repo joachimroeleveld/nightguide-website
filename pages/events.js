@@ -8,7 +8,7 @@ import CityTitleButton from '../components/CityTitleButton';
 import EventGrid from '../components/events/EventGrid';
 
 function CityEventsPage(props) {
-  const { pageSlug, events, baseUrl } = props;
+  const { pageSlug, events, routeParams } = props;
 
   const getItems = async (offset, limit) => {
     return (await getEventsPage(pageSlug, offset, limit)).results;
@@ -28,11 +28,11 @@ function CityEventsPage(props) {
 
       <h1>
         {__('cityEventsPage.eventsIn')}{' '}
-        <CityTitleButton href={baseUrl} city={cityName} />
+        <CityTitleButton pageSlug={pageSlug} city={cityName} />
       </h1>
 
       <EventGrid
-        baseUrl={baseUrl}
+        routeParams={routeParams}
         infinite={true}
         events={events.results}
         totalCount={events.totalCount}
@@ -51,10 +51,8 @@ function CityEventsPage(props) {
 }
 
 CityEventsPage.getInitialProps = async ctx => {
-  const { pageSlug, baseUrl } = ctx.query;
+  const { pageSlug } = ctx.query;
   return {
-    baseUrl,
-    pageSlug,
     events: await getEventsPage(pageSlug),
   };
 };

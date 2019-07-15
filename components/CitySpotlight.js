@@ -4,7 +4,7 @@ import dimensions from '../styles/dimensions';
 import EventTile from './events/EventTile';
 
 export function CitySpotlight(props) {
-  const { eventIds, events, baseUrl } = props;
+  const { eventIds, events, routeParams } = props;
   /*language=CSS*/
   const tileStyles = css.resolve`
     a {
@@ -15,7 +15,7 @@ export function CitySpotlight(props) {
     <div className="container">
       <div className="event-1">
         <EventTile
-          baseUrl={baseUrl + '/events'}
+          routeParams={routeParams}
           imgWidths={[588, 1000, 1500]}
           imgSizes="(max-width: 41rem) calc(100vw - 4em), (max-width: 960px) calc(66vw - (2em * 2 + 14px) / 3 * 2), 588px"
           event={events[0] || { id: eventIds[0] }}
@@ -26,7 +26,7 @@ export function CitySpotlight(props) {
       {[2, 3].map(event => (
         <div key={event} className={`event-${event}`}>
           <EventTile
-            baseUrl={baseUrl + '/events'}
+            routeParams={routeParams}
             imgWidths={[294, 640, 1200]}
             imgSizes="(max-width: 41rem) calc(50vw - 2em), (max-width: 960px) calc(33vw - (2em * 2 + 14px) / 3 * 1), 294px"
             event={events[event - 1] || { id: eventIds[event - 1] }}

@@ -18,7 +18,7 @@ import VideoModal from '../components/VideoModal';
 import ReadMoreLess from '../components/ReadMoreLess';
 
 function EventPage(props) {
-  const { event, baseUrl, similarEvents, venue } = props;
+  const { event, routeParams, similarEvents, venue } = props;
 
   const [showAllDates, setShowAllDates] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -140,14 +140,14 @@ function EventPage(props) {
           <div className="venue">
             <VenueTile
               venue={venue}
-              baseUrl={baseUrl + '/venues'}
+              routeParams={routeParams}
               imgWidths={[600, 1000, 2000]}
               imgSizes="(min-width: 900px) calc(100vw - 2rem), 300px"
             />
           </div>
         </aside>
         <div className="description-container">
-          <TagList baseUrl={baseUrl} tags={tags} />
+          <TagList routeParams={routeParams} tags={tags} />
           <ReadMoreLess initialHeight={500}>
             <div
               className="description"
@@ -164,7 +164,7 @@ function EventPage(props) {
         {!!similarEvents.length && (
           <section className="similar-events">
             <h2>{__('eventPage.similarEvents')}</h2>
-            <EventGrid baseUrl={baseUrl} events={similarEvents} />
+            <EventGrid routeParams={routeParams} events={similarEvents} />
           </section>
         )}
       </div>

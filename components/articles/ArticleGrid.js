@@ -5,7 +5,7 @@ import Grid from '../Grid';
 import ArticleTile from './ArticleTile';
 
 function ArticleGrid(props) {
-  const { articles, baseUrl, ...gridProps } = props;
+  const { routeParams, articles, ...gridProps } = props;
 
   const keyExtractor = article => article.id;
 
@@ -17,7 +17,7 @@ function ArticleGrid(props) {
           '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
         }
         article={article}
-        baseUrl={`${baseUrl}/articles`}
+        routeParams={routeParams}
       />
     </div>
   );

@@ -1,8 +1,9 @@
-import Link from 'next/link';
-
+import { Link } from '../routes';
 import colors from '../styles/colors';
 
-function Footer() {
+function Footer(props) {
+  const { pageSlug } = props;
+
   return (
     <footer className={'container'}>
       <section>
@@ -15,41 +16,43 @@ function Footer() {
         </a>
         <ul className={'links'}>
           <li>
-            <Link as="/privacy-policy" href="/privacyPolicy">
+            <Link route="privacy-policy">
               <a>Privacy policy</a>
             </Link>
           </li>
         </ul>
       </section>
       <footer className={'bottom'}>
-        <div className={'app-buttons'}>
-          <a
-            rel="noreferrer"
-            target={'_blank'}
-            href={
-              'https://itunes.apple.com/us/app/nightguide/id1453033103?l=nl&ls=1&mt=8'
-            }
-          >
-            <img
-              src="/static/img/app-store-button.png"
-              srcSet="/static/img/app-store-button@2x.png 2x, /static/img/app-store-button@3x.png 3x"
-              alt="Download button for iOS"
-            />
-          </a>
-          <a
-            rel="noreferrer"
-            target={'_blank'}
-            href={
-              'http://play.google.com/store/apps/details?id=app.nightguide.app1'
-            }
-          >
-            <img
-              src="/static/img/play-store-button.png"
-              srcSet="/static/img/play-store-button@2x.png 2x, /static/img/play-store-button@3x.png 3x"
-              alt="Download button for Android"
-            />
-          </a>
-        </div>
+        {pageSlug === 'nl/utrecht' && (
+          <div className={'app-buttons'}>
+            <a
+              rel="noreferrer"
+              target={'_blank'}
+              href={
+                'https://itunes.apple.com/us/app/nightguide/id1453033103?l=nl&ls=1&mt=8'
+              }
+            >
+              <img
+                src="/static/img/app-store-button.png"
+                srcSet="/static/img/app-store-button@2x.png 2x, /static/img/app-store-button@3x.png 3x"
+                alt="Download button for iOS"
+              />
+            </a>
+            <a
+              rel="noreferrer"
+              target={'_blank'}
+              href={
+                'http://play.google.com/store/apps/details?id=app.nightguide.app1'
+              }
+            >
+              <img
+                src="/static/img/play-store-button.png"
+                srcSet="/static/img/play-store-button@2x.png 2x, /static/img/play-store-button@3x.png 3x"
+                alt="Download button for Android"
+              />
+            </a>
+          </div>
+        )}
         <span className="copyright">
           &copy; NightGuide 2019. All rights reserved.
         </span>

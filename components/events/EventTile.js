@@ -1,6 +1,7 @@
 import React, { useState, memo, useMemo } from 'react';
 import css from 'styled-jsx/css';
 
+import { Link } from '../../routes';
 import __, { _o } from '../../lib/i18n';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
@@ -9,22 +10,24 @@ import { generateTicketRedirectUrl } from './util';
 import VideoModal from '../VideoModal';
 
 const EventTileBody = props => {
-  const { event, eventUrl } = props;
-  const { date, tags, organiser, tickets = {}, dateIndex } = event;
+  const { event, routeParams } = props;
+  const { id, date, tags, organiser, tickets = {}, dateIndex } = event;
 
   return (
     <div className="container">
-      <a href={eventUrl} className="event-link">
-        <div className="date">{formatEventDate(date.from)}</div>
-        <div className="venue">{organiser.venue.name}</div>
-        <div className="tags">
-          {tags.map((tag, index) => (
-            <span key={tag.id} className="tag">
-              {(index !== 0 ? ' • ' : '') + _o(tag.name)}
-            </span>
-          ))}
-        </div>
-      </a>
+      <Link route="event" params={routeParams}>
+        <a className="event-link">
+          <div className="date">{formatEventDate(date.from)}</div>
+          <div className="venue">{organiser.venue.name}</div>
+          <div className="tags">
+            {tags.map((tag, index) => (
+              <span key={tag.id} className="tag">
+                {(index !== 0 ? ' • ' : '') + _o(tag.name)}
+              </span>
+            ))}
+          </div>
+        </a>
+      </Link>
       {tickets.checkoutUrl && (
         <a
           rel="nofollow"
@@ -77,7 +80,7 @@ const EventTileBody = props => {
 };
 
 function EventTile(props) {
-  const { baseUrl, event, imgWidths, imgSizes, height = '8em' } = props;
+  const { event, imgWidths, imgSizes, height = '8em', routeParams } = props;
   const { title, facebook = {}, images = [], id, videoUrl } = event;
 
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -97,14 +100,18 @@ function EventTile(props) {
     [images]
   );
 
-  const eventUrl = `${baseUrl}/${id}`;
+  const linkParams = useMemo(() => ({ ...routeParams, event: id }), [
+    id,
+    routeParams,
+  ]);
 
   return (
     <div className="container">
       <Tile
         title={title || facebook.title}
         imgProps={imgProps}
-        href={eventUrl}
+        route="event"
+        routeParams={linkParams}
         linkBody={false}
         /*language=CSS*/
         {...css.resolve`
@@ -112,7 +119,7 @@ function EventTile(props) {
             height: ${height};
           }
         `}
-        BodyContents={<EventTileBody eventUrl={eventUrl} event={event} />}
+        BodyContents={<EventTileBody routeParams={linkParams} event={event} />}
       />
       {!!videoUrl && (
         <div className="video-button">

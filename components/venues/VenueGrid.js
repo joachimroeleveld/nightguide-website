@@ -5,7 +5,7 @@ import Grid from '../Grid';
 import VenueTile from './VenueTile';
 
 function VenueGrid(props) {
-  const { venues, baseUrl, ...gridProps } = props;
+  const { venues, routeParams, ...gridProps } = props;
 
   const keyExtractor = venue => venue.id;
 
@@ -17,7 +17,7 @@ function VenueGrid(props) {
         '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
       }
       venue={venue}
-      baseUrl={`${baseUrl}/venues`}
+      routeParams={routeParams}
     />
   );
 

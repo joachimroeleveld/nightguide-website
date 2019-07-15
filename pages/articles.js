@@ -8,7 +8,7 @@ import CityTitleButton from '../components/CityTitleButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
 
 function CityArticlesPage(props) {
-  const { pageSlug, articles, baseUrl } = props;
+  const { routeParams, pageSlug, articles } = props;
 
   const getItems = (page, limit) => {
     return getArticlesPage(pageSlug, page, limit);
@@ -28,14 +28,14 @@ function CityArticlesPage(props) {
 
       <h1>
         {__('cityArticlesPage.articlesAbout')}{' '}
-        <CityTitleButton href={baseUrl} city={cityName} />
+        <CityTitleButton pageSlug={pageSlug} city={cityName} />
       </h1>
 
       <ArticleGrid
         infinite={true}
         articles={articles}
         getItems={getItems}
-        baseUrl={baseUrl}
+        routeParams={routeParams}
       />
 
       {/*language=CSS*/}
@@ -51,10 +51,8 @@ function CityArticlesPage(props) {
 }
 
 CityArticlesPage.getInitialProps = async ctx => {
-  const { pageSlug, baseUrl } = ctx.query;
+  const { pageSlug } = ctx.query;
   return {
-    baseUrl,
-    pageSlug,
     articles: await getArticlesPage(pageSlug),
   };
 };

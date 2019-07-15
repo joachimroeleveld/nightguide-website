@@ -1,35 +1,68 @@
 import React, { useContext } from 'react';
+import { withRouter } from 'next/router';
 
 import __ from '../lib/i18n';
 
-const NavigationContext = React.createContext({});
+const QueryContext = React.createContext({});
 
-export const NavigationProvider = NavigationContext.Provider;
+export const QueryProvider = QueryContext.Provider;
 
-export function withNavigation(Component) {
+export const withNavigation = Component => {
+  function extendQuery(baseQuery, route, path) {
+    const query = { ...baseQuery };
+    const { city, country } = query;
+
+    // If city sub-page
+    if (city && country) {
+      query.pageSlug = `${country}/${city}`;
+    }
+    // If city page
+    else if (route.match(/^\/cities\/[^/]+$/)) {
+      query.pageSlug = path.slice(1);
+      query.country = path.split('/')[1];
+      query.city = path.split('/')[2];
+    }
+
+    return query;
+  }
+
   function NavigationComponent(props) {
-    const { query } = useContext(NavigationContext);
+    const { router, ...otherProps } = props;
+    let { ...query } = useContext(QueryContext);
 
-    const { pageSlug } = query;
+    query = extendQuery(query, router.route, router.asPath);
+
+    const path = router.asPath.split('?')[0];
+    const currentUrl = `${process.env.REACT_APP_HOST}${path}`;
+
+    const { pageSlug, city, country } = query;
 
     const navProps = {
-      query,
-      baseUrl: '',
+      pageSlug,
       breadcrumbs: [],
+      currentUrl,
     };
 
     if (pageSlug) {
-      navProps.baseUrl = `/${pageSlug}`;
+      navProps.routeParams = { city, country };
       navProps.breadcrumbs.push({
         label: __(`city.${pageSlug}.name`),
         url: pageSlug,
       });
     }
 
-    return <Component {...props} {...navProps} />;
+    return <Component {...otherProps} {...navProps} />;
   }
 
-  NavigationComponent.getInitialProps = Component.getInitialProps;
+  if (Component.getInitialProps) {
+    NavigationComponent.getInitialProps = async function(ctx) {
+      const query = extendQuery(ctx.query, ctx.pathname, ctx.asPath);
+      return await Component.getInitialProps({
+        ...ctx,
+        query,
+      });
+    };
+  }
 
-  return NavigationComponent;
-}
+  return withRouter(NavigationComponent);
+};

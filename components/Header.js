@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import debounce from 'lodash/debounce';
 
-import { withNavigation } from './Navigation';
+import { Link } from '../routes';
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
 
 function Header(props) {
-  const { baseUrl } = props;
+  const { routeParams, pageSlug } = props;
 
   const [innerRef, setInnerRef] = useState(null);
   const [sticky, setSticky] = useState(false);
@@ -44,26 +43,26 @@ function Header(props) {
     >
       <div className="inner" ref={setInnerRef}>
         <div className="logo-container">
-          <Link href={'/'}>
+          <Link route="home">
             <a className="logo">
               <img src="/static/img/logo.svg" alt="NightGuide" />
             </a>
           </Link>
         </div>
-        {baseUrl !== '' && baseUrl !== '/es/ibiza' && (
+        {!!pageSlug && pageSlug !== 'es/ibiza' && (
           <ul className="menu">
             <li>
-              <Link href={`${baseUrl}/events`}>
+              <Link route="events" params={routeParams}>
                 <a>{__('menu.events')}</a>
               </Link>
             </li>
             <li>
-              <Link href={`${baseUrl}/articles`}>
+              <Link route="articles" params={routeParams}>
                 <a>{__('menu.blog')}</a>
               </Link>
             </li>
             <li className="explore">
-              <Link href={`${baseUrl}/explore`}>
+              <Link route="explore" params={routeParams}>
                 <a>{__('menu.explore')}</a>
               </Link>
             </li>
@@ -81,7 +80,7 @@ function Header(props) {
         .container.sticky > .inner {
           position: fixed;
           padding-bottom: 0.7rem;
-          z-index: 100;
+          z-index: 110;
           top: 0;
           width: 100%;
           background: ${colors.bg};
@@ -148,4 +147,4 @@ function Header(props) {
   );
 }
 
-export default withNavigation(Header);
+export default Header;

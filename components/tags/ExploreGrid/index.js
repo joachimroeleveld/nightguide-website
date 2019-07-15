@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import Link from 'next/link';
 import css from 'styled-jsx/css';
 import find from 'lodash/find';
 
+import { Link } from '../../../routes';
 import { _o } from '../../../lib/i18n';
 import dimensions from '../../../styles/dimensions';
 import colors from '../../../styles/colors';
@@ -11,7 +11,7 @@ import TAG_CONFIG from './tagConfig';
 import ResponsiveImage from '../../ResponsiveImage';
 
 function ExploreGrid(props) {
-  const { tags, baseUrl, limitItems = null } = props;
+  const { tags, limitItems = null, routeParams } = props;
 
   const sortedTags = TAG_CONFIG.order
     .map(slug => find(tags, { slug }))
@@ -25,7 +25,7 @@ function ExploreGrid(props) {
     const tagConfig = TAG_CONFIG[tag.slug];
 
     return (
-      <Link key={tag.id} href={`${baseUrl}/tags/${tag.slug}`}>
+      <Link key={tag.id} route="tag" params={{ ...routeParams, tag: tag.slug }}>
         <a className="tag">
           {!!tagConfig && (
             <div className="bg-img">

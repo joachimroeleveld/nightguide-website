@@ -1,6 +1,6 @@
+import { useState, useMemo, useEffect } from 'react';
 import Head from 'next/head';
 import moment from 'moment-timezone';
-import { useState, useMemo, useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import range from 'lodash/range';
 import debounce from 'lodash/debounce';
@@ -32,6 +32,7 @@ const VENUE_SECTION_ORDER =
         '5d1affc5bd44b9001205a72c', // Eden
         '5d1afff3bd44b9001205a743', // DC-10
         '5d1affbebd44b9001205a728', // Octan
+        '5d1affeebd44b9001205a740', // Ocean Beach
         '5d1afff5bd44b9001205a744', // Destino
         '5d1affdabd44b9001205a737', // Es Paradis
         '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
@@ -42,7 +43,7 @@ const VENUE_SECTION_ORDER =
         '5d1affddbd44b9001205a738', // Las Dalias
         '5d1a2d82bd44b9001205a71c', // Pikes
         '5d1affc9bd44b9001205a72e', // Boat club
-        '5d1b5cc0bd44b9001205a755', // Ibiza Underground
+        '5d1affd1bd44b9001205a732', // Ibiza Underground
         '5d1affb5bd44b9001205a724', // Blue Marlin
       ]
     : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
@@ -102,7 +103,7 @@ const SORT_POPULARITY = 'date.interestedCount:desc,' + SORT_DATE;
 function IbizaCityPage(props) {
   const {
     pageSlug,
-    baseUrl,
+    routeParams,
     preloadedSections,
     preloadedEvents,
     preloadedVenues,
@@ -302,7 +303,7 @@ function IbizaCityPage(props) {
                   <VenueSliderTile
                     imgWidths={[600, 1000, 2000]}
                     imgSizes="(min-width: 800px) calc(50vw - 2em - 7px), calc(100vw - 4em)"
-                    baseUrl={baseUrl}
+                    routeParams={routeParams}
                     venue={venue}
                   />
                 </div>
@@ -311,7 +312,7 @@ function IbizaCityPage(props) {
                 <EventRow
                   rowCount={venue ? (windowWidth > 800 ? 2 : 1) : 1}
                   filter={filter}
-                  baseUrl={baseUrl}
+                  routeParams={routeParams}
                   initialEvents={preloadedEvents && preloadedEvents.results}
                   reachedEnd={
                     preloadedEvents &&
@@ -405,9 +406,7 @@ function IbizaCityPage(props) {
   );
 }
 
-IbizaCityPage.getInitialProps = async ctx => {
-  const { pageSlug, baseUrl } = ctx.query;
-
+IbizaCityPage.getInitialProps = async () => {
   const preloadedSections = getPreloadSections();
 
   const preloadedEvents = await Promise.all(
@@ -417,7 +416,7 @@ IbizaCityPage.getInitialProps = async ctx => {
           sortBy: SORT_POPULARITY,
           limit: 8,
           query: {
-            pageSlug,
+            pageSlug: 'es/ibiza',
             ...filter,
           },
         })
@@ -435,8 +434,6 @@ IbizaCityPage.getInitialProps = async ctx => {
     });
 
   return {
-    baseUrl,
-    pageSlug,
     preloadedEvents,
     preloadedVenues,
     preloadedSections,

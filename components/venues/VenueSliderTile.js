@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
 
+import { Link } from '../../routes';
 import ResponsiveImage from '../ResponsiveImage';
 import { _o } from '../../lib/i18n';
 import Pager from '../Pager';
@@ -39,8 +39,8 @@ const Img = ({ bigOverlay, ...imgProps }) => (
 );
 
 function VenueSliderTile(props) {
-  const { baseUrl, venue, imgWidths, imgSizes } = props;
-  const { name, images, id, description } = venue;
+  const { routeParams, venue, imgWidths, imgSizes } = props;
+  const { name, images, description } = venue;
   const imgProps = { widths: imgWidths, sizes: imgSizes };
 
   const [containerRef, setContainerRef] = useState(null);
@@ -73,6 +73,11 @@ function VenueSliderTile(props) {
     setCurrentSlide(slide);
   };
 
+  const linkParams = useMemo(() => ({ ...routeParams, venue: venue.id }), [
+    routeParams,
+    venue.id,
+  ]);
+
   return (
     <React.Fragment>
       <Swipe
@@ -91,7 +96,7 @@ function VenueSliderTile(props) {
               <div className="prev">
                 <button onClick={() => goToSlide(currentSlide - 1)} />
               </div>
-              <Link href={`${baseUrl}/venues/${id}`}>
+              <Link route="venue" params={linkParams}>
                 <a className="venue-link">
                   <div
                     className="slides"

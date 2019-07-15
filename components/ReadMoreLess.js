@@ -80,6 +80,7 @@ function ReadMoreLess(props) {
           {/*language=CSS*/}
           <style jsx>{`
             .toggle {
+              margin-top: 0.5em;
               color: ${colors.linkText};
               display: flex;
               align-items: center;

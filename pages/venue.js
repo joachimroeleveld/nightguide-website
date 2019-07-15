@@ -15,7 +15,7 @@ import EventGrid from '../components/events/EventGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
 function VenuePage(props) {
-  const { venue, baseUrl, events, similarVenues } = props;
+  const { venue, routeParams, events, similarVenues } = props;
 
   const {
     name,
@@ -82,7 +82,7 @@ function VenuePage(props) {
       <div className="content">
         <div className="main-content">
           <div className="tags">
-            <TagList baseUrl={baseUrl} tags={tags} />
+            <TagList routeParams={routeParams} tags={tags} />
           </div>
           {description && (
             <div
@@ -162,14 +162,14 @@ function VenuePage(props) {
       {!!events.length && (
         <section>
           <h2>{__('venuePage.events')}</h2>
-          <EventGrid baseUrl={baseUrl} events={events} />
+          <EventGrid routeParams={routeParams} events={events} />
         </section>
       )}
 
       {!!similarVenues.length && (
         <section>
           <h2>{__('venuePage.similarVenues')}</h2>
-          <VenueGrid baseUrl={baseUrl} venues={similarVenues} />
+          <VenueGrid routeParams={routeParams} venues={similarVenues} />
         </section>
       )}
 
@@ -251,15 +251,14 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue: venueId, pageSlug, baseUrl } = ctx.query;
+  const { venue: venueId, pageSlug } = ctx.query;
   const venue = await getVenue(venueId);
   return {
-    baseUrl,
     venue,
     events: (await getEvents({
       limit: 8,
       query: {
-        venue: venue.id,
+        venue: venueId,
       },
     })).results,
     similarVenues: venue.tags.length
@@ -267,7 +266,7 @@ VenuePage.getInitialProps = async ctx => {
           limit: 3,
           query: {
             pageSlug,
-            exclude: venue.id,
+            exclude: venueId,
             tags: venue.tags.map(tag => tag.id),
           },
         })).results

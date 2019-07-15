@@ -13,7 +13,7 @@ import colors from '../../styles/colors';
 import Spinner from '../Spinner';
 
 function EventRow(props) {
-  const { baseUrl, initialEvents, filter, sortBy, rowCount = 1 } = props;
+  const { routeParams, initialEvents, filter, sortBy, rowCount = 1 } = props;
 
   const itemRefs = useRef({});
   const [containerRef, setContainerRef] = useState(null);
@@ -179,7 +179,7 @@ function EventRow(props) {
                   >
                     <EventGrid
                       double={rowCount === 2}
-                      baseUrl={baseUrl}
+                      routeParams={routeParams}
                       events={events}
                       setGridItemRef={(index, ref) =>
                         setItemRef(page, index, ref)

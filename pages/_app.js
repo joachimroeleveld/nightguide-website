@@ -4,39 +4,33 @@ import Router from 'next/router';
 import withGA from 'next-ga';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#__next');
+// TODO: https://github.com/zeit/next-plugins/issues/282
+import '../static/css/empty.css';
+import { QueryProvider } from '../components/Navigation';
 
-import Fonts from '../components/Fonts';
-import { NavigationProvider } from '../components/Navigation';
-import TimezoneManager from '../components/TimezoneManager';
+Modal.setAppElement('#__next');
 
 class NightGuideWebsite extends App {
   static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+    let props = {};
 
-    const { query, pathName } = ctx;
-    const navigationProps = {
-      query,
-      pathName,
-    };
+    const { query } = ctx;
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      props = await Component.getInitialProps(ctx);
     }
 
-    return { pageProps, navigationProps };
+    return { ...props, query };
   }
 
   render() {
-    const { Component, pageProps, navigationProps } = this.props;
+    const { Component, query, ...props } = this.props;
 
     return (
       <Container>
-        <Fonts />
-        <NavigationProvider value={navigationProps}>
-          <TimezoneManager />
-          <Component {...pageProps} />
-        </NavigationProvider>
+        <QueryProvider value={query}>
+          <Component {...props} />
+        </QueryProvider>
       </Container>
     );
   }

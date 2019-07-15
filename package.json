@@ -2,10 +2,10 @@
   "name": "nightguide-website",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "routes.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "nodemon $NODE_DEBUG_OPTION --watch server/ server/index.js",
+    "dev": "nodemon $NODE_DEBUG_OPTION --watch routes.js server/ server/index.js",
     "build": "next build",
     "prettier": "prettier --write \"**/*.js\"}",
     "lint": "eslint"
@@ -28,6 +28,7 @@
     "moment-timezone": "^0.5.26",
     "next": "^8.1.0",
     "next-ga": "^2.3.4",
+    "next-routes": "^1.4.2",
     "object-fit-images": "^3.2.4",
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",

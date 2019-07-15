@@ -1,14 +1,14 @@
 import React from 'react';
-import Link from 'next/link';
 
+import { Link } from '../routes';
 import colors from '../styles/colors';
 
 function CityTitleButton(props) {
-  const { city, href, disabled = false } = props;
+  const { city, pageSlug, disabled = false } = props;
   return (
     <React.Fragment>
       {!disabled && (
-        <Link href={href}>
+        <Link route={`/${pageSlug}`}>
           <a className="button">{city}</a>
         </Link>
       )}

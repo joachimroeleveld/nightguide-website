@@ -40,7 +40,7 @@ const generateHtml = html => {
 };
 
 function ArticlePage(props) {
-  const { article, tags, baseUrl } = props;
+  const { article, tags, routeParams } = props;
 
   const { title, html, feature_image, created_at, tags: ghostTags } = article;
 
@@ -63,7 +63,7 @@ function ArticlePage(props) {
           <div className="text">
             <div className="tags">
               <TagList
-                baseUrl={baseUrl}
+                routeParams={routeParams}
                 tags={tags.filter(tag => find(ghostTags, { slug: tag.slug }))}
               />
             </div>
@@ -159,9 +159,8 @@ function ArticlePage(props) {
 }
 
 ArticlePage.getInitialProps = async ctx => {
-  const { article, baseUrl } = ctx.query;
+  const { article } = ctx.query;
   return {
-    baseUrl,
     article: await getGhostPostBySlug(article, {
       query: { include: 'tags' },
     }),

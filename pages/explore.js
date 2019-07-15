@@ -8,7 +8,7 @@ import CityTitleButton from '../components/CityTitleButton';
 import ExploreGrid from '../components/tags/ExploreGrid';
 
 function CityExplorePage(props) {
-  const { baseUrl, pageSlug, tags } = props;
+  const { pageSlug, tags, routeParams } = props;
 
   const cityName = __(`city.${pageSlug}.name`);
 
@@ -29,10 +29,10 @@ function CityExplorePage(props) {
 
       <h1>
         {__('cityExplorePage.explore')}{' '}
-        <CityTitleButton href={baseUrl} city={cityName} />
+        <CityTitleButton pageSlug={pageSlug} city={cityName} />
       </h1>
 
-      <ExploreGrid baseUrl={baseUrl} tags={tags} />
+      <ExploreGrid routeParams={routeParams} pageSlug={pageSlug} tags={tags} />
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
@@ -45,11 +45,8 @@ function CityExplorePage(props) {
   );
 }
 
-CityExplorePage.getInitialProps = async ctx => {
-  const { baseUrl, pageSlug } = ctx.query;
+CityExplorePage.getInitialProps = async () => {
   return {
-    baseUrl,
-    pageSlug,
     tags: (await getTags()).results,
   };
 };

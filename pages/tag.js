@@ -11,7 +11,7 @@ import ArticleGrid from '../components/articles/ArticleGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 
 function CityTagPage(props) {
-  const { venues, events, articles, tag, baseUrl, pageSlug } = props;
+  const { venues, events, articles, tag, pageSlug, routeParams } = props;
 
   const cityName = __city(pageSlug)('name');
   const description = __city(pageSlug)(`tagDescriptions.${tag.slug}`);
@@ -26,14 +26,14 @@ function CityTagPage(props) {
       <h1>
         {__(`tag.titles.${tag.slug}`)}
         &nbsp;
-        <CityTitleButton href={baseUrl} city={cityName} />
+        <CityTitleButton pageSlug={pageSlug} city={cityName} />
       </h1>
       {!!description && <p className={'intro'}>{description}</p>}
       {!!venues.length && (
         <section className={'venues'}>
           <SectionHeader title={__('cityTagPage.venues')} TitleElem={'h3'} />
           <div className={'content'}>
-            <VenueGrid baseUrl={baseUrl} venues={venues} />
+            <VenueGrid routeParams={routeParams} venues={venues} />
           </div>
         </section>
       )}
@@ -41,7 +41,7 @@ function CityTagPage(props) {
         <section className={'events'}>
           <SectionHeader title={__('cityTagPage.events')} TitleElem={'h3'} />
           <div className={'content'}>
-            <EventGrid baseUrl={baseUrl} events={events} />
+            <EventGrid routeParams={routeParams} events={events} />
           </div>
         </section>
       )}
@@ -49,7 +49,7 @@ function CityTagPage(props) {
         <section className={'articles'}>
           <SectionHeader title={__('cityTagPage.articles')} TitleElem={'h3'} />
           <div className={'content'}>
-            <ArticleGrid baseUrl={baseUrl} articles={articles} />
+            <ArticleGrid routeParams={routeParams} articles={articles} />
           </div>
         </section>
       )}
@@ -76,11 +76,9 @@ function CityTagPage(props) {
 }
 
 CityTagPage.getInitialProps = async ctx => {
-  let { pageSlug, tag: tagSlug, baseUrl } = ctx.query;
+  let { pageSlug, tag: tagSlug } = ctx.query;
   const tag = await getTagBySlug(tagSlug);
   return {
-    baseUrl,
-    pageSlug,
     tag,
     venues: (await getVenues({
       query: {

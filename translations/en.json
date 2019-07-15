@@ -279,6 +279,8 @@
   "thisWeekend": "This weekend",
   "pickDate": "Pick dates",
   "pickADateRange": "Select a date range",
+  "readMore": "Read more",
+  "readLess": "Read less",
   "buyTickets": "Buy tickets",
   "noEventsForDates": "No events exist for these dates"
 }

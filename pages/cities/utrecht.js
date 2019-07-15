@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import Head from 'next/head';
 
+import { Link } from '../../routes';
 import withPageLayout from '../../components/PageLayout';
 import { getEvents, getTags } from '../../lib/api';
 import __, { __city } from '../../lib/i18n';
@@ -22,7 +22,7 @@ const SPOTLIGHT_EVENTS = [
 ];
 
 function UtrechtCityPage(props) {
-  const { baseUrl, events, blogs, tags, pageSlug, spotlightEvents } = props;
+  const { events, blogs, tags, pageSlug, routeParams, spotlightEvents } = props;
 
   const cityName = __city(pageSlug)('name');
 
@@ -41,7 +41,7 @@ function UtrechtCityPage(props) {
           dangerouslySetInnerHTML={{ __html: __('cityPage.discoverBarsClubs') }}
         />
         &nbsp;
-        <CityTitleButton href={baseUrl} city={cityName} disabled={true} />
+        <CityTitleButton pageSlug={pageSlug} city={cityName} disabled={true} />
       </h1>
       <p className="intro">{__city(pageSlug)('intro')}</p>
 
@@ -50,24 +50,25 @@ function UtrechtCityPage(props) {
       {/*  <CitySpotlight*/}
       {/*    events={spotlightEvents}*/}
       {/*    eventIds={SPOTLIGHT_EVENTS}*/}
-      {/*    baseUrl={baseUrl}*/}
+      {/*    routeParams={routeParams}*/}
       {/*  />*/}
       {/*</section>*/}
 
       <section className={'explore'}>
         <SectionHeader
-          seeAllHref={`${baseUrl}/explore`}
+          seeAllRoute="explore"
+          routeParams={routeParams}
           title={__('cityPage.explore')}
           TitleElem={'h2'}
         />
         <p className="intro">{__city(pageSlug)('exploreIntro')}</p>
-        <ExploreGrid limitItems={8} baseUrl={baseUrl} tags={tags} />
+        <ExploreGrid routeParams={routeParams} limitItems={8} tags={tags} />
         <div className="chat-wrapper">
           <Card>
             <footer className="chat">
               <span className={'ask-staff'}>{__('cityPage.askOurStaff')}</span>
               <div className={'chat-button'}>
-                <Link href={'/expert-chat'}>
+                <Link route="expert-chat">
                   <PrimaryButton title={__('cityPage.startChat')} />
                 </Link>
               </div>
@@ -78,25 +79,27 @@ function UtrechtCityPage(props) {
 
       <section className={'events'}>
         <SectionHeader
-          seeAllHref={`${baseUrl}/events`}
+          seeAllRoute="events"
+          routeParams={routeParams}
           title={__('cityPage.events')}
           TitleElem={'h2'}
         />
         <p className="intro">{__city(pageSlug)('eventsIntro')}</p>
         <div className={'content'}>
-          <EventGrid baseUrl={baseUrl} events={events} />
+          <EventGrid routeParams={routeParams} events={events} />
         </div>
       </section>
 
       <section className={'articles'}>
         <SectionHeader
-          seeAllHref={`${baseUrl}/articles`}
+          seeAllRoute="articles"
+          routeParams={routeParams}
           title={__('cityPage.articles')}
           TitleElem={'h2'}
         />
         <p className="intro">{__city(pageSlug)('articlesIntro')}</p>
         <div className={'content'}>
-          <ArticleGrid baseUrl={baseUrl} articles={blogs} />
+          <ArticleGrid routeParams={routeParams} articles={blogs} />
         </div>
       </section>
 
@@ -155,10 +158,7 @@ function UtrechtCityPage(props) {
 }
 
 UtrechtCityPage.getInitialProps = async ctx => {
-  let { pageSlug, baseUrl } = ctx.query;
   return {
-    baseUrl,
-    pageSlug,
     spotlightEvents: (await getEvents({
       query: {
         ids: SPOTLIGHT_EVENTS,
@@ -167,11 +167,11 @@ UtrechtCityPage.getInitialProps = async ctx => {
     events: (await getEvents({
       limit: 8,
       query: {
-        pageSlug,
+        pageSlug: 'nl/utrecht',
         tagged: true,
       },
     })).results,
-    blogs: await getPostsFiltered(`tags:${pageSlug.replace('/', '-')}`, {
+    blogs: await getPostsFiltered(`tags:nl-utrecht`, {
       limit: 6,
     }),
     tags: (await getTags()).results,

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import css from 'styled-jsx/css';
-import Link from 'next/link';
+import { Link } from '../routes';
 
 import colors from '../styles/colors';
 import dimensions from '../styles/dimensions';
@@ -9,7 +9,8 @@ import ResponsiveImage from './ResponsiveImage';
 
 function Tile(props) {
   const {
-    href,
+    route,
+    routeParams,
     title,
     imgProps,
     styles = null,
@@ -18,6 +19,8 @@ function Tile(props) {
     linkBody = true,
     ContainerElem = 'article',
   } = props;
+
+  const linkProps = { route, params: routeParams };
 
   const topContent = (
     <header className={['top', className].join(' ')}>
@@ -120,14 +123,14 @@ function Tile(props) {
 
   return (
     <ContainerElem className={['container', className].join(' ')}>
-      {href && (
-        <Link href={href}>
+      {route && (
+        <Link {...linkProps}>
           <a>{topContent}</a>
         </Link>
       )}
-      {!href && topContent}
+      {!route && topContent}
       {BodyContents && linkBody && (
-        <Link href={href}>
+        <Link {...linkProps}>
           <a>{bodyContent}</a>
         </Link>
       )}
