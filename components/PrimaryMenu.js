@@ -92,7 +92,7 @@ function PrimaryMenu(props) {
               ))}
             </ul>
           )}
-          <footer>
+          <footer className={!items.length ? 'at-top' : ''}>
             <Link route="home">
               <a>{__('menu.home')}</a>
             </Link>
@@ -132,6 +132,9 @@ function PrimaryMenu(props) {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+          }
+          footer.at-top a:first-child {
+            border-top: none;
           }
         `}</style>
       </Modal>
