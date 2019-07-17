@@ -99,9 +99,11 @@ function SearchBar(props) {
 
   useEffect(() => {
     if (!isOpen && inputRef) {
-      setVal('');
       inputRef.blur();
-      setResults({});
+      setTimeout(() => {
+        setVal('');
+        setResults({});
+      }, 300);
     }
   }, [inputRef, isOpen]);
 
@@ -362,8 +364,9 @@ function SearchBar(props) {
           left: 0;
           width: 100%;
           height: 100%;
+          box-sizing: border-box;
+          padding-top: 3em;
           display: flex;
-          align-items: center;
           justify-content: center;
         }
         .load-more {

@@ -36,7 +36,7 @@ function PageLoader() {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          z-index: 100;
+          z-index: 300;
           display: flex;
           justify-content: center;
           align-items: center;
