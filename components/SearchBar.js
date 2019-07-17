@@ -32,10 +32,10 @@ const createModalStyles = offsetTop => css.resolve`
     transition: opacity 300ms;
   }
   .ReactModal__Content {
+    height: 100%;
     position: relative;
     width: 100%;
     margin: 0 auto;
-    height: 45%;
     outline: none;
     WebkitOverflowScrolling: touch;
   }
@@ -44,6 +44,11 @@ const createModalStyles = offsetTop => css.resolve`
   }
   .ReactModal__Overlay--before-close{
       opacity: 0;
+  }
+  @media (min-width: 800px) {
+    .ReactModal__Content {
+      height: 70%;
+    }
   }
 `;
 
