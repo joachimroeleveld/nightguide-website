@@ -1,5 +1,6 @@
 export default {
   bg: '#1F1F1F',
+  bgOverlay: 'rgba(31, 31, 31, 0.9)',
   text: '#fff',
   textDark: '#222222',
   textSoft: '#e0e0e0',
@@ -17,4 +18,6 @@ export default {
   tagButtonBorderColor: '#7A7A7A',
   yellowTextColor: '#FFD731',
   secondaryButtonBorder: '#979797',
+  placeholderColor: '#9A9A9A',
+  focus: '#333333',
 };

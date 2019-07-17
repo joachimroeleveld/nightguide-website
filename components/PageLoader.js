@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
-import Spinner from './Spinner';
-
 import Router from 'next/router';
 
-function PageLoader(props) {
+import Spinner from './Spinner';
+import colors from '../styles/colors';
+
+function PageLoader() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     Router.events.on('routeChangeStart', routeChangeStart);
     return () => Router.events.off('routeChangeStart', routeChangeStart);
-  });
+  }, []);
 
   useEffect(() => {
     Router.events.on('routeChangeComplete', routeChangeEnd);
     return () => Router.events.off('routeChangeComplete', routeChangeEnd);
-  });
+  }, []);
 
   useEffect(() => {
     Router.events.on('routeChangeError', routeChangeEnd);
     return () => Router.events.off('routeChangeError', routeChangeEnd);
-  });
+  }, []);
 
   const routeChangeStart = () => {
     setShow(true);
@@ -45,7 +46,7 @@ function PageLoader(props) {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(31, 31, 31, 0.9);
+          background: ${colors.bgOverlay};
           opacity: 0;
           transition: opacity 0.3s;
         }

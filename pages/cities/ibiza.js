@@ -20,32 +20,29 @@ import dimensions from '../../styles/dimensions';
 import ResponsiveImage from '../../components/ResponsiveImage';
 import Spinner from '../../components/Spinner';
 
-const VENUE_SECTION_ORDER =
-  process.env.NODE_ENV === 'production'
-    ? [
-        '5d1affe8bd44b9001205a73d', // Pacha
-        '5d1affd9bd44b9001205a736', // Ushuaia
-        '5d1affb9bd44b9001205a726', // Hi
-        '5d1affd3bd44b9001205a733', // Amnesia
-        '5d1affc3bd44b9001205a72b', // Privilege
-        '5d1affadbd44b9001205a720', // Heart
-        '5d1affc5bd44b9001205a72c', // Eden
-        '5d1afff3bd44b9001205a743', // DC-10
-        '5d1affbebd44b9001205a728', // Octan
-        '5d1affeebd44b9001205a740', // Ocean Beach
-        '5d1afff5bd44b9001205a744', // Destino
-        '5d1affdabd44b9001205a737', // Es Paradis
-        '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
-        '5d1affd5bd44b9001205a734', // Ibiza Rocks
-        '5d1affd7bd44b9001205a735', // Oceanbeat pier
-        '5d1afff1bd44b9001205a742', // Cova Santa
-        '5d1affddbd44b9001205a738', // Las Dalias
-        '5d1a2d82bd44b9001205a71c', // Pikes
-        '5d1affc9bd44b9001205a72e', // Boat club
-        '5d1affd1bd44b9001205a732', // Ibiza Underground
-        '5d1affb5bd44b9001205a724', // Blue Marlin
-      ]
-    : ['5d19f08392e71d392c5ddba1', '5d19f04e92e71d392c5ddb95'];
+const VENUE_SECTION_ORDER = [
+  '5d1affe8bd44b9001205a73d', // Pacha
+  '5d1affd9bd44b9001205a736', // Ushuaia
+  '5d1affb9bd44b9001205a726', // Hi
+  '5d1affd3bd44b9001205a733', // Amnesia
+  '5d1affc3bd44b9001205a72b', // Privilege
+  '5d1affadbd44b9001205a720', // Heart
+  '5d1affc5bd44b9001205a72c', // Eden
+  '5d1afff3bd44b9001205a743', // DC-10
+  '5d1affbebd44b9001205a728', // Octan
+  '5d1affeebd44b9001205a740', // Ocean Beach
+  '5d1afff5bd44b9001205a744', // Destino
+  '5d1affdabd44b9001205a737', // Es Paradis
+  '5d1affe3bd44b9001205a73b', // Benimussa Park Ibiza
+  '5d1affd5bd44b9001205a734', // Ibiza Rocks
+  '5d1affd7bd44b9001205a735', // Oceanbeat pier
+  '5d1afff1bd44b9001205a742', // Cova Santa
+  '5d1affddbd44b9001205a738', // Las Dalias
+  '5d1a2d82bd44b9001205a71c', // Pikes
+  '5d1affc9bd44b9001205a72e', // Boat club
+  '5d1affd1bd44b9001205a732', // Ibiza Underground
+  '5d1affb5bd44b9001205a724', // Blue Marlin
+];
 
 const getPreloadSections = () => {
   const dow = moment().day();
@@ -178,14 +175,21 @@ function IbizaCityPage(props) {
   const loadVenues = async () => {
     if (fetchingVenues) return;
     setFetchingVenues(true);
-    const result = await getVenues({
-      limit: VENUE_SECTION_ORDER.length,
-      offset: venues.length,
-      query: { pageSlug, sortBy: 'name:asc,_id', exclude: VENUE_SECTION_ORDER },
-    });
-    setFetchingVenues(false);
-    setVenues(venues.concat(result.results));
-    return result.results;
+    try {
+      const result = await getVenues({
+        limit: VENUE_SECTION_ORDER.length,
+        offset: venues.length,
+        query: {
+          pageSlug,
+          sortBy: 'name:asc,_id',
+          exclude: VENUE_SECTION_ORDER,
+        },
+      });
+      setVenues(venues.concat(result.results));
+      return result.results;
+    } finally {
+      setFetchingVenues(false);
+    }
   };
 
   const sections = useMemo(() => {

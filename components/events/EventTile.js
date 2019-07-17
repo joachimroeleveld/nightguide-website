@@ -123,7 +123,7 @@ function EventTile(props) {
       />
       {!!videoUrl && (
         <div className="video-button">
-          <button onClick={toggleVideoModal} />
+          <button onClick={toggleVideoModal}>{__('video')}</button>
           <VideoModal
             url={videoUrl}
             isOpen={showVideoModal}
@@ -142,23 +142,28 @@ function EventTile(props) {
           position: absolute;
           right: 0;
           top: 0;
-          width: 50px;
-          height: 37px;
+          width: 8em;
+          height: 3em;
           background-image: linear-gradient(
-            212deg,
+            200deg,
             #000000 0%,
-            rgba(0, 0, 0, 0) 50%
+            rgba(0, 0, 0, 0) 53%
           );
           display: flex;
           justify-content: flex-end;
         }
         .video-button button {
-          width: 100%;
-          height: 100%;
+          color: #fff;
+          text-transform: uppercase;
+          text-shadow: 0 1px #000;
+          font-size: 0.7em;
+          width: 7em;
+          height: 2.8em;
           padding: 0.3em;
+          text-align: left;
           background: url(/static/img/video-icon.svg) no-repeat right 0.5em top
             0.5em;
-          background-size: 45%;
+          background-size: 27px;
         }
       `}</style>
     </div>

@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
-import Link from 'next/link';
+import { useMemo, memo, useEffect } from 'react';
 import css from 'styled-jsx/css';
 import Modal from 'react-modal';
+import Router from 'next/router';
 
+import { Link } from '../routes';
 import { useWindowWidth } from '../lib/hooks';
 import colors from '../styles/colors';
 import __ from '../lib/i18n';
@@ -10,65 +11,127 @@ import { withNavigation } from './Navigation';
 import dimensions from '../styles/dimensions';
 
 /*language=CSS*/
-const modalStyles = css.resolve`
+const createModalStyles = offsetTop => css.resolve`
   .ReactModal__Overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding-top: ${offsetTop}px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 300ms;
   }
   .ReactModal__Content {
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 2em;
-      max-width: ${dimensions.pageWidth};
-      overflow: auto;
-      outline: none;
-      WebkitOverflowScrolling: touch;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    max-width: ${dimensions.pageWidth};
+    overflow: auto;
+    outline: none;
+    WebkitOverflowScrolling: touch;
+    background: ${colors.bg};
+  }
+  .ReactModal__Overlay--after-open{
+      opacity: 1;
+  }
+  .ReactModal__Overlay--before-close{
+      opacity: 0;
   }
 `;
 
 function PrimaryMenu(props) {
-  const { open, onClose, routeParams } = props;
+  const { open, onClose, pageSlug, routeParams, offsetTop } = props;
 
   const windowWidth = useWindowWidth();
 
   const items = useMemo(
-    () => [
-      { route: 'events', title: __('menu.events') },
-      { route: 'articles', title: __('menu.blog') },
-      {
-        route: 'explore',
-        title: __('menu.explore'),
-        className: 'explore',
-      },
-    ],
-    []
+    () =>
+      pageSlug === 'nl/utrecht'
+        ? [
+            { route: 'events', title: __('menu.events') },
+            { route: 'articles', title: __('menu.blog') },
+            {
+              route: 'explore',
+              title: __('menu.explore'),
+              className: 'explore',
+            },
+          ]
+        : [],
+    [pageSlug]
   );
+
+  useEffect(() => {
+    if (open) {
+      Router.events.on('routeChangeStart', onClose);
+      return () => Router.events.off('routeChangeStart', onClose);
+    }
+  }, [open, onClose]);
+
+  const modalStyles = useMemo(() => createModalStyles(offsetTop), [offsetTop]);
 
   if (windowWidth <= 800) {
     return (
       <Modal
+        closeTimeoutMS={300}
         isOpen={open}
         onRequestClose={onClose}
         overlayClassName={modalStyles.className}
         className={modalStyles.className}
       >
-        <ul>
-          {items.map(({ route, title, className }) => (
-            <li key={route} className={className}>
-              <Link route={route} routeParams={routeParams}>
-                <a>{title}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className={'content'}>
+          {!!items.length && (
+            <ul>
+              {items.map(({ route, title, className }) => (
+                <li key={route} className={className}>
+                  <Link route={route} params={routeParams}>
+                    <a>{title}</a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+          <footer>
+            <Link route="home">
+              <a>{__('menu.home')}</a>
+            </Link>
+            <Link route="/nl/utrecht">
+              <a>{'Utrecht'}</a>
+            </Link>
+            <Link route="/es/ibiza">
+              <a>{'Ibiza'}</a>
+            </Link>
+          </footer>
+        </div>
         {modalStyles.styles}
         {/*language=CSS*/}
         <style jsx>{`
+          .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
           ul {
+            list-style: none;
+            padding: 0.6em 0;
+            flex-grow: 1;
+          }
+          a {
+            display: block;
+            padding: 0.8em 2em;
+          }
+          a:focus {
+            background: ${colors.focus};
+          }
+          li:not(:first-of-type),
+          footer a {
+            border-top: 1px solid ${colors.separator};
+          }
+          footer {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
           }
         `}</style>
       </Modal>
@@ -76,9 +139,9 @@ function PrimaryMenu(props) {
   } else {
     return (
       <ul>
-        {items.map(({ href, title, className }) => (
-          <li key={href} className={className}>
-            <Link href={href}>
+        {items.map(({ route, title, className }) => (
+          <li key={route} className={className}>
+            <Link route={route} params={routeParams}>
               <a>{title}</a>
             </Link>
           </li>
@@ -99,7 +162,7 @@ function PrimaryMenu(props) {
             border-radius: 10px;
           }
           li a {
-            padding: 0 0.3em;
+            padding: 0 0.8em;
             font-size: 0.9em;
           }
           li a:active,
@@ -112,4 +175,4 @@ function PrimaryMenu(props) {
   }
 }
 
-export default withNavigation(PrimaryMenu);
+export default withNavigation(memo(PrimaryMenu));

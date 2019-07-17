@@ -102,23 +102,25 @@ function EventRow(props) {
       return;
     }
 
-    setFetching(true);
+    try {
+      setFetching(true);
+      const pageResults = await getEvents({
+        offset: items.length,
+        limit,
+        query: filter,
+        sortBy,
+      });
 
-    const pageResults = await getEvents({
-      offset: items.length,
-      limit,
-      query: filter,
-      sortBy,
-    });
+      const newItems = items.concat(pageResults.results);
 
-    const newItems = items.concat(pageResults.results);
+      if (pageResults.totalCount === newItems.length) {
+        setReachedEnd(true);
+      }
 
-    if (pageResults.totalCount === newItems.length) {
-      setReachedEnd(true);
+      setItems(newItems);
+    } finally {
+      setFetching(false);
     }
-
-    setFetching(false);
-    setItems(newItems);
   };
 
   const setItemRef = (page, index, ref) => {

@@ -41,11 +41,18 @@ function GlobalStyles() {
           margin: 0;
           padding: 0;
         }
+        li {
+          list-style: none;
+        }
         button {
           border: none;
           background: none;
           padding: 0;
           font-size: 1em;
+        }
+        input {
+          font-size: 1em;
+          color: inherit;
         }
       `}</style>
       {/*language=CSS*/}

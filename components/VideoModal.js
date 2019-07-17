@@ -3,8 +3,9 @@ import { memo, useEffect, useState } from 'react';
 import debounce from 'lodash/debounce';
 import Modal from 'react-modal';
 import css from 'styled-jsx/css';
-import dimensions from '../styles/dimensions';
 import ReactPlayer from 'react-player';
+
+import dimensions from '../styles/dimensions';
 
 /*language=CSS*/
 const modalStyles = css.resolve`

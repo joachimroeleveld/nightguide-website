@@ -72,10 +72,7 @@ function ReadMoreLess(props) {
           {open ? __('readLess') : __('readMore')}
           <div
             className="caret"
-            style={{
-              transform: `rotate( ${open ? '180deg' : '0'})`,
-              transition: 'transform 0.25s',
-            }}
+            style={{ transform: `rotate( ${open ? '180deg' : '0'})` }}
           />
           {/*language=CSS*/}
           <style jsx>{`
@@ -86,6 +83,7 @@ function ReadMoreLess(props) {
               align-items: center;
             }
             .caret {
+              transition: transform 0.25s;
               display: inline;
               margin-left: 0.5em;
               width: 10px;

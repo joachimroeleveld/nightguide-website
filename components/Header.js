@@ -1,28 +1,24 @@
 import { useEffect, useState } from 'react';
 import throttle from 'lodash/throttle';
-import debounce from 'lodash/debounce';
 
 import { Link } from '../routes';
-import __ from '../lib/i18n';
 import colors from '../styles/colors';
+import SearchBar from './SearchBar';
+import dimensions from '../styles/dimensions';
+import PrimaryMenu from './PrimaryMenu';
+import { useElemDimensions, useWindowWidth } from '../lib/hooks';
+import { classNames } from '../lib/util';
 
 function Header(props) {
-  const { routeParams, pageSlug } = props;
+  const { pageSlug } = props;
 
   const [innerRef, setInnerRef] = useState(null);
   const [sticky, setSticky] = useState(false);
-  const [containerHeight, setContainerHeight] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
-  useEffect(() => {
-    const resizeListener = debounce(() => {
-      if (innerRef) {
-        setContainerHeight(innerRef.getBoundingClientRect().height);
-      }
-    }, 100);
-    resizeListener();
-    window.addEventListener('resize', resizeListener);
-    return () => window.removeEventListener('resize', resizeListener);
-  }, [innerRef]);
+  const containerDimensions = useElemDimensions(innerRef);
+  const windowWidth = useWindowWidth();
 
   useEffect(() => {
     const onScroll = throttle(() => {
@@ -36,50 +32,74 @@ function Header(props) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const logo = <img src="/static/img/logo.svg" alt="NightGuide" />;
+
+  const height = containerDimensions.height;
+  const compact = windowWidth <= 800;
+
   return (
     <header
-      className={[sticky ? 'sticky' : '', 'container'].join(' ').trim()}
-      style={{ height: containerHeight }}
+      className={[sticky || searchOpen ? 'sticky' : '', 'container']
+        .join(' ')
+        .trim()}
+      style={{ height }}
     >
       <div className="inner" ref={setInnerRef}>
-        <div className="logo-container">
-          <Link route="home">
-            <a className="logo">
-              <img src="/static/img/logo.svg" alt="NightGuide" />
-            </a>
-          </Link>
+        {!(compact && searchOpen) && (
+          <div className="logo">
+            {!compact && (
+              <Link route="home">
+                <a>{logo}</a>
+              </Link>
+            )}
+            {compact && windowWidth !== null && (
+              <button className="menu-toggle" onClick={toggleMenu}>
+                {logo}
+                <div className={['caret', menuOpen ? 'open' : ''].join(' ')} />
+              </button>
+            )}
+          </div>
+        )}
+        <div className="search-bar">
+          <div className="inner">
+            {!!pageSlug && (
+              <SearchBar
+                offsetTop={height}
+                isOpen={!menuOpen && searchOpen}
+                setIsOpen={setSearchOpen}
+              />
+            )}
+            {searchOpen && (
+              <div
+                className={classNames(['close-search', searchOpen && 'show'])}
+              >
+                <button onClick={() => setSearchOpen(false)} />
+              </div>
+            )}
+          </div>
         </div>
-        {!!pageSlug && pageSlug !== 'es/ibiza' && (
-          <ul className="menu">
-            <li>
-              <Link route="events" params={routeParams}>
-                <a>{__('menu.events')}</a>
-              </Link>
-            </li>
-            <li>
-              <Link route="articles" params={routeParams}>
-                <a>{__('menu.blog')}</a>
-              </Link>
-            </li>
-            <li className="explore">
-              <Link route="explore" params={routeParams}>
-                <a>{__('menu.explore')}</a>
-              </Link>
-            </li>
-          </ul>
+        {!(compact && searchOpen) && (
+          <div className="menu-container">
+            <PrimaryMenu
+              open={menuOpen}
+              offsetTop={height}
+              onClose={toggleMenu}
+            />
+          </div>
         )}
       </div>
       {/*language=CSS*/}
       <style jsx>{`
         .container > .inner {
-          padding: 0.7rem 1rem;
+          padding: 0.6rem 1rem;
           display: flex;
           align-items: center;
           transition: all 0.1s;
         }
         .container.sticky > .inner {
           position: fixed;
-          padding-bottom: 0.7rem;
           z-index: 110;
           top: 0;
           width: 100%;
@@ -87,58 +107,90 @@ function Header(props) {
           box-sizing: border-box;
           box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
         }
-        .logo-container {
-          flex-grow: 1;
-        }
         .logo {
-          float: left;
+          margin-right: 1.5em;
         }
-        .logo img {
+        .logo :global(img) {
           transition: width 0.2s;
           width: 3.5em;
           display: block;
         }
-        li {
-          list-style: none;
+        .menu-toggle {
+          display: flex;
         }
-        .menu {
+        .menu-toggle .caret {
+          background: url(/static/img/logo-arrow.svg) no-repeat center center;
+          width: 1.2em;
+          align-self: stretch;
+          transition: transform 0.1s;
+        }
+        .menu-toggle .caret.open {
+          transform: rotate(180deg);
+        }
+        .search-bar {
+          flex-grow: 1;
+          display: flex;
+        }
+        .search-bar > .inner {
+          position: relative;
           display: flex;
           align-items: center;
         }
-        .menu a {
-          padding: 0 0.3em;
-          font-size: 0.9em;
+        .menu-container {
+          margin-left: 1em;
         }
-        .menu a:active,
-        .menu a:hover {
-          text-decoration: underline;
+        .close-search {
+          display: flex;
+          margin-left: 1em;
+          justify-content: flex-end;
+          align-items: center;
         }
-        .explore {
-          color: ${colors.textDark};
-          background-color: ${colors.primaryButton};
-          padding: 0.1em 0;
-          margin-left: 0.7em;
-          border-radius: 10px;
+        .close-search button {
+          width: 2em;
+          height: 2em;
+          background: url(/static/img/video-close.svg) no-repeat center center;
         }
         @media (min-width: 400px) {
           .container > .inner {
-            padding: 0.7rem 2rem;
+            padding: 0.4rem 2rem;
           }
-          .logo img {
+          .logo :global(img) {
             width: 5em;
           }
-          .container.sticky .logo img {
+          .container.sticky .logo :global(img) {
             width: 5em;
           }
-          .menu a {
-            padding: 0 1em;
+        }
+        @media (min-width: 1100px) {
+          .container > .inner {
+            justify-content: center;
+          }
+          .menu-container {
+            position: absolute;
+            right: ${dimensions.bodyPadding};
+          }
+          .logo {
+            position: absolute;
+            left: ${dimensions.bodyPadding};
+            top: 0.3em;
+          }
+          .search-bar {
+            display: flex;
+            justify-content: center;
+            width: ${dimensions.pageWidth};
+          }
+          .close-search {
+            position: absolute;
+            right: -2.6em;
+            opacity: 0;
+            transition: opacity 0.3s;
+          }
+          .close-search.show {
+            opacity: 1;
           }
         }
         @media (min-width: 1300px) {
-          .container > .inner {
-            padding-bottom: 0;
-          }
-          .logo img {
+          .logo :global(img) {
             width: 6.5em;
           }
         }

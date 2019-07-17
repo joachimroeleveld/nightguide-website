@@ -1,6 +1,7 @@
 {
   "menu": {
     "blog": "Blog",
+    "home": "Home",
     "explore": "Explore",
     "events": "Events",
     "venues": "Venues",
@@ -272,6 +273,13 @@
       "name": "Ibiza"
     }
   },
+  "search": {
+    "noResults": "There were no results for '{{query}}'",
+    "searchFor": "Start searching by typing a venue or event...",
+    "loadMoreResults": "Load more"
+  },
+  "events": "Events",
+  "venues": "Venues",
   "seeAll": "See all",
   "yes": "Yes",
   "today": "Today",
@@ -279,8 +287,10 @@
   "thisWeekend": "This weekend",
   "pickDate": "Pick dates",
   "pickADateRange": "Select a date range",
+  "buyTickets": "Buy tickets",
+  "noEventsForDates": "No events exist for these dates",
   "readMore": "Read more",
   "readLess": "Read less",
-  "buyTickets": "Buy tickets",
-  "noEventsForDates": "No events exist for these dates"
+  "video": "Video",
+  "searchBarPlaceholder": "Search by venue, event..."
 }
