@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import Router from 'next/router';
 import debounce from 'lodash/debounce';
 import find from 'lodash/find';
-import unidecode from 'unidecode';
 import update from 'immutability-helper';
 
 import { Link } from '../routes';
@@ -15,6 +14,8 @@ import { getEvents, getVenues } from '../lib/api';
 import Spinner from './Spinner';
 import { withNavigation } from './Navigation';
 import { formatEventDate } from '../lib/dates';
+
+const MINIMUM_QUERY_LENGTH = 2;
 
 /*language=CSS*/
 const createModalStyles = offsetTop => css.resolve`
@@ -34,7 +35,7 @@ const createModalStyles = offsetTop => css.resolve`
     position: relative;
     width: 100%;
     margin: 0 auto;
-    height: 50%;
+    height: 45%;
     outline: none;
     WebkitOverflowScrolling: touch;
   }
@@ -98,6 +99,11 @@ function SearchBar(props) {
       setResults({});
     }
   }, [inputRef, isOpen]);
+
+  useEffect(() => {
+    // Prevent body scrolling
+    document.body.style.overflow = isOpen ? 'hidden' : 'visible';
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -184,7 +190,7 @@ function SearchBar(props) {
 
     setVal(query);
 
-    if (query.trim().length > 2) {
+    if (query.trim().length >= MINIMUM_QUERY_LENGTH) {
       applyQuery(query.trim());
     }
   };
@@ -195,14 +201,12 @@ function SearchBar(props) {
 
   const highlight = text => {
     let Html = [];
-    let decodedText = unidecode(text);
-    let decodedVal = unidecode(val.trim());
-    let pattern = new RegExp(decodedVal, 'gi');
+    let pattern = new RegExp(val.trim(), 'gi');
     let match;
     let lastIndex = 0;
-    while ((match = pattern.exec(decodedText)) !== null) {
+    while ((match = pattern.exec(text)) !== null) {
       Html.push(<span>{text.slice(lastIndex, match.index)}</span>);
-      Html.push(<strong>{` ${match[0]} `}</strong>);
+      Html.push(<strong>{match[0]}</strong>);
       lastIndex = match.index + match[0].length;
     }
     Html.push(<span>{text.slice(lastIndex)}</span>);
@@ -214,7 +218,7 @@ function SearchBar(props) {
   const searchResult = results[val.trim()];
   const noResults =
     !fetching &&
-    val.length > 2 &&
+    val.length >= MINIMUM_QUERY_LENGTH &&
     searchResult &&
     !find(Object.values(searchResult), section => section.results.length);
 
@@ -228,7 +232,7 @@ function SearchBar(props) {
           value={val}
           onChange={onValChange}
           onFocus={open}
-          placeholder={__('searchBarPlaceholder')}
+          placeholder={__('search.searchBarPlaceholder')}
         />
       </div>
       <Modal

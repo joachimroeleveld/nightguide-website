@@ -41,8 +41,7 @@
     "react-player": "^1.11.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "styled-jsx": "^3.2.1",
-    "unidecode": "^0.1.8"
+    "styled-jsx": "^3.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

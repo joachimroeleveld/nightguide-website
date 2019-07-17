@@ -276,7 +276,8 @@
   "search": {
     "noResults": "There were no results for '{{query}}'",
     "searchFor": "Start searching by typing a venue or event...",
-    "loadMoreResults": "Load more"
+    "loadMoreResults": "Load more",
+    "searchBarPlaceholder": "Search an event, venue..."
   },
   "events": "Events",
   "venues": "Venues",
@@ -291,6 +292,5 @@
   "noEventsForDates": "No events exist for these dates",
   "readMore": "Read more",
   "readLess": "Read less",
-  "video": "Video",
-  "searchBarPlaceholder": "Search by venue, event..."
+  "video": "Video"
 }

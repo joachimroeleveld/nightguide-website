@@ -36,7 +36,7 @@ function Header(props) {
 
   const logo = <img src="/static/img/logo.svg" alt="NightGuide" />;
 
-  const height = containerDimensions.height;
+  const height = Math.round(containerDimensions.height);
   const compact = windowWidth <= 800;
 
   return (
@@ -66,7 +66,7 @@ function Header(props) {
           <div className="inner">
             {!!pageSlug && (
               <SearchBar
-                offsetTop={height}
+                offsetTop={height - 1}
                 isOpen={!menuOpen && searchOpen}
                 setIsOpen={setSearchOpen}
               />
@@ -84,7 +84,7 @@ function Header(props) {
           <div className="menu-container">
             <PrimaryMenu
               open={menuOpen}
-              offsetTop={height}
+              offsetTop={height - 1}
               onClose={toggleMenu}
             />
           </div>
