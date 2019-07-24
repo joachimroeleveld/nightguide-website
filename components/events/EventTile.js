@@ -10,7 +10,7 @@ import { generateTicketRedirectUrl } from './util';
 import VideoModal from '../VideoModal';
 
 const EventTileBody = props => {
-  const { event, routeParams } = props;
+  const { event, routeParams, showBuy } = props;
   const { id, date, tags, organiser, tickets = {}, dateIndex } = event;
 
   return (
@@ -28,7 +28,7 @@ const EventTileBody = props => {
           </div>
         </a>
       </Link>
-      {tickets.checkoutUrl && (
+      {tickets.checkoutUrl && showBuy && (
         <a
           rel="nofollow"
           target="_blank"
@@ -80,7 +80,14 @@ const EventTileBody = props => {
 };
 
 function EventTile(props) {
-  const { event, imgWidths, imgSizes, height = '8em', routeParams } = props;
+  const {
+    event,
+    imgWidths,
+    imgSizes,
+    height = '8em',
+    showBuy = false,
+    routeParams,
+  } = props;
   const { title, facebook = {}, images = [], id, videoUrl } = event;
 
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -119,7 +126,13 @@ function EventTile(props) {
             height: ${height};
           }
         `}
-        BodyContents={<EventTileBody routeParams={linkParams} event={event} />}
+        BodyContents={
+          <EventTileBody
+            routeParams={linkParams}
+            event={event}
+            showBuy={showBuy}
+          />
+        }
       />
       {!!videoUrl && (
         <div className="video-button">

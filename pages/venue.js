@@ -162,7 +162,7 @@ function VenuePage(props) {
       {!!events.length && (
         <section>
           <h2>{__('venuePage.events')}</h2>
-          <EventGrid routeParams={routeParams} events={events} />
+          <EventGrid showBuy={true} routeParams={routeParams} events={events} />
         </section>
       )}
 
