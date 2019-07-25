@@ -154,8 +154,8 @@ function IbizaCityPage(props) {
           const date = moment(dateFrom).add(day, 'days');
           return {
             title: date
-              .format('LL')
-              .match(/^(\w+ \w+)/)
+              .format('ddd, LL')
+              .match(/^(\w+, \w+ \w+)/)
               .pop(),
             filter: {
               dateFrom: date.toDate(),

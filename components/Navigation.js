@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { withRouter } from 'next/router';
+import trim from 'lodash/trim';
 
 import __ from '../lib/i18n';
 
@@ -18,7 +19,7 @@ export const withNavigation = Component => {
     }
     // If city page
     else if (route.match(/^\/cities\/[^/]+$/)) {
-      query.pageSlug = path.slice(1);
+      query.pageSlug = trim(path.slice(1), '/');
       query.country = path.split('/')[1];
       query.city = path.split('/')[2];
     }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import range from 'lodash/range';
 import find from 'lodash/find';
 import sum from 'lodash/sum';
+import capitalize from 'lodash/capitalize';
 
 import { classNames } from '../../lib/util';
 import { useElemDimensions } from '../../lib/hooks';
@@ -45,7 +46,7 @@ function ArtistList(props) {
             ref={ref => setItemRef(index, ref)}
           >
             {/*<Link route="artist" params={routeParams}>*/}
-            <a>{artist.name}</a>
+            <a>{capitalize(artist.name)}</a>
             {/*</Link>*/}
           </li>
         ))}

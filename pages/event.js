@@ -22,6 +22,7 @@ import EventDateSelect from '../components/events/DateSelector';
 import VenueSliderTile from '../components/venues/VenueSliderTile';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
+import { getFutureEventDates } from '../lib/events';
 
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue } = props;
@@ -114,7 +115,7 @@ function EventPage(props) {
                 <EventDateSelect
                   onChange={setDateIndex}
                   value={dateIndex}
-                  dates={dates}
+                  dates={getFutureEventDates(dates)}
                 />
               )}
               {dates.length === 1 && (
@@ -285,7 +286,7 @@ function EventPage(props) {
           color: ${colors.linkText};
         }
         .when-where {
-          padding: 1em ${dimensions.bodyPadding};
+          padding: 0.8em ${dimensions.bodyPadding};
         }
         .description h2 {
           padding: 0 ${dimensions.bodyPadding};
