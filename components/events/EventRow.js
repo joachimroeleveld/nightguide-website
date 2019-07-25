@@ -27,10 +27,10 @@ function EventRow(props) {
   const [reachedEnd, setReachedEnd] = useState(props.reachedEnd || false);
 
   useEffect(() => {
-    if (!items.length && !fetching && !reachedEnd) {
+    if ((!items.length || loadedPages < page + 1) && !fetching && !reachedEnd) {
       loadNextPage();
     }
-  }, [items]);
+  }, [items, fetching]);
 
   useEffect(() => {
     const resizeListener = debounce(() => {

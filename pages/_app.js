@@ -1,4 +1,5 @@
 import React from 'react';
+import { hotjar } from 'react-hotjar';
 import App, { Container } from 'next/app';
 import Router from 'next/router';
 import withGA from 'next-ga';
@@ -21,6 +22,12 @@ class NightGuideWebsite extends App {
     }
 
     return { ...props, query };
+  }
+
+  componentDidMount() {
+    if (process.env.NODE_ENV === 'production') {
+      hotjar.initialize(process.env.REACT_APP_HOTJAR_ID, 6);
+    }
   }
 
   render() {
