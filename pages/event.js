@@ -28,7 +28,7 @@ function EventPage(props) {
   const windowWidth = useWindowWidth();
   const [mediaRef, setMediaRef] = useState(null);
   const [artistsOrientation, setArtistsOrientation] = useState('horizontal');
-  const [dateIndex, setDateIndex] = useState(query.dateIndex);
+  const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
 
   const {
