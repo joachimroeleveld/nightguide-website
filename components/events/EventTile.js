@@ -88,7 +88,14 @@ function EventTile(props) {
     showBuy = false,
     routeParams,
   } = props;
-  const { title, facebook = {}, images = [], id, videoUrl } = event;
+  const {
+    title,
+    facebook = {},
+    images = [],
+    id,
+    videoUrl,
+    dateIndex = 0,
+  } = event;
 
   const [showVideoModal, setShowVideoModal] = useState(false);
 
@@ -107,9 +114,10 @@ function EventTile(props) {
     [images]
   );
 
-  const linkParams = useMemo(() => ({ ...routeParams, event: id }), [
+  const linkParams = useMemo(() => ({ ...routeParams, event: id, dateIndex }), [
     id,
     routeParams,
+    dateIndex,
   ]);
 
   return (

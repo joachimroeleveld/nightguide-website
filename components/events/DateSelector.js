@@ -4,6 +4,7 @@ import css from 'styled-jsx/css';
 
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
+import { getFutureEventDates } from '../../lib/events';
 
 /*language=CSS*/
 const styles = css.resolve`
@@ -47,12 +48,14 @@ const styles = css.resolve`
 function EventDateSelect(props) {
   const { dates } = props;
 
-  const options = dates.map((date, index) => ({
+  const options = getFutureEventDates(dates).map((date, index) => ({
     value: index.toString(),
     label: formatEventDate(date.from, date.to),
   }));
 
-  const [value, setValue] = useState(options[props.value]);
+  const [value, setValue] = useState(
+    options[props.value - (dates.length - options.length)]
+  );
 
   const onChange = value => {
     setValue(value);

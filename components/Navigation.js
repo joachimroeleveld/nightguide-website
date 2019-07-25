@@ -39,10 +39,10 @@ export const withNavigation = Component => {
     const { pageSlug, city, country } = query;
 
     const navProps = {
-      router,
       pageSlug,
       breadcrumbs: [],
       currentUrl,
+      query,
     };
 
     if (pageSlug) {

@@ -10,7 +10,6 @@ import colors from '../styles/colors';
 import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
-import Card from '../components/Card';
 import TagList from '../components/TagList';
 import EventGrid from '../components/events/EventGrid';
 import { formatEventDate } from '../lib/dates';
@@ -22,15 +21,14 @@ import EventDateSelect from '../components/events/DateSelector';
 import VenueSliderTile from '../components/venues/VenueSliderTile';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
-import { getFutureEventDates } from '../lib/events';
 
 function EventPage(props) {
-  const { event, routeParams, similarEvents, venue } = props;
+  const { event, routeParams, similarEvents, venue, query } = props;
 
   const windowWidth = useWindowWidth();
   const [mediaRef, setMediaRef] = useState(null);
   const [artistsOrientation, setArtistsOrientation] = useState('horizontal');
-  const [dateIndex, setDateIndex] = useState(0);
+  const [dateIndex, setDateIndex] = useState(query.dateIndex);
   const mediaDimensions = useElemDimensions(mediaRef);
 
   const {
@@ -115,7 +113,7 @@ function EventPage(props) {
                 <EventDateSelect
                   onChange={setDateIndex}
                   value={dateIndex}
-                  dates={getFutureEventDates(dates)}
+                  dates={dates}
                 />
               )}
               {dates.length === 1 && (
