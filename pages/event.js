@@ -121,14 +121,16 @@ function EventPage(props) {
                 <span>{formatEventDate(date.from, date.to)}</span>
               )}
             </div>
-            <div className="button">
-              <PrimaryButton
-                href={generateTicketRedirectUrl(event.id, dateIndex)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={__('eventPage.getTickets')}
-              />
-            </div>
+            {tickets && tickets.checkoutUrl && (
+              <div className="button">
+                <PrimaryButton
+                  href={generateTicketRedirectUrl(event.id, dateIndex)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={__('eventPage.getTickets')}
+                />
+              </div>
+            )}
           </div>
           <div className="where">
             <Link route="venue" params={{ venue: venue.id, ...routeParams }}>

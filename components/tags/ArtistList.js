@@ -44,9 +44,9 @@ function ArtistList(props) {
             key={artist.id}
             ref={ref => setItemRef(index, ref)}
           >
-            <Link route="artist" params={routeParams}>
-              <a>{artist.name}</a>
-            </Link>
+            {/*<Link route="artist" params={routeParams}>*/}
+            <a>{artist.name}</a>
+            {/*</Link>*/}
           </li>
         ))}
       </ul>

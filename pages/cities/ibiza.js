@@ -57,7 +57,7 @@ const getPreloadSections = () => {
     },
   ];
 
-  if (dow !== 5) {
+  if (![4, 5].includes(dow)) {
     sections.push({
       // Tomorrow
       title: __('tomorrow'),
