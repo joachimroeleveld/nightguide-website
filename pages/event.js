@@ -107,7 +107,9 @@ function EventPage(props) {
         </section>
         <section className="when-where">
           <div className="when">
-            <div className="date">
+            <div
+              className={classNames(['date', dates.length > 1 && 'multiple'])}
+            >
               {dates.length > 1 && (
                 <EventDateSelect
                   onChange={setDateIndex}
@@ -242,18 +244,18 @@ function EventPage(props) {
           padding: 0.7em 2em;
           border-bottom: 1px solid ${colors.cardSeparator};
         }
-        .header .date {
+        .title .date {
           padding-right: ${dimensions.bodyPadding};
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
         }
-        .header .date .day {
+        .title .date .day {
           line-height: 1;
           font-size: 24px;
         }
-        .header .date .month {
+        .title .date .month {
           font-size: 14px;
           color: ${colors.yellowTextColor};
           text-transform: uppercase;
@@ -268,6 +270,10 @@ function EventPage(props) {
         }
         .when {
           background: url(/static/img/event-date.svg) left center no-repeat;
+        }
+        .when .date {
+          display: flex;
+          align-items: center;
         }
         .when .date > :global(div) {
           width: 100%;
@@ -284,7 +290,7 @@ function EventPage(props) {
           padding: 0 ${dimensions.bodyPadding};
         }
         .description .content {
-          padding: 0.5em 2em;
+          padding: 1.5em 2em;
           word-break: break-word;
           background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
@@ -410,6 +416,9 @@ function EventPage(props) {
             display: flex;
           }
           .when .date {
+            padding-right: 1em;
+          }
+          .when .date.multiple {
             flex-grow: 1;
           }
         }
