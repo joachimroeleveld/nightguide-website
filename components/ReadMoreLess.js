@@ -4,7 +4,7 @@ import colors from '../styles/colors';
 import __ from '../lib/i18n';
 
 function ReadMoreLess(props) {
-  const { children, initialHeight, overhangSize = 80 } = props;
+  const { children, initialHeight, overhangSize = 80, backgroundImage } = props;
 
   const containerRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(initialHeight);
@@ -53,9 +53,11 @@ function ReadMoreLess(props) {
             style={{
               transition: 'opacity 0.25s',
               opacity: open ? 0 : 1,
-              backgroundImage: `linear-gradient(to bottom, rgba(31, 31, 31, 0.44), ${
-                colors.bg
-              } )`,
+              backgroundImage:
+                backgroundImage ||
+                `linear-gradient(to bottom, rgba(31, 31, 31, 0.44), ${
+                  colors.bg
+                } )`,
               content: '',
               height: `${overhangSize}px`,
               width: '100%',

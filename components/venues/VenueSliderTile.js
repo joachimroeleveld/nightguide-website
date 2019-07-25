@@ -8,6 +8,7 @@ import ResponsiveImage from '../ResponsiveImage';
 import { _o } from '../../lib/i18n';
 import Pager from '../Pager';
 import dimensions from '../../styles/dimensions';
+import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
 
 const Img = ({ bigOverlay, ...imgProps }) => (
@@ -190,12 +191,14 @@ function VenueSliderTile(props) {
           box-sizing: border-box;
         }
         .slide-name {
+          text-align: center;
           align-items: flex-end;
           padding-bottom: 2em;
           font-size: 1.2em;
           font-weight: 600;
         }
         .slide-image {
+          background: ${colors.imagePlaceholder};
           position: relative;
           height: 100%;
         }

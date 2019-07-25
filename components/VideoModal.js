@@ -29,7 +29,7 @@ const modalStyles = css.resolve`
 `;
 
 function VideoModal(props) {
-  const { url, isOpen, onClose } = props;
+  const { url, isOpen, onClose, ...modalProps } = props;
 
   const [contentContainerRef, setContentContainerRef] = useState(null);
   const [contentWidth, setContentWidth] = useState(320);
@@ -53,6 +53,7 @@ function VideoModal(props) {
       onRequestClose={onClose}
       overlayClassName={modalStyles.className}
       className={modalStyles.className}
+      {...modalProps}
     >
       <div className="content" ref={setContentContainerRef} onClick={onClose}>
         <button className="close" onClick={onClose} />

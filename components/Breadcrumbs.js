@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import range from 'lodash/range';
+import trim from 'lodash/trim';
+import trimEnd from 'lodash/trimEnd';
 
 import { withNavigation } from './Navigation';
 import __ from '../lib/i18n';
@@ -13,7 +15,7 @@ function Breadcrumbs(props) {
       if (url) {
         url = range(0, index + 1).reduce((url, index) => {
           const part = items[index].url;
-          return `${url}/${part}`;
+          return trimEnd(`${url}/${trim(part, '/')}`, '/');
         }, '');
       }
 

@@ -20,4 +20,5 @@ export default {
   secondaryButtonBorder: '#979797',
   placeholderColor: '#9A9A9A',
   focus: '#333333',
+  imagePlaceholder: '#3d3d3d',
 };

@@ -79,7 +79,13 @@
     "location": "Location",
     "facebookPage": "Facebook page",
     "organiser": "Organiser",
-    "similarEvents": "Similar events"
+    "similarEvents": "Similar events",
+    "details": "Details",
+    "artists": "Artists",
+    "venue": "Venue",
+    "buyTickets": "Buy tickets",
+    "getTickets": "Get tickets",
+    "buyTicketsVia": "Via {{domain}}"
   },
   "venuePage": {
     "meta": {

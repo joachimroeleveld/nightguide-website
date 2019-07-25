@@ -1,44 +1,50 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import ReactPlayer from 'react-player';
+import moment from 'moment-timezone';
 
+import { Link } from '../routes';
 import withPageLayout from '../components/PageLayout';
 import { getEvent, getEvents, getVenue } from '../lib/api';
 import colors from '../styles/colors';
-import { getFutureEventDates } from '../lib/events';
 import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
+import Card from '../components/Card';
 import TagList from '../components/TagList';
-import VenueTile from '../components/venues/VenueTile';
 import EventGrid from '../components/events/EventGrid';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
-import VideoModal from '../components/VideoModal';
 import ReadMoreLess from '../components/ReadMoreLess';
+import { useElemDimensions, useWindowWidth } from '../lib/hooks';
+import EventDateSelect from '../components/events/DateSelector';
+import VenueSliderTile from '../components/venues/VenueSliderTile';
+import ArtistList from '../components/tags/ArtistList';
+import { classNames } from '../lib/util';
 
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue } = props;
 
-  const [showAllDates, setShowAllDates] = useState(false);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-
-  const toggleVideoModal = () => setShowVideoModal(!showVideoModal);
+  const windowWidth = useWindowWidth();
+  const [mediaRef, setMediaRef] = useState(null);
+  const [artistsOrientation, setArtistsOrientation] = useState('horizontal');
+  const [dateIndex, setDateIndex] = useState(0);
+  const mediaDimensions = useElemDimensions(mediaRef);
 
   const {
     title,
     facebook,
     images,
-    dates,
+    dates = [],
     location,
     tags,
     tickets = {},
     description = {},
     videoUrl,
   } = event;
-  const futureDates = getFutureEventDates(dates);
 
-  const toggleShowAllDates = () => setShowAllDates(!showAllDates);
+  const date = dates[dateIndex];
 
   return (
     <main>
@@ -52,105 +58,93 @@ function EventPage(props) {
         <meta
           name="description"
           content={
-            facebook.description
+            (_o(description) || facebook.description)
               .slice(0, 160)
               .replace('\n', ' ')
               .replace('  ', ' ') + '...'
           }
         />
       </Head>
-
-      <h1>{title || facebook.title}</h1>
-      <div className="content">
-        <aside>
-          <div className="info">
-            <figure className={'event-image'}>
-              {!!images.length && (
-                <ResponsiveImage
-                  lazy={false}
-                  url={images[0].url}
-                  widths={[320]}
-                  imgStyle={{
-                    objectFit: 'cover',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  alt={title || facebook.title}
+      <header className="header">
+        <figure className="media" ref={setMediaRef}>
+          {!!videoUrl && (
+            <ReactPlayer
+              light={true}
+              width={mediaDimensions.width}
+              height={(mediaDimensions.width / 16) * 9}
+              controls={true}
+              url={videoUrl}
+            />
+          )}
+          {!videoUrl && !!images.length && (
+            <div className="thumbnail">
+              <div
+                className="bg"
+                style={{
+                  backgroundImage: `url(${
+                    images[0].url
+                  }=s50-c-fSoften=1,100,0)`,
+                }}
+              />
+              <ResponsiveImage
+                lazy={false}
+                url={images[0].url}
+                widths={[320]}
+                imgStyle={{
+                  maxWidth: '320px',
+                }}
+                alt={title || facebook.title}
+              />
+            </div>
+          )}
+        </figure>
+        <section className="title">
+          <div className="date">
+            <span className="day">{moment(date.from).format('D')}</span>
+            <span className="month">{moment(date.from).format('MMM')}</span>
+          </div>
+          <h1>{title || facebook.title}</h1>
+        </section>
+        <section className="when-where">
+          <div className="when">
+            <div className="date">
+              {dates.length > 1 && (
+                <EventDateSelect
+                  onChange={setDateIndex}
+                  value={dateIndex}
+                  dates={dates}
                 />
               )}
-              {!!videoUrl && (
-                <div className="video-button">
-                  <button onClick={toggleVideoModal} />
-                  <VideoModal
-                    url={videoUrl}
-                    isOpen={showVideoModal}
-                    onClose={toggleVideoModal}
-                  />
-                </div>
-              )}
-            </figure>
-            <div className="dates">
-              {!futureDates.length && (
-                <span>{__('nDatesInPast', { dates: dates.length })}</span>
-              )}
-              {futureDates
-                .slice(0, showAllDates ? futureDates.length : 3)
-                .map((date, index) => (
-                  <div className={'date'} key={index}>
-                    <span>{formatEventDate(date.from, date.to)}</span>
-                  </div>
-                ))}
-              {!showAllDates && futureDates.length > 3 && (
-                <a onClick={toggleShowAllDates} className={'more-dates'}>
-                  {__('eventPage.nMoreDates', { n: futureDates.length - 3 })}
-                </a>
+              {dates.length === 1 && (
+                <span>{formatEventDate(date.from, date.to)}</span>
               )}
             </div>
-            <div className="additional-info">
-              {location && (
-                <div className={'labeled-text'}>
-                  <strong>{__('eventPage.location')}</strong>
-                  <span>
-                    {[
-                      location.address1,
-                      location.address2,
-                      location.postalCode,
-                    ].join(' ')}
-                  </span>
-                </div>
-              )}
-              <div className="tickets-button">
-                {!!tickets.checkoutUrl && (
-                  <PrimaryButton
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    href={generateTicketRedirectUrl(
-                      event.id,
-                      dates.indexOf(futureDates[0])
-                    )}
-                    title={__('buyTickets')}
-                  />
-                )}
-              </div>
+            <div className="button">
+              <PrimaryButton
+                href={generateTicketRedirectUrl(event.id, dateIndex)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={__('eventPage.getTickets')}
+              />
             </div>
           </div>
-        </aside>
-        <aside className="organiser">
-          <h2>{__('eventPage.organiser')}</h2>
-          <div className="venue">
-            <VenueTile
-              venue={venue}
-              routeParams={routeParams}
-              imgWidths={[600, 1000, 2000]}
-              imgSizes="(min-width: 900px) calc(100vw - 2rem), 300px"
-            />
+          <div className="where">
+            <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
+              {venue.name}
+            </Link>
           </div>
-        </aside>
-        <div className="description-container">
-          <TagList routeParams={routeParams} tags={tags} />
-          <ReadMoreLess initialHeight={500}>
+        </section>
+      </header>
+      <section className="description">
+        <h2>{__('eventPage.details')}</h2>
+        <div className="content">
+          <ReadMoreLess
+            initialHeight={300}
+            backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
+              colors.cardBg
+            } )`}
+          >
             <div
-              className="description"
               dangerouslySetInnerHTML={{
                 __html: (_o(description) || facebook.description).replace(
                   /(\/n)/g,
@@ -160,135 +154,263 @@ function EventPage(props) {
             />
           </ReadMoreLess>
         </div>
-
-        {!!similarEvents.length && (
-          <section className="similar-events">
-            <h2>{__('eventPage.similarEvents')}</h2>
-            <EventGrid routeParams={routeParams} events={similarEvents} />
+      </section>
+      <aside className="sidebar">
+        {tickets && tickets.checkoutUrl && (
+          <section className="buy-tickets">
+            <PrimaryButton
+              href={generateTicketRedirectUrl(event.id, dateIndex)}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={__('buyTickets')}
+            />
+            <span className="via">
+              {__('eventPage.buyTicketsVia', {
+                domain: tickets.checkoutUrl
+                  .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
+                  .pop(),
+              })}
+            </span>
           </section>
         )}
-      </div>
+        {date.artists && !!date.artists.length && (
+          <section className="artists">
+            <header>
+              <h2>{__('eventPage.artists')}</h2>
+              <button
+                className={classNames([
+                  'toggle-orientation',
+                  artistsOrientation,
+                ])}
+                onClick={() =>
+                  setArtistsOrientation(
+                    artistsOrientation === 'vertical'
+                      ? 'horizontal'
+                      : 'vertical'
+                  )
+                }
+              />
+            </header>
+            <div className="list">
+              <ArtistList
+                artists={date.artists}
+                horizontal={
+                  artistsOrientation === 'horizontal' && windowWidth <= 800
+                }
+              />
+            </div>
+          </section>
+        )}
+        <section className="venue">
+          <h2>{__('eventPage.venue')}</h2>
+          <div className="tile">
+            <VenueSliderTile
+              routeParams={routeParams}
+              venue={venue}
+              imgWidths={[600, 1000, 2000]}
+            />
+          </div>
+        </section>
+      </aside>
       {/*language=CSS*/}
       <style jsx>{`
-        h1 {
-          border-bottom: 1px solid ${colors.separator};
-          padding: 1em 0 0.8em;
-          margin: 0;
-        }
-        .content {
-          display: grid;
-          grid-template-rows: repeat(4, auto);
-        }
-        .organiser {
-          grid-area: 4 / 1 / 5 / 2;
-        }
-        .info {
-          display: grid;
-          font-size: 0.95em;
-          background-color: ${colors.cardBg};
+        .header {
+          background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
         }
-        .event-image {
+        .header .media {
+          width: 100%;
+        }
+        .header .media .thumbnail {
+          min-height: 179px;
           position: relative;
-        }
-        .event-image img {
-          margin: 0 auto;
-          display: block;
-          max-width: 100%;
-        }
-        .video-button {
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: 50%;
-          height: 60%;
-          background-image: linear-gradient(
-            212deg,
-            #000000 0%,
-            rgba(0, 0, 0, 0) 46%
-          );
           display: flex;
-          justify-content: flex-end;
-        }
-        .video-button button {
-          width: 30px;
-          height: 30px;
-          margin: 0.7em;
-          background: url(/static/img/video-icon.svg) no-repeat center center;
+          justify-content: center;
+          align-items: center;
+          background: no-repeat ${colors.imagePlaceholder};
           background-size: cover;
         }
-        .info .dates {
-          padding: 0.8em ${dimensions.cardPadding};
+        .header .media .thumbnail .bg {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: no-repeat;
+          background-size: cover;
+        }
+        .header .title {
+          display: flex;
+          padding: 0.7em 2em;
           border-bottom: 1px solid ${colors.cardSeparator};
         }
-        .info .date {
-          display: block;
-          margin: 0.3em 0;
+        .header .date {
+          padding-right: ${dimensions.bodyPadding};
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
-        .info .more-dates {
-          display: block;
-          text-decoration: underline;
-          margin: 0.5em 0;
-          color: ${colors.textSecondary};
-          color: ${colors.textSecondary};
+        .header .date .day {
+          line-height: 1;
+          font-size: 24px;
         }
-        .additional-info {
-          padding: 0.5em ${dimensions.cardPadding} 1.5em;
+        .header .date .month {
+          font-size: 14px;
+          color: ${colors.yellowTextColor};
+          text-transform: uppercase;
         }
-        .info .labeled-text {
-          margin: 0.9em 0;
+        h1 {
+          font-size: 20px;
+          font-weight: 400;
         }
-        .info .labeled-text > strong {
-          display: block;
+        .when,
+        .where {
+          padding: 0.5em 0 0.5em 2em;
         }
-        .description-container {
-          padding: 1.5em 0;
+        .when {
+          background: url(/static/img/event-date.svg) left center no-repeat;
         }
-        .description {
-          padding: 1em 0 0;
+        .when .date > :global(div) {
+          width: 100%;
+        }
+        .where {
+          background: url(/static/img/event-location.svg) left 3px center
+            no-repeat;
+          color: ${colors.linkText};
+        }
+        .when-where {
+          padding: 1em ${dimensions.bodyPadding};
+        }
+        .description h2 {
+          padding: 0 ${dimensions.bodyPadding};
+        }
+        .description .content {
+          padding: 0.5em 2em;
           word-break: break-word;
+          background: ${colors.cardBg};
+          box-shadow: ${colors.cardShadow};
         }
-        .tickets-button {
-          margin-top: 2em;
+        h2 {
+          font-size: 14px;
+          margin: 2.3em 0 1.3em;
         }
-        .organiser,
-        .similar-events {
-          margin-top: 1em;
+        .artists header {
+          display: flex;
         }
-        @media (min-width: 500px) {
-          .event-image {
-            grid-area: 1 / 1 / 2 / 3;
-          }
-          .info {
-            grid-template-columns: 1fr 1fr;
-          }
+        .artists .toggle-orientation {
+          background: url(/static/img/toggle-orientation.svg) center center
+            no-repeat;
+          width: 1em;
+          height: 1em;
+          transition: transform 0.3s;
         }
-        @media (min-width: 900px) {
-          .info {
-            grid-template-columns: 1fr;
+        .artists .toggle-orientation.vertical {
+          transform: rotate(90deg);
+        }
+        .buy-tickets .via {
+          color: #5e5e5e;
+          font-size: 0.8em;
+          text-align: center;
+          display: block;
+          margin-top: 0.2em;
+        }
+        @media (max-width: 800px) {
+          .header {
+            margin: 2em -${dimensions.bodyPadding};
           }
-          .event-image {
-            grid-area: auto;
+          .artists .list {
+            padding: 0.5em ${dimensions.bodyPadding};
           }
-          .content {
-            grid-template-rows: max-content 1fr;
-            grid-template-columns: 1fr 2fr;
+          .artists header {
+            margin: 2.3em ${dimensions.bodyPadding} 1.3em;
           }
-          .organiser {
-            grid-area: 2 / 1 / 3 / 2;
+          .header {
+            margin: 2em -${dimensions.bodyPadding};
           }
-          .similar-events {
-            margin-left: 2em;
+          .artists {
+            margin: 0 -${dimensions.bodyPadding};
           }
-          .similar-events {
-            grid-area: 2 / 2 / 4 / 3;
+          .artists h2 {
+            margin: 0;
+            flex-grow: 1;
           }
-          .description-container {
-            grid-area: 1 / 2 / 2 / 3;
-            padding: 1em 2em 0;
+          .venue .tile {
+            height: 230px;
+            margin: 0 -${dimensions.bodyPadding};
           }
           .description {
-            padding: 1em 0em 0;
+            margin: 0 -${dimensions.bodyPadding};
+          }
+          .buy-tickets {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 0.7em ${dimensions.bodyPadding} 0.2em;
+            box-sizing: border-box;
+            width: 100%;
+            z-index: 100;
+            background: ${colors.bg};
+          }
+          .when .button {
+            display: none;
+          }
+        }
+        @media (min-width: 800px) {
+          h1 {
+            font-size: 22px;
+            margin: 0.5em 0;
+          }
+          h2 {
+            font-size: 18px;
+          }
+          main {
+            margin-top: 2em;
+            display: grid;
+            grid-template-columns: 40% 60%;
+            grid-template-rows: auto;
+            grid-template-areas:
+              'sidebar header'
+              'sidebar description';
+          }
+          .header {
+            grid-area: header;
+            grid-template-columns: 100%;
+            grid-template-rows: repeat(3, auto);
+            grid-template-areas:
+              'title'
+              'media'
+              'info';
+            display: grid;
+          }
+          .header .title {
+            grid-area: title;
+          }
+          .sidebar {
+            grid-area: sidebar;
+            margin-right: 4em;
+          }
+          .sidebar section:first-of-type h2 {
+            margin-top: 0;
+          }
+          .description {
+            grid-area: description;
+          }
+          .venue .tile {
+            height: 205px;
+          }
+          .buy-tickets {
+            position: static;
+            background: ${colors.cardBg};
+            box-shadow: ${colors.cardShadow};
+            padding: 1em 1.5em 0.4em;
+          }
+          .artists .toggle-orientation {
+            display: none;
+          }
+          .when {
+            display: flex;
+          }
+          .when .date {
+            flex-grow: 1;
           }
         }
       `}</style>
@@ -320,7 +442,7 @@ EventPage.getInitialProps = async ctx => {
 };
 
 const getBreadcrumbs = ({ event }) => [
-  { key: 'events', url: 'events' },
+  { key: 'events', url: '/' },
   { key: 'event', title: event.title || event.facebook.title },
 ];
 

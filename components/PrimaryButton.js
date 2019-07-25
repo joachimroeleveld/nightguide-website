@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import colors from '../styles/colors';
 
@@ -31,3 +32,9 @@ function PrimaryButton(props) {
 }
 
 export default PrimaryButton;
+
+PrimaryButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  href: PropTypes.string,
+};
