@@ -136,7 +136,7 @@ function EventTile(props) {
       />
       {!!videoUrl && (
         <div className="video-button">
-          <button onClick={toggleVideoModal}>{__('video')}</button>
+          <button onClick={toggleVideoModal} />
           <VideoModal
             url={videoUrl}
             isOpen={showVideoModal}
@@ -166,10 +166,6 @@ function EventTile(props) {
           justify-content: flex-end;
         }
         .video-button button {
-          color: #fff;
-          text-transform: uppercase;
-          text-shadow: 0 1px #000;
-          font-size: 0.7em;
           width: 7em;
           height: 2.8em;
           padding: 0.3em;

@@ -244,7 +244,6 @@ function EventPage(props) {
         .header .title {
           display: flex;
           padding: 0.7em 2em;
-          border-bottom: 1px solid ${colors.cardSeparator};
         }
         .title .date {
           padding-right: ${dimensions.bodyPadding};
@@ -324,6 +323,9 @@ function EventPage(props) {
         @media (max-width: 800px) {
           .header {
             margin: 2em -${dimensions.bodyPadding};
+          }
+          .header .title {
+            border-bottom: 1px solid ${colors.cardSeparator};
           }
           .artists .list {
             padding: 0.5em ${dimensions.bodyPadding};
