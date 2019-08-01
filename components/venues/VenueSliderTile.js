@@ -98,7 +98,7 @@ function VenueSliderTile(props) {
                 <button onClick={() => goToSlide(currentSlide - 1)} />
               </div>
               <Link route="venue" params={linkParams}>
-                <a className="venue-link">
+                <a className="venue-link" target="_blank">
                   <div
                     className="slides"
                     style={{

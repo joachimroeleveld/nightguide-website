@@ -7,10 +7,10 @@ import EventTile from './EventTile';
 function EventGrid(props) {
   const { events, double, routeParams, showBuy, ...gridProps } = props;
 
-  const keyExtractor = event => event.id;
+  const keyExtractor = event => event.id + event.dateIndex;
 
   const renderItem = event => (
-    <div key={event.id} className="event">
+    <div className="event">
       <EventTile
         imgWidths={[215, 320]}
         imgSizes={

@@ -1,54 +1,45 @@
-import Link from 'next/link';
-import range from 'lodash/range';
-import trim from 'lodash/trim';
-import trimEnd from 'lodash/trimEnd';
-
+import { Link } from '../routes';
 import { withNavigation } from './Navigation';
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
 
 function Breadcrumbs(props) {
-  const { items } = props;
+  const { items, routeParams } = props;
 
   const breadcrumbs = items.map(
-    ({ key, label, url, disabled, ...params }, index) => {
-      if (url) {
-        url = range(0, index + 1).reduce((url, index) => {
-          const part = items[index].url;
-          return trimEnd(`${url}/${trim(part, '/')}`, '/');
-        }, '');
-      }
-
+    ({ key, label, route, disabled, params, ...i18n }) => {
       if (!label && key) {
-        label = __(`menu.${key}`, params);
+        label = __(`menu.${key}`, i18n);
       }
 
-      return { key, label, url, disabled };
+      return { key, label, route, params, disabled };
     }
   );
 
   return (
     <ol className="container">
-      {breadcrumbs.map(({ key, url, label, disabled }, index) => {
-        let elem;
-        if (!disabled && index !== breadcrumbs.length - 1) {
-          elem = (
-            <Link href={url}>
-              <a>{label}</a>
-            </Link>
+      {breadcrumbs.map(
+        ({ key, route, params = {}, label, disabled }, index) => {
+          let elem;
+          if (!disabled && index !== breadcrumbs.length - 1) {
+            elem = (
+              <Link route={route} params={{ ...params, ...routeParams }}>
+                <a>{label}</a>
+              </Link>
+            );
+          } else {
+            elem = <span>{label}</span>;
+          }
+          return (
+            <li key={index}>
+              {elem}
+              {index !== breadcrumbs.length - 1 && (
+                <span className="arrow">{'>'}</span>
+              )}
+            </li>
           );
-        } else {
-          elem = <span>{label}</span>;
         }
-        return (
-          <li key={index}>
-            {elem}
-            {index !== breadcrumbs.length - 1 && (
-              <span className="arrow">{'>'}</span>
-            )}
-          </li>
-        );
-      })}
+      )}
       {/*language=CSS*/}
       <style jsx>{`
         .container {

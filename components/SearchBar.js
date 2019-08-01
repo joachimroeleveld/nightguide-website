@@ -10,10 +10,11 @@ import { Link } from '../routes';
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
 import dimensions from '../styles/dimensions';
-import { getEvents, getVenues } from '../lib/api';
+import { getEvents, getVenues, getArtists } from '../lib/api';
 import Spinner from './Spinner';
 import { withNavigation } from './Navigation';
 import { formatEventDate } from '../lib/dates';
+import { classNames, capitalizeWords } from '../lib/util';
 
 const MINIMUM_QUERY_LENGTH = 2;
 
@@ -55,39 +56,67 @@ const createModalStyles = offsetTop => css.resolve`
 const SEARCH_SECTIONS = [
   {
     key: 'venues',
-    route: 'venue',
+    label: __('venues'),
     cb: (query, opts) =>
       getVenues({ ...opts, query: { query, ...opts.query } }),
-    label: __('venues'),
-    renderItem: (item, highlight) => highlight(item.name),
+    renderItem: (item, routeParams, highlight) => (
+      <Link route="venue" params={{ ...routeParams, venue: item.id }}>
+        <a>{highlight(item.name)}</a>
+      </Link>
+    ),
+  },
+  {
+    key: 'artists',
+    label: __('search.artists'),
+    cb: (query, opts) =>
+      getArtists({ ...opts, query: { query, ...opts.query } }),
+    renderItem: (item, routeParams, highlight) => (
+      <Link route="events" params={{ ...routeParams, artist: item.id }}>
+        <a>{highlight(capitalizeWords(item.name))}</a>
+      </Link>
+    ),
   },
   {
     key: 'events',
-    route: 'event',
+    label: __('events'),
     cb: (query, opts) =>
       getEvents({
         ...opts,
         query: { text: query, ...opts.query },
       }),
-    label: __('events'),
-    renderItem: ({ date, facebook, title }, highlight) => (
-      <div className="container">
-        <span className="date">{formatEventDate(date.from, date.to)}</span>
-        <span>{highlight(facebook.title || title)}</span>
-        {/*language=CSS*/}
-        <style jsx>{`
-          .date {
-            margin-right: 1em;
-            color: ${colors.textSecondary};
-          }
-        `}</style>
-      </div>
+    renderItem: (
+      { id, date, dateIndex, facebook, title },
+      routeParams,
+      highlight
+    ) => (
+      <Link route="event" params={{ ...routeParams, event: id, dateIndex }}>
+        <a>
+          <span className="date">{formatEventDate(date.from, date.to)}</span>
+          <span>{highlight(facebook.title || title)}</span>
+          {/*language=CSS*/}
+          <style jsx>{`
+            .date {
+              margin-right: 1em;
+              color: ${colors.textSecondary};
+            }
+          `}</style>
+        </a>
+      </Link>
     ),
   },
 ];
 
 function SearchBar(props) {
-  const { offsetTop, isOpen, setIsOpen, pageSlug, routeParams } = props;
+  const {
+    // searchContext,
+    offsetTop,
+    isOpen,
+    setIsOpen,
+    pageSlug,
+    routeParams,
+  } = props;
+
+  const searchContext = null; // TODO: implement search context
 
   const [inputRef, setInputRef] = useState(null);
   const [val, setVal] = useState('');
@@ -235,11 +264,19 @@ function SearchBar(props) {
         <input
           ref={setInputRef}
           type="text"
-          className="input"
+          className={classNames([
+            'input',
+            searchContext && 'context',
+            isOpen && 'open',
+          ])}
           value={val}
           onChange={onValChange}
           onFocus={open}
-          placeholder={__('search.searchBarPlaceholder')}
+          placeholder={
+            searchContext && !isOpen
+              ? searchContext.join(' ● ')
+              : __('search.searchBarPlaceholder')
+          }
         />
       </div>
       <Modal
@@ -283,12 +320,7 @@ function SearchBar(props) {
                       <ul>
                         {results.map((item, index) => (
                           <li key={index}>
-                            <Link
-                              route={route}
-                              params={{ ...routeParams, [route]: item.id }}
-                            >
-                              <a>{renderItem(item, highlight)}</a>
-                            </Link>
+                            {renderItem(item, routeParams, highlight)}
                           </li>
                         ))}
                       </ul>
@@ -327,6 +359,11 @@ function SearchBar(props) {
         }
         .input::placeholder {
           color: ${colors.placeholderColor};
+        }
+        .input.context:not(.open)::placeholder {
+          color: ${colors.text};
+          font-weight: 600;
+          opacity: 1;
         }
         .input:focus {
           border-color: #8b8b8b;
@@ -383,14 +420,14 @@ function SearchBar(props) {
           color: ${colors.textSecondary};
           font-size: 0.8em;
         }
-        .search-section a {
+        .search-section :global(a) {
           padding: 0.8em 0;
           display: block;
         }
-        .search-section li:not(:last-child) a {
+        .search-section li:not(:last-child) :global(a) {
           border-bottom: 1px solid ${colors.separator};
         }
-        .search-section a:focus {
+        .search-section :global(a):focus {
           background-color: ${colors.focus};
         }
       `}</style>

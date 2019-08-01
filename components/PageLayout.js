@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import flatten from 'lodash/flatten';
 
 import Fonts from '../components/Fonts';
 import PageLoader from '../components/PageLoader';
@@ -11,15 +12,24 @@ import { withNavigation } from './Navigation';
 import Breadcrumbs from './Breadcrumbs';
 import { Fragment } from 'react';
 
-const withPageLayout = (getBreadcrumbs, meta = {}) => Page => {
+const withPageLayout = ({
+  getBreadcrumbs,
+  getSearchContext,
+  meta = {},
+} = {}) => Page => {
   function PageLayout(props) {
-    const { currentUrl, routeParams, pageSlug } = props;
+    const { currentUrl, pageSlug } = props;
 
     let breadcrumbs = props.breadcrumbs || [];
 
     if (getBreadcrumbs) {
       const pageBreadcrumbs = getBreadcrumbs(props);
       breadcrumbs = breadcrumbs.concat(pageBreadcrumbs);
+    }
+
+    let searchContext;
+    if (getSearchContext) {
+      searchContext = flatten([getSearchContext(props)]);
     }
 
     return (
@@ -31,7 +41,7 @@ const withPageLayout = (getBreadcrumbs, meta = {}) => Page => {
             <link rel="canonical" href={meta.canonical || currentUrl} />
             <link rel="alternate" href={currentUrl} hrefLang="x-default" />
           </Head>
-          <Header pageSlug={pageSlug} routeParams={routeParams} />
+          <Header searchContext={searchContext} pageSlug={pageSlug} />
           <div className="page">
             {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
             <Page {...props} />

@@ -96,12 +96,6 @@ function PrimaryMenu(props) {
             <Link route="home">
               <a>{__('menu.home')}</a>
             </Link>
-            <Link route="/nl/utrecht">
-              <a>{'Utrecht'}</a>
-            </Link>
-            <Link route="/es/ibiza">
-              <a>{'Ibiza'}</a>
-            </Link>
           </footer>
         </div>
         {modalStyles.styles}
@@ -129,9 +123,13 @@ function PrimaryMenu(props) {
             border-top: 1px solid ${colors.separator};
           }
           footer {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+          }
+          footer a {
+            background: #171717;
           }
           footer.at-top a:first-child {
             border-top: none;

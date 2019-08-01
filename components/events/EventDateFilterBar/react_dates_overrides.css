@@ -6,3 +6,28 @@
   box-shadow: inset 0 0 2px 1px rgba(54, 54, 54, 0.36);
   font-weight: bold;
 }
+
+.CalendarDay__selected_span {
+  background: #fff;
+  color: white;
+  border: 1px solid #b3cafa;
+}
+
+.CalendarDay__selected {
+  background: #4d5366;
+  color: white;
+  border: 1px solid #4d5366;
+}
+
+.CalendarDay__selected:hover {
+  background: #35394b;
+  color: white;
+  border: 1px solid #35394b;
+}
+
+.CalendarDay__hovered_span:hover,
+.CalendarDay__hovered_span {
+  color: #000;
+  background: #b3cafa;
+  border: 1px solid #91a5c4;
+}

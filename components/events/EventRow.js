@@ -1,45 +1,94 @@
-import { Fragment, useEffect, useState, useRef } from 'react';
+import { Fragment, useEffect, useState, useRef, memo } from 'react';
 import EventGrid from './EventGrid';
-import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import sum from 'lodash/sum';
 import Swipe from 'react-easy-swipe';
 import get from 'lodash/get';
+import PropTypes from 'prop-types';
 
+import { Link } from '../../routes';
 import __ from '../../lib/i18n';
 import { getEvents } from '../../lib/api';
 import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import Spinner from '../Spinner';
+import { classNames } from '../../lib/util';
+import SeeAllButton from '../SeeAllButton';
+import { serializeFilter } from './util';
+import { useOnResize } from '../../lib/hooks';
+
+const ASSUMED_ROW_HEIGHT = 188;
+
+EventRow.propTypes = {
+  routeParams: PropTypes.object,
+  initialEvents: PropTypes.array,
+  filter: PropTypes.object,
+  seeAllParams: PropTypes.object,
+  sortBy: PropTypes.string,
+  rowCount: PropTypes.number,
+};
+
+EventRow.defaultProps = {
+  filter: {},
+  initialEvents: [],
+  rowCount: 1,
+};
 
 function EventRow(props) {
-  const { routeParams, initialEvents, filter, sortBy, rowCount = 1 } = props;
+  const {
+    routeParams,
+    events: initialEvents,
+    filter,
+    seeAllParams,
+    sortBy,
+    rowCount,
+  } = props;
 
   const itemRefs = useRef({});
   const [containerRef, setContainerRef] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(4);
-  const [loadedPages, setLoadedPages] = useState(1);
+  const [loadedPages, setLoadedPages] = useState(null);
   const [page, setPage] = useState(1);
   const [offset, setOffset] = useState(0);
   const [items, setItems] = useState(initialEvents || []);
+  const [totalCount, setTotalCount] = useState(props.totalCount || null);
   const [fetching, setFetching] = useState(false);
-  const [reachedEnd, setReachedEnd] = useState(props.reachedEnd || false);
+  const [reachedEnd, setReachedEnd] = useState(
+    initialEvents && props.totalCount === initialEvents.length
+  );
 
+  // Reset if filter changes
   useEffect(() => {
-    if ((!items.length || loadedPages < page + 1) && !fetching && !reachedEnd) {
+    setItems(initialEvents || []);
+    setLoadedPages(null);
+    setPage(1);
+    setOffset(0);
+    setTotalCount(props.totalCount || null);
+    setFetching(false);
+    setReachedEnd(initialEvents && props.totalCount === initialEvents.length);
+  }, [filter]);
+
+  // Load items if empty
+  useEffect(() => {
+    if (!items.length) {
       loadNextPage();
     }
-  }, [items, fetching]);
+  }, [items]);
 
+  // Lazy-load next page
   useEffect(() => {
-    const resizeListener = debounce(() => {
-      calculateDimensions();
-    }, 100);
-    resizeListener();
-    window.addEventListener('resize', resizeListener);
-    return () => window.removeEventListener('resize', resizeListener);
-  }, [containerRef, items, page, rowCount]);
+    if (loadedPages !== null && loadedPages < page + 1) {
+      loadNextPage();
+    }
+  }, [page, loadedPages]);
+
+  useOnResize(() => calculateDimensions(), [
+    containerRef,
+    items,
+    page,
+    rowCount,
+  ]);
 
   const calculateDimensions = () => {
     if (!containerRef || !items.length || !get(itemRefs.current, '1.0')) {
@@ -63,6 +112,10 @@ function EventRow(props) {
         .map(rowNo => columnCount * rowNo - columnCount + columnNo - 1)
         .map(index => itemRefs.current[page][index])
     );
+    if (!columns.length) {
+      return;
+    }
+
     const height =
       sum(columns[0].map(item => item && item.getBoundingClientRect().height)) +
       // Grid gap
@@ -104,19 +157,20 @@ function EventRow(props) {
 
     try {
       setFetching(true);
-      const pageResults = await getEvents({
+      const { results, totalCount } = await getEvents({
         offset: items.length,
         limit,
         query: filter,
         sortBy,
       });
 
-      const newItems = items.concat(pageResults.results);
+      const newItems = items.concat(results);
 
-      if (pageResults.totalCount === newItems.length) {
+      if (totalCount === newItems.length) {
         setReachedEnd(true);
       }
 
+      setTotalCount(totalCount);
       setItems(newItems);
     } finally {
       setFetching(false);
@@ -148,7 +202,11 @@ function EventRow(props) {
       <div className={'root'}>
         <div
           ref={setContainerRef}
-          className={['container', !items.length ? 'empty' : null].join(' ')}
+          className={classNames([
+            'container',
+            !items.length && 'empty',
+            fetching && 'fetching',
+          ])}
         >
           <Swipe
             allowMouseEvents={true}
@@ -159,16 +217,20 @@ function EventRow(props) {
             <div
               className="items"
               style={{
-                gridTemplateColumns: '1fr '.repeat(loadedPages),
+                gridTemplateColumns: '1fr '.repeat(loadedPages || 1),
                 width: containerDimensions.width
-                  ? loadedPages * containerDimensions.width
+                  ? (loadedPages || 1) * containerDimensions.width
                   : 'auto',
-                height: containerDimensions.height,
+                height:
+                  containerDimensions.height ||
+                  (items.length
+                    ? ASSUMED_ROW_HEIGHT * rowCount + 'px'
+                    : 'auto'),
                 transform: `translateX(-${(page - 1) *
                   (containerDimensions.width + 14)}px)`,
               }}
             >
-              {range(1, loadedPages + 1).map(page => {
+              {range(1, (loadedPages || 1) + 1).map(page => {
                 const events = items.slice(
                   (page - 1) * itemsPerPage,
                   page * itemsPerPage
@@ -219,6 +281,19 @@ function EventRow(props) {
             </button>
           </div>
         )}
+        {!!items.length && (
+          <div className="see-all">
+            <Link
+              route="events"
+              params={{
+                ...routeParams,
+                ...serializeFilter(seeAllParams ? seeAllParams : filter),
+              }}
+            >
+              <SeeAllButton count={totalCount} />
+            </Link>
+          </div>
+        )}
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -228,17 +303,18 @@ function EventRow(props) {
           box-sizing: border-box;
         }
         .container {
-          height: 100%;
           flex-grow: 1;
           overflow: hidden;
-          min-height: 188px;
+          min-height: ${ASSUMED_ROW_HEIGHT}px;
         }
         .container.empty {
-          min-height: auto;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+        }
+        .container.empty:not(.fetching) {
+          min-height: auto;
         }
         .items {
           display: grid;
@@ -247,10 +323,10 @@ function EventRow(props) {
         }
         .pager {
           position: absolute;
-          width: 100%;
+          right: 0;
           display: flex;
           justify-content: flex-end;
-          margin-top: 0.5em;
+          margin-top: 1.5em;
         }
         .pager button {
           width: 2em;
@@ -278,9 +354,17 @@ function EventRow(props) {
         .empty-message {
           color: ${colors.textSecondary};
         }
+        .see-all {
+          display: inline-block;
+          position: relative;
+          z-index: 3;
+          margin-top: 1.5em;
+          height: 32px;
+          align-items: center;
+        }
       `}</style>
     </Fragment>
   );
 }
 
-export default EventRow;
+export default memo(EventRow);

@@ -16,7 +16,7 @@ function FiniteGrid(props) {
       <div className={`grid ${className}`}>
         {items.map((item, index) => (
           <div
-            key={(keyExtractor && keyExtractor(item)) || index}
+            key={keyExtractor ? keyExtractor(item) : index}
             style={{ height: itemHeight }}
             ref={ref => setGridItemRef && setGridItemRef(index, ref)}
           >
@@ -54,7 +54,18 @@ function InfiniteGrid(props) {
   const [items, setItems] = useState(props.items);
   const [itemDimensions, setItemDimensions] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState(null);
-  const [endReached, setEndReached] = useState(false);
+  const [endReached, setEndReached] = useState(
+    props.items.length === props.totalCount
+  );
+
+  // Reset if items passed via props change
+  useEffect(() => {
+    page.current = 0;
+    setOffset(props.items.length);
+    setLoading(false);
+    setEndReached(props.items.length === props.totalCount);
+    setItems(props.items);
+  }, [props.items]);
 
   // Determine limit and fetch all items within viewport
   useEffect(() => {
@@ -90,7 +101,6 @@ function InfiniteGrid(props) {
       setOffset(offset + results.length);
       setLoading(false);
       setItems(replace ? results : items.concat(results));
-      page.current++;
     }
   };
 
@@ -122,7 +132,7 @@ function InfiniteGrid(props) {
         {items.map((item, index) => (
           <div
             ref={ref => setEventRef(index, ref)}
-            key={(keyExtractor && keyExtractor(item)) || index}
+            key={keyExtractor ? keyExtractor(item) : index}
             style={{ height: itemHeight }}
           >
             {renderItem(item)}

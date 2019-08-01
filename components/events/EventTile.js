@@ -1,33 +1,49 @@
-import React, { useState, memo, useMemo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import css from 'styled-jsx/css';
 
 import { Link } from '../../routes';
-import __, { _o } from '../../lib/i18n';
+import __ from '../../lib/i18n';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
-import VideoModal from '../VideoModal';
+import { useOnClickOutside, useToggleState } from '../../lib/hooks';
+import ArtistList from '../tags/ArtistList';
+import dimensions from '../../styles/dimensions';
 
 const EventTileBody = props => {
   const { event, routeParams, showBuy } = props;
-  const { id, date, tags, organiser, tickets = {}, dateIndex } = event;
+  const { date, organiser, tickets = {}, dateIndex } = event;
+  const { artists = [] } = date;
+
+  const [showArtists, toggleShowArtists] = useToggleState(false);
+  const [artistRef, setArtistsRef] = useState(null);
+
+  useOnClickOutside(artistRef, toggleShowArtists);
 
   return (
     <div className="container">
+      {showArtists && (
+        <div className="artists" ref={setArtistsRef}>
+          <div className="close">
+            <button onClick={toggleShowArtists} />
+          </div>
+          <ArtistList routeParams={routeParams} artists={artists} />
+        </div>
+      )}
       <Link route="event" params={routeParams}>
-        <a className="event-link">
+        <a className="event-link" target="_blank">
           <div className="date">{formatEventDate(date.from)}</div>
           <div className="venue">{organiser.venue.name}</div>
-          <div className="tags">
-            {tags.map((tag, index) => (
-              <span key={tag.id} className="tag">
-                {(index !== 0 ? ' • ' : '') + _o(tag.name)}
-              </span>
-            ))}
-          </div>
         </a>
       </Link>
+      {!!artists.length && (
+        <button className="artists-toggle" onClick={toggleShowArtists}>
+          {artists.length === 1 && __('EventTile.oneArtist')}
+          {artists.length > 1 &&
+            __('EventTile.nArtists', { n: artists.length })}
+        </button>
+      )}
       {tickets.checkoutUrl && showBuy && (
         <a
           rel="nofollow"
@@ -54,8 +70,36 @@ const EventTileBody = props => {
           text-transform: uppercase;
           font-size: 0.95em;
         }
-        .tags {
-          margin-top: 0.2em;
+        .artists {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: calc(100% - 0.4em);
+          height: calc(100% - 0.4em);
+          box-sizing: border-box;
+          background: ${colors.bgOverlay};
+          padding: ${dimensions.tilePadding};
+          margin: 0.2em;
+          z-index: 10;
+          overflow-y: auto;
+          border-radius: ${dimensions.tileRadius};
+        }
+        .artists .close {
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 0.5em;
+        }
+        .artists .close button {
+          width: 23px;
+          height: 23px;
+          background: url(/static/img/video-close.svg) no-repeat center center;
+          background-size: cover;
+        }
+        .artists-toggle {
+          display: block;
+          text-align: left;
+          color: ${colors.linkText};
+          padding: 0.3em 0;
         }
         .event-link {
           display: block;
@@ -88,18 +132,7 @@ function EventTile(props) {
     showBuy = false,
     routeParams,
   } = props;
-  const {
-    title,
-    facebook = {},
-    images = [],
-    id,
-    videoUrl,
-    dateIndex = 0,
-  } = event;
-
-  const [showVideoModal, setShowVideoModal] = useState(false);
-
-  const toggleVideoModal = () => setShowVideoModal(!showVideoModal);
+  const { title, facebook = {}, images = [], id, dateIndex = 0 } = event;
 
   const imgProps = useMemo(
     () =>
@@ -128,6 +161,7 @@ function EventTile(props) {
         route="event"
         routeParams={linkParams}
         linkBody={false}
+        aProps={{ target: 'blank' }}
         /*language=CSS*/
         {...css.resolve`
           .top {
@@ -142,45 +176,11 @@ function EventTile(props) {
           />
         }
       />
-      {!!videoUrl && (
-        <div className="video-button">
-          <button onClick={toggleVideoModal} />
-          <VideoModal
-            url={videoUrl}
-            isOpen={showVideoModal}
-            onClose={toggleVideoModal}
-            shouldCloseOnOverlayClick={true}
-          />
-        </div>
-      )}
       {/*language=CSS*/}
       <style jsx>{`
         .container {
           height: 100%;
           position: relative;
-        }
-        .video-button {
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: 8em;
-          height: 3em;
-          background-image: linear-gradient(
-            200deg,
-            #000000 0%,
-            rgba(0, 0, 0, 0) 53%
-          );
-          display: flex;
-          justify-content: flex-end;
-        }
-        .video-button button {
-          width: 7em;
-          height: 2.8em;
-          padding: 0.3em;
-          text-align: left;
-          background: url(/static/img/video-icon.svg) no-repeat right 0.5em top
-            0.5em;
-          background-size: 27px;
         }
       `}</style>
     </div>

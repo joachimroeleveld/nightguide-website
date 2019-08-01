@@ -66,4 +66,4 @@ async function getArticlesPage(pageSlug, page = 1, limit = 6) {
 
 const getBreadcrumbs = () => [{ key: 'articles' }];
 
-export default withPageLayout(getBreadcrumbs)(CityArticlesPage);
+export default withPageLayout({ getBreadcrumbs })(CityArticlesPage);

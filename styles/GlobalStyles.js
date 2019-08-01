@@ -49,6 +49,7 @@ function GlobalStyles() {
           background: none;
           padding: 0;
           font-size: 1em;
+          color: inherit;
         }
         input {
           font-size: 1em;

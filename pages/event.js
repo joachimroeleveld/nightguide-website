@@ -196,6 +196,7 @@ function EventPage(props) {
             </header>
             <div className="list">
               <ArtistList
+                routeParams={routeParams}
                 artists={date.artists}
                 horizontal={
                   artistsOrientation === 'horizontal' && windowWidth <= 800
@@ -225,7 +226,7 @@ function EventPage(props) {
           width: 100%;
         }
         .header .media .thumbnail {
-          min-height: 179px;
+          min-height: 160px;
           position: relative;
           display: flex;
           justify-content: center;
@@ -454,8 +455,8 @@ EventPage.getInitialProps = async ctx => {
 };
 
 const getBreadcrumbs = ({ event }) => [
-  { key: 'events', url: '/' },
+  { key: 'events', route: 'events' },
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
-export default withPageLayout(getBreadcrumbs)(EventPage);
+export default withPageLayout({ getBreadcrumbs })(EventPage);

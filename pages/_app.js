@@ -7,21 +7,15 @@ import Modal from 'react-modal';
 
 // TODO: https://github.com/zeit/next-plugins/issues/282
 import '../static/css/empty.css';
-import { QueryProvider } from '../components/Navigation';
 
 Modal.setAppElement('#__next');
 
 class NightGuideWebsite extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let props = {};
-
-    const { query } = ctx;
-
+  static getInitialProps({ Component, ctx }) {
     if (Component.getInitialProps) {
-      props = await Component.getInitialProps(ctx);
+      return Component.getInitialProps(ctx);
     }
-
-    return { ...props, query };
+    return {};
   }
 
   componentDidMount() {
@@ -31,13 +25,11 @@ class NightGuideWebsite extends App {
   }
 
   render() {
-    const { Component, query, ...props } = this.props;
+    const { Component, ...props } = this.props;
 
     return (
       <Container>
-        <QueryProvider value={query}>
-          <Component {...props} />
-        </QueryProvider>
+        <Component {...props} />
       </Container>
     );
   }

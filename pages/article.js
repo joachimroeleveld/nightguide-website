@@ -169,8 +169,8 @@ ArticlePage.getInitialProps = async ctx => {
 };
 
 const getBreadcrumbs = ({ article }) => [
-  { key: 'articles', url: 'articles' },
+  { key: 'articles', route: 'articles' },
   { key: 'article', title: article.title },
 ];
 
-export default withPageLayout(getBreadcrumbs)(ArticlePage);
+export default withPageLayout({ getBreadcrumbs })(ArticlePage);

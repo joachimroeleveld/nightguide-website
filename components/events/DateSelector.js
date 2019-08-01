@@ -69,6 +69,7 @@ function EventDateSelect(props) {
         value={value}
         onChange={onChange}
         options={options}
+        isSearchable={false}
       />
       {styles.styles}
     </Fragment>

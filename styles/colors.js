@@ -1,6 +1,7 @@
 export default {
   bg: '#1F1F1F',
   bgOverlay: 'rgba(31, 31, 31, 0.9)',
+  headerShadow: '0 0 8px rgba(0, 0, 0, 0.4)',
   text: '#fff',
   textDark: '#222222',
   textSoft: '#e0e0e0',

@@ -10,7 +10,7 @@ import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import { classNames } from '../lib/util';
 
 function Header(props) {
-  const { pageSlug } = props;
+  const { pageSlug, searchContext } = props;
 
   const [innerRef, setInnerRef] = useState(null);
   const [sticky, setSticky] = useState(false);
@@ -36,11 +36,12 @@ function Header(props) {
 
   const logo = <img src="/static/img/logo.svg" alt="NightGuide" />;
 
-  const height = Math.round(containerDimensions.height);
+  const height = Math.round(containerDimensions.height) || 56;
   const compact = windowWidth <= 800;
 
   return (
     <header
+      id="page-header"
       className={[sticky || searchOpen ? 'sticky' : '', 'container']
         .join(' ')
         .trim()}
@@ -69,6 +70,7 @@ function Header(props) {
                 offsetTop={height - 1}
                 isOpen={!menuOpen && searchOpen}
                 setIsOpen={setSearchOpen}
+                searchContext={searchContext}
               />
             )}
             {searchOpen && (
@@ -105,7 +107,7 @@ function Header(props) {
           width: 100%;
           background: ${colors.bg};
           box-sizing: border-box;
-          box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+          box-shadow: ${colors.headerShadow};
         }
         .logo {
           margin-right: 1.5em;

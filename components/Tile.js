@@ -18,6 +18,7 @@ function Tile(props) {
     BodyContents = null,
     linkBody = true,
     ContainerElem = 'article',
+    aProps = {},
   } = props;
 
   const linkProps = { route, params: routeParams };
@@ -125,13 +126,13 @@ function Tile(props) {
     <ContainerElem className={['container', className].join(' ')}>
       {route && (
         <Link {...linkProps}>
-          <a>{topContent}</a>
+          <a {...aProps}>{topContent}</a>
         </Link>
       )}
       {!route && topContent}
       {BodyContents && linkBody && (
         <Link {...linkProps}>
-          <a>{bodyContent}</a>
+          <a {...aProps}>{bodyContent}</a>
         </Link>
       )}
       {bodyContent && !linkBody && bodyContent}

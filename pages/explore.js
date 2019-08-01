@@ -53,4 +53,4 @@ CityExplorePage.getInitialProps = async () => {
 
 const getBreadcrumbs = () => [{ key: 'explore' }];
 
-export default withPageLayout(getBreadcrumbs)(CityExplorePage);
+export default withPageLayout({ getBreadcrumbs })(CityExplorePage);

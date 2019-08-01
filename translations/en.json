@@ -3,6 +3,11 @@
     "blog": "Blog",
     "home": "Home",
     "explore": "Explore",
+    "areas": "Areas",
+    "exploreArtists": "Explore artists",
+    "exploreEvents": "Explore events",
+    "exploreVenues": "Explore venues",
+    "exploreAreas": "Explore areas",
     "events": "Events",
     "venues": "Venues",
     "venue": "{{title}}",
@@ -31,16 +36,22 @@
     "articles": "Articles",
     "askOurStaff": "...or ask our staff where to go",
     "startChat": "Start chat",
-    "trendingEvents": "Trending events"
+    "trendingEvents": "Trending events",
+    "exploreEvents": "Explore events"
   },
-  "cityEventsPage": {
+  "EventsPage": {
     "meta": {
       "title": "Events in {{city}} - where to go out | NightGuide",
       "description": "Explore events in {{city}}."
     },
-    "eventsIn": "Events in",
-    "eventsInCity": "Events in {{city}}",
-    "clubs": "Clubs"
+    "titles": {
+      "eventsInCity": "Events in {{city}}",
+      "eventsWith": "Events with {{artist}}",
+      "eventsAt": "Events at {{location}}",
+      "eventsOn": "Events on {{date}}",
+      "eventsBetween": "Events between {{date1}} and {{date2}}"
+    },
+    "noEvents": "No events could be found."
   },
   "cityExplorePage": {
     "meta": {
@@ -55,6 +66,18 @@
     "events": "Events",
     "articles": "Articles",
     "venues": "Venues"
+  },
+  "ExploreVenuesPage": {
+    "title": "Explore venues in {{city}}",
+    "venues": "Venues"
+  },
+  "ExploreAreasPage": {
+    "title": "Explore areas in {{city}}",
+    "areas": "Areas"
+  },
+  "ExploreArtistsPage": {
+    "title": "Explore artists in {{city}}",
+    "artists": "Artists"
   },
   "articlePage": {
     "meta": {
@@ -276,27 +299,44 @@
         "title": "Best Ibiza party planner - clubs, events and tickets | NightGuide",
         "description": "Find all clubs and events that Ibiza hosts. Make the best out of your days in Ibiza through the best overview available"
       },
-      "name": "Ibiza"
+      "name": "Ibiza",
+      "title": "Go party in Ibiza",
+      "subtitle": "Find clubs, events and artists - get your tickets in one place."
     }
   },
   "search": {
     "noResults": "There were no results for '{{query}}'",
-    "searchFor": "Start searching by typing a venue or event...",
+    "searchFor": "Start searching by typing an event, artist or venue...",
     "loadMoreResults": "Load more",
-    "searchBarPlaceholder": "Search an event, venue..."
+    "searchBarPlaceholder": "Search an event, artist or venue...",
+    "artists": "Artists"
   },
   "events": "Events",
   "venues": "Venues",
   "seeAll": "See all",
   "yes": "Yes",
-  "today": "Today",
-  "tomorrow": "Tomorrow",
-  "thisWeekend": "This weekend",
   "pickDate": "Pick dates",
-  "pickADateRange": "Select a date range",
+  "pickADateRange": "Please select a date range",
   "buyTickets": "Buy tickets",
   "noEventsForDates": "No events exist for these dates",
   "readMore": "Read more",
   "readLess": "Read less",
-  "video": "Video"
+  "video": "Video",
+  "dates": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "thisWeekend": "This weekend"
+  },
+  "ExploreEventsTiles": {
+    "venue": "Venue",
+    "area": "Area",
+    "artist": "Artist"
+  },
+  "SeeAllButton": {
+    "seeAll": "See all"
+  },
+  "EventTile": {
+    "oneArtist": "1 artist",
+    "nArtists": "{{n}} artists"
+  }
 }

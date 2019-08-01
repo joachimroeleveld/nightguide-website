@@ -12,10 +12,22 @@ routes.add('/es/ibiza', 'cities/ibiza');
 routes.add('/nl/utrecht', 'cities/utrecht');
 
 // Dynamic routes
-routes.add('events', '/:country/:city/events');
 routes.add('event', '/:country/:city/events/:event');
-routes.add('articles', '/:country/:city/articles');
+
+routes.add('venues', '/:country/:city/venues');
+routes.add('venue', '/:country/:city/venues/:venue');
+
+routes.add('areas', '/:country/:city/areas');
+routes.add('area', '/:country/:city/areas/:area');
+
+routes.add('artists', '/:country/:city/artists');
+routes.add('artist', '/:country/:city/artists/:artist');
+
+routes.add('date', '/:country/:city/date');
+
 routes.add('article', '/:country/:city/articles/:article');
+routes.add('articles', '/:country/:city/articles');
+
 routes.add('explore', '/:country/:city/explore');
 routes.add('tag', '/:country/:city/tags/:tag');
-routes.add('venue', '/:country/:city/venues/:venue');
+routes.add('events', '/:country/:city/events');
