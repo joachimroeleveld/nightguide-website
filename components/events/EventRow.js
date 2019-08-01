@@ -254,44 +254,46 @@ function EventRow(props) {
             onSwipeMove={onSwipeMove}
             onSwipeEnd={onSwipeEnd}
           >
-            <div
-              className={'items'}
-              style={{
-                pointerEvents: swiping ? 'none' : 'auto',
-                gridTemplateColumns: '1fr '.repeat(loadedPages || 1),
-                width: containerDimensions.width
-                  ? (loadedPages || 1) * containerDimensions.width
-                  : 'auto',
-                height:
-                  containerDimensions.height ||
-                  (items.length
-                    ? ASSUMED_ROW_HEIGHT * rowCount + 'px'
-                    : 'auto'),
-                transform: `translateX(${translateX}px)`,
-              }}
-            >
-              {range(1, (loadedPages || 1) + 1).map(page => {
-                const events = items.slice(
-                  (page - 1) * itemsPerPage,
-                  page * itemsPerPage
-                );
-                return (
-                  <div
-                    key={page}
-                    className="page"
-                    style={{ width: containerDimensions.width }}
-                  >
-                    <EventGrid
-                      double={rowCount === 2}
-                      routeParams={routeParams}
-                      events={events}
-                      setGridItemRef={(index, ref) =>
-                        setItemRef(page, index, ref)
-                      }
-                    />
-                  </div>
-                );
-              })}
+            <div className="wrap">
+              <div
+                className={'items'}
+                style={{
+                  pointerEvents: swiping ? 'none' : 'auto',
+                  gridTemplateColumns: '1fr '.repeat(loadedPages || 1),
+                  width: containerDimensions.width
+                    ? (loadedPages || 1) * containerDimensions.width
+                    : 'auto',
+                  height:
+                    containerDimensions.height ||
+                    (items.length
+                      ? ASSUMED_ROW_HEIGHT * rowCount + 'px'
+                      : 'auto'),
+                  transform: `translateX(${translateX}px)`,
+                }}
+              >
+                {range(1, (loadedPages || 1) + 1).map(page => {
+                  const events = items.slice(
+                    (page - 1) * itemsPerPage,
+                    page * itemsPerPage
+                  );
+                  return (
+                    <div
+                      key={page}
+                      className="page"
+                      style={{ width: containerDimensions.width }}
+                    >
+                      <EventGrid
+                        double={rowCount === 2}
+                        routeParams={routeParams}
+                        events={events}
+                        setGridItemRef={(index, ref) =>
+                          setItemRef(page, index, ref)
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </Swipe>
           {!items.length && (
@@ -344,7 +346,6 @@ function EventRow(props) {
         }
         .container {
           flex-grow: 1;
-          overflow: hidden;
           min-height: ${ASSUMED_ROW_HEIGHT}px;
         }
         .container.empty {
@@ -360,6 +361,9 @@ function EventRow(props) {
           display: grid;
           grid-gap: ${dimensions.gridGap};
           transition: ease-out 0.3s;
+        }
+        .wrap {
+          overflow: hidden;
         }
         .pager {
           position: absolute;
@@ -401,6 +405,18 @@ function EventRow(props) {
           margin-top: 1.5em;
           height: 32px;
           align-items: center;
+        }
+        @media (max-width: 800px) {
+          .wrap {
+            margin: 0 -2em;
+            padding: 0 2em;
+          }
+        }
+        @media (min-width: 800px) {
+          .wrap {
+            margin: 0;
+            padding: 0;
+          }
         }
       `}</style>
     </Fragment>
