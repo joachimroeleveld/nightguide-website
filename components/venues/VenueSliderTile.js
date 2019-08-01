@@ -101,11 +101,10 @@ function VenueSliderTile(props) {
   };
 
   const onSwipeMove = pos => {
-    const { x, y } = pos;
-    if (Math.abs(x) < 10) return;
+    const { x } = pos;
     offsetX.current = x;
     setTranslateX(getOffsetForSlide(currentSlide) + x);
-    if (Math.abs(y) < 10) return true;
+    return true;
   };
 
   const linkParams = useMemo(() => ({ ...routeParams, venue: venue.id }), [
@@ -127,7 +126,7 @@ function VenueSliderTile(props) {
         onSwipeStart={onSwipeStart}
         onSwipeMove={onSwipeMove}
         onSwipeEnd={onSwipeEnd}
-        tolerance={10}
+        tolerance={30}
       >
         <div
           style={{ pointerEvents: swiping ? 'none' : 'auto' }}

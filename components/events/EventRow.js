@@ -210,11 +210,10 @@ function EventRow(props) {
   };
 
   const onSwipeMove = pos => {
-    const { x, y } = pos;
-    if (Math.abs(x) < 10) return;
+    const { x } = pos;
     offsetX.current = x;
     setTranslateX(getOffsetForPage(page) + x);
-    if (Math.abs(y) < 10) return true;
+    return true;
   };
 
   const setItemRef = (page, index, ref) => {
@@ -249,7 +248,7 @@ function EventRow(props) {
           ])}
         >
           <Swipe
-            tolerance={10}
+            tolerance={30}
             // allowMouseEvents={true}
             onSwipeStart={onSwipeStart}
             onSwipeMove={onSwipeMove}
