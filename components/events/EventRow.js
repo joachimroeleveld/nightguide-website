@@ -243,7 +243,7 @@ function EventRow(props) {
           ])}
         >
           <Swipe
-            allowMouseEvents={process.env.NODE_ENV === 'development'}
+            // allowMouseEvents={true}
             tolerance={30}
             onSwipeStart={onSwipeStart}
             onSwipeMove={onSwipeMove}
