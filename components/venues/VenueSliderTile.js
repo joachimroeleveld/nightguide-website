@@ -104,7 +104,7 @@ function VenueSliderTile(props) {
     const { x, y } = pos;
     offsetX.current = x;
     setTranslateX(getOffsetForSlide(currentSlide) + x);
-    if (Math.abs(y) < 10) return true;
+    if (Math.abs(y) < 30) return true;
   };
 
   const linkParams = useMemo(() => ({ ...routeParams, venue: venue.id }), [
