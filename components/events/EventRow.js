@@ -94,7 +94,12 @@ function EventRow(props) {
     setTranslateX(getOffsetForPage(page));
   }, [page]);
 
-  useOnResize(() => calculateDimensions(), [containerRef, items, rowCount]);
+  useOnResize(() => calculateDimensions(), [
+    containerRef,
+    items,
+    page,
+    rowCount,
+  ]);
 
   const calculateDimensions = () => {
     if (!containerRef || !items.length || !get(itemRefs.current, '1.0')) {
@@ -152,8 +157,8 @@ function EventRow(props) {
   const scrollToPage = newPage => {
     if (newPage === 0 || newPage > loadedPages) return;
 
-    setPage(newPage);
     setOffset((newPage - 1) * itemsPerPage);
+    setPage(newPage);
   };
 
   const loadNextPage = async (limit = itemsPerPage) => {
@@ -206,9 +211,10 @@ function EventRow(props) {
 
   const onSwipeMove = pos => {
     const { x, y } = pos;
+    if (Math.abs(x) < 10) return;
     offsetX.current = x;
     setTranslateX(getOffsetForPage(page) + x);
-    if (y < 10) return true;
+    if (Math.abs(y) < 10) return true;
   };
 
   const setItemRef = (page, index, ref) => {
@@ -244,7 +250,6 @@ function EventRow(props) {
         >
           <Swipe
             // allowMouseEvents={true}
-            tolerance={30}
             onSwipeStart={onSwipeStart}
             onSwipeMove={onSwipeMove}
             onSwipeEnd={onSwipeEnd}

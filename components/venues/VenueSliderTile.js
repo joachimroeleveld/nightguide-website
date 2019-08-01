@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
@@ -44,9 +44,15 @@ function VenueSliderTile(props) {
   const { name, images, description } = venue;
   const imgProps = { widths: imgWidths, sizes: imgSizes };
 
+  const getOffsetForSlide = slide =>
+    -slide * (containerDimensions ? containerDimensions.width : 0);
+
   const [containerRef, setContainerRef] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [translateX, setTranslateX] = useState(getOffsetForSlide(currentSlide));
+  const [swiping, setSwiping] = useState(false);
+  const offsetX = useRef(0);
 
   useEffect(() => {
     const resizeListener = debounce(() => calculateDimensions(), 100);
@@ -55,17 +61,16 @@ function VenueSliderTile(props) {
     return () => window.removeEventListener('resize', resizeListener);
   }, [containerRef]);
 
+  // Adjust translation to slide
+  useEffect(() => {
+    setTranslateX(getOffsetForSlide(currentSlide));
+  }, [currentSlide]);
+
   const calculateDimensions = () => {
     if (containerRef) {
       setContainerDimensions(containerRef.getBoundingClientRect());
     }
   };
-
-  const trimmedDescription =
-    description &&
-    removeTags(_o(description))
-      .slice(0, 130)
-      .trim() + '...';
 
   const slidesCount = 1 + (description ? 1 : 0) + images.slice(1).length;
 
@@ -74,21 +79,60 @@ function VenueSliderTile(props) {
     setCurrentSlide(slide);
   };
 
+  const onSwipeStart = () => {
+    setSwiping(true);
+  };
+
+  const onSwipeEnd = () => {
+    setSwiping(false);
+
+    let newSlide;
+    if (offsetX.current < 0) {
+      newSlide = currentSlide + 1;
+    } else {
+      newSlide = currentSlide - 1;
+    }
+
+    if (newSlide < 0 || newSlide > slidesCount - 1) {
+      return setTranslateX(getOffsetForSlide(currentSlide));
+    }
+
+    goToSlide(newSlide);
+  };
+
+  const onSwipeMove = pos => {
+    const { x, y } = pos;
+    if (Math.abs(x) < 10) return;
+    offsetX.current = x;
+    setTranslateX(getOffsetForSlide(currentSlide) + x);
+    if (Math.abs(y) < 10) return true;
+  };
+
   const linkParams = useMemo(() => ({ ...routeParams, venue: venue.id }), [
     routeParams,
     venue.id,
   ]);
 
+  const trimmedDescription =
+    description &&
+    removeTags(_o(description))
+      .slice(0, 130)
+      .trim() + '...';
+
   return (
     <React.Fragment>
       <Swipe
         style={{ height: '100%' }}
-        tolerance={30}
         allowMouseEvents={true}
-        onSwipeLeft={() => goToSlide(currentSlide + 1)}
-        onSwipeRight={() => goToSlide(currentSlide - 1)}
+        onSwipeStart={onSwipeStart}
+        onSwipeMove={onSwipeMove}
+        onSwipeEnd={onSwipeEnd}
       >
-        <div className="container" ref={setContainerRef}>
+        <div
+          style={{ pointerEvents: swiping ? 'none' : 'auto' }}
+          className="container"
+          ref={setContainerRef}
+        >
           {!!containerDimensions && (
             <div
               className="carousel"
@@ -107,8 +151,7 @@ function VenueSliderTile(props) {
                       }px `.repeat(slidesCount),
                       width: containerDimensions.width * slidesCount,
                       height: containerDimensions.height,
-                      transform: `translateX(${-currentSlide *
-                        containerDimensions.width}px)`,
+                      transform: `translateX(${translateX}px)`,
                     }}
                   >
                     <div className="slide-name">{name}</div>
