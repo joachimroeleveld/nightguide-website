@@ -127,6 +127,7 @@ function VenueSliderTile(props) {
         onSwipeStart={onSwipeStart}
         onSwipeMove={onSwipeMove}
         onSwipeEnd={onSwipeEnd}
+        tolerance={10}
       >
         <div
           style={{ pointerEvents: swiping ? 'none' : 'auto' }}
