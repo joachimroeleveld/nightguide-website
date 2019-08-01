@@ -59,7 +59,7 @@ function EventDateSelect(props) {
 
   const onChange = value => {
     setValue(value);
-    props.onChange(value.value);
+    props.onChange(parseInt(value.value) + (dates.length - options.length));
   };
 
   return (

@@ -44,6 +44,9 @@ function EventRow(props) {
     rowCount,
   } = props;
 
+  const getOffsetForPage = page =>
+    -(page - 1) * (containerDimensions.width + 14);
+
   const itemRefs = useRef({});
   const [containerRef, setContainerRef] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState({});
@@ -57,6 +60,9 @@ function EventRow(props) {
   const [reachedEnd, setReachedEnd] = useState(
     initialEvents && props.totalCount === initialEvents.length
   );
+  const [translateX, setTranslateX] = useState(getOffsetForPage(page));
+  const [swiping, setSwiping] = useState(false);
+  const offsetX = useRef(0);
 
   // Reset if filter changes
   useEffect(() => {
@@ -83,12 +89,12 @@ function EventRow(props) {
     }
   }, [page, loadedPages]);
 
-  useOnResize(() => calculateDimensions(), [
-    containerRef,
-    items,
-    page,
-    rowCount,
-  ]);
+  // Adjust translation to page
+  useEffect(() => {
+    setTranslateX(getOffsetForPage(page));
+  }, [page]);
+
+  useOnResize(() => calculateDimensions(), [containerRef, items, rowCount]);
 
   const calculateDimensions = () => {
     if (!containerRef || !items.length || !get(itemRefs.current, '1.0')) {
@@ -177,6 +183,34 @@ function EventRow(props) {
     }
   };
 
+  const onSwipeStart = () => {
+    setSwiping(true);
+  };
+
+  const onSwipeEnd = () => {
+    setSwiping(false);
+
+    let newPage;
+    if (offsetX.current < 0) {
+      newPage = page + 1;
+    } else {
+      newPage = page - 1;
+    }
+
+    if (newPage === 0 || newPage > loadedPages) {
+      return setTranslateX(getOffsetForPage(page));
+    }
+
+    scrollToPage(newPage);
+  };
+
+  const onSwipeMove = pos => {
+    const { x, y } = pos;
+    offsetX.current = x;
+    setTranslateX(getOffsetForPage(page) + x);
+    if (y < 10) return true;
+  };
+
   const setItemRef = (page, index, ref) => {
     if (ref) {
       itemRefs.current = {
@@ -209,14 +243,16 @@ function EventRow(props) {
           ])}
         >
           <Swipe
-            allowMouseEvents={true}
+            allowMouseEvents={process.env.NODE_ENV === 'development'}
             tolerance={30}
-            onSwipeLeft={() => scrollToPage(page + 1)}
-            onSwipeRight={() => scrollToPage(page - 1)}
+            onSwipeStart={onSwipeStart}
+            onSwipeMove={onSwipeMove}
+            onSwipeEnd={onSwipeEnd}
           >
             <div
-              className="items"
+              className={'items'}
               style={{
+                pointerEvents: swiping ? 'none' : 'auto',
                 gridTemplateColumns: '1fr '.repeat(loadedPages || 1),
                 width: containerDimensions.width
                   ? (loadedPages || 1) * containerDimensions.width
@@ -226,8 +262,7 @@ function EventRow(props) {
                   (items.length
                     ? ASSUMED_ROW_HEIGHT * rowCount + 'px'
                     : 'auto'),
-                transform: `translateX(-${(page - 1) *
-                  (containerDimensions.width + 14)}px)`,
+                transform: `translateX(${translateX}px)`,
               }}
             >
               {range(1, (loadedPages || 1) + 1).map(page => {
