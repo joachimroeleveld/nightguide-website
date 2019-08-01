@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import moment from 'moment-timezone';
 import find from 'lodash/find';
 import css from 'styled-jsx/css';
@@ -72,6 +72,7 @@ function EventDateFilterBar(props) {
     props.endDate ? moment(props.endDate) : null
   );
   const [fullscreenMode, setFullScreenMode] = useState(true);
+  const buttonsRef = useRef(null);
 
   useEffect(() => {
     setActiveButton(props.activeButton || (props.startDate && 'custom'));
@@ -94,6 +95,7 @@ function EventDateFilterBar(props) {
         const val = find(FILTER_ITEMS, { filterId }).value;
         onChange(val, filterId);
         setActiveButton(filterId);
+        resetScroll();
       } else {
         reset();
         togglePicker();
@@ -127,6 +129,10 @@ function EventDateFilterBar(props) {
     onChange(null);
   };
 
+  const resetScroll = () => {
+    buttonsRef.current.scrollLeft = 0;
+  };
+
   const togglePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
@@ -141,6 +147,7 @@ function EventDateFilterBar(props) {
       ]);
       setActiveButton('custom');
       togglePicker();
+      resetScroll();
     }
   };
 
@@ -235,7 +242,7 @@ function EventDateFilterBar(props) {
       >
         <div className="bar">
           <div className="picker-wrapper">
-            <div className="buttons">
+            <div className="buttons" ref={buttonsRef}>
               {buttons.map(({ filterId }) => (
                 <div key={filterId} className="button">
                   <SecondaryButton

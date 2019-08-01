@@ -213,7 +213,7 @@ function EventRow(props) {
     const { x } = pos;
     offsetX.current = x;
     setTranslateX(getOffsetForPage(page) + x);
-    if (Math.abs(x) > 30) return true;
+    if (Math.abs(x) > 10) return true;
   };
 
   const setItemRef = (page, index, ref) => {
