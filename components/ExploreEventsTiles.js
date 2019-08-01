@@ -62,22 +62,33 @@ function ExploreEventsTiles(props) {
         .image {
           background: no-repeat center center;
           background-size: cover;
+          border-top-left-radius: ${dimensions.tileRadius};
+          border-bottom-left-radius: ${dimensions.tileRadius};
+          overflow: hidden;
+          height: 4em;
+          width: 40%;
         }
         .label {
           box-sizing: border-box;
           padding: 1em;
         }
-        .image {
-          width: 40%;
-          height: 100%;
-        }
         ul {
           overflow-x: auto;
+          overflow-y: hidden;
         }
-        @media (max-width: 800px) {
+        @media (max-width: 350px) {
           .tile {
-            width: 10em;
-            height: 3em;
+            width: calc((100vw - 4em));
+          }
+        }
+        @media (min-width: 350px) {
+          .tile {
+            width: calc((100vw - 4em - 14px) * 0.5);
+          }
+        }
+        @media (min-width: 560px) {
+          .tile {
+            width: calc((100vw - 4em - 14px * 2) * 0.33);
           }
         }
         @media (min-width: 800px) {
