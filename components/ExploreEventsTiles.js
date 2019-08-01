@@ -58,10 +58,10 @@ function ExploreEventsTiles(props) {
           align-items: center;
           border-radius: ${dimensions.tileRadius};
         }
-        .tile:not(:last-child) {
+        li:not(:last-child) .tile {
           margin-right: ${dimensions.gridGap};
         }
-        .tile:last-child {
+        li:last-child .tile {
           margin-right: ${dimensions.bodyPadding};
         }
         .image {
