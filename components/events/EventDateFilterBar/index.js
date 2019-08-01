@@ -230,7 +230,7 @@ function EventDateFilterBar(props) {
     >
       <div
         className="inner"
-        style={{ top: sticky ? `${headerHeight}px` : '0' }}
+        style={{ top: sticky ? `${headerHeight - 1}px` : '0' }}
         ref={setInnerRef}
       >
         <div className="bar">
