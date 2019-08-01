@@ -210,10 +210,10 @@ function EventRow(props) {
   };
 
   const onSwipeMove = pos => {
-    const { x } = pos;
+    const { x, y } = pos;
     offsetX.current = x;
     setTranslateX(getOffsetForPage(page) + x);
-    return true;
+    if (Math.abs(y) < 10) return true;
   };
 
   const setItemRef = (page, index, ref) => {

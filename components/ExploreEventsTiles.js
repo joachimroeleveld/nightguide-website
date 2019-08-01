@@ -54,10 +54,15 @@ function ExploreEventsTiles(props) {
         .tile {
           display: flex;
           box-shadow: ${colors.cardShadow};
-          margin-right: ${dimensions.gridGap};
           background: ${colors.cardBg};
           align-items: center;
           border-radius: ${dimensions.tileRadius};
+        }
+        .tile:not(:last-child) {
+          margin-right: ${dimensions.gridGap};
+        }
+        .tile:last-child {
+          margin-right: ${dimensions.bodyPadding};
         }
         .image {
           background: no-repeat center center;
