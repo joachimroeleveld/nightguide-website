@@ -11,6 +11,8 @@ import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
 
+const SWIPE_TOLERANCE = 20;
+
 const Img = ({ bigOverlay, ...imgProps }) => (
   <ResponsiveImage
     showOverlay={true}
@@ -79,11 +81,9 @@ function VenueSliderTile(props) {
     setCurrentSlide(slide);
   };
 
-  const onSwipeStart = () => {
-    setSwiping(true);
-  };
-
   const onSwipeEnd = () => {
+    if (offsetX.current === null) return;
+
     setSwiping(false);
 
     let newSlide;
@@ -92,6 +92,8 @@ function VenueSliderTile(props) {
     } else {
       newSlide = currentSlide - 1;
     }
+
+    offsetX.current = null;
 
     if (newSlide < 0 || newSlide > slidesCount - 1) {
       return setTranslateX(getOffsetForSlide(currentSlide));
@@ -102,7 +104,8 @@ function VenueSliderTile(props) {
 
   const onSwipeMove = pos => {
     const { x } = pos;
-    if (Math.abs(x) > 10) {
+    if (Math.abs(x) > SWIPE_TOLERANCE) {
+      setSwiping(true);
       offsetX.current = x;
       setTranslateX(getOffsetForSlide(currentSlide) + x);
       return true;

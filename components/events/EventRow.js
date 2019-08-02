@@ -18,6 +18,7 @@ import { serializeFilter } from './util';
 import { useOnResize } from '../../lib/hooks';
 
 const ASSUMED_ROW_HEIGHT = 188;
+const SWIPE_TOLERANCE = 20;
 
 EventRow.propTypes = {
   routeParams: PropTypes.object,
@@ -188,11 +189,9 @@ function EventRow(props) {
     }
   };
 
-  const onSwipeStart = () => {
-    setSwiping(true);
-  };
-
   const onSwipeEnd = () => {
+    if (offsetX.current === null) return;
+
     setSwiping(false);
 
     let newPage;
@@ -201,6 +200,8 @@ function EventRow(props) {
     } else {
       newPage = page - 1;
     }
+
+    offsetX.current = null;
 
     if (newPage === 0 || newPage > loadedPages) {
       return setTranslateX(getOffsetForPage(page));
@@ -211,7 +212,8 @@ function EventRow(props) {
 
   const onSwipeMove = pos => {
     const { x } = pos;
-    if (Math.abs(x) > 10) {
+    if (Math.abs(x) > SWIPE_TOLERANCE) {
+      setSwiping(true);
       offsetX.current = x;
       setTranslateX(getOffsetForPage(page) + x);
       return true;
@@ -250,7 +252,6 @@ function EventRow(props) {
           ])}
         >
           <Swipe
-            tolerance={30}
             // allowMouseEvents={true}
             onSwipeStart={onSwipeStart}
             onSwipeMove={onSwipeMove}
