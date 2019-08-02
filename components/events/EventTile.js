@@ -10,6 +10,7 @@ import { generateTicketRedirectUrl } from './util';
 import { useOnClickOutside, useToggleState } from '../../lib/hooks';
 import ArtistList from '../tags/ArtistList';
 import dimensions from '../../styles/dimensions';
+import { TileButton } from '../TileButton';
 
 const EventTileBody = props => {
   const { event, routeParams, showBuy } = props;
@@ -40,11 +41,16 @@ const EventTileBody = props => {
         </a>
       </Link>
       {!!artists.length && (
-        <button className="artists-toggle" onClick={toggleShowArtists}>
-          {artists.length === 1 && __('EventTile.oneArtist')}
-          {artists.length > 1 &&
-            __('EventTile.nArtists', { n: artists.length })}
-        </button>
+        <div className="artists-toggle">
+          <TileButton
+            onClick={toggleShowArtists}
+            title={
+              (artists.length === 1 && __('EventTile.oneArtist')) ||
+              (artists.length > 1 &&
+                __('EventTile.nArtists', { n: artists.length }))
+            }
+          />
+        </div>
       )}
       {tickets.checkoutUrl && showBuy && (
         <a
@@ -83,8 +89,13 @@ const EventTileBody = props => {
           padding: 0 ${dimensions.tilePadding};
           margin: 0.2em;
           z-index: 10;
-          overflow-y: scroll;
+          overflow-y: auto;
           border-radius: ${dimensions.tileRadius};
+        }
+        .artists-toggle {
+          position: absolute;
+          top: 0.5em;
+          right: 0.5em;
         }
         .artists .close {
           display: flex;
@@ -100,22 +111,6 @@ const EventTileBody = props => {
           height: 23px;
           background: url(/static/img/close.svg) no-repeat center center;
           background-size: cover;
-        }
-        .artists-toggle {
-          display: block;
-          text-align: center;
-          padding: 0.2em 0.7em;
-          border: 1px solid #a4a4a4;
-          border-radius: 21px;
-          position: absolute;
-          top: 0.5em;
-          right: 0.5em;
-          background: #1f1f1f;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-          transition: background-color 0.3s;
-        }
-        .artists-toggle:hover {
-          background: #535353;
         }
         .event-link {
           display: block;

@@ -316,7 +316,7 @@ function EventDateFilterBar(props) {
           border-top: 1px solid ${colors.separator};
         }
         .buttons {
-          overflow-x: scroll;
+          overflow-x: auto;
           display: flex;
           flex-wrap: wrap;
           margin: -0.25em;

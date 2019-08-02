@@ -378,7 +378,7 @@ function SearchBar(props) {
           max-width: ${dimensions.pageWidth};
           padding: 0 ${dimensions.bodyPadding};
           height: 100%;
-          overflow-y: scroll;
+          overflow-y: auto;
         }
         .modal-content + .shadow {
           height: 30px;

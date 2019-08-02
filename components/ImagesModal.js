@@ -97,7 +97,7 @@ function ImagesModal(props) {
         .content {
           height: calc(100% - 3em);
           width: 100%;
-          overflow-y: scroll;
+          overflow-y: auto;
           -webkit-overflow-scrolling: touch;
           display: flex;
           justify-content: center;

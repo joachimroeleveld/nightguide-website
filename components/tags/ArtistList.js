@@ -54,7 +54,7 @@ function ArtistList(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container.horizontal {
-          overflow-x: scroll;
+          overflow-x: auto;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
         }

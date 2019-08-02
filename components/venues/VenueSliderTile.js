@@ -3,6 +3,7 @@ import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
 
+import __ from '../../lib/i18n';
 import { Link } from '../../routes';
 import ResponsiveImage from '../ResponsiveImage';
 import { _o } from '../../lib/i18n';
@@ -10,6 +11,10 @@ import Pager from '../Pager';
 import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
+import PrimaryButton from '../PrimaryButton';
+import { TileButton } from '../TileButton';
+import ImagesModal from '../ImagesModal';
+import { useToggleState } from '../../lib/hooks';
 
 const SWIPE_TOLERANCE = 30;
 
@@ -54,6 +59,7 @@ function VenueSliderTile(props) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [translateX, setTranslateX] = useState(getOffsetForSlide(currentSlide));
   const [swiping, setSwiping] = useState(false);
+  const [isImageModalOpen, toggleIsImageModalOpen] = useToggleState(false);
   const offsetX = useRef(0);
 
   useEffect(() => {
@@ -143,6 +149,17 @@ function VenueSliderTile(props) {
             >
               <div className="prev">
                 <button onClick={() => goToSlide(currentSlide - 1)} />
+              </div>
+              <div className="info-button">
+                <TileButton
+                  onClick={toggleIsImageModalOpen}
+                  iconSrc={'/static/img/tile-maximize.svg'}
+                />
+                <ImagesModal
+                  onClose={toggleIsImageModalOpen}
+                  isOpen={isImageModalOpen}
+                  images={images}
+                />
               </div>
               <Link route="venue" params={linkParams}>
                 <a className="venue-link" target="_blank">
@@ -247,6 +264,13 @@ function VenueSliderTile(props) {
           background: ${colors.imagePlaceholder};
           position: relative;
           height: 100%;
+        }
+        .info-button {
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          font-size: 0.85em;
+          z-index: 10;
         }
         .prev,
         .next {
