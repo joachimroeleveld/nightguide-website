@@ -21,6 +21,7 @@ import EventDateSelect from '../components/events/DateSelector';
 import VenueSliderTile from '../components/venues/VenueSliderTile';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
+import { useOnScroll } from '../lib/hooks';
 
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -30,6 +31,11 @@ function EventPage(props) {
   const [artistsOrientation, setArtistsOrientation] = useState('horizontal');
   const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
+  const [showBottomTicketButton, setShowBottomTicketButton] = useState(false);
+
+  useOnScroll(() => {
+    setShowBottomTicketButton(window.scrollY > window.innerHeight * 0.5);
+  }, [showBottomTicketButton]);
 
   const {
     title,
@@ -168,7 +174,12 @@ function EventPage(props) {
       </section>
       <aside className="sidebar">
         {tickets && tickets.checkoutUrl && (
-          <section className="buy-tickets">
+          <section
+            className={classNames([
+              'buy-tickets',
+              showBottomTicketButton && 'show',
+            ])}
+          >
             <PrimaryButton
               iconSrc={'/static/img/buy-tickets-arrow.svg'}
               href={generateTicketRedirectUrl(event.id, dateIndex)}
@@ -362,11 +373,17 @@ function EventPage(props) {
           .sidebar .buy-tickets {
             position: fixed;
             bottom: 10px;
+            transform: translateY(60px);
             left: 0;
             padding: 0.7em ${dimensions.bodyPadding} 0.2em;
             box-sizing: border-box;
             width: 100%;
             z-index: 100;
+            transition: transform 0.3s ease-in;
+          }
+          .sidebar .buy-tickets.show {
+            transform: translateY(0);
+            transition-timing-function: ease-out;
           }
           .sidebar .buy-tickets .via {
             display: none;
