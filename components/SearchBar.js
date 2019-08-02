@@ -15,6 +15,7 @@ import Spinner from './Spinner';
 import { withNavigation } from './Navigation';
 import { formatEventDate } from '../lib/dates';
 import { classNames, capitalizeWords } from '../lib/util';
+import { useDisableBodyScrolling } from '../lib/hooks';
 
 const MINIMUM_QUERY_LENGTH = 2;
 
@@ -136,10 +137,7 @@ function SearchBar(props) {
     }
   }, [inputRef, isOpen]);
 
-  useEffect(() => {
-    // Prevent body scrolling
-    document.body.style.overflow = isOpen ? 'hidden' : 'visible';
-  }, [isOpen]);
+  useDisableBodyScrolling(isOpen);
 
   useEffect(() => {
     if (isOpen) {

@@ -6,7 +6,11 @@ import css from 'styled-jsx/css';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from './ResponsiveImage';
 import colors from '../styles/colors';
-import { useOnClickOutside } from '../lib/hooks';
+import {
+  useDisableBodyScrolling,
+  useElemDimensions,
+  useOnClickOutside,
+} from '../lib/hooks';
 
 ImagesModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -24,10 +28,9 @@ function ImagesModal(props) {
   const [headerRef, setHeaderRef] = useState(null);
   const [imagesRef, setImagesRef] = useState(null);
 
-  useEffect(() => {
-    // Prevent body scrolling
-    document.body.style.overflow = isOpen ? 'hidden' : 'visible';
-  }, [isOpen]);
+  const imagesContainerDimensions = useElemDimensions(imagesRef);
+
+  useDisableBodyScrolling(isOpen);
 
   useOnClickOutside([imagesRef, headerRef], onClose);
 
@@ -45,23 +48,35 @@ function ImagesModal(props) {
         </header>
         <div className="content">
           <div className="images" ref={setImagesRef}>
-            {images.map(({ url }) => (
-              <div key={url} className="image">
-                <ResponsiveImage
-                  url={url}
-                  widths={[600, 1000, 2000]}
-                  sizes="(max-width: 960px) 100vw, 896px"
-                  /*language=CSS*/
-                  {...css.resolve`
-                    img {
-                      object-fit: cover;
-                      width: 100%;
-                      height: 100%;
-                    }
+            {images.map(({ url, width, height }) => {
+              const style = {};
+              if (width && height) {
+                style.height =
+                  (imagesContainerDimensions.width / width) * height;
+              }
+              return (
+                <div key={url} className="image" style={style}>
+                  <ResponsiveImage
+                    url={url}
+                    widths={[600, 1000, 2000]}
+                    sizes="(max-width: 960px) 100vw, 896px"
+                    /*language=CSS*/
+                    {...css.resolve`
+                      .container {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                      }
+                      img {
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                      }
                   `}
-                />
-              </div>
-            ))}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -82,7 +97,8 @@ function ImagesModal(props) {
         .content {
           height: calc(100% - 3em);
           width: 100%;
-          overflow-y: auto;
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
           display: flex;
           justify-content: center;
         }
