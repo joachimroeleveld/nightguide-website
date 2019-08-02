@@ -4,7 +4,7 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import withGA from 'next-ga';
 import Modal from 'react-modal';
-import TagManager from 'react-gtm';
+import TagManager from 'react-gtm-module';
 
 // TODO: https://github.com/zeit/next-plugins/issues/282
 import '../static/css/empty.css';
