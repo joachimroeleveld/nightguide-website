@@ -38,6 +38,7 @@ function ImageGrid(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
+          width: 100%;
           display: grid;
           grid-template-rows: auto 5em;
           grid-template-columns: repeat(4, 1fr);

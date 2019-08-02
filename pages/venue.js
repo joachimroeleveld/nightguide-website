@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { useState } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getVenue, getEvents, getVenues } from '../lib/api';
@@ -12,7 +11,6 @@ import PrimaryButton from '../components/PrimaryButton';
 import VenueTiles from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
 import TagList from '../components/TagList';
-import EventGrid from '../components/events/EventGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
@@ -180,13 +178,14 @@ function VenuePage(props) {
         </aside>
       </div>
 
-      {!!events.length && (
+      {!!events.results.length && (
         <section>
           <h2>{__('venuePage.events')}</h2>
           <EventRow
             routeParams={routeParams}
             filter={{ venue: venue.id }}
-            events={events}
+            events={events.results}
+            totalCount={events.totalCount}
             showBuy={true}
           />
         </section>
@@ -292,12 +291,12 @@ VenuePage.getInitialProps = async ctx => {
   const venue = await getVenue(venueId);
   return {
     venue,
-    events: (await getEvents({
+    events: await getEvents({
       limit: 8,
       query: {
         venue: venueId,
       },
-    })).results,
+    }),
     similarVenues: venue.tags.length
       ? (await getVenues({
           limit: 3,
