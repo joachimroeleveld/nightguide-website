@@ -135,7 +135,6 @@ async function getTitle(data) {
 }
 
 function getEventPage({ query, ...otherOpts }) {
-  console.log(query.venue);
   return getEvents({
     query: pick(query, ['pageSlug', 'dateFrom', 'dateTo', 'artist', 'venue']),
     serialize: false,

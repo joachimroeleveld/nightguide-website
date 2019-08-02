@@ -3,8 +3,8 @@ import ResponsiveImage from './ResponsiveImage';
 
 const IMG_WIDTHS_BIG = [290, 580, 920];
 const IMG_WIDTHS_SMALL = [145, 290, 580];
-const IMG_SIZES_BIG = '(max-width: 800px) calc(100vw - 4em), 451px';
-const IMG_SIZES_SMALL = '(max-width: 800px) calc(50vw - 2em), 232px';
+const IMG_SIZES_BIG = '(max-width: 780px) 100vw, 451px';
+const IMG_SIZES_SMALL = '(max-width: 780px) 25vw, 232px';
 
 function ImageGrid(props) {
   const { images } = props;
@@ -38,16 +38,17 @@ function ImageGrid(props) {
       <style jsx>{`
         .container {
           display: grid;
-          grid-template: 2fr 1fr 1fr / 1fr 1fr;
+          grid-template-rows: auto 5em;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-areas:
+            'main main main main'
+            '. . . .';
           margin: -3px;
           grid-gap: 3px;
         }
         .grid-item:nth-child(1) {
-          grid-area: 1 / 1 / 2 / 3;
+          grid-area: main;
           height: 300px;
-        }
-        .grid-item {
-          height: 150px;
         }
         .grid-item > .inner {
           width: 100%;

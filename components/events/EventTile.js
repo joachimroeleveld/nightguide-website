@@ -126,13 +126,13 @@ const EventTileBody = props => {
           display: block;
           color: ${colors.textDark};
           text-align: center;
-          border-radius: 3px;
+          border-radius: 12px;
           font-size: inherit;
           border: none;
           width: 100%;
           box-sizing: border-box;
           padding: 0.1em 0.3em;
-          margin-top: 0.5em;
+          margin: 0.5em 0 0.3em;
         }
       `}</style>
     </div>

@@ -18,11 +18,11 @@ import { serializeFilter } from './util';
 import { useOnResize } from '../../lib/hooks';
 
 const ASSUMED_ROW_HEIGHT = 188;
-const SWIPE_TOLERANCE = 30;
+const SWIPE_TOLERANCE = 50;
 
 EventRow.propTypes = {
   routeParams: PropTypes.object,
-  initialEvents: PropTypes.array,
+  events: PropTypes.array,
   filter: PropTypes.object,
   seeAllParams: PropTypes.object,
   sortBy: PropTypes.string,
@@ -43,6 +43,7 @@ function EventRow(props) {
     seeAllParams,
     sortBy,
     rowCount,
+    ...gridProps
   } = props;
 
   const getOffsetForPage = page =>
@@ -291,6 +292,7 @@ function EventRow(props) {
                         setGridItemRef={(index, ref) =>
                           setItemRef(page, index, ref)
                         }
+                        {...gridProps}
                       />
                     </div>
                   );

@@ -13,6 +13,8 @@ import VenuePriceClass from '../components/venues/VenuePriceClass';
 import TagList from '../components/TagList';
 import EventGrid from '../components/events/EventGrid';
 import VenueGrid from '../components/venues/VenueGrid';
+import ReadMoreLess from '../components/ReadMoreLess';
+import EventRow from '../components/events/EventRow';
 
 function VenuePage(props) {
   const { venue, routeParams, events, similarVenues } = props;
@@ -75,7 +77,9 @@ function VenuePage(props) {
       </Head>
 
       <header className={'header'}>
-        <ImageGrid images={images.slice(0, 5)} />
+        <div className="image-grid">
+          <ImageGrid images={images.slice(0, 5)} />
+        </div>
         <h1>{name}</h1>
       </header>
 
@@ -85,10 +89,12 @@ function VenuePage(props) {
             <TagList routeParams={routeParams} tags={tags} />
           </div>
           {description && (
-            <div
-              className="description"
-              dangerouslySetInnerHTML={{ __html: _o(description) }}
-            />
+            <ReadMoreLess initialHeight={400}>
+              <div
+                className="description"
+                dangerouslySetInnerHTML={{ __html: _o(description) }}
+              />
+            </ReadMoreLess>
           )}
           {priceClass && (
             <section className="price-class">
@@ -96,19 +102,6 @@ function VenuePage(props) {
               <VenuePriceClass priceClass={priceClass} />
             </section>
           )}
-          <section className="facilities">
-            <h2 className="facilities">{__('venuePage.facilities')}</h2>
-            <VenueTiles
-              facilities={facilities}
-              dresscode={dresscode}
-              fees={fees}
-              entranceFeeRange={entranceFeeRange}
-              paymentMethods={paymentMethods}
-              capacityRange={capacityRange}
-              doorPolicy={doorPolicy}
-              currency={currency}
-            />
-          </section>
         </div>
 
         <aside className={'info'}>
@@ -156,13 +149,31 @@ function VenuePage(props) {
               />
             </div>
           </div>
+
+          <section className="facilities">
+            <VenueTiles
+              facilities={facilities}
+              dresscode={dresscode}
+              fees={fees}
+              entranceFeeRange={entranceFeeRange}
+              paymentMethods={paymentMethods}
+              capacityRange={capacityRange}
+              doorPolicy={doorPolicy}
+              currency={currency}
+            />
+          </section>
         </aside>
       </div>
 
       {!!events.length && (
         <section>
           <h2>{__('venuePage.events')}</h2>
-          <EventGrid showBuy={true} routeParams={routeParams} events={events} />
+          <EventRow
+            routeParams={routeParams}
+            filter={{ venue: venue.id }}
+            events={events}
+            showBuy={true}
+          />
         </section>
       )}
 
@@ -236,6 +247,14 @@ function VenuePage(props) {
         .price-class .label {
           margin-right: 0.5em;
           font-weight: 400;
+        }
+        .facilities {
+          margin-top: 2em;
+        }
+        @media (max-width: 780px) {
+          .header .image-grid {
+            margin: 0 -2em;
+          }
         }
         @media (min-width: 780px) {
           .content {
