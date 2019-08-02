@@ -18,7 +18,7 @@ import { serializeFilter } from './util';
 import { useOnResize } from '../../lib/hooks';
 
 const ASSUMED_ROW_HEIGHT = 188;
-const SWIPE_TOLERANCE = 20;
+const SWIPE_TOLERANCE = 30;
 
 EventRow.propTypes = {
   routeParams: PropTypes.object,

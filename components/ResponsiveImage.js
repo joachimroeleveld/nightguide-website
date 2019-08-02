@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
+import { classNames } from '../lib/util';
 
 const getSrcSet = (url, widths = [], additionalParams = null) => {
   const sources = widths.map(size => {
@@ -74,17 +75,15 @@ export default function ResponsiveImage(props) {
         <source type="image/webp" srcSet={webPSrcSet} sizes={sizes} />
         <source type="image/jpeg" srcSet={jpegSrcSet} sizes={sizes} />
         {visible && (
-          <Fragment>
-            <img
-              src={`${url}=s600-rj`}
-              className={className}
-              alt={alt}
-              style={imgStyle}
-              onLoad={onLoad}
-            />
-            {showOverlay && <div className={`${className} overlay`.trim()} />}
-          </Fragment>
+          <img
+            src={`${url}=s600-rj`}
+            className={className}
+            alt={alt}
+            style={imgStyle}
+            onLoad={onLoad}
+          />
         )}
+        {showOverlay && <div className={classNames([className, 'overlay'])} />}
         {/*language=CSS*/}
         <style jsx>{`
           picture {

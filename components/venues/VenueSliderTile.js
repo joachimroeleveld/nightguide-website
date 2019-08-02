@@ -11,7 +11,7 @@ import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
 
-const SWIPE_TOLERANCE = 20;
+const SWIPE_TOLERANCE = 30;
 
 const Img = ({ bigOverlay, ...imgProps }) => (
   <ResponsiveImage
@@ -130,7 +130,6 @@ function VenueSliderTile(props) {
         allowMouseEvents={true}
         onSwipeMove={onSwipeMove}
         onSwipeEnd={onSwipeEnd}
-        tolerance={30}
       >
         <div
           style={{ pointerEvents: swiping ? 'none' : 'auto' }}
