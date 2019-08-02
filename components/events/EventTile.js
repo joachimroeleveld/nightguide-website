@@ -28,7 +28,9 @@ const EventTileBody = props => {
           <div className="close">
             <button onClick={toggleShowArtists} />
           </div>
-          <ArtistList routeParams={routeParams} artists={artists} />
+          <div className="list">
+            <ArtistList routeParams={routeParams} artists={artists} />
+          </div>
         </div>
       )}
       <Link route="event" params={routeParams}>
@@ -77,8 +79,8 @@ const EventTileBody = props => {
           width: calc(100% - 0.4em);
           height: calc(100% - 0.4em);
           box-sizing: border-box;
-          background: ${colors.bgOverlay};
-          padding: ${dimensions.tilePadding};
+          background: ${colors.bg};
+          padding: 0 ${dimensions.tilePadding};
           margin: 0.2em;
           z-index: 10;
           overflow-y: auto;
@@ -88,6 +90,10 @@ const EventTileBody = props => {
           display: flex;
           justify-content: flex-end;
           margin-bottom: 0.5em;
+          margin-top: ${dimensions.tilePadding};
+        }
+        .artists .list {
+          margin-bottom: ${dimensions.tilePadding};
         }
         .artists .close button {
           width: 23px;
@@ -97,9 +103,19 @@ const EventTileBody = props => {
         }
         .artists-toggle {
           display: block;
-          text-align: left;
-          color: ${colors.linkText};
-          padding: 0.3em 0;
+          text-align: center;
+          padding: 0.2em 0.7em;
+          border: 1px solid #a4a4a4;
+          border-radius: 21px;
+          position: absolute;
+          top: 0.5em;
+          right: 0.5em;
+          background: #1f1f1f;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+          transition: background-color 0.3s;
+        }
+        .artists-toggle:hover {
+          background: #535353;
         }
         .event-link {
           display: block;
