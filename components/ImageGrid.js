@@ -71,6 +71,8 @@ function ImageGrid(props) {
           }
           .grid-item {
             height: 175px;
+            border-radius: 3px;
+            overflow: hidden;
           }
           .grid-item:nth-child(1) {
             grid-area: 1 / 1 / 3 / 2;

@@ -6,7 +6,7 @@ import EventDateFilterBar from '../components/events/EventDateFilterBar';
 import __, { __city } from '../lib/i18n';
 import EventRow from '../components/events/EventRow';
 import withPageLayout from '../components/PageLayout';
-import VenueSliderTile from '../components/venues/VenueSliderTile';
+import VenueSlider from '../components/venues/VenueSlider';
 import dimensions from '../styles/dimensions';
 import { useDateFilter } from '../components/events/hooks';
 import { getListings } from './cities';
@@ -66,12 +66,14 @@ function ExploreVenuesPage(props) {
 
   const renderSection = ({ venue, filter, preloaded = {} }) => (
     <div className="container">
-      <VenueSliderTile
-        imgWidths={[600, 1000, 2000]}
-        imgSizes="(min-width: 960px) calc(960px - 4em), calc(100vw - 4em)"
-        routeParams={routeParams}
-        venue={venue}
-      />
+      <div className="venue">
+        <VenueSlider
+          imgWidths={[600, 1000, 2000]}
+          imgSizes="(min-width: 960px) calc(960px - 4em), calc(100vw - 4em)"
+          routeParams={routeParams}
+          venue={venue}
+        />
+      </div>
       <EventRow
         filter={filter}
         routeParams={routeParams}
@@ -86,6 +88,10 @@ function ExploreVenuesPage(props) {
           grid-template-rows: 213px auto;
           grid-template-columns: 100%;
           border-radius: ${dimensions.tileRadius};
+        }
+        .venue {
+          border-radius: ${dimensions.tileRadius};
+          overflow: hidden;
         }
       `}</style>
     </div>

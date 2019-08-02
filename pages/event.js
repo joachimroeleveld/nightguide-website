@@ -18,7 +18,7 @@ import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
-import VenueSliderTile from '../components/venues/VenueSliderTile';
+import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
@@ -228,7 +228,7 @@ function EventPage(props) {
         <section className="venue">
           <h2>{__('eventPage.venue')}</h2>
           <div className="tile">
-            <VenueSliderTile
+            <VenueSlider
               routeParams={routeParams}
               venue={venue}
               imgWidths={[600, 1000, 2000]}
@@ -341,7 +341,7 @@ function EventPage(props) {
         }
         @media (max-width: 800px) {
           .header {
-            margin: 2em -${dimensions.bodyPadding};
+            margin: 1em -${dimensions.bodyPadding} 2em;
           }
           .header .title {
             border-bottom: 1px solid ${colors.cardSeparator};
@@ -351,9 +351,6 @@ function EventPage(props) {
           }
           .artists header {
             margin: 2.3em ${dimensions.bodyPadding} 1.3em;
-          }
-          .header {
-            margin: 2em -${dimensions.bodyPadding};
           }
           .artists {
             margin: 0 -${dimensions.bodyPadding};
@@ -433,6 +430,8 @@ function EventPage(props) {
           }
           .venue .tile {
             height: 205px;
+            border-radius: ${dimensions.tileRadius};
+            overflow: hidden;
           }
           .sidebar .buy-tickets {
             position: static;

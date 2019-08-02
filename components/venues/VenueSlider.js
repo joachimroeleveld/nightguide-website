@@ -46,7 +46,7 @@ const Img = ({ bigOverlay, ...imgProps }) => (
   />
 );
 
-function VenueSliderTile(props) {
+function VenueSlider(props) {
   const { routeParams, venue, imgWidths, imgSizes } = props;
   const { name, images, description } = venue;
   const imgProps = { widths: imgWidths, sizes: imgSizes };
@@ -218,7 +218,6 @@ function VenueSliderTile(props) {
           height: 100%;
           position: relative;
           overflow: hidden;
-          border-radius: ${dimensions.tileRadius};
         }
         .bg-image {
           z-index: 0;
@@ -311,4 +310,4 @@ function VenueSliderTile(props) {
   );
 }
 
-export default VenueSliderTile;
+export default VenueSlider;

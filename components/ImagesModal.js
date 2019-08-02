@@ -110,6 +110,8 @@ function ImagesModal(props) {
         .image {
           margin: 1em 0;
           width: 100%;
+          border-radius: 3px;
+          overflow: hidden;
         }
         .close {
           width: 32px;
