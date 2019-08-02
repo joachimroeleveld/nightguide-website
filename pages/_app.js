@@ -4,6 +4,7 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import withGA from 'next-ga';
 import Modal from 'react-modal';
+import TagManager from 'react-gtm';
 
 // TODO: https://github.com/zeit/next-plugins/issues/282
 import '../static/css/empty.css';
@@ -21,6 +22,8 @@ class NightGuideWebsite extends App {
   componentDidMount() {
     if (process.env.NODE_ENV === 'production') {
       hotjar.initialize(process.env.REACT_APP_HOTJAR_ID, 6);
+
+      TagManager.initialize({ id: process.env.REACT_APP_GTM_ID });
     }
   }
 
