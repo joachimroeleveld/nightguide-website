@@ -44,8 +44,9 @@ function Tile(props) {
                   height: 100%;
                 }
                 .overlay {
-                  top: 20%;
-                  height: 81%;
+                  bottom: 0;
+                  top: auto;
+                  height: 80%;
                   width: 100%;
                   background: linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1));
                 }

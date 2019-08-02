@@ -285,21 +285,20 @@ function EventPage(props) {
           font-size: 20px;
           font-weight: 400;
         }
-        .when,
-        .where {
-          padding: 0.5em 0 0.5em 2em;
-        }
         .when {
-          background: url(/static/img/event-date.svg) left center no-repeat;
+          padding: 0.5em 0;
         }
         .when .date {
+          padding-left: 2em;
           display: flex;
           align-items: center;
+          background: url(/static/img/event-date.svg) left center no-repeat;
         }
         .when .date > :global(div) {
           width: 100%;
         }
         .where {
+          padding: 0.5em 0 0.5em 2em;
           background: url(/static/img/event-location.svg) left 3px center
             no-repeat;
           color: ${colors.linkText};
