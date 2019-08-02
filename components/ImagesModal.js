@@ -50,7 +50,7 @@ function ImagesModal(props) {
                 <ResponsiveImage
                   url={url}
                   widths={[600, 1000, 2000]}
-                  sizes="100vw"
+                  sizes="(max-width: 960px) 100vw, 896px"
                   /*language=CSS*/
                   {...css.resolve`
                     img {
@@ -81,16 +81,19 @@ function ImagesModal(props) {
         }
         .content {
           height: calc(100% - 3em);
+          width: 100%;
           overflow-y: auto;
           display: flex;
           justify-content: center;
         }
         .images {
+          width: 100%;
           margin: 0 ${dimensions.bodyPadding};
           max-width: ${dimensions.pageWidth};
         }
         .image {
           margin: 1em 0;
+          width: 100%;
         }
         .close {
           width: 32px;
