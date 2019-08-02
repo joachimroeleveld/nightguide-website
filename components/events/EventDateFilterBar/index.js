@@ -219,15 +219,14 @@ function EventDateFilterBar(props) {
     dynamicPickerProps.orientation = 'verticalScrollable';
   }
 
-  const buttons =
-    windowWidth > 800
-      ? FILTER_ITEMS
-      : [
-          ...(activeButton
-            ? [find(FILTER_ITEMS, { filterId: activeButton })]
-            : []),
-          ...FILTER_ITEMS.filter(item => item.filterId !== activeButton),
-        ];
+  const buttons = !(windowWidth < 800 && sticky)
+    ? FILTER_ITEMS
+    : [
+        ...(activeButton
+          ? [find(FILTER_ITEMS, { filterId: activeButton })]
+          : []),
+        ...FILTER_ITEMS.filter(item => item.filterId !== activeButton),
+      ];
 
   return (
     <div
