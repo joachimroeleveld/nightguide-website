@@ -77,11 +77,12 @@ function VideoModal(props) {
           height: 100%;
           width: 100%;
         }
+
         .close {
           width: 32px;
           height: 32px;
           margin-bottom: 0.5em;
-          background: url(/static/img/video-close.svg) no-repeat center center;
+          background: url(/static/img/close.svg) no-repeat center center;
         }
       `}</style>
     </Modal>

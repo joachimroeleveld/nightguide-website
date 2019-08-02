@@ -116,7 +116,7 @@ function ImagesModal(props) {
           height: 32px;
           padding: 1em;
           margin-right: 1em;
-          background: url(/static/img/video-close.svg) no-repeat center center;
+          background: url(/static/img/close.svg) no-repeat center center;
         }
       `}</style>
     </Modal>

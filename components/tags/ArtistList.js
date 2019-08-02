@@ -64,7 +64,6 @@ function ArtistList(props) {
           margin: -0.25em;
         }
         .horizontal ul {
-          overflow-x: auto;
           max-height: 4.525em;
         }
         .artist a {

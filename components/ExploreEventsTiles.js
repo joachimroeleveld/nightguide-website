@@ -78,8 +78,9 @@ function ExploreEventsTiles(props) {
           padding: 1em;
         }
         ul {
-          overflow-x: auto;
+          overflow-x: scroll;
           overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
         }
         @media (max-width: 350px) {
           .tile {

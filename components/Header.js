@@ -150,7 +150,7 @@ function Header(props) {
         .close-search button {
           width: 2em;
           height: 2em;
-          background: url(/static/img/video-close.svg) no-repeat center center;
+          background: url(/static/img/close.svg) no-repeat center center;
         }
         @media (min-width: 400px) {
           .container > .inner {

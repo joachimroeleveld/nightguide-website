@@ -195,18 +195,21 @@ function EventDateFilterBar(props) {
           border-top-left-radius: 3px;
           border-top-right-radius: 3px;
         }
+
         .info .text {
           font-weight: 600;
           flex-grow: 1;
         }
+
         .info.fullscreen {
           position: relative;
           top: -41px;
         }
+
         .close-button {
           width: 23px;
           height: 23px;
-          background: url(/static/img/video-close.svg) no-repeat center center;
+          background: url(/static/img/close.svg) no-repeat center center;
           background-size: cover;
         }
       `}</style>
@@ -313,7 +316,7 @@ function EventDateFilterBar(props) {
           border-top: 1px solid ${colors.separator};
         }
         .buttons {
-          overflow-x: auto;
+          overflow-x: scroll;
           display: flex;
           flex-wrap: wrap;
           margin: -0.25em;

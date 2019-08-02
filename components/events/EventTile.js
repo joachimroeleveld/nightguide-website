@@ -83,7 +83,7 @@ const EventTileBody = props => {
           padding: 0 ${dimensions.tilePadding};
           margin: 0.2em;
           z-index: 10;
-          overflow-y: auto;
+          overflow-y: scroll;
           border-radius: ${dimensions.tileRadius};
         }
         .artists .close {
@@ -98,7 +98,7 @@ const EventTileBody = props => {
         .artists .close button {
           width: 23px;
           height: 23px;
-          background: url(/static/img/video-close.svg) no-repeat center center;
+          background: url(/static/img/close.svg) no-repeat center center;
           background-size: cover;
         }
         .artists-toggle {
