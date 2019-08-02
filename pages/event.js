@@ -346,6 +346,9 @@ function EventPage(props) {
           .header .title {
             border-bottom: 1px solid ${colors.cardSeparator};
           }
+          .header .buy-tickets {
+            padding-left: 2em;
+          }
           .artists .list {
             padding: 0.5em ${dimensions.bodyPadding};
           }

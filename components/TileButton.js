@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { classNames } from '../lib/util';
+import colors from '../styles/colors';
 
 TileButton.propTypes = {
   title: PropTypes.string,
@@ -15,7 +16,7 @@ export function TileButton(props) {
       className={classNames(['button', iconSrc && 'icon'])}
       {...elemProps}
       style={{
-        backgroundImage: `url(${iconSrc})`,
+        backgroundImage: iconSrc && `url(${iconSrc})`,
       }}
     >
       {title}
@@ -30,6 +31,7 @@ export function TileButton(props) {
           background: #1f1f1f no-repeat center center;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
           transition: background-color 0.3s;
+          color: ${colors.text};
         }
         .button.icon {
           width: 2.15em;

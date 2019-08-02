@@ -40,12 +40,11 @@ function ImageGrid(props) {
         .container {
           width: 100%;
           display: grid;
-          grid-template-rows: auto 5em;
+          grid-template-rows: auto auto;
           grid-template-columns: repeat(4, 1fr);
           grid-template-areas:
             'main main main main'
             '. . . .';
-          margin: -3px;
           grid-gap: 3px;
         }
         .grid-item:nth-child(1) {
@@ -57,12 +56,9 @@ function ImageGrid(props) {
           height: 100%;
           overflow: hidden;
         }
-        @media (min-width: 600px) {
-          .grid-item:nth-child(1) {
-            height: 300px;
-          }
-          .grid-item {
-            height: 150px;
+        @media (max-width: 800px) {
+          .grid-item:not(:nth-child(1)) .inner {
+            height: 5em;
           }
         }
         @media (min-width: 800px) {
