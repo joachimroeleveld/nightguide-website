@@ -128,7 +128,6 @@ function VenueSliderTile(props) {
       <Swipe
         style={{ height: '100%' }}
         allowMouseEvents={true}
-        onSwipeStart={onSwipeStart}
         onSwipeMove={onSwipeMove}
         onSwipeEnd={onSwipeEnd}
         tolerance={30}

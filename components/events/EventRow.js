@@ -253,7 +253,6 @@ function EventRow(props) {
         >
           <Swipe
             // allowMouseEvents={true}
-            onSwipeStart={onSwipeStart}
             onSwipeMove={onSwipeMove}
             onSwipeEnd={onSwipeEnd}
           >
