@@ -1,18 +1,20 @@
 import PropTypes from 'prop-types';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 import { classNames } from '../lib/util';
 
-const getSrcSet = (url, widths = [], additionalParams = null) => {
-  const sources = widths.map(size => {
-    let params = [`s${size}`];
-    params = params.concat(additionalParams);
-    return `${url}=${params.join('-')}`;
-  });
-  const srcSet = sources
-    .map((url, index) => `${url} ${widths[index]}w`)
-    .join(', ');
-  return srcSet;
+ResponsiveImage.propTypes = {
+  url: PropTypes.string.isRequired,
+  widths: PropTypes.string.isRequired,
+  sizes: PropTypes.arrayOf(PropTypes.string),
+  alt: PropTypes.string,
+  style: PropTypes.object,
+  imgStyle: PropTypes.object,
+  lazy: PropTypes.bool,
+  showOverlay: PropTypes.bool,
+  styles: PropTypes.any,
+  className: PropTypes.string,
+  scale: PropTypes.bool,
 };
 
 export default function ResponsiveImage(props) {
@@ -33,6 +35,18 @@ export default function ResponsiveImage(props) {
   if (!url) {
     return null;
   }
+
+  const getSrcSet = (url, widths = [], additionalParams = null) => {
+    const sources = widths.map(size => {
+      let params = [`s${size}`];
+      params = params.concat(additionalParams);
+      return `${url}=${params.join('-')}`;
+    });
+    const srcSet = sources
+      .map((url, index) => `${url} ${widths[index]}w`)
+      .join(', ');
+    return srcSet;
+  };
 
   const [visible, setVisible] = useState(!lazy);
   const [loaded, setLoaded] = useState(false);

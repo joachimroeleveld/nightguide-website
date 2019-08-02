@@ -7,16 +7,17 @@ const IMG_SIZES_BIG = '(max-width: 780px) 100vw, 451px';
 const IMG_SIZES_SMALL = '(max-width: 780px) 25vw, 232px';
 
 function ImageGrid(props) {
-  const { images } = props;
+  const { images, onImageClick } = props;
   return (
     <div className={`container grid-${images.length}`}>
       {images.map((image, index) => (
-        <div className="grid-item" key={index}>
+        <div className="grid-item" key={index} onClick={onImageClick}>
           <div className="inner">
             <ResponsiveImage
               url={image.url}
               widths={index !== 0 ? IMG_WIDTHS_SMALL : IMG_WIDTHS_BIG}
               sizes={index !== 0 ? IMG_SIZES_SMALL : IMG_SIZES_BIG}
+              scale={true}
               /*language=CSS*/
               {...css.resolve`
                 .container {
@@ -53,6 +54,7 @@ function ImageGrid(props) {
         .grid-item > .inner {
           width: 100%;
           height: 100%;
+          overflow: hidden;
         }
         @media (min-width: 600px) {
           .grid-item:nth-child(1) {

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useState } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getVenue, getEvents, getVenues } from '../lib/api';
@@ -15,9 +16,11 @@ import EventGrid from '../components/events/EventGrid';
 import VenueGrid from '../components/venues/VenueGrid';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
+import { useToggleState } from '../lib/hooks';
+import ImagesModal from '../components/ImagesModal';
 
 function VenuePage(props) {
-  const { venue, routeParams, events, similarVenues } = props;
+  const { venue, routeParams, events, similarVenues, pageSlug } = props;
 
   const {
     name,
@@ -46,6 +49,8 @@ function VenuePage(props) {
     coordinates,
     googlePlaceId,
   } = location;
+
+  const [isImageModalOpen, toggleIsImageModalOpen] = useToggleState(false);
 
   let mapsUrl = `http://www.google.com/maps/search/?api=1&query=${
     coordinates.latitude
@@ -78,16 +83,26 @@ function VenuePage(props) {
 
       <header className={'header'}>
         <div className="image-grid">
-          <ImageGrid images={images.slice(0, 5)} />
+          <ImageGrid
+            onImageClick={toggleIsImageModalOpen}
+            images={images.slice(0, 5)}
+          />
+          <ImagesModal
+            onClose={toggleIsImageModalOpen}
+            isOpen={isImageModalOpen}
+            images={images}
+          />
         </div>
         <h1>{name}</h1>
       </header>
 
       <div className="content">
         <div className="main-content">
-          <div className="tags">
-            <TagList routeParams={routeParams} tags={tags} />
-          </div>
+          {pageSlug !== 'es/ibiza' && (
+            <div className="tags">
+              <TagList routeParams={routeParams} tags={tags} />
+            </div>
+          )}
           {description && (
             <ReadMoreLess initialHeight={400}>
               <div
@@ -100,6 +115,20 @@ function VenuePage(props) {
             <section className="price-class">
               <strong className="label">{__('venuePage.priceClass')}</strong>
               <VenuePriceClass priceClass={priceClass} />
+            </section>
+          )}
+          {pageSlug !== 'es/ibiza' && (
+            <section className="facilities">
+              <VenueTiles
+                facilities={facilities}
+                dresscode={dresscode}
+                fees={fees}
+                entranceFeeRange={entranceFeeRange}
+                paymentMethods={paymentMethods}
+                capacityRange={capacityRange}
+                doorPolicy={doorPolicy}
+                currency={currency}
+              />
             </section>
           )}
         </div>
@@ -118,7 +147,6 @@ function VenuePage(props) {
               <span>{postalCode}</span>
             </div>
             <div className={'labeled-text links'}>
-              <strong>{__('venuePage.links')}</strong>
               {!!website && (
                 <a
                   href={website}
@@ -149,19 +177,6 @@ function VenuePage(props) {
               />
             </div>
           </div>
-
-          <section className="facilities">
-            <VenueTiles
-              facilities={facilities}
-              dresscode={dresscode}
-              fees={fees}
-              entranceFeeRange={entranceFeeRange}
-              paymentMethods={paymentMethods}
-              capacityRange={capacityRange}
-              doorPolicy={doorPolicy}
-              currency={currency}
-            />
-          </section>
         </aside>
       </div>
 
@@ -200,6 +215,9 @@ function VenuePage(props) {
         .description {
           margin: 0;
           padding-right: 1em;
+        }
+        .description :global(p:first-child) {
+          margin-top: 0;
         }
         .content {
           display: grid;
