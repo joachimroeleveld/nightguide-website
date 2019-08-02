@@ -121,13 +121,21 @@ function EventPage(props) {
               )}
             </div>
             {tickets && tickets.checkoutUrl && (
-              <div className="button">
+              <div className="buy-tickets">
                 <PrimaryButton
+                  iconSrc={'/static/img/buy-tickets-arrow.svg'}
                   href={generateTicketRedirectUrl(event.id, dateIndex)}
                   target="_blank"
                   rel="noopener noreferrer"
                   title={__('eventPage.getTickets')}
                 />
+                <span className="via">
+                  {__('eventPage.buyTicketsVia', {
+                    domain: tickets.checkoutUrl
+                      .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
+                      .pop(),
+                  })}
+                </span>
               </div>
             )}
           </div>
@@ -162,6 +170,7 @@ function EventPage(props) {
         {tickets && tickets.checkoutUrl && (
           <section className="buy-tickets">
             <PrimaryButton
+              iconSrc={'/static/img/buy-tickets-arrow.svg'}
               href={generateTicketRedirectUrl(event.id, dateIndex)}
               target="_blank"
               rel="noopener noreferrer"
@@ -350,18 +359,20 @@ function EventPage(props) {
           .description {
             margin: 0 -${dimensions.bodyPadding};
           }
-          .buy-tickets {
+          .sidebar .buy-tickets {
             position: fixed;
-            bottom: 0;
+            bottom: 10px;
             left: 0;
             padding: 0.7em ${dimensions.bodyPadding} 0.2em;
             box-sizing: border-box;
             width: 100%;
             z-index: 100;
-            background: ${colors.bg};
           }
-          .when .button {
+          .sidebar .buy-tickets .via {
             display: none;
+          }
+          .when .buy-tickets {
+            margin-top: 1em;
           }
         }
         @media (min-width: 800px) {
@@ -407,11 +418,14 @@ function EventPage(props) {
           .venue .tile {
             height: 205px;
           }
-          .buy-tickets {
+          .sidebar .buy-tickets {
             position: static;
             background: ${colors.cardBg};
             box-shadow: ${colors.cardShadow};
             padding: 1em 1.5em 0.4em;
+          }
+          .header .buy-tickets .via {
+            display: none;
           }
           .artists .toggle-orientation {
             display: none;

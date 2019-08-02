@@ -161,7 +161,7 @@ function EventTile(props) {
         route="event"
         routeParams={linkParams}
         linkBody={false}
-        aProps={{ target: 'blank' }}
+        aProps={{ target: '_blank' }}
         /*language=CSS*/
         {...css.resolve`
           .top {

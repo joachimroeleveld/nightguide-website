@@ -4,18 +4,24 @@ import PropTypes from 'prop-types';
 import colors from '../styles/colors';
 
 function PrimaryButton(props) {
-  const { title, onClick, href, ...otherProps } = props;
+  const { title, onClick, href, iconSrc, ...otherProps } = props;
   const aProps = {
     ...otherProps,
     ...(href ? { href } : { onClick }),
   };
   return (
     <React.Fragment>
-      <a {...aProps}>{title}</a>
+      <a {...aProps}>
+        <span>
+          {iconSrc && <img src={iconSrc} className="icon" />}
+          {title}
+        </span>
+      </a>
       {/*language=CSS*/}
       <style jsx>{`
         a {
-          display: block;
+          display: flex;
+          justify-content: center;
           padding: 0.5em 1em;
           text-align: center;
           background: ${colors.primaryButton};
@@ -25,6 +31,13 @@ function PrimaryButton(props) {
           box-shadow: 1px 1px 0 0 #000000;
           cursor: pointer;
           transition: transform 0.3s;
+        }
+        a > span {
+          display: flex;
+          align-items: center;
+        }
+        .icon {
+          margin-right: 1em;
         }
       `}</style>
     </React.Fragment>
