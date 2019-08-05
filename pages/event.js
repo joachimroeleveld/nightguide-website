@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
 
@@ -13,7 +13,11 @@ import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
-import { generateTicketRedirectUrl } from '../components/events/util';
+import {
+  generateTicketRedirectUrl,
+  SORT_DATE,
+  SORT_POPULARITY,
+} from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
@@ -21,30 +25,11 @@ import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
+import EventTile from '../components/events/EventTile';
+import EventRow from '../components/events/EventRow';
 
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
-
-  const [mediaRef, setMediaRef] = useState(null);
-  const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
-  const mediaDimensions = useElemDimensions(mediaRef);
-  const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
-    false
-  );
-
-  useOnScroll(() => {
-    const { top: headerElemTop } = document
-      .querySelector('#buy-tickets-header')
-      .getBoundingClientRect();
-    const { top: footerElemTop } = document
-      .querySelector('#buy-tickets-bottom')
-      .getBoundingClientRect();
-    const headerHeight = document.querySelector('#header-height');
-    const isFixed =
-      headerElemTop - headerHeight <= 0 &&
-      footerElemTop - window.innerHeight > 0;
-    setIsBottomTicketsButtonFixed(isFixed);
-  }, [isBuyTicketsButtonFixed]);
 
   const {
     title,
@@ -58,13 +43,38 @@ function EventPage(props) {
     videoUrl,
   } = event;
 
+  const [mediaRef, setMediaRef] = useState(null);
+  const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
+  const mediaDimensions = useElemDimensions(mediaRef);
+  const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
+    false
+  );
+
+  useOnScroll(() => {
+    if (!tickets.checkoutUrl) return;
+
+    const { top: headerElemTop } = document
+      .querySelector('#buy-tickets-header')
+      .getBoundingClientRect();
+    const { top: footerElemTop } = document
+      .querySelector('#buy-tickets-bottom')
+      .getBoundingClientRect();
+    const headerHeight = document.querySelector('#header-height');
+    const isFixed =
+      headerElemTop - headerHeight <= 0 &&
+      footerElemTop - window.innerHeight > 0;
+    setIsBottomTicketsButtonFixed(isFixed);
+  }, [isBuyTicketsButtonFixed]);
+
   const date = dates[dateIndex];
 
-  const ticketsViaString = __('eventPage.buyTicketsVia', {
-    domain: tickets.checkoutUrl
-      .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
-      .pop(),
-  });
+  const ticketsViaString =
+    tickets.checkoutUrl &&
+    __('eventPage.buyTicketsVia', {
+      domain: tickets.checkoutUrl
+        .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
+        .pop(),
+    });
 
   return (
     <main>

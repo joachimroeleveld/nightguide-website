@@ -323,6 +323,7 @@
   "readLess": "Read less",
   "video": "Video",
   "dates": {
+    "now": "Now",
     "today": "Today",
     "tomorrow": "Tomorrow",
     "thisWeekend": "This weekend"

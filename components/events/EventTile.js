@@ -98,7 +98,7 @@ const EventTileBody = props => {
           right: 0.5em;
         }
         .artists-toggle :global(.button) {
-          padding-right: 1.4em;
+          padding-right: 1.2em;
         }
         .artists-toggle :global(.button):after {
           position: absolute;
