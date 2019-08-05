@@ -99,11 +99,11 @@ const EventTileBody = props => {
         }
         .artists-toggle :global(.button) {
           padding-right: 1.4em;
-          display: flex;
-          align-items: center;
         }
         .artists-toggle :global(.button):after {
           position: absolute;
+          top: 50%;
+          margin-top: -1px;
           right: 0.6em;
           content: '';
           width: 0;

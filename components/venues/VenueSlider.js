@@ -251,7 +251,7 @@ function VenueSlider(props) {
         .slide-description {
           padding-bottom: 3em;
           font-size: 0.9em;
-          background: rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.6);
         }
         .slide-name {
           text-align: center;

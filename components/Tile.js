@@ -44,7 +44,7 @@ function Tile(props) {
                   height: 100%;
                 }
                 .overlay {
-                  bottom: -1px;
+                  bottom: -2px;
                   top: auto;
                   height: 80%;
                   width: 100%;
