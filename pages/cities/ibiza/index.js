@@ -77,6 +77,7 @@ function IbizaCityPage(props) {
     dateFilterId,
     dateFilterChanged,
   } = useDateFilter(query, props);
+  const [dateFrom, dateTo] = dateFilter || [];
 
   const dateSections = useMemo(() => {
     const sections = [];
@@ -143,6 +144,10 @@ function IbizaCityPage(props) {
       }
       return {
         ...section,
+        seeAllParams: {
+          ...(section.seeAllParams || section.filter),
+          dateFilter: dateFilterId,
+        },
         filter: {
           ...filter,
           pageSlug,
@@ -215,7 +220,14 @@ function IbizaCityPage(props) {
       </div>
       <section className="explore-events">
         <h2>{__('cityPage.exploreEvents')}</h2>
-        <ExploreEventsTiles routeParams={routeParams} />
+        <ExploreEventsTiles
+          routeParams={{
+            ...routeParams,
+            dateFilter: dateFilterId,
+            dateFrom,
+            dateTo,
+          }}
+        />
       </section>
       <SectionLoader
         sections={sections}

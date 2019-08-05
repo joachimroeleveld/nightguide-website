@@ -9,8 +9,6 @@ function Footer(props) {
       <section>
         <span className={'company-name'}>NightGuide</span>
         <br />
-        Utrecht, The Netherlands
-        <br />
         <a className={'mailto'} href={'mailto:contact@nightguide.app'}>
           contact@nightguide.app
         </a>

@@ -258,8 +258,9 @@ function EventDateFilterBar(props) {
                       background-position: 0.5em center;
                     }
                     .button.active {
-                      padding-left: 1.8em;
+                      padding-left: 2em;
                       background-image: url(/static/img/secondary-button-close.svg);
+                      background-position: 0.8em center;
                     }
                   `}
                   />

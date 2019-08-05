@@ -3,15 +3,12 @@ import css from 'styled-jsx/css';
 import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
 
-import __ from '../../lib/i18n';
 import { Link } from '../../routes';
 import ResponsiveImage from '../ResponsiveImage';
 import { _o } from '../../lib/i18n';
 import Pager from '../Pager';
-import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
-import PrimaryButton from '../PrimaryButton';
 import { TileButton } from '../TileButton';
 import ImagesModal from '../ImagesModal';
 import { useToggleState } from '../../lib/hooks';
@@ -246,11 +243,15 @@ function VenueSlider(props) {
         .slide-description {
           justify-content: center;
           align-items: flex-end;
-          padding: 0 3em;
+          padding: 0 3em 2em;
           height: 100%;
           display: flex;
-          padding-bottom: 2em;
           box-sizing: border-box;
+        }
+        .slide-description {
+          padding-bottom: 3em;
+          font-size: 0.9em;
+          background: rgba(0, 0, 0, 0.8);
         }
         .slide-name {
           text-align: center;

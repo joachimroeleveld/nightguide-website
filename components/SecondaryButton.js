@@ -29,10 +29,10 @@ function SecondaryButton(props) {
       <style jsx>{`
         a {
           display: inline-block;
-          padding: 0.15em 0.7em;
+          padding: 0.15em 0.8em;
           text-align: center;
           cursor: pointer;
-          border-radius: 3px;
+          border-radius: 20px;
           border: 1px solid ${colors.secondaryButtonBorder};
           transition: all 0.2s;
           background-repeat: no-repeat;

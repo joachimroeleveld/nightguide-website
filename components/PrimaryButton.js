@@ -11,7 +11,7 @@ function PrimaryButton(props) {
   };
   return (
     <React.Fragment>
-      <a {...aProps}>
+      <a className="button" {...aProps}>
         <span>
           {iconSrc && <img src={iconSrc} className="icon" />}
           {title}

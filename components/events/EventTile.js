@@ -97,6 +97,21 @@ const EventTileBody = props => {
           top: 0.5em;
           right: 0.5em;
         }
+        .artists-toggle :global(.button) {
+          padding-right: 1.4em;
+          display: flex;
+          align-items: center;
+        }
+        .artists-toggle :global(.button):after {
+          position: absolute;
+          right: 0.6em;
+          content: '';
+          width: 0;
+          height: 0;
+          border-left: 3px solid transparent;
+          border-right: 3px solid transparent;
+          border-top: 3px solid #fff;
+        }
         .artists .close {
           display: flex;
           justify-content: flex-end;

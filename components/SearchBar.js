@@ -352,7 +352,7 @@ function SearchBar(props) {
           background: url(/static/img/search-icon.svg) no-repeat left 0.7em
             center rgba(216, 216, 216, 0.11);
           border: 1px solid #525252;
-          border-radius: 3px;
+          border-radius: 20px;
           transition: all 0.3s;
         }
         .input::placeholder {

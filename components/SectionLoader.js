@@ -88,7 +88,7 @@ function SectionLoader(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .section {
-          margin: 3em 0;
+          margin: 2em 0;
         }
         .spinner {
           display: flex;

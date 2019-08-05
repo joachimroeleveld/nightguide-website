@@ -11,12 +11,11 @@ import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
-import EventGrid from '../components/events/EventGrid';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
-import { useElemDimensions, useWindowWidth } from '../lib/hooks';
+import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
@@ -26,16 +25,26 @@ import { useOnScroll } from '../lib/hooks';
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
 
-  const windowWidth = useWindowWidth();
   const [mediaRef, setMediaRef] = useState(null);
-  const [artistsOrientation, setArtistsOrientation] = useState('horizontal');
   const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
-  const [showBottomTicketButton, setShowBottomTicketButton] = useState(false);
+  const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
+    false
+  );
 
   useOnScroll(() => {
-    setShowBottomTicketButton(window.scrollY > window.innerHeight * 0.5);
-  }, [showBottomTicketButton]);
+    const { top: headerElemTop } = document
+      .querySelector('#buy-tickets-header')
+      .getBoundingClientRect();
+    const { top: footerElemTop } = document
+      .querySelector('#buy-tickets-bottom')
+      .getBoundingClientRect();
+    const headerHeight = document.querySelector('#header-height');
+    const isFixed =
+      headerElemTop - headerHeight <= 0 &&
+      footerElemTop - window.innerHeight > 0;
+    setIsBottomTicketsButtonFixed(isFixed);
+  }, [isBuyTicketsButtonFixed]);
 
   const {
     title,
@@ -50,6 +59,12 @@ function EventPage(props) {
   } = event;
 
   const date = dates[dateIndex];
+
+  const ticketsViaString = __('eventPage.buyTicketsVia', {
+    domain: tickets.checkoutUrl
+      .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
+      .pop(),
+  });
 
   return (
     <main>
@@ -127,7 +142,7 @@ function EventPage(props) {
               )}
             </div>
             {tickets && tickets.checkoutUrl && (
-              <div className="buy-tickets">
+              <div className="buy-tickets" id="buy-tickets-header">
                 <PrimaryButton
                   iconSrc={'/static/img/buy-tickets-arrow.svg'}
                   href={generateTicketRedirectUrl(event.id, dateIndex)}
@@ -135,19 +150,13 @@ function EventPage(props) {
                   rel="noopener noreferrer"
                   title={__('eventPage.getTickets')}
                 />
-                <span className="via">
-                  {__('eventPage.buyTicketsVia', {
-                    domain: tickets.checkoutUrl
-                      .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
-                      .pop(),
-                  })}
-                </span>
+                <span className="via">{ticketsViaString}</span>
               </div>
             )}
           </div>
           <div className="where">
             <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
-              {venue.name}
+              <a target="_blank">{venue.name}</a>
             </Link>
           </div>
         </section>
@@ -177,51 +186,38 @@ function EventPage(props) {
           <section
             className={classNames([
               'buy-tickets',
-              showBottomTicketButton && 'show',
+              isBuyTicketsButtonFixed && 'fixed',
             ])}
+            id="buy-tickets-bottom"
           >
-            <PrimaryButton
-              iconSrc={'/static/img/buy-tickets-arrow.svg'}
-              href={generateTicketRedirectUrl(event.id, dateIndex)}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={__('buyTickets')}
-            />
-            <span className="via">
-              {__('eventPage.buyTicketsVia', {
-                domain: tickets.checkoutUrl
-                  .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
-                  .pop(),
-              })}
-            </span>
+            <div className="fixed-button">
+              <PrimaryButton
+                iconSrc={'/static/img/buy-tickets-arrow.svg'}
+                href={generateTicketRedirectUrl(event.id, dateIndex)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={__('buyTickets')}
+              />
+            </div>
+            {!isBuyTicketsButtonFixed && (
+              <PrimaryButton
+                iconSrc={'/static/img/buy-tickets-arrow.svg'}
+                href={generateTicketRedirectUrl(event.id, dateIndex)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={__('buyTickets')}
+              />
+            )}
+            <span className="via">{ticketsViaString}</span>
           </section>
         )}
         {date.artists && !!date.artists.length && (
           <section className="artists">
             <header>
               <h2>{__('eventPage.artists')}</h2>
-              <button
-                className={classNames([
-                  'toggle-orientation',
-                  artistsOrientation,
-                ])}
-                onClick={() =>
-                  setArtistsOrientation(
-                    artistsOrientation === 'vertical'
-                      ? 'horizontal'
-                      : 'vertical'
-                  )
-                }
-              />
             </header>
             <div className="list">
-              <ArtistList
-                routeParams={routeParams}
-                artists={date.artists}
-                horizontal={
-                  artistsOrientation === 'horizontal' && windowWidth <= 800
-                }
-              />
+              <ArtistList routeParams={routeParams} artists={date.artists} />
             </div>
           </section>
         )}
@@ -369,23 +365,29 @@ function EventPage(props) {
           .description {
             margin: 0 -${dimensions.bodyPadding};
           }
-          .sidebar .buy-tickets {
-            position: fixed;
-            bottom: 10px;
-            transform: translateY(60px);
-            left: 0;
-            padding: 0.7em ${dimensions.bodyPadding} 0.2em;
-            box-sizing: border-box;
-            width: 100%;
-            z-index: 100;
-            transition: transform 0.3s ease-in;
+          .sidebar {
+            display: grid;
           }
-          .sidebar .buy-tickets.show {
+          .sidebar .buy-tickets {
+            grid-area: 3 / 1 / 4 / 2;
+          }
+          .sidebar .buy-tickets {
+            margin-top: 3em;
+          }
+          .sidebar .buy-tickets .fixed-button :global(.button) {
+            left: 0;
+            box-sizing: border-box;
+            transition: transform 0.3s ease-in;
+            z-index: 100;
+            position: fixed;
+            transform: translateY(60px);
+            margin: 0.7em ${dimensions.bodyPadding} 0.2em;
+            bottom: 10px;
+            width: calc(100% - 2 * ${dimensions.bodyPadding});
+          }
+          .sidebar .buy-tickets.fixed .fixed-button :global(.button) {
             transform: translateY(0);
             transition-timing-function: ease-out;
-          }
-          .sidebar .buy-tickets .via {
-            display: none;
           }
           .when .buy-tickets {
             margin-top: 1em;
@@ -441,6 +443,9 @@ function EventPage(props) {
             background: ${colors.cardBg};
             box-shadow: ${colors.cardShadow};
             padding: 1em 1.5em 0.4em;
+          }
+          .sidebar .buy-tickets .fixed-button {
+            display: none;
           }
           .header .buy-tickets .via {
             display: none;

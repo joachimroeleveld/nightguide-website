@@ -104,17 +104,15 @@ function ImagesModal(props) {
         }
         .images {
           width: 100%;
+          padding: 1px 0;
           margin: 0 ${dimensions.bodyPadding};
           max-width: ${dimensions.pageWidth};
         }
         .image {
-          padding-bottom: 1em;
+          margin: 1em 0;
           width: 100%;
           border-radius: 3px;
           overflow: hidden;
-        }
-        .image:first-child {
-          padding-top: 1em;
         }
         .close {
           width: 32px;
