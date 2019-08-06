@@ -147,6 +147,8 @@ function IbizaCityPage(props) {
         seeAllParams: {
           ...(section.seeAllParams || section.filter),
           dateFilter: dateFilterId,
+          dateFrom,
+          dateTo,
         },
         filter: {
           ...filter,
@@ -154,7 +156,7 @@ function IbizaCityPage(props) {
         },
       };
     });
-  }, [dateSections]);
+  }, [dateSections, dateFilterId]);
 
   const renderSection = ({ seeAllParams, filter, preloaded = {} }) => (
     <EventRow

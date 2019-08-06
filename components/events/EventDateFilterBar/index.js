@@ -346,7 +346,7 @@ function EventDateFilterBar(props) {
           z-index: 0;
         }
         .button {
-          margin: 0.25em;
+          margin: 0.25em 0.2em;
           white-space: nowrap;
         }
         .picker {
