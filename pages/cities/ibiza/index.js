@@ -146,9 +146,9 @@ function IbizaCityPage(props) {
         ...section,
         seeAllParams: {
           dateFilter: dateFilterId,
-          ...(section.seeAllParams || section.filter),
           dateFrom,
           dateTo,
+          ...(section.seeAllParams || section.filter),
         },
         filter: {
           ...filter,

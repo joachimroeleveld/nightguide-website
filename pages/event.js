@@ -13,11 +13,7 @@ import ResponsiveImage from '../components/ResponsiveImage';
 import TagList from '../components/TagList';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
-import {
-  generateTicketRedirectUrl,
-  SORT_DATE,
-  SORT_POPULARITY,
-} from '../components/events/util';
+import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
@@ -25,8 +21,6 @@ import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
-import EventTile from '../components/events/EventTile';
-import EventRow from '../components/events/EventRow';
 
 function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
