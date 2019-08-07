@@ -16,14 +16,16 @@
     "event": "{{title}}",
     "tag": "{{name}}"
   },
-  "homePage": {
+  "HomePage": {
     "meta": {
       "title": "Explore nightlife in your city | NightGuide",
       "description": "Find the best bars, clubs & events for a great night out. Currently available in Ibiza and Utrecht."
     },
     "title": "Explore nightlife",
-    "subtitle": "Find the best <strong>bars</strong>, <strong>clubs</strong> and <strong>events</strong> for a great night out.",
-    "cities": "Cities"
+    "subtitle": "Find bars, clubs and events in your city for a great night out.",
+    "cities": "Cities",
+    "eventsInCity": "Events in {{city}}",
+    "recentArticles": "Recent articles"
   },
   "cityPage": {
     "meta": {

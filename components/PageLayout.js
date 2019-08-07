@@ -16,6 +16,7 @@ const withPageLayout = ({
   getBreadcrumbs,
   getSearchContext,
   meta = {},
+  showHeader = true,
 } = {}) => Page => {
   function PageLayout(props) {
     const { currentUrl, pageSlug } = props;
@@ -41,7 +42,9 @@ const withPageLayout = ({
             <link rel="canonical" href={meta.canonical || currentUrl} />
             <link rel="alternate" href={currentUrl} hrefLang="x-default" />
           </Head>
-          <Header searchContext={searchContext} pageSlug={pageSlug} />
+          {showHeader && (
+            <Header searchContext={searchContext} pageSlug={pageSlug} />
+          )}
           <div className="page">
             {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
             <Page {...props} />

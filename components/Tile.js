@@ -19,6 +19,8 @@ function Tile(props) {
     linkBody = true,
     ContainerElem = 'article',
     aProps = {},
+    borderRadius = dimensions.tileRadius,
+    showOverlay = true,
   } = props;
 
   const linkProps = { route, params: routeParams };
@@ -29,7 +31,7 @@ function Tile(props) {
       {!!imgProps && (
         <div className="img">
           <ResponsiveImage
-            showOverlay={true}
+            showOverlay={showOverlay}
             scale={true}
             /*language=CSS*/
             {...css.resolve`
@@ -61,8 +63,8 @@ function Tile(props) {
           position: relative;
           display: flex;
           background: ${colors.tileBg};
-          border-top-left-radius: ${dimensions.tileRadius};
-          border-top-right-radius: ${dimensions.tileRadius};
+          border-top-left-radius: ${borderRadius};
+          border-top-right-radius: ${borderRadius};
           overflow: hidden;
           align-items: flex-end;
         }
@@ -73,12 +75,8 @@ function Tile(props) {
           width: 100%;
           height: 100%;
           z-index: 0;
-          border-bottom-left-radius: ${BodyContents
-            ? 0
-            : dimensions.tileRadius};
-          border-bottom-right-radius: ${BodyContents
-            ? 0
-            : dimensions.tileRadius};
+          border-bottom-left-radius: ${BodyContents ? 0 : borderRadius};
+          border-bottom-right-radius: ${BodyContents ? 0 : borderRadius};
           overflow: hidden;
         }
         .title {
@@ -111,10 +109,9 @@ function Tile(props) {
         }
         .body {
           font-size: 0.85em;
-          color: ${colors.textSoft};
           padding: 0.5em 0.8em;
-          border-bottom-left-radius: ${dimensions.tileRadius};
-          border-bottom-right-radius: ${dimensions.tileRadius};
+          border-bottom-left-radius: ${borderRadius};
+          border-bottom-right-radius: ${borderRadius};
           background: ${colors.cardBg};
           box-shadow: ${colors.tileShadow};
           flex-grow: 1;
