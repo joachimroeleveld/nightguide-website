@@ -344,5 +344,10 @@
   },
   "VenueSliderTile": {
     "moreInfo": "More info"
+  },
+  "AffiliatePage": {
+    "title": "Increase your exposure",
+    "subtitle": "Create high quality leads to your website through NightGuide’s affiliate program",
+    "joinProgram": "Join the program"
   }
 }

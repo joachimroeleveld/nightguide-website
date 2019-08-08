@@ -15,6 +15,8 @@ import EventRow from '../../../components/events/EventRow';
 import { SORT_DATE, SORT_POPULARITY } from '../../../components/events/util';
 import { useDateFilter } from '../../../components/events/hooks';
 import { getListings } from '../index';
+import HeaderImage from '../../../components/HeaderImage';
+import PrimaryButton from '../../../components/PrimaryButton';
 
 const getDateSections = () => {
   const dow = moment().day();
@@ -184,34 +186,14 @@ function IbizaCityPage(props) {
           content={__city(pageSlug)('meta.description')}
         />
       </Head>
-
-      <header className="header">
-        <div className="title">
-          <h1>{__city(pageSlug)('title')}</h1>
-          <span className="subtitle">{__city(pageSlug)('subtitle')}</span>
+      <HeaderImage imageSrc="https://lh3.googleusercontent.com/zmoy9Xzv6KsYUnkfnufIXwjmk2pHoaqokyMxlIHP60sPkkqx8L7nGUpRIWpTwxExVC6vULI2c1v0In4JKPzDlEzueXr5Qpov">
+        <div className="header">
+          <div className="title">
+            <h1>{__city(pageSlug)('title')}</h1>
+            <span className="subtitle">{__city(pageSlug)('subtitle')}</span>
+          </div>
         </div>
-        <div className="img">
-          <ResponsiveImage
-            url="https://lh3.googleusercontent.com/zmoy9Xzv6KsYUnkfnufIXwjmk2pHoaqokyMxlIHP60sPkkqx8L7nGUpRIWpTwxExVC6vULI2c1v0In4JKPzDlEzueXr5Qpov"
-            widths={[300, 600, 1000, 2000]}
-            sizes="(max-width: 800px) 100vw, 960px"
-            /*language=CSS*/
-            {...css.resolve`
-              .container {
-                display: block;
-                width: 100%;
-                height: 100%;
-              }
-
-              img {
-                object-fit: cover;
-                width: 100%;
-                height: 100%;
-              }
-            `}
-          />
-        </div>
-      </header>
+      </HeaderImage>
       <div className="filter">
         <EventDateFilterBar
           activeButton={dateFilterId}
@@ -239,16 +221,15 @@ function IbizaCityPage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .header {
-          height: 200px;
-          margin: 0 -2em 1em;
           display: flex;
           align-items: flex-end;
-          position: relative;
+          height: 100%;
         }
         .header .title {
           position: relative;
           z-index: 1;
           width: 100%;
+          box-sizing: border-box;
           padding: 3em 2rem 1em;
           background-image: linear-gradient(
             rgba(0, 0, 0, 0) 0%,
@@ -262,14 +243,6 @@ function IbizaCityPage(props) {
         .header h1 {
           margin: 0.2em 0;
         }
-        .header .img {
-          z-index: 0;
-          position: absolute;
-          left: 0;
-          top: 0;
-          height: 100%;
-          width: 100%;
-        }
         .filter {
           margin-bottom: 2em;
         }
@@ -282,9 +255,6 @@ function IbizaCityPage(props) {
           margin-top: 4em;
         }
         @media (min-width: 800px) {
-          .header {
-            height: 30vh;
-          }
           .event-section .row {
             height: 100%;
           }

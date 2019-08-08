@@ -46,21 +46,24 @@ function PrimaryMenu(props) {
 
   const windowWidth = useWindowWidth();
 
-  const items = useMemo(
-    () =>
-      pageSlug === 'nl/utrecht'
-        ? [
-            { route: 'events', title: __('menu.events') },
-            { route: 'articles', title: __('menu.blog') },
-            {
-              route: 'explore',
-              title: __('menu.explore'),
-              className: 'explore',
-            },
-          ]
-        : [],
-    [pageSlug]
-  );
+  const items = useMemo(() => {
+    let items = [];
+    if (pageSlug === 'nl/utrecht') {
+      items = items.concat([
+        { route: 'events', title: __('menu.events') },
+        { route: 'articles', title: __('menu.blog') },
+        {
+          route: 'explore',
+          title: __('menu.explore'),
+          className: 'explore',
+        },
+      ]);
+    }
+    if (!pageSlug || windowWidth < 800) {
+      items.push({ route: 'home', title: __('menu.home') });
+    }
+    return items;
+  }, [pageSlug, windowWidth]);
 
   useEffect(() => {
     if (open) {
@@ -92,11 +95,6 @@ function PrimaryMenu(props) {
               ))}
             </ul>
           )}
-          <footer className={!items.length ? 'at-top' : ''}>
-            <Link route="home">
-              <a>{__('menu.home')}</a>
-            </Link>
-          </footer>
         </div>
         {modalStyles.styles}
         {/*language=CSS*/}

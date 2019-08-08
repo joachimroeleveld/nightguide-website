@@ -99,6 +99,7 @@ function Header(props) {
           display: flex;
           align-items: center;
           transition: all 0.1s;
+          box-sizing: border-box;
         }
         .container.sticky > .inner {
           position: fixed;
@@ -163,8 +164,9 @@ function Header(props) {
             width: 5em;
           }
         }
-        @media (min-width: 1100px) {
+        @media (min-width: 1200px) {
           .container > .inner {
+            min-height: 53px;
             justify-content: center;
           }
           .menu-container {

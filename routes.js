@@ -5,7 +5,7 @@ const routes = (module.exports = nextRoutes());
 routes.add('home', '/');
 routes.add('expert-chat');
 routes.add('privacy-policy');
-routes.add('partners');
+routes.add('affiliate');
 routes.add('ticket-redirect');
 
 // Cities

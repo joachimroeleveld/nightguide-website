@@ -110,6 +110,9 @@ export default function ResponsiveImage(props) {
             opacity: 0;
             transition: all 0.3s;
             vertical-align: middle;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
           }
           .loaded img {
             opacity: 1;

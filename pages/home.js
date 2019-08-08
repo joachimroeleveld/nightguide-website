@@ -48,16 +48,11 @@ function HomePage(props) {
             <ResponsiveImage
               url="https://lh3.googleusercontent.com/R05wp1YP7UVIr32g7ZsUBnIUyiQVof097YOJ9aUjlPDkCwRIhJc_N6RN2WdxBgwcuw0v-F0djtRSCCTYlkQW63qpB1r6D_yPvw"
               widths={[300, 600, 1000, 2000, 3000]}
-              sizes="(max-width: 800px) 100vw, 960px"
+              sizes="100vw"
               /*language=CSS*/
               {...css.resolve`
                 .container {
                   display: block;
-                  width: 100%;
-                  height: 100%;
-                }
-                img {
-                  object-fit: cover;
                   width: 100%;
                   height: 100%;
                 }
@@ -147,7 +142,6 @@ function HomePage(props) {
           max-width: 20em;
         }
         .header {
-          height: 300px;
           display: flex;
           align-items: flex-end;
           box-sizing: border-box;
@@ -170,7 +164,6 @@ function HomePage(props) {
           left: 0;
           top: 0;
           width: 100vw;
-          height: 300px;
         }
         .header .img:after {
           content: '';
@@ -185,14 +178,20 @@ function HomePage(props) {
             #1f1f1f 100%
           );
         }
+        .header,
+        .header .img {
+          height: 300px;
+        }
         h1 {
           margin: 0 0 0.3em;
         }
         .city {
           display: block;
-          max-width: 20em;
+          max-width: 17em;
           flex-basis: 20em;
           flex-wrap: wrap;
+        }
+        .city:not(:last-child) {
           margin-right: ${dimensions.gridGap};
         }
         .city-tiles {
@@ -211,9 +210,10 @@ function HomePage(props) {
           .logo {
             width: auto;
           }
-          .header {
+          .header,
+          .header .img {
             min-height: 300px;
-            height: 50vh;
+            height: 35vh;
           }
         }
       `}</style>
