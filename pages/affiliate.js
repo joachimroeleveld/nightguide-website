@@ -60,7 +60,7 @@ function AffiliatePage(props) {
           <div className="img">
             <ResponsiveImage
               url="https://lh3.googleusercontent.com/RN9yhWbXfEBhEnGgdu2VC4FNKN1vu_WxnOMxSw7WvcXC_VvrMRPNtIetjZAC4JEtimIsSlodiZdMONW7ib0N2QgTXpyzKOOs"
-              widths={[450, 900]}
+              widths={[450, 900, 2000]}
             />
           </div>
           <div className="sections">

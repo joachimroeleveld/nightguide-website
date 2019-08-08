@@ -100,6 +100,7 @@ function Header(props) {
           align-items: center;
           transition: all 0.1s;
           box-sizing: border-box;
+          min-height: 56px;
         }
         .container.sticky > .inner {
           position: fixed;
@@ -166,8 +167,8 @@ function Header(props) {
         }
         @media (min-width: 1200px) {
           .container > .inner {
-            min-height: 53px;
             justify-content: center;
+            min-height: 53px;
           }
           .menu-container {
             position: absolute;

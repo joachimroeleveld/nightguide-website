@@ -1,25 +1,66 @@
 import { Link } from '../routes';
 import colors from '../styles/colors';
+import __ from '../lib/i18n';
+
+const LINK_SECTIONS = [
+  {
+    title: __('Footer.cities'),
+    items: [
+      { route: '/es/ibiza', title: 'Ibiza' },
+      { route: '/nl/utrecht', title: 'Utrecht' },
+    ],
+  },
+  {
+    title: __('Footer.company'),
+    items: [
+      { route: 'company', title: __('Footer.about') },
+      // { route: 'affiliate', title: __('Footer.affiliate') },
+      { route: 'company#contact', title: __('Footer.contact') },
+      { route: 'company#careers', title: __('Footer.careers') },
+    ],
+  },
+  {
+    title: __('Footer.legal'),
+    items: [{ route: 'privacy-policy', title: __('Footer.privacyPolicy') }],
+  },
+  {
+    title: __('Footer.followUs'),
+    items: [
+      {
+        href: 'https://www.linkedin.com/company/nightguideapp',
+        title: __('Footer.linkedin'),
+        target: '_blank',
+      },
+      {
+        href: 'https://www.facebook.com/nightguide.nl',
+        title: __('Footer.facebook'),
+        target: '_blank',
+      },
+    ],
+  },
+];
 
 function Footer(props) {
   const { pageSlug } = props;
 
   return (
     <footer className={'container'}>
-      <section>
-        <span className={'company-name'}>NightGuide</span>
-        <br />
-        <a className={'mailto'} href={'mailto:contact@nightguide.app'}>
-          contact@nightguide.app
-        </a>
-        <ul className={'links'}>
-          <li>
-            <Link route="privacy-policy">
-              <a>Privacy policy</a>
-            </Link>
-          </li>
-        </ul>
-      </section>
+      <nav className="sections">
+        {LINK_SECTIONS.map(({ title, items }, index) => (
+          <section key={index}>
+            <strong>{title}</strong>
+            <ul>
+              {items.map(({ title, target, ...linkProps }) => (
+                <li>
+                  <Link {...linkProps}>
+                    <a {...{ target }}>{title}</a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </nav>
       <footer className={'bottom'}>
         {pageSlug === 'nl/utrecht' && (
           <div className={'app-buttons'}>
@@ -65,9 +106,10 @@ function Footer(props) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-top: 2em;
+          margin-top: 3em;
         }
         .copyright {
+          text-align: center;
           font-size: 0.75em;
         }
         .app-buttons {
@@ -83,16 +125,34 @@ function Footer(props) {
         .mailto {
           text-decoration: none;
         }
-        .links {
+        .sections {
+          font-size: 0.85em;
+          display: grid;
+          grid-template-columns: 50% 50%;
+          grid-gap: 2em;
+        }
+        .sections {
           margin-top: 1em;
         }
-        .links li {
+        .sections li {
           list-style: none;
           margin: 0;
         }
-        .links a {
+        .sections strong {
+          margin-bottom: 0.3em;
+          display: block;
+        }
+        .sections a {
           color: ${colors.textSecondary};
           text-decoration: none;
+          display: block;
+          padding: 0.15em 0;
+        }
+        @media (min-width: 800px) {
+          .sections {
+            font-size: 1em;
+            grid-template-columns: repeat(4, 25%);
+          }
         }
       `}</style>
     </footer>

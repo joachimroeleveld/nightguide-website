@@ -349,5 +349,18 @@
     "title": "Increase your exposure",
     "subtitle": "Create high quality leads to your website through NightGuide’s affiliate program",
     "joinProgram": "Join the program"
+  },
+  "Footer": {
+    "cities": "Cities",
+    "company": "Company",
+    "about": "About",
+    "contact": "Contact",
+    "affiliate": "Affiliate",
+    "careers": "Careers",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "followUs": "Follow us",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn"
   }
 }

@@ -7,6 +7,7 @@ routes.add('expert-chat');
 routes.add('privacy-policy');
 routes.add('affiliate');
 routes.add('ticket-redirect');
+routes.add('company');
 
 // Cities
 routes.add('/es/ibiza', 'cities/ibiza');
