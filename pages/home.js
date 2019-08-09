@@ -13,7 +13,6 @@ import { getEvents } from '../lib/api';
 import SectionHeader from '../components/SectionHeader';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import { getPostsFiltered } from '../lib/ghost';
-import colors from '../styles/colors';
 
 const CITIES = [
   {
@@ -131,7 +130,7 @@ function HomePage(props) {
             TitleElem={'h2'}
           />
           <ArticleGrid
-            routeParams={CITIES[1].routeParams}
+            routeParams={CITIES[0].routeParams}
             articles={blogsUtrecht}
           />
         </section>

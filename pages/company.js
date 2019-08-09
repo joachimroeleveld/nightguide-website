@@ -4,7 +4,6 @@ import PrimaryButton from '../components/PrimaryButton';
 import withPageLayout from '../components/PageLayout';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
-import css from 'styled-jsx/css';
 
 function CompanyPage(props) {
   return (
@@ -23,8 +22,9 @@ function CompanyPage(props) {
             in the cities we operate in.
           </p>
           <p>
-            With the sole focus being nightlife, our website aims to provide a
-            comprehensive answer to the question where to go to out.
+            With an undivided focus on nightlife, our website aims to provide
+            visitors with a comprehensive answer to the question where to go to
+            out.
           </p>
         </div>
       </header>
@@ -63,7 +63,7 @@ function CompanyPage(props) {
 
       <section className="office">
         <h2>Our office</h2>
-        <span className="subtitle">Find us in Amsterdam, The Nethalands</span>
+        <span className="subtitle">Find us in Amsterdam, The Netherlands</span>
         <div className="content">
           <div className="img">
             <ResponsiveImage
@@ -133,6 +133,7 @@ function CompanyPage(props) {
         h1 {
           margin: 0;
           font-size: 2.5em;
+          font-weight: 700;
           text-align: center;
         }
         main a {
@@ -185,7 +186,6 @@ function CompanyPage(props) {
         @media (min-width: 800px) {
           h1 {
             font-size: 3.75em;
-            font-weight: 700;
           }
           h2 {
             font-size: 1.7em;
@@ -219,7 +219,7 @@ function CompanyPage(props) {
           .office .content {
             display: grid;
             grid-gap: 1em;
-            grid-template-columns: repeat(2, calc(50% - 0.5em));
+            grid-template-columns: 55% calc(45% - 1em);
             align-items: center;
           }
           .office .img {
@@ -228,6 +228,9 @@ function CompanyPage(props) {
           }
           .office .subtitle {
             margin-bottom: 3em;
+          }
+          .careers :global(.button) {
+            padding: 0.5em 4em;
           }
         }
       `}</style>
