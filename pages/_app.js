@@ -23,7 +23,7 @@ class NightGuideWebsite extends App {
     if (process.env.NODE_ENV === 'production') {
       hotjar.initialize(process.env.REACT_APP_HOTJAR_ID, 6);
 
-      TagManager.initialize({ id: process.env.REACT_APP_GTM_ID });
+      TagManager.initialize({ gtmId: process.env.REACT_APP_GTM_ID });
     }
   }
 

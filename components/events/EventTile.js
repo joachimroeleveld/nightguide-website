@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useState } from 'react';
 import css from 'styled-jsx/css';
 
-import { Link } from '../../routes';
+import { Link, Router } from '../../routes';
 import __ from '../../lib/i18n';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
@@ -15,6 +15,7 @@ import {
 import ArtistList from '../tags/ArtistList';
 import dimensions from '../../styles/dimensions';
 import { TileButton } from '../TileButton';
+import { saveRouteInfo } from '../../lib/routing';
 
 const EventTileBody = props => {
   const { event, routeParams, showBuy, aProps } = props;
@@ -179,11 +180,23 @@ function EventTile(props) {
     [images]
   );
 
-  const linkParams = useMemo(() => ({ ...routeParams, event: id, dateIndex }), [
-    id,
-    routeParams,
-    dateIndex,
-  ]);
+  const linkParams = useMemo(
+    () => ({
+      ...routeParams,
+      event: id,
+      dateIndex,
+    }),
+    [id, routeParams, dateIndex]
+  );
+
+  const onClick = e => {
+    const id = saveRouteInfo();
+    Router.pushRoute({
+      route: 'event',
+      params: { ...linkParams, srcRef: id },
+    });
+    e.preventDefault();
+  };
 
   const aProps = windowWidth > 800 ? { target: '_blank' } : {};
 

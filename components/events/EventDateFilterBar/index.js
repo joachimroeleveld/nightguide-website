@@ -15,7 +15,7 @@ import { withNavigation } from '../../Navigation';
 import SecondaryButton from '../../SecondaryButton';
 import __ from '../../../lib/i18n';
 import { classNames } from '../../../lib/util';
-import { setUrlParams } from '../../../lib/util/routes';
+import { setUrlParams } from '../../../lib/routing';
 import { getDateFilterById } from '../util';
 import {
   useElemDimensions,

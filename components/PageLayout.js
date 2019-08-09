@@ -14,7 +14,8 @@ import { Fragment } from 'react';
 const withPageLayout = ({
   getBreadcrumbs,
   meta = {},
-  HeaderComponent = Header,
+  hideBreadcrumbs,
+  HeaderComponent,
 } = {}) => Page => {
   function PageLayout(props) {
     const { currentUrl, pageSlug } = props;
@@ -26,6 +27,8 @@ const withPageLayout = ({
       breadcrumbs = breadcrumbs.concat(pageBreadcrumbs);
     }
 
+    HeaderComponent = HeaderComponent === undefined ? Header : HeaderComponent;
+
     return (
       <Fragment>
         <Fonts />
@@ -35,9 +38,11 @@ const withPageLayout = ({
             <link rel="canonical" href={meta.canonical || currentUrl} />
             <link rel="alternate" href={currentUrl} hrefLang="x-default" />
           </Head>
-          <HeaderComponent {...props} />
+          {HeaderComponent && <HeaderComponent {...props} />}
           <div className="page">
-            {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+            {!hideBreadcrumbs && getBreadcrumbs && (
+              <Breadcrumbs items={breadcrumbs} />
+            )}
             <Page {...props} />
           </div>
           <div className="footer">

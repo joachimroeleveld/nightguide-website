@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
 
-import { Link } from '../routes';
+import { Link, Router } from '../routes';
 import withPageLayout from '../components/PageLayout';
 import { getEvent, getEvents, getVenue } from '../lib/api';
 import colors from '../styles/colors';
@@ -22,6 +22,7 @@ import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import Header from '../components/Header';
+import { getRouteInfo } from '../lib/routing';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -477,14 +478,24 @@ export function EventPage(props) {
 }
 
 const HeaderComponent = props => {
-  const { previousUrl } = props;
+  const { query } = props;
 
   const windowWidth = useWindowWidth();
+
+  const onBackPress = () => {
+    if (query.srcRef) {
+      const info = getRouteInfo(query.srcRef);
+      if (info) {
+        return Router.replaceRoute(info);
+      }
+    }
+    history.back();
+  };
 
   if (false) {
     return (
       <div className="header">
-        <button className="back" />
+        <button className="back" onClick={onBackPress} />
         {/*language=CSS*/}
         <style jsx>{`
           .header {
@@ -541,4 +552,7 @@ const getBreadcrumbs = ({ event }) => [
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
-export default withPageLayout({ getBreadcrumbs, HeaderComponent })(EventPage);
+export default withPageLayout({
+  getBreadcrumbs,
+  HeaderComponent,
+})(EventPage);

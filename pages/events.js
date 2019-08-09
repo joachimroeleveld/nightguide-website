@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import pick from 'lodash/pick';
 
-import { reload } from '../lib/util/routes';
+import { reload } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
 import { getArtist, getEvents, getVenue } from '../lib/api';
 import __ from '../lib/i18n';
