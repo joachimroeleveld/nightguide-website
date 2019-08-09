@@ -25,7 +25,7 @@ const CITIES = [
   {
     name: 'Utrecht',
     pageSlug: 'nl/utrecht',
-    routeParams: { city: 'ibiza', country: 'es' },
+    routeParams: { city: 'utrecht', country: 'nl' },
     imgSrc:
       'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
   },
@@ -130,7 +130,7 @@ function HomePage(props) {
             TitleElem={'h2'}
           />
           <ArticleGrid
-            routeParams={CITIES[0].routeParams}
+            routeParams={CITIES[1].routeParams}
             articles={blogsUtrecht}
           />
         </section>
