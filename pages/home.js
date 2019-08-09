@@ -253,4 +253,4 @@ HomePage.getInitialProps = async () => {
   };
 };
 
-export default withPageLayout({ showHeader: false })(HomePage);
+export default withPageLayout({ HeaderComponent: null })(HomePage);

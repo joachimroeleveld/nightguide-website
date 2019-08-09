@@ -158,10 +158,6 @@ ExploreVenuesPage.getInitialProps = async ({ query }) => {
   };
 };
 
-const getSearchContext = () => __('ExploreVenuesPage.venues');
 const getBreadcrumbs = () => [{ key: 'exploreVenues' }];
 
-export default withPageLayout({
-  getSearchContext,
-  getBreadcrumbs,
-})(ExploreVenuesPage);
+export default withPageLayout({ getBreadcrumbs })(ExploreVenuesPage);

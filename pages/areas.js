@@ -100,10 +100,6 @@ ExploreAreasPage.getInitialProps = async ({ query }) => {
   };
 };
 
-const getSearchContext = () => __('ExploreAreasPage.areas');
 const getBreadcrumbs = () => [{ key: 'exploreAreas' }];
 
-export default withPageLayout({
-  getBreadcrumbs,
-  getSearchContext,
-})(ExploreAreasPage);
+export default withPageLayout({ getBreadcrumbs })(ExploreAreasPage);

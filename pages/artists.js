@@ -95,9 +95,5 @@ ExploreArtistsPage.getInitialProps = async ({ query }) => {
 };
 
 const getBreadcrumbs = () => [{ key: 'exploreArtists' }];
-const getSearchContext = () => __('ExploreArtistsPage.artists');
 
-export default withPageLayout({
-  getSearchContext,
-  getBreadcrumbs,
-})(ExploreArtistsPage);
+export default withPageLayout({ getBreadcrumbs })(ExploreArtistsPage);

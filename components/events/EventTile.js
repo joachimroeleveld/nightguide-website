@@ -15,10 +15,9 @@ import {
 import ArtistList from '../tags/ArtistList';
 import dimensions from '../../styles/dimensions';
 import { TileButton } from '../TileButton';
-import EventModal from './EventModal';
 
 const EventTileBody = props => {
-  const { event, routeParams, showBuy, onClick } = props;
+  const { event, routeParams, showBuy, aProps } = props;
   const { date, organiser, tickets = {}, dateIndex } = event;
   const { artists = [] } = date;
 
@@ -39,8 +38,8 @@ const EventTileBody = props => {
           </div>
         </div>
       )}
-      <Link params={routeParams}>
-        <a target="_blank" onClick={onClick}>
+      <Link route="event" params={routeParams}>
+        <a {...aProps}>
           <div className="date">{formatEventDate(date.from)}</div>
           <div className="venue">{organiser.venue.name}</div>
         </a>
@@ -165,8 +164,6 @@ function EventTile(props) {
   } = props;
 
   const { title, facebook = {}, images = [], id, dateIndex = 0 } = event;
-
-  const [showModal, toggleShowModal] = useToggleState(false);
   const windowWidth = useWindowWidth();
 
   const imgProps = useMemo(
@@ -188,12 +185,7 @@ function EventTile(props) {
     dateIndex,
   ]);
 
-  const onLinkClick = e => {
-    if (windowWidth <= 800) {
-      toggleShowModal();
-      e.preventDefault();
-    }
-  };
+  const aProps = windowWidth > 800 ? { target: '_blank' } : {};
 
   return (
     <div className="container">
@@ -203,7 +195,7 @@ function EventTile(props) {
         route="event"
         routeParams={linkParams}
         linkBody={false}
-        aProps={{ target: '_blank', onClick: onLinkClick }}
+        aProps={aProps}
         /*language=CSS*/
         {...css.resolve`
           .top {
@@ -215,19 +207,10 @@ function EventTile(props) {
             routeParams={linkParams}
             event={event}
             showBuy={showBuy}
-            onClick={onLinkClick}
+            aProps={aProps}
           />
         }
       />
-      {windowWidth <= 800 && (
-        <EventModal
-          eventId={event.id}
-          dateIndex={dateIndex}
-          onClose={toggleShowModal}
-          isOpen={showModal}
-          routeParams={routeParams}
-        />
-      )}
       {/*language=CSS*/}
       <style jsx>{`
         .container {

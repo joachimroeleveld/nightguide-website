@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { withRouter } from 'next/router';
 
 import __ from '../lib/i18n';
@@ -34,9 +34,11 @@ export const withNavigation = Component => {
 
   function NavigationComponent(props) {
     const { router, ...otherProps } = props;
-    let { query, route, asPath } = router;
+    let { route, asPath } = router;
 
-    query = extendQuery(query, route, asPath);
+    const query = useMemo(() => extendQuery(router.query, route, asPath), [
+      router.query,
+    ]);
 
     const path = asPath.split('?')[0];
     const currentUrl = `${process.env.REACT_APP_HOST}${path}`;

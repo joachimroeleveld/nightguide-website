@@ -161,26 +161,25 @@ EventsPage.getInitialProps = async ({ query }) => {
   };
 };
 
-const getSearchContext = props => {
-  const { venue, artist, area } = props;
-  if (venue) {
-    return venue.name;
-  } else if (artist) {
-    return artist.name;
-  } else if (area) {
-    return area.name;
-  }
-};
-
 const getBreadcrumbs = props => {
-  const searchContext = getSearchContext(props);
+  const { venue, artist, area } = props;
+
+  let subLabel;
+  if (venue) {
+    subLabel = venue.name;
+  } else if (artist) {
+    subLabel = artist.name;
+  } else if (area) {
+    subLabel = area.name;
+  }
+
   const breadcrumbs = [
-    { key: 'events', route: searchContext ? 'events' : undefined },
+    { key: 'events', route: subLabel ? 'events' : undefined },
   ];
-  if (searchContext) {
-    breadcrumbs.push({ label: searchContext });
+  if (subLabel) {
+    breadcrumbs.push({ label: subLabel });
   }
   return breadcrumbs;
 };
 
-export default withPageLayout({ getBreadcrumbs, getSearchContext })(EventsPage);
+export default withPageLayout({ getBreadcrumbs })(EventsPage);

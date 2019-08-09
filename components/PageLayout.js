@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import flatten from 'lodash/flatten';
 
 import Fonts from '../components/Fonts';
 import PageLoader from '../components/PageLoader';
@@ -14,9 +13,8 @@ import { Fragment } from 'react';
 
 const withPageLayout = ({
   getBreadcrumbs,
-  getSearchContext,
   meta = {},
-  showHeader = true,
+  HeaderComponent = Header,
 } = {}) => Page => {
   function PageLayout(props) {
     const { currentUrl, pageSlug } = props;
@@ -28,11 +26,6 @@ const withPageLayout = ({
       breadcrumbs = breadcrumbs.concat(pageBreadcrumbs);
     }
 
-    let searchContext;
-    if (getSearchContext) {
-      searchContext = flatten([getSearchContext(props)]);
-    }
-
     return (
       <Fragment>
         <Fonts />
@@ -42,9 +35,7 @@ const withPageLayout = ({
             <link rel="canonical" href={meta.canonical || currentUrl} />
             <link rel="alternate" href={currentUrl} hrefLang="x-default" />
           </Head>
-          {showHeader && (
-            <Header searchContext={searchContext} pageSlug={pageSlug} />
-          )}
+          <HeaderComponent {...props} />
           <div className="page">
             {getBreadcrumbs && <Breadcrumbs items={breadcrumbs} />}
             <Page {...props} />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import throttle from 'lodash/throttle';
 
 import { Link } from '../routes';
@@ -8,9 +8,10 @@ import dimensions from '../styles/dimensions';
 import PrimaryMenu from './PrimaryMenu';
 import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import { classNames } from '../lib/util';
+import { withNavigation } from './Navigation';
 
 function Header(props) {
-  const { pageSlug, searchContext } = props;
+  const { pageSlug } = props;
 
   const [innerRef, setInnerRef] = useState(null);
   const [sticky, setSticky] = useState(false);
@@ -70,7 +71,6 @@ function Header(props) {
                 offsetTop={height - 1}
                 isOpen={!menuOpen && searchOpen}
                 setIsOpen={setSearchOpen}
-                searchContext={searchContext}
               />
             )}
             {searchOpen && (
@@ -204,4 +204,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default memo(withNavigation(Header));

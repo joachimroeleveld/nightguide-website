@@ -15,12 +15,13 @@ import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
-import { useElemDimensions } from '../lib/hooks';
+import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
+import Header from '../components/Header';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -343,6 +344,9 @@ export function EventPage(props) {
           .header {
             margin: 1em -${dimensions.bodyPadding} 2em;
           }
+          .header .media {
+            width: 100vw;
+          }
           .header .title {
             border-bottom: 1px solid ${colors.cardSeparator};
           }
@@ -472,6 +476,43 @@ export function EventPage(props) {
   );
 }
 
+const HeaderComponent = props => {
+  const { previousUrl } = props;
+
+  const windowWidth = useWindowWidth();
+
+  if (false) {
+    return (
+      <div className="header">
+        <button className="back" />
+        {/*language=CSS*/}
+        <style jsx>{`
+          .header {
+            position: fixed;
+            z-index: 110;
+            top: 0;
+            display: flex;
+            align-items: center;
+            height: 3em;
+            width: 100%;
+            box-shadow: ${colors.headerShadow};
+            background: ${colors.bg};
+          }
+          .back {
+            width: 9px;
+            height: 16px;
+            padding: 1em;
+            margin-left: 1em;
+            background: url(/static/img/modal-back.svg) no-repeat center center;
+          }
+        `}</style>
+      </div>
+    );
+  } else {
+    return <Header />;
+  }
+};
+
 EventPage.getInitialProps = async ctx => {
   const { event: eventId, pageSlug } = ctx.query;
 
@@ -500,4 +541,4 @@ const getBreadcrumbs = ({ event }) => [
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
-export default withPageLayout({ getBreadcrumbs })(EventPage);
+export default withPageLayout({ getBreadcrumbs, HeaderComponent })(EventPage);
