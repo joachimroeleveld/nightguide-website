@@ -126,7 +126,7 @@ function HomePage(props) {
         </div>
         <section className="latest-articles">
           <SectionHeader
-            title={__('HomePage.recentArticles')}
+            title={__('HomePage.popularArticles')}
             TitleElem={'h2'}
           />
           <ArticleGrid

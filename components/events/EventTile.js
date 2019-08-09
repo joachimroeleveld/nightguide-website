@@ -7,13 +7,18 @@ import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
-import { useOnClickOutside, useToggleState } from '../../lib/hooks';
+import {
+  useOnClickOutside,
+  useToggleState,
+  useWindowWidth,
+} from '../../lib/hooks';
 import ArtistList from '../tags/ArtistList';
 import dimensions from '../../styles/dimensions';
 import { TileButton } from '../TileButton';
+import EventModal from './EventModal';
 
 const EventTileBody = props => {
-  const { event, routeParams, showBuy } = props;
+  const { event, routeParams, showBuy, onClick } = props;
   const { date, organiser, tickets = {}, dateIndex } = event;
   const { artists = [] } = date;
 
@@ -34,8 +39,8 @@ const EventTileBody = props => {
           </div>
         </div>
       )}
-      <Link route="event" params={routeParams}>
-        <a className="event-link" target="_blank">
+      <Link params={routeParams}>
+        <a target="_blank" onClick={onClick}>
           <div className="date">{formatEventDate(date.from)}</div>
           <div className="venue">{organiser.venue.name}</div>
         </a>
@@ -127,7 +132,7 @@ const EventTileBody = props => {
           background: url(/static/img/close.svg) no-repeat center center;
           background-size: cover;
         }
-        .event-link {
+        a {
           display: block;
           flex-grow: 1;
         }
@@ -158,7 +163,11 @@ function EventTile(props) {
     showBuy = false,
     routeParams,
   } = props;
+
   const { title, facebook = {}, images = [], id, dateIndex = 0 } = event;
+
+  const [showModal, toggleShowModal] = useToggleState(false);
+  const windowWidth = useWindowWidth();
 
   const imgProps = useMemo(
     () =>
@@ -179,6 +188,13 @@ function EventTile(props) {
     dateIndex,
   ]);
 
+  const onLinkClick = e => {
+    if (windowWidth <= 800) {
+      toggleShowModal();
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="container">
       <Tile
@@ -187,7 +203,7 @@ function EventTile(props) {
         route="event"
         routeParams={linkParams}
         linkBody={false}
-        aProps={{ target: '_blank' }}
+        aProps={{ target: '_blank', onClick: onLinkClick }}
         /*language=CSS*/
         {...css.resolve`
           .top {
@@ -199,9 +215,19 @@ function EventTile(props) {
             routeParams={linkParams}
             event={event}
             showBuy={showBuy}
+            onClick={onLinkClick}
           />
         }
       />
+      {windowWidth <= 800 && (
+        <EventModal
+          eventId={event.id}
+          dateIndex={dateIndex}
+          onClose={toggleShowModal}
+          isOpen={showModal}
+          routeParams={routeParams}
+        />
+      )}
       {/*language=CSS*/}
       <style jsx>{`
         .container {

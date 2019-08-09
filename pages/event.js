@@ -22,7 +22,7 @@ import ArtistList from '../components/tags/ArtistList';
 import { classNames } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 
-function EventPage(props) {
+export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
 
   const {

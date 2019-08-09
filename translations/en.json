@@ -25,7 +25,7 @@
     "subtitle": "Find bars, clubs and events in your city for a great night out.",
     "cities": "Cities",
     "eventsInCity": "Events in {{city}}",
-    "recentArticles": "Recent articles"
+    "topArticles": "Popular articles"
   },
   "cityPage": {
     "meta": {
