@@ -25,27 +25,28 @@ function AffiliatePage(props) {
       </HeaderImage>
       <section className="why">
         <section>
-          <h2>Drive traffic to your website</h2>
+          <h2>Commissions</h2>
           <p>
-            Eget suscipit lobortis vestibulum posuere rutrum semper urna
-            vehicula ac egestas ipsum montes a dis dapibus tempor cubilia nulla
-            feugiat
+            Increase your reach by partnering with us and connecting with your
+            largest audience yet. A partnership with us means direct access to
+            an ever-increasing crowd of global event-goers.
           </p>
         </section>
         <section>
-          <h2>Attract high quality leads</h2>
+          <h2>Revenue share</h2>
           <p>
-            Eget suscipit lobortis vestibulum posuere rutrum semper urna
-            vehicula ac egestas ipsum montes a dis dapibus tempor cubilia nulla
-            feugiat
+            Traditional online channels connect you with users that may not be
+            interested in your offer - wasting your time and money. We match our
+            users to their ideal event, meaning they are ready to buy once we
+            send them through.
           </p>
         </section>
         <section>
-          <h2>Increase profitability</h2>
+          <h2>Commissions</h2>
           <p>
-            Eget suscipit lobortis vestibulum posuere rutrum semper urna
-            vehicula ac egestas ipsum montes a dis dapibus tempor cubilia nulla
-            feugiat
+            Lower your marketing costs by investing in channels that make sense
+            for you. NightGuide offers the best return on investment when it
+            comes to attracting new customers to your website.
           </p>
         </section>
       </section>
@@ -53,7 +54,7 @@ function AffiliatePage(props) {
         <header className="title">
           <h2>Find out what works for you</h2>
           <span className="subtitle">
-            With our packages every situation has a solution
+            Every location and event is unique - so are our packages as well
           </span>
         </header>
         <div className="content">
@@ -65,27 +66,26 @@ function AffiliatePage(props) {
           </div>
           <div className="sections">
             <section>
-              <strong>Commissions</strong>
+              <strong>Grow together</strong>
               <p>
-                Eget suscipit lobortis vestibulum posuere rutrum semper urna
-                vehicula ac egestas ipsum montes a dis dapibus tempor cubilia
-                nulla feugiat
+                Customers that have a good experience both with us and our
+                partners keep coming back. You will not only get new customers
+                you will create loyal ones as well.
               </p>
             </section>
             <section>
-              <strong>Revenue share</strong>
+              <strong>No cure, no pay</strong>
               <p>
-                Eget suscipit lobortis vestibulum posuere rutrum semper urna
-                vehicula ac egestas ipsum montes a dis dapibus tempor cubilia
-                nulla feugiat
+                Pay only for what we deliver, if no traffic comes your way you
+                don't owe us anything.
               </p>
             </section>
             <section>
-              <strong>Commissions</strong>
+              <strong>Every partner is different</strong>
               <p>
-                Eget suscipit lobortis vestibulum posuere rutrum semper urna
-                vehicula ac egestas ipsum montes a dis dapibus tempor cubilia
-                nulla feugiat
+                We believe in personalized and tailor-made offers. No
+                one-size-fits-all model, we will build something together that
+                fits your needs.
               </p>
             </section>
           </div>
@@ -95,24 +95,25 @@ function AffiliatePage(props) {
         <h2>Partner with NightGuide</h2>
         <div className="sections">
           <section>
-            <strong>Get started</strong>
+            <strong>Start today</strong>
             <p>
-              Eget suscipit lobortis vestibulum posuere rutrum semper urna
-              vehicula ac
+              If you are looking to increase traffic, boost sales and drive
+              awareness in our industry, then the NightGuide Partnership program
+              is for you.
             </p>
           </section>
           <section>
-            <strong>Next steps</strong>
+            <strong>How it works</strong>
             <p>
-              Eget suscipit lobortis vestibulum posuere rutrum semper urna
-              vehicula ac
+              Click the button below to get in-touch with us. Our sales team
+              will reach out within 2 business days.
             </p>
           </section>
           <section>
             <strong>Why NightGuide</strong>
             <p>
-              Eget suscipit lobortis vestibulum posuere rutrum semper urna
-              vehicula ac
+              Our users trust us due to the value we provide to them, that same
+              relationship is what we want to build with our partners as well.
             </p>
           </section>
         </div>
