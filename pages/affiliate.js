@@ -18,7 +18,10 @@ function AffiliatePage(props) {
             <h1>{__('AffiliatePage.title')}</h1>
             <span className="subtitle">{__('AffiliatePage.subtitle')}</span>
             <div className="button">
-              <PrimaryButton title={__('AffiliatePage.joinProgram')} />
+              <PrimaryButton
+                href="mailto:affiliate@nightguide.app"
+                title={__('AffiliatePage.joinProgram')}
+              />
             </div>
           </div>
         </div>
@@ -119,7 +122,10 @@ function AffiliatePage(props) {
         </div>
         <footer className="cta">
           <span>Become an affiliate</span>
-          <PrimaryButton title={__('AffiliatePage.joinProgram')} />
+          <PrimaryButton
+            href="mailto:affiliate@nightguide.app"
+            title={__('AffiliatePage.joinProgram')}
+          />
         </footer>
       </section>
       {/*language=CSS*/}
