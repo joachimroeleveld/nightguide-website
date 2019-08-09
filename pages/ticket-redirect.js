@@ -13,7 +13,7 @@ function TicketRedirectPage(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = tickets.checkoutUrl;
+      window.location.replace(tickets.checkoutUrl);
     }, 2000);
   }, []);
 
