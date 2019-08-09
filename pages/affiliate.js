@@ -28,7 +28,7 @@ function AffiliatePage(props) {
       </HeaderImage>
       <section className="why">
         <section>
-          <h2>Commissions</h2>
+          <h2>Drive traffic to your website</h2>
           <p>
             Increase your reach by partnering with us and connecting with your
             largest audience yet. A partnership with us means direct access to
@@ -36,7 +36,7 @@ function AffiliatePage(props) {
           </p>
         </section>
         <section>
-          <h2>Revenue share</h2>
+          <h2>Attract high quality leads</h2>
           <p>
             Traditional online channels connect you with users that may not be
             interested in your offer - wasting your time and money. We match our
@@ -45,7 +45,7 @@ function AffiliatePage(props) {
           </p>
         </section>
         <section>
-          <h2>Commissions</h2>
+          <h2>Increase profitability</h2>
           <p>
             Lower your marketing costs by investing in channels that make sense
             for you. NightGuide offers the best return on investment when it
