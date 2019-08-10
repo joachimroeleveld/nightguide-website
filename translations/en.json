@@ -110,7 +110,9 @@
     "venue": "Venue",
     "buyTickets": "Buy tickets",
     "getTickets": "Get tickets",
-    "buyTicketsVia": "Via {{domain}}"
+    "buyTicketsVia": "Via {{domain}}",
+    "map": "Map",
+    "googleMaps": "Google Maps"
   },
   "venuePage": {
     "meta": {
@@ -362,5 +364,8 @@
     "followUs": "Follow us",
     "facebook": "Facebook",
     "linkedin": "LinkedIn"
+  },
+  "SeeOnMap": {
+    "seeOnMap": "Click to see on map"
   }
 }

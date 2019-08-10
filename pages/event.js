@@ -19,10 +19,11 @@ import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/tags/ArtistList';
-import { classNames } from '../lib/util';
+import { classNames, createMapsUrl } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import Header from '../components/Header';
 import { getRouteInfo } from '../lib/routing';
+import SeeOnMap from '../components/SeeOnMap';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -237,6 +238,25 @@ export function EventPage(props) {
             />
           </div>
         </section>
+        <section className="map">
+          <header>
+            <h2>{__('eventPage.map')}</h2>
+            <a
+              className="google-maps"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={createMapsUrl({
+                ...venue.location.coordinates,
+                googlePlaceId: venue.location.googlePlaceId,
+              })}
+            >
+              {__('eventPage.googleMaps')}
+            </a>
+          </header>
+          <div className="preview">
+            <SeeOnMap {...location.coordinates} />
+          </div>
+        </section>
       </aside>
       {/*language=CSS*/}
       <style jsx>{`
@@ -341,6 +361,20 @@ export function EventPage(props) {
           display: block;
           margin-top: 0.2em;
         }
+        .map header {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          margin: 2.3em 0 1.3em;
+        }
+        .map h2 {
+          flex-grow: 1;
+          margin: 0;
+        }
+        .map .google-maps {
+          font-size: 1rem;
+          color: ${colors.linkText};
+        }
         @media (max-width: 800px) {
           .header {
             margin: 1em -${dimensions.bodyPadding} 2em;
@@ -400,6 +434,9 @@ export function EventPage(props) {
           }
           .when .buy-tickets {
             margin-top: 1em;
+          }
+          .map .preview {
+            margin: 0 -${dimensions.bodyPadding};
           }
         }
         @media (min-width: 800px) {

@@ -16,6 +16,9 @@ import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
 import { useToggleState } from '../lib/hooks';
 import ImagesModal from '../components/ImagesModal';
+import SeeOnMap from '../components/SeeOnMap';
+import React from 'react';
+import { createMapsUrl } from '../lib/util';
 
 function VenuePage(props) {
   const { venue, routeParams, events, similarVenues, pageSlug } = props;
@@ -49,13 +52,6 @@ function VenuePage(props) {
   } = location;
 
   const [isImageModalOpen, toggleIsImageModalOpen] = useToggleState(false);
-
-  let mapsUrl = `http://www.google.com/maps/search/?api=1&query=${
-    coordinates.latitude
-  },${coordinates.longitude}`;
-  if (googlePlaceId) {
-    mapsUrl += `&query_place_id=${googlePlaceId}`;
-  }
 
   return (
     <main>
@@ -170,9 +166,12 @@ function VenuePage(props) {
               <PrimaryButton
                 rel="noopener noreferrer"
                 target="_blank"
-                href={mapsUrl}
+                href={createMapsUrl({ ...coordinates, googlePlaceId })}
                 title={__('venuePage.googleMaps')}
               />
+            </div>
+            <div className="see-on-map">
+              <SeeOnMap {...coordinates} />
             </div>
           </div>
         </aside>
@@ -247,6 +246,9 @@ function VenuePage(props) {
         }
         .maps-link {
           margin-top: 1.5em;
+        }
+        .see-on-map {
+          margin: 2em -${dimensions.cardPadding} -${dimensions.cardPadding};
         }
         .main-content {
           padding-right: 2em;
