@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import Modal from 'react-modal';
 import css from 'styled-jsx/css';
 

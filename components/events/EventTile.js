@@ -1,21 +1,16 @@
 import React, { memo, useMemo, useState } from 'react';
 import css from 'styled-jsx/css';
 
-import { Link, Router } from '../../routes';
+import { Link } from '../../routes';
 import __ from '../../lib/i18n';
 import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
-import {
-  useOnClickOutside,
-  useToggleState,
-  useWindowWidth,
-} from '../../lib/hooks';
+import { useOnClickOutside, useToggleState } from '../../lib/hooks';
 import ArtistList from '../tags/ArtistList';
 import dimensions from '../../styles/dimensions';
 import { TileButton } from '../TileButton';
-import { saveRouteInfo } from '../../lib/routing';
 
 const EventTileBody = props => {
   const { event, routeParams, showBuy, aProps } = props;
@@ -165,7 +160,6 @@ function EventTile(props) {
   } = props;
 
   const { title, facebook = {}, images = [], id, dateIndex = 0 } = event;
-  const windowWidth = useWindowWidth();
 
   const imgProps = useMemo(
     () =>
@@ -189,16 +183,7 @@ function EventTile(props) {
     [id, routeParams, dateIndex]
   );
 
-  const onClick = e => {
-    const id = saveRouteInfo();
-    Router.pushRoute({
-      route: 'event',
-      params: { ...linkParams, srcRef: id },
-    });
-    e.preventDefault();
-  };
-
-  const aProps = windowWidth > 800 ? { target: '_blank' } : {};
+  const aProps = { target: '_blank' };
 
   return (
     <div className="container">
