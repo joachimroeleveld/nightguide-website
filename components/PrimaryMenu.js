@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { Link } from '../routes';
 import { useWindowWidth } from '../lib/hooks';
 import colors from '../styles/colors';
-import __ from '../lib/i18n';
+import __, { __city } from '../lib/i18n';
 import { withNavigation } from './Navigation';
 import dimensions from '../styles/dimensions';
 
@@ -58,6 +58,12 @@ function PrimaryMenu(props) {
           className: 'explore',
         },
       ]);
+    }
+    if (pageSlug && windowWidth < 800) {
+      items.push({
+        route: `/${pageSlug}`,
+        title: __city(pageSlug)('name'),
+      });
     }
     if (!pageSlug || windowWidth < 800) {
       items.push({ route: 'home', title: __('menu.home') });
