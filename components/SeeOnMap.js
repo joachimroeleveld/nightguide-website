@@ -36,8 +36,9 @@ function SeeOnMap(props) {
           position: relative;
           overflow: hidden;
         }
+
         .bg {
-          background: url(/static/img/map-tile.jpg) no-repeat center center;
+          background: url(/static/img/map-preview.jpg) no-repeat center center;
           background-size: cover;
           width: 100%;
           height: 100%;
@@ -46,9 +47,11 @@ function SeeOnMap(props) {
           position: absolute;
           transition: 0.3s transform;
         }
+
         .container:hover .bg {
           transform: scale(1.05);
         }
+
         img {
           left: 0;
           top: 0;
@@ -58,6 +61,7 @@ function SeeOnMap(props) {
           object-fit: cover;
           transition: transform 0.3s;
         }
+
         .text {
           position: relative;
           padding-left: 1.5em;
