@@ -16,7 +16,7 @@ function SeeOnMap(props) {
   return (
     <Fragment>
       <button className="container" onClick={toggleShowModal}>
-        <img src="/static/img/map-tile.jpg" />
+        <div className="bg" />
         <span className="text">{__('SeeOnMap.seeOnMap')}</span>
       </button>
       <MapModal
@@ -36,7 +36,16 @@ function SeeOnMap(props) {
           position: relative;
           overflow: hidden;
         }
-        .container:hover img {
+        .bg {
+          background: url(/static/img/map-tile.jpg) no-repeat center center;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+          position: absolute;
+          transition: 0.3s transform;
+        }
+        .container:hover .bg {
           transform: scale(1.05);
         }
         img {

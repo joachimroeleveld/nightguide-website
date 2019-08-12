@@ -246,7 +246,7 @@ export function EventPage(props) {
               target="_blank"
               rel="noopener noreferrer"
               href={createMapsUrl({
-                ...venue.location.coordinates,
+                ...location.coordinates,
                 googlePlaceId: venue.location.googlePlaceId,
               })}
             >
@@ -402,6 +402,7 @@ export function EventPage(props) {
             flex-grow: 1;
           }
           .venue .tile {
+            width: 100vw;
             height: 230px;
             margin: 0 -${dimensions.bodyPadding};
           }
@@ -412,7 +413,7 @@ export function EventPage(props) {
             display: grid;
           }
           .sidebar .buy-tickets {
-            grid-area: 3 / 1 / 4 / 2;
+            grid-area: 4 / 1 / 5 / 2;
           }
           .sidebar .buy-tickets {
             margin-top: 3em;

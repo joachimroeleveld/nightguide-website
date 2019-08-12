@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { memo, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import css from 'styled-jsx/css';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, GeolocateControl } from 'react-map-gl';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -65,7 +65,6 @@ function MapModal(props) {
       onRequestClose={close}
       overlayClassName={modalStyles.className}
       className={modalStyles.className}
-      shouldCloseOnOverlayClick={false}
       {...modalProps}
     >
       <div className="content">
@@ -81,6 +80,15 @@ function MapModal(props) {
             <Marker latitude={latitude} longitude={longitude}>
               <div className="marker" />
             </Marker>
+            <GeolocateControl
+              positionOptions={{ enableHighAccuracy: true }}
+              trackUserLocation={true}
+              style={{
+                position: 'absolute',
+                bottom: '2em',
+                right: '1em',
+              }}
+            />
           </ReactMapGL>
         </div>
       </div>
@@ -92,10 +100,12 @@ function MapModal(props) {
           flex-direction: column;
           align-items: flex-end;
           justify-content: center;
-          width: 100%;
-          height: 100%;
+          width: calc(100% - 4em);
+          height: calc(100% - 4em);
+          position: relative;
+          top: 2em;
+          left: 2em;
           box-sizing: border-box;
-          padding: 3em;
         }
         .map {
           width: 100%;

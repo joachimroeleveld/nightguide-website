@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import css from 'styled-jsx/css';
-import debounce from 'lodash/debounce';
 import Swipe from 'react-easy-swipe';
 
 import { Link } from '../../routes';
@@ -11,7 +10,7 @@ import colors from '../../styles/colors';
 import { removeTags } from '../../lib/util';
 import { TileButton } from '../TileButton';
 import ImagesModal from '../ImagesModal';
-import { useToggleState } from '../../lib/hooks';
+import { useElemDimensions, useToggleState } from '../../lib/hooks';
 
 const SWIPE_TOLERANCE = 30;
 
@@ -47,30 +46,17 @@ function VenueSlider(props) {
     -slide * (containerDimensions ? containerDimensions.width : 0);
 
   const [containerRef, setContainerRef] = useState(null);
-  const [containerDimensions, setContainerDimensions] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [translateX, setTranslateX] = useState(getOffsetForSlide(currentSlide));
   const [swiping, setSwiping] = useState(false);
   const [isImageModalOpen, toggleIsImageModalOpen] = useToggleState(false);
   const offsetX = useRef(0);
-
-  useEffect(() => {
-    const resizeListener = debounce(() => calculateDimensions(), 100);
-    window.addEventListener('resize', resizeListener);
-    resizeListener();
-    return () => window.removeEventListener('resize', resizeListener);
-  }, [containerRef]);
+  const containerDimensions = useElemDimensions(containerRef);
 
   // Adjust translation to slide
   useEffect(() => {
     setTranslateX(getOffsetForSlide(currentSlide));
   }, [currentSlide]);
-
-  const calculateDimensions = () => {
-    if (containerRef) {
-      setContainerDimensions(containerRef.getBoundingClientRect());
-    }
-  };
 
   const slidesCount = 1 + (description ? 1 : 0) + images.slice(1).length;
 
