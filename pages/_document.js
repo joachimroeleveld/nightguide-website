@@ -32,6 +32,7 @@ class NGDocument extends Document {
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           />
+          <base href={`${process.env.REACT_APP_HOST}/`} />
         </Head>
         <body>
           <Main />

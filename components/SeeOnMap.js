@@ -38,6 +38,7 @@ function SeeOnMap(props) {
         }
         .bg {
           background: url(/static/img/map-tile.jpg) no-repeat center center;
+          background-size: cover;
           width: 100%;
           height: 100%;
           left: 0;
