@@ -13,7 +13,13 @@ function TicketRedirectPage(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      window.location.replace(tickets.checkoutUrl);
+      const url = new URL(tickets.checkoutUrl);
+      const search = new URLSearchParams(url.search);
+      search.set('utm_source', 'nightguide');
+      search.set('utm_medium', 'referral');
+      search.set('utm_campaign', 'buy_tickets');
+      url.search = search.toString();
+      window.location.replace(url);
     }, 2000);
   }, []);
 

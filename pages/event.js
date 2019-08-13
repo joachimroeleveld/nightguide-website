@@ -22,7 +22,7 @@ import ArtistList from '../components/tags/ArtistList';
 import { classNames, createMapsUrl } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import Header from '../components/Header';
-import { getRouteInfo } from '../lib/routing';
+import { getRouteInfo, setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
 
 export function EventPage(props) {
@@ -46,6 +46,11 @@ export function EventPage(props) {
   const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
     false
   );
+
+  const switchDateIndex = dateIndex => {
+    setUrlParams({ dateIndex });
+    setDateIndex(dateIndex);
+  };
 
   useOnScroll(() => {
     if (!tickets.checkoutUrl) return;
@@ -139,7 +144,7 @@ export function EventPage(props) {
             >
               {dates.length > 1 && (
                 <EventDateSelect
-                  onChange={setDateIndex}
+                  onChange={switchDateIndex}
                   value={dateIndex}
                   dates={dates}
                 />

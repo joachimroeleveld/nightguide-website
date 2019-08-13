@@ -97,15 +97,12 @@ function MapModal(props) {
       <style jsx>{`
         .content {
           display: flex;
+          width: 100%;
+          height: 100%;
           flex-direction: column;
           align-items: flex-end;
           justify-content: center;
-          width: calc(100% - 4em);
-          height: calc(100% - 4em);
           position: relative;
-          top: 2em;
-          left: 2em;
-          box-sizing: border-box;
         }
         .map {
           width: 100%;
@@ -114,6 +111,9 @@ function MapModal(props) {
           overflow: hidden;
         }
         .close {
+          position: absolute;
+          right: 0;
+          top: -2.5em;
           width: 32px;
           height: 32px;
           margin-bottom: 0.5em;
@@ -140,10 +140,13 @@ const modalStyles = css.resolve`
       background: rgba(0, 0, 0, 0.75);
   }
   .ReactModal__Content {
-      height: 100%;
-      width: 100%;
       outline: none;
       WebkitOverflowScrolling: touch;
+      width: calc(100% - 4em);
+      height: calc(100% - 6em);
+      position: relative;
+      top: 4em;
+      left: 2em;
   }
 `;
 
