@@ -4,8 +4,14 @@ import PrimaryButton from '../components/PrimaryButton';
 import withPageLayout from '../components/PageLayout';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
+import { useScrollToId } from '../lib/hooks';
 
 function CompanyPage(props) {
+  const { query } = props;
+  const { s } = query;
+
+  useScrollToId(s);
+
   return (
     <main>
       <header className="header">

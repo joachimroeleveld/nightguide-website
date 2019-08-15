@@ -15,8 +15,16 @@ const LINK_SECTIONS = [
     items: [
       { route: 'company', title: __('Footer.about') },
       { route: 'affiliate', title: __('Footer.affiliate') },
-      { route: 'company#contact', title: __('Footer.contact') },
-      { route: 'company#careers', title: __('Footer.careers') },
+      {
+        route: 'company',
+        title: __('Footer.contact'),
+        params: { s: 'contact' },
+      },
+      {
+        route: 'company',
+        title: __('Footer.careers'),
+        params: { s: 'careers' },
+      },
     ],
   },
   {
