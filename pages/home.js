@@ -124,16 +124,6 @@ function HomePage(props) {
             </section>
           ))}
         </div>
-        <section className="latest-articles">
-          <SectionHeader
-            title={__('HomePage.popularArticles')}
-            TitleElem={'h2'}
-          />
-          <ArticleGrid
-            routeParams={CITIES[1].routeParams}
-            articles={blogsUtrecht}
-          />
-        </section>
       </main>
       {/*language=CSS*/}
       <style jsx>{`
