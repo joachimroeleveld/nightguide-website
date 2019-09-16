@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Link } from '../routes';
 
 import css from 'styled-jsx/css';
-import __ from '../lib/i18n';
+import __, { __city } from '../lib/i18n';
 import Tile from '../components/Tile';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
@@ -11,12 +11,15 @@ import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
 import { getEvents } from '../lib/api';
 import SectionHeader from '../components/SectionHeader';
-import ArticleGrid from '../components/articles/ArticleGrid';
-import { getPostsFiltered } from '../lib/ghost';
 
 const CITIES = [
+  // {
+  //   pageSlug: 'nl/amsterdam',
+  //   routeParams: { city: 'amsterdam', country: 'nl' },
+  //   imgSrc:
+  //     'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
+  // },
   {
-    name: 'Ibiza',
     pageSlug: 'es/ibiza',
     routeParams: { city: 'ibiza', country: 'es' },
     imgSrc:
@@ -32,7 +35,7 @@ const CITIES = [
 ];
 
 function HomePage(props) {
-  const { cityEvents, blogsUtrecht } = props;
+  const { cityEvents } = props;
 
   return (
     <div className={'container'}>
@@ -77,7 +80,7 @@ function HomePage(props) {
           <h2>{__('HomePage.cities')}</h2>
           <nav>
             {CITIES.map(city => (
-              <Link key={city.name} route={`/${city.pageSlug}`}>
+              <Link key={city.pageSlug} route={`/${city.pageSlug}`}>
                 <a className="city">
                   <Tile
                     imgProps={{
@@ -96,7 +99,7 @@ function HomePage(props) {
                     showOverlay={false}
                     BodyContents={
                       <div className={cityTileStyles.className}>
-                        {city.name}
+                        {__city(city.pageSlug)('name')}
                         {cityTileStyles.styles}
                       </div>
                     }
@@ -107,19 +110,18 @@ function HomePage(props) {
           </nav>
         </section>
         <div className="city-events">
-          {CITIES.map(({ name, pageSlug, routeParams }) => (
+          {CITIES.map(({ pageSlug, routeParams }) => (
             <section key={pageSlug}>
               <SectionHeader
-                title={__('HomePage.eventsInCity', { city: name })}
+                title={__('HomePage.eventsInCity', {
+                  city: __city(pageSlug)('name'),
+                })}
                 TitleElem={'h2'}
               />
               <EventRow
                 key={pageSlug}
-                filter={{ pageSlug }}
                 events={cityEvents[pageSlug].results}
-                totalCount={cityEvents[pageSlug].totalCount}
                 routeParams={routeParams}
-                sortBy={SORT_POPULARITY}
               />
             </section>
           ))}
@@ -181,7 +183,7 @@ function HomePage(props) {
           flex-wrap: wrap;
         }
         .city:not(:last-child) {
-          margin-right: ${dimensions.gridGap};
+          margin-right: ${dimensions.gridGap.L};
         }
         .city-tiles {
           position: relative;
@@ -222,7 +224,7 @@ HomePage.getInitialProps = async () => {
   const promises = CITIES.map(({ pageSlug }) =>
     getEvents({
       sortBy: SORT_POPULARITY,
-      limit: 8,
+      limit: 4,
       query: {
         pageSlug,
       },
@@ -239,7 +241,6 @@ HomePage.getInitialProps = async () => {
 
   return {
     cityEvents,
-    blogsUtrecht: await getPostsFiltered(`tags:nl-utrecht`, { limit: 3 }),
   };
 };
 

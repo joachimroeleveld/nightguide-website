@@ -1,7 +1,10 @@
 export default {
-  pageWidth: '56rem',
-  bodyPadding: '2rem',
-  gridGap: '14px',
+  pageWidth: '72rem',
+  bodyPadding: '1rem',
+  gridGap: {
+    S: '10px',
+    L: '14px',
+  },
   eventHeight: '8em',
   articleHeight: '10em',
   cardPadding: '1.3em',

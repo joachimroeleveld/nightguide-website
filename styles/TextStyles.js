@@ -4,30 +4,36 @@ function TextStyles() {
   }
   return (
     <style jsx global>{`
+      body {
+        font-size: 14px;
+      }
       h1 {
-        font-weight: 600;
-        font-size: 1.5em;
+        font-weight: 700;
+        font-size: 1.333em;
       }
       h2 {
-        font-size: 1.3em;
-        font-weight: 600;
+        font-size: 1.167em;
+        font-weight: 700;
       }
       h3 {
-        font-size: 1.5em;
+        font-size: 1.083em;
         font-weight: 600;
       }
       p {
         line-height: 1.65;
       }
       @media (min-width: 800px) {
+        body {
+          font-size: 16px;
+        }
         h1 {
-          font-size: 1.875em;
+          font-size: 2em;
         }
         h2 {
-          font-size: 1.5em;
+          font-size: 1.375em;
         }
         h3 {
-          font-size: 1.5em;
+          font-size: 1em;
         }
       }
     `}</style>

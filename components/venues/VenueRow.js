@@ -1,68 +1,56 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import __ from '../../lib/i18n';
 import { Link } from '../../routes';
 import dimensions from '../../styles/dimensions';
 import colors from '../../styles/colors';
 import PropTypes from 'prop-types';
-import EventTile from './EventTile';
 import RowControls from '../RowControls';
 import { useElemDimensions, useWindowWidth } from '../../lib/hooks';
+import VenueTile from './VenueTile';
 
-EventRow.propTypes = {
+VenueRow.propTypes = {
   routeParams: PropTypes.object.isRequired,
-  events: PropTypes.array.isRequired,
-  seeAllParams: PropTypes.object,
+  venues: PropTypes.array.isRequired,
 };
 
-function EventRow(props) {
-  const { events, seeAllParams, routeParams } = props;
+function VenueRow(props) {
+  const { seeAllParams, routeParams, venues } = props;
 
   const innerRef = useRef(null);
-  const eventsRef = useRef(null);
-  const [eventRef, setEventRef] = useState(null);
-  const eventDimensions = useElemDimensions(eventRef);
+  const venuesRef = useRef(null);
+  const [venueRef, setVenueRef] = useState(null);
+  const venueDimensions = useElemDimensions(venueRef);
   const windowWidth = useWindowWidth();
 
   const gridGap = windowWidth <= 800 ? 10 : 14;
 
   const scrollLeft = () => {
     innerRef.current.scrollLeft =
-      innerRef.current.scrollLeft - eventDimensions.width - gridGap;
+      innerRef.current.scrollLeft - venueDimensions.width - gridGap;
   };
 
   const scrollRight = () => {
     innerRef.current.scrollLeft =
-      innerRef.current.scrollLeft + eventDimensions.width + gridGap;
+      innerRef.current.scrollLeft + venueDimensions.width + gridGap;
   };
 
   return (
     <div className="container">
       <div className="inner" ref={innerRef}>
-        <div className="events" ref={eventsRef}>
-          {events.map((event, index) => (
-            <div
-              key={event.id + event.dateIndex}
-              className="event"
-              ref={index === 0 ? setEventRef : undefined}
-            >
-              <EventTile
-                imgWidths={[215, 320]}
-                imgSizes={
-                  '(max-width: 41rem) calc(50vw - 39px), (max-width: 56rem) calc(33vw - 20px), 214px'
-                }
-                event={event}
-                routeParams={routeParams}
-              />
+        <div className="venues" ref={venuesRef}>
+          {venues.map((venue, index) => (
+            <div key={venue.id} ref={index === 0 ? setVenueRef : undefined}>
+              <VenueTile venue={venue} routeParams={routeParams} />
             </div>
           ))}
         </div>
         <div className="more">
           <div className="inner">
             <div className="content">
-              {__('EventRow.moreEvents')}
+              {__('VenueRow.moreLocations')}
               <Link route="events" params={{ ...routeParams, ...seeAllParams }}>
-                <a className="button">{__('EventRow.seeMore')}</a>
+                <a className="button">{__('VenueRow.discoverMore')}</a>
               </Link>
             </div>
           </div>
@@ -75,6 +63,7 @@ function EventRow(props) {
       <style jsx>{`
         .container {
           position: relative;
+          margin-right: -${dimensions.bodyPadding};
         }
         .container > .inner {
           overflow-x: auto;
@@ -85,6 +74,11 @@ function EventRow(props) {
         .more {
           flex-basis: 15em;
           flex-shrink: 0;
+        }
+        .venues {
+          display: grid;
+          grid-gap: ${dimensions.gridGap.S};
+          grid-template-columns: repeat(${venues.length}, 9.2em);
         }
         .more .inner {
           height: 100%;
@@ -116,29 +110,18 @@ function EventRow(props) {
           padding: 0.25em 0.5em;
           margin: 1em 0 0.3em;
         }
-        .events {
-          display: grid;
-          grid-template-columns: repeat(${events.length}, 20em);
-          grid-gap: ${dimensions.gridGap.S};
-        }
         @media (max-width: 800px) {
-          .container {
-            margin-right: -${dimensions.bodyPadding};
-          }
           .controls {
             display: none;
           }
         }
         @media (min-width: 800px) {
+          .venues {
+            grid-template-columns: repeat(${venues.length}, 10.81em);
+            grid-gap: ${dimensions.gridGap.L};
+          }
           .more .inner {
             margin: 0 ${dimensions.gridGap.L};
-          }
-          .events {
-            grid-template-columns: repeat(
-              ${events.length},
-              calc((${dimensions.pageWidth} - 3 * ${dimensions.gridGap.L}) / 4)
-            );
-            grid-gap: ${dimensions.gridGap.L};
           }
         }
       `}</style>
@@ -146,4 +129,4 @@ function EventRow(props) {
   );
 }
 
-export default EventRow;
+export default VenueRow;

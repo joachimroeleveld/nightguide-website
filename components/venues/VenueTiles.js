@@ -247,11 +247,11 @@ function VenueTiles({
           padding: 0;
           display: flex;
           flex-wrap: wrap;
-          margin: calc(${dimensions.gridGap} / -2);
+          margin: calc(${dimensions.gridGap.L} / -2);
         }
         .tile {
-          margin: calc(${dimensions.gridGap} / 2)
-            calc(${dimensions.gridGap} / 2);
+          margin: calc(${dimensions.gridGap.L} / 2)
+            calc(${dimensions.gridGap.L} / 2);
         }
         .tile:last-child {
           margin-right: 0;

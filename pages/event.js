@@ -290,10 +290,10 @@ export function EventPage(props) {
         }
         .header .title {
           display: flex;
-          padding: 0.7em 2em;
+          padding: 1em 2em;
         }
         .title .date {
-          padding-right: ${dimensions.bodyPadding};
+          padding-right: 2em;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -301,16 +301,18 @@ export function EventPage(props) {
         }
         .title .date .day {
           line-height: 1;
-          font-size: 24px;
+          font-size: 1.4em;
         }
         .title .date .month {
-          font-size: 14px;
+          font-size: 0.95em;
           color: ${colors.yellowTextColor};
           text-transform: uppercase;
         }
         h1 {
-          font-size: 20px;
-          font-weight: 400;
+          font-weight: 500;
+          margin: 0;
+          display: flex;
+          align-items: center;
         }
         .when {
           padding: 0.5em 0;
@@ -343,7 +345,6 @@ export function EventPage(props) {
           box-shadow: ${colors.cardShadow};
         }
         h2 {
-          font-size: 14px;
           margin: 2.3em 0 1.3em;
         }
         .artists header {
@@ -361,7 +362,7 @@ export function EventPage(props) {
         }
         .buy-tickets .via {
           color: #5e5e5e;
-          font-size: 0.8em;
+          font-size: 0.9em;
           text-align: center;
           display: block;
           margin-top: 0.2em;
@@ -377,7 +378,6 @@ export function EventPage(props) {
           margin: 0;
         }
         .map .google-maps {
-          font-size: 1rem;
           color: ${colors.linkText};
         }
         @media (max-width: 800px) {

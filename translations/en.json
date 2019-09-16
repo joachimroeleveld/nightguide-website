@@ -3,6 +3,7 @@
     "blog": "Blog",
     "home": "Home",
     "explore": "Explore",
+    "discover": "Discover",
     "areas": "Areas",
     "exploreArtists": "Explore artists",
     "exploreEvents": "Explore events",
@@ -32,6 +33,12 @@
       "title": "Discover bars, clubs & events in {{city}} - where to go out | NightGuide",
       "description": "Find the best nightlife in {{city}} based on your preferences."
     },
+    "allEvents": "Browse all events",
+    "popular": "Popular",
+    "popularLocations": "Popular locations",
+    "recommended": "Recommended",
+    "goPartyInCity": "Go party in {{city}}",
+    "cityIntro": "Find clubs, events and bars for the perfect night in Amsterdam",
     "discoverBarsClubs": "Discover <strong>bars</strong>, <strong>clubs</strong> & <strong>events</strong> in",
     "explore": "Explore",
     "events": "Events",
@@ -46,14 +53,9 @@
       "title": "Events in {{city}} - where to go out | NightGuide",
       "description": "Explore events in {{city}}."
     },
-    "titles": {
-      "eventsInCity": "Events in {{city}}",
-      "eventsWith": "Events with {{artist}}",
-      "eventsAt": "Events at {{location}}",
-      "eventsOn": "Events on {{date}}",
-      "eventsBetween": "Events between {{date1}} and {{date2}}"
-    },
-    "noEvents": "No events could be found."
+    "title": "Nightlife events in {{city}}",
+    "noEvents": "No events could be found.",
+    "loadNMoreEvents": "Load {{n}} more events"
   },
   "cityExplorePage": {
     "meta": {
@@ -306,13 +308,17 @@
       "name": "Ibiza",
       "title": "Go party in Ibiza",
       "subtitle": "Find clubs, events and artists - get your tickets in one place."
+    },
+    "nl/amsterdam": {
+      "name": "Amsterdam",
+      "subtitle": "Find clubs, events and bars for the perfect night in Amsterdam"
     }
   },
   "search": {
     "noResults": "There were no results for '{{query}}'",
     "searchFor": "Start searching by typing an event, artist or venue...",
     "loadMoreResults": "Load more",
-    "searchBarPlaceholder": "Search an event, artist or venue...",
+    "searchBarPlaceholder": "Search in {{city}}...",
     "artists": "Artists"
   },
   "events": "Events",
@@ -341,8 +347,45 @@
     "seeAll": "See all"
   },
   "EventTile": {
-    "oneArtist": "1 artist",
-    "nArtists": "{{n}} artists"
+    "andNOthers": "& {{n}} others",
+    "tickets": "Tickets"
+  },
+  "EventRow": {
+    "moreEvents": "Looking for more events?",
+    "seeMore": "More events"
+  },
+  "EventFilters": {
+    "dates": "Dates",
+    "location": "Location",
+    "artist": "Artist",
+    "genre": "Genre",
+    "searchLocation": "Search a location...",
+    "searchArtist": "Search an artist...",
+    "dateFilters": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This week",
+      "thisWeekend": "This weekend"
+    },
+    "genres": {
+      "hipHop": "Hip-hop",
+      "dance": "Dance"
+    }
+  },
+  "EventDateFilters": {
+    "custom": "Custom",
+    "dates": "Dates"
+  },
+  "FilterModal": {
+    "filters": "Filters",
+    "clear": "Clear"
+  },
+  "VenueRow": {
+    "moreLocations": "Looking for more locations?",
+    "discoverMore": "Discover locations"
+  },
+  "DistanceIndicator": {
+    "showDistance": "Show distance"
   },
   "VenueSliderTile": {
     "moreInfo": "More info"

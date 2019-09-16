@@ -9,23 +9,25 @@ import ResponsiveImage from '../components/ResponsiveImage';
 function AffiliatePage(props) {
   return (
     <main>
-      <HeaderImage
-        baseHeight={'250px'}
-        imageSrc="https://lh3.googleusercontent.com/CIX4yMmVDYZ7W_9wmSSPfDDr2SAm-lG3pzmoCo2zJ_qiFyqpXiABfmGIbDlfheYdM-3_JtpHR_5ji83c1PezG4UnROituqN-zw"
-      >
-        <div className="header">
-          <div className="content">
-            <h1>{__('AffiliatePage.title')}</h1>
-            <span className="subtitle">{__('AffiliatePage.subtitle')}</span>
-            <div className="button">
-              <PrimaryButton
-                href="mailto:affiliate@nightguide.app"
-                title={__('AffiliatePage.joinProgram')}
-              />
+      <div className="header-image">
+        <HeaderImage
+          baseHeight={'250px'}
+          imageSrc="https://lh3.googleusercontent.com/CIX4yMmVDYZ7W_9wmSSPfDDr2SAm-lG3pzmoCo2zJ_qiFyqpXiABfmGIbDlfheYdM-3_JtpHR_5ji83c1PezG4UnROituqN-zw"
+        >
+          <div className="header">
+            <div className="content">
+              <h1 className="title">{__('AffiliatePage.title')}</h1>
+              <span className="subtitle">{__('AffiliatePage.subtitle')}</span>
+              <div className="button">
+                <PrimaryButton
+                  href="mailto:affiliate@nightguide.app"
+                  title={__('AffiliatePage.joinProgram')}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </HeaderImage>
+        </HeaderImage>
+      </div>
       <section className="why">
         <section>
           <h2>Drive traffic to your website</h2>
@@ -130,6 +132,9 @@ function AffiliatePage(props) {
       </section>
       {/*language=CSS*/}
       <style jsx>{`
+        .header-image {
+          margin: 0 -${dimensions.bodyPadding};
+        }
         .header {
           display: flex;
           align-items: center;
@@ -137,9 +142,9 @@ function AffiliatePage(props) {
           height: 100%;
         }
         .header .title {
-          padding-bottom: 3em;
-          position: relative;
-          z-index: 1;
+          font-size: 2em;
+          line-height: 1em;
+          margin-bottom: 1em;
         }
         .header:before {
           content: '';
@@ -248,6 +253,10 @@ function AffiliatePage(props) {
           }
         }
         @media (min-width: 800px) {
+          .header .title {
+            font-size: 2.8em;
+            margin-bottom: 0.5em;
+          }
           .header .subtitle {
             font-size: 1.25em;
           }

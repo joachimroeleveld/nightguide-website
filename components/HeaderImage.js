@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import ResponsiveImage from './ResponsiveImage';
 import css from 'styled-jsx/css';
-import dimensions from '../styles/dimensions';
 
 HeaderImage.propTypes = {
   imageSrc: PropTypes.string.isRequired,
@@ -33,26 +32,41 @@ function HeaderImage(props) {
       <style jsx>{`
         .container {
           height: ${baseHeight};
-          margin: 0 -${dimensions.bodyPadding} 1em;
+          margin: 0 0 1em;
           box-sizing: border-box;
           position: relative;
         }
         .img {
           z-index: 0;
-          position: absolute;
-          left: 0;
-          top: 0;
           height: 100%;
           width: 100%;
         }
         .content {
-          position: relative;
-          height: 100%;
           width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
         }
         @media (min-width: 800px) {
           .container {
             height: 30vh;
+            display: flex;
+            align-items: flex-end;
+          }
+          .img {
+            z-index: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+          }
+          .title {
+            z-index: 1;
+            position: relative;
+            font-weight: 800;
+            font-size: 60px;
           }
         }
       `}</style>

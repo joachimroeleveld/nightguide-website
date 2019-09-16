@@ -4,12 +4,12 @@ import { getEvents, getVenues } from '../lib/api';
 import SectionLoader from '../components/SectionLoader';
 import EventDateFilterBar from '../components/events/EventDateFilterBar';
 import __, { __city } from '../lib/i18n';
-import EventRow from '../components/events/EventRow';
+import EventRow from '../components/events/EventRowOld';
 import withPageLayout from '../components/PageLayout';
 import VenueSlider from '../components/venues/VenueSlider';
 import dimensions from '../styles/dimensions';
 import { useDateFilter } from '../components/events/hooks';
-import { getListings } from './cities';
+import { getConfig } from './cities';
 
 function ExploreVenuesPage(props) {
   const {
@@ -84,7 +84,7 @@ function ExploreVenuesPage(props) {
       <style jsx>{`
         .container {
           display: grid;
-          grid-gap: ${dimensions.gridGap};
+          grid-gap: ${dimensions.gridGap.L};
           grid-template-rows: 213px auto;
           grid-template-columns: 100%;
           border-radius: ${dimensions.tileRadius};
@@ -121,7 +121,7 @@ function ExploreVenuesPage(props) {
 
 ExploreVenuesPage.getInitialProps = async ({ query }) => {
   const { dateFrom, dateTo, pageSlug } = query;
-  const listings = getListings(pageSlug);
+  const listings = getConfig(pageSlug);
   const { VENUES } = listings;
 
   const preloadedVenues = (await getVenues({

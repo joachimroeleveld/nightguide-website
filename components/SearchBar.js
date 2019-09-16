@@ -7,7 +7,7 @@ import find from 'lodash/find';
 import update from 'immutability-helper';
 
 import { Link } from '../routes';
-import __ from '../lib/i18n';
+import __, { __city } from '../lib/i18n';
 import colors from '../styles/colors';
 import dimensions from '../styles/dimensions';
 import { getEvents, getVenues, getArtists } from '../lib/api';
@@ -273,7 +273,9 @@ function SearchBar(props) {
           placeholder={
             searchContext && !isOpen
               ? searchContext.join(' ● ')
-              : __('search.searchBarPlaceholder')
+              : __('search.searchBarPlaceholder', {
+                  city: __city(pageSlug)('name'),
+                })
           }
         />
       </div>

@@ -25,7 +25,7 @@ export function getDateFilterById(id) {
           .add(1, 'day')
           .toDate(),
       ];
-    case 'weekend':
+    case 'thisWeekend':
       isWeekend = moment().isAfter(
         moment()
           .subtract(dow === 0 ? 1 : 0, 'week')

@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, Fragment } from 'react';
 import throttle from 'lodash/throttle';
 
 import { Link } from '../routes';
@@ -38,7 +38,7 @@ function Header(props) {
   const logo = <img src="/static/img/logo.svg" alt="NightGuide" />;
 
   const height = Math.round(containerDimensions.height) || 56;
-  const compact = windowWidth <= 800;
+  const showMenu = windowWidth <= 800;
 
   return (
     <header
@@ -49,14 +49,14 @@ function Header(props) {
       style={{ height }}
     >
       <div className="inner" ref={setInnerRef}>
-        {!(compact && searchOpen) && (
+        {!(showMenu && searchOpen) && (
           <div className="logo">
-            {!compact && (
+            {!showMenu && (
               <Link route="home">
                 <a>{logo}</a>
               </Link>
             )}
-            {compact && windowWidth !== null && (
+            {showMenu && windowWidth !== null && (
               <button className="menu-toggle" onClick={toggleMenu}>
                 {logo}
                 <div className={['caret', menuOpen ? 'open' : ''].join(' ')} />
@@ -64,26 +64,33 @@ function Header(props) {
             )}
           </div>
         )}
-        <div className="search-bar">
-          <div className="inner">
-            {!!pageSlug && (
-              <SearchBar
-                offsetTop={height - 1}
-                isOpen={!menuOpen && searchOpen}
-                setIsOpen={setSearchOpen}
-              />
-            )}
-            {searchOpen && (
-              <div
-                className={classNames(['close-search', searchOpen && 'show'])}
-              >
-                <button onClick={() => setSearchOpen(false)} />
+        {!!pageSlug && (
+          <Fragment>
+            <div
+              className={classNames(['search-bar', searchOpen && 'visible'])}
+            >
+              <div className="inner">
+                <SearchBar
+                  offsetTop={height - 1}
+                  isOpen={!menuOpen && searchOpen}
+                  setIsOpen={setSearchOpen}
+                />
+                {searchOpen && (
+                  <div
+                    className={classNames([
+                      'close-search',
+                      searchOpen && 'show',
+                    ])}
+                  >
+                    <button onClick={() => setSearchOpen(false)} />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-        {!(compact && searchOpen) && (
-          <div className="menu-container">
+            </div>
+          </Fragment>
+        )}
+        {!searchOpen && (
+          <div className="menu">
             <PrimaryMenu
               open={menuOpen}
               offsetTop={height - 1}
@@ -91,6 +98,10 @@ function Header(props) {
             />
           </div>
         )}
+        <button
+          className={classNames(['search-toggle', searchOpen && 'hide'])}
+          onClick={() => setSearchOpen(!searchOpen)}
+        />
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -116,8 +127,11 @@ function Header(props) {
         }
         .logo :global(img) {
           transition: width 0.2s;
-          width: 3.5em;
+          width: 65px;
           display: block;
+        }
+        .menu {
+          flex-grow: 1;
         }
         .menu-toggle {
           display: flex;
@@ -132,8 +146,15 @@ function Header(props) {
           transform: rotate(180deg);
         }
         .search-bar {
+          z-index: 0;
+          position: relative;
           flex-grow: 1;
           display: flex;
+          transition: opacity 0.3s;
+          opacity: 0;
+        }
+        .search-bar.visible {
+          opacity: 1;
         }
         .search-bar > .inner {
           position: relative;
@@ -154,12 +175,22 @@ function Header(props) {
           height: 2em;
           background: url(/static/img/close.svg) no-repeat center center;
         }
+        .search-toggle {
+          width: 14px;
+          margin-left: 1.5em;
+          height: 14px;
+          padding: 1em;
+          background: url(/static/img/search-icon.svg) no-repeat center center;
+        }
+        .search-toggle.hide {
+          display: none;
+        }
         @media (min-width: 400px) {
           .container > .inner {
-            padding: 0.4rem 2rem;
+            padding: 0.4rem 1.5rem;
           }
           .logo :global(img) {
-            width: 5em;
+            width: 78px;
           }
           .container.sticky .logo :global(img) {
             width: 5em;
@@ -176,8 +207,8 @@ function Header(props) {
           }
           .logo {
             position: absolute;
-            left: ${dimensions.bodyPadding};
-            top: 0.3em;
+            z-index: 1;
+            left: 1.5em;
           }
           .search-bar {
             display: flex;
@@ -192,11 +223,6 @@ function Header(props) {
           }
           .close-search.show {
             opacity: 1;
-          }
-        }
-        @media (min-width: 1300px) {
-          .logo :global(img) {
-            width: 6.5em;
           }
         }
       `}</style>

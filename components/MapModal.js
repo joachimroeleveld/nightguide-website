@@ -114,10 +114,12 @@ function MapModal(props) {
           position: absolute;
           right: 0;
           top: -2.5em;
-          width: 32px;
-          height: 32px;
           margin-bottom: 0.5em;
           background: url(/static/img/close.svg) no-repeat center center;
+          width: 1em;
+          height: 1em;
+          padding: 0.5em;
+          background-size: cover;
         }
         .marker {
           width: 30px;

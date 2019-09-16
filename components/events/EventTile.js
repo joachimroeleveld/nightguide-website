@@ -1,165 +1,50 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useMemo } from 'react';
 import css from 'styled-jsx/css';
+import PropTypes from 'prop-types';
 
 import { Link } from '../../routes';
 import __ from '../../lib/i18n';
-import Tile from '../Tile';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
-import { useOnClickOutside, useToggleState } from '../../lib/hooks';
-import ArtistList from '../tags/ArtistList';
+import ResponsiveImage from '../ResponsiveImage';
 import dimensions from '../../styles/dimensions';
-import { TileButton } from '../TileButton';
+import { useMatchMedia, useWindowWidth } from '../../lib/hooks';
+import { classNames } from '../../lib/util';
 
-const EventTileBody = props => {
-  const { event, routeParams, showBuy, aProps } = props;
-  const { date, organiser, tickets = {}, dateIndex } = event;
-  const { artists = [] } = date;
-
-  const [showArtists, toggleShowArtists] = useToggleState(false);
-  const [artistRef, setArtistsRef] = useState(null);
-
-  useOnClickOutside(artistRef, toggleShowArtists);
-
-  return (
-    <div className="container">
-      {showArtists && (
-        <div className="artists" ref={setArtistsRef}>
-          <div className="close">
-            <button onClick={toggleShowArtists} />
-          </div>
-          <div className="list">
-            <ArtistList routeParams={routeParams} artists={artists} />
-          </div>
-        </div>
-      )}
-      <Link route="event" params={routeParams}>
-        <a {...aProps}>
-          <div className="date">{formatEventDate(date.from)}</div>
-          <div className="venue">{organiser.venue.name}</div>
-        </a>
-      </Link>
-      {!!artists.length && (
-        <div className="artists-toggle">
-          <TileButton
-            onClick={toggleShowArtists}
-            title={
-              (artists.length === 1 && __('EventTile.oneArtist')) ||
-              (artists.length > 1 &&
-                __('EventTile.nArtists', { n: artists.length }))
-            }
-          />
-        </div>
-      )}
-      {tickets.checkoutUrl && showBuy && (
-        <a
-          rel="nofollow"
-          target="_blank"
-          href={generateTicketRedirectUrl(event.id, dateIndex)}
-          className="buy-tickets"
-        >
-          {__('buyTickets')}
-        </a>
-      )}
-      {/*language=CSS*/}
-      <style jsx>{`
-        .container {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-        .venue {
-          color: #fff;
-          margin: 0.1em 0;
-        }
-        .date {
-          color: ${colors.yellowTextColor};
-          text-transform: uppercase;
-          font-size: 0.95em;
-        }
-        .artists {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: calc(100% - 0.4em);
-          height: calc(100% - 0.4em);
-          box-sizing: border-box;
-          background: ${colors.bg};
-          padding: 0 ${dimensions.tilePadding};
-          margin: 0.2em;
-          z-index: 10;
-          overflow-y: auto;
-          border-radius: ${dimensions.tileRadius};
-        }
-        .artists-toggle {
-          position: absolute;
-          top: 0.5em;
-          right: 0.5em;
-        }
-        .artists-toggle :global(.button) {
-          padding-right: 1.2em;
-        }
-        .artists-toggle :global(.button):after {
-          position: absolute;
-          top: 50%;
-          margin-top: -1px;
-          right: 0.6em;
-          content: '';
-          width: 0;
-          height: 0;
-          border-left: 3px solid transparent;
-          border-right: 3px solid transparent;
-          border-top: 3px solid #fff;
-        }
-        .artists .close {
-          display: flex;
-          justify-content: flex-end;
-          margin-bottom: 0.5em;
-          margin-top: ${dimensions.tilePadding};
-        }
-        .artists .list {
-          margin-bottom: ${dimensions.tilePadding};
-        }
-        .artists .close button {
-          width: 23px;
-          height: 23px;
-          background: url(/static/img/close.svg) no-repeat center center;
-          background-size: cover;
-        }
-        a {
-          display: block;
-          flex-grow: 1;
-        }
-        .buy-tickets {
-          background-color: ${colors.primaryButton};
-          display: block;
-          color: ${colors.textDark};
-          text-align: center;
-          border-radius: 12px;
-          font-size: inherit;
-          border: none;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 0.1em 0.3em;
-          margin: 0.5em 0 0.3em;
-        }
-      `}</style>
-    </div>
-  );
+EventTile.propTypes = {
+  event: PropTypes.object.isRequired,
+  imgWidths: PropTypes.arrayOf(PropTypes.string).isRequired,
+  imgSizes: PropTypes.string,
+  routeParams: PropTypes.object,
+  wideQuery: PropTypes.string,
 };
 
 function EventTile(props) {
-  const {
-    event,
-    imgWidths,
-    imgSizes,
-    height = '8em',
-    showBuy = false,
-    routeParams,
-  } = props;
+  const { wideQuery = null, event, imgWidths, imgSizes, routeParams } = props;
 
-  const { title, facebook = {}, images = [], id, dateIndex = 0 } = event;
+  const {
+    organiser,
+    tickets = {},
+    title,
+    facebook = {},
+    images = [],
+    id,
+    dateIndex = 0,
+    dates,
+    tags = [],
+  } = event;
+
+  let date;
+  if (dates) {
+    date = dates[dateIndex];
+  } else {
+    date = event.date;
+  }
+  const { artists = [] } = date;
+
+  const windowWidth = useWindowWidth();
+  const isWide = wideQuery && useMatchMedia(wideQuery);
 
   const imgProps = useMemo(
     () =>
@@ -183,37 +68,154 @@ function EventTile(props) {
     [id, routeParams, dateIndex]
   );
 
-  const aProps = { target: '_blank' };
+  const aProps = windowWidth > 800 ? { target: '_blank' } : {};
 
   return (
-    <div className="container">
-      <Tile
-        title={title || facebook.title}
-        imgProps={imgProps}
-        route="event"
-        routeParams={linkParams}
-        linkBody={false}
-        aProps={aProps}
-        /*language=CSS*/
-        {...css.resolve`
-          .top {
-            height: ${height};
-          }
-        `}
-        BodyContents={
-          <EventTileBody
-            routeParams={linkParams}
-            event={event}
-            showBuy={showBuy}
-            aProps={aProps}
-          />
-        }
-      />
+    <div className={classNames(['container', isWide && 'wide'])}>
+      <div className="img">
+        <Link route="event" params={linkParams}>
+          <a {...aProps}>
+            <ResponsiveImage
+              scale={true}
+              /*language=CSS*/
+              {...css.resolve`
+            .container {
+              display: block;
+              width: 100%;  
+              height: 100%;
+            }
+          `}
+              {...imgProps}
+            />
+          </a>
+        </Link>
+      </div>
+      <div className="body">
+        <div className="top">
+          <div className="title-date-location">
+            <Link route="event" params={linkParams}>
+              <a {...aProps}>
+                <h3 className="title">{title || facebook.title}</h3>
+                <div className="date-location">
+                  <span className="date">{formatEventDate(date.from)}</span>
+                  {' · '}
+                  <span className="venue">{organiser.venue.name}</span>
+                </div>
+              </a>
+            </Link>
+          </div>
+          {tickets.checkoutUrl && (
+            <div className="tickets">
+              <a
+                rel="nofollow"
+                target="_blank"
+                href={generateTicketRedirectUrl(event.id, dateIndex)}
+                className="buy-tickets"
+              >
+                {__('EventTile.tickets')}
+              </a>
+            </div>
+          )}
+        </div>
+        <div className="music">
+          {!!tags.length && (
+            <span className="tags">{tags.map(tag => tag.name).join(', ')}</span>
+          )}
+          {!!artists.length && (
+            <span className="artists">
+              {!!tags.length && ' · '}
+              {artists
+                .map(artist => artist.name)
+                .slice(0, 3)
+                .join(', ')}
+              {artists.length > 3
+                ? ' ' + __('EventTile.andNOthers', { n: artists.length - 3 })
+                : ''}
+            </span>
+          )}
+        </div>
+      </div>
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          height: 100%;
-          position: relative;
+          background: ${colors.tileBg};
+          box-shadow: ${colors.tileShadow};
+          border-radius: ${dimensions.tileRadius};
+          font-size: 0.928em;
+        }
+        .container.wide {
+          display: grid;
+          grid-template-columns: 25% 75%;
+        }
+        .body {
+          height: 8.4em;
+          padding: 0 ${dimensions.tilePadding} ${dimensions.tilePadding};
+        }
+        .top {
+          display: flex;
+        }
+        .title {
+          margin: 0 0 0.4em;
+          height: 1.4em;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .title-date-location {
+          padding: ${dimensions.tilePadding} 0.5em 0 0;
+          box-sizing: border-box;
+          width: calc(100% - 5em);
+        }
+        .tickets {
+          width: 5em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .music {
+          line-height: 1.3em;
+          padding-left: 1.5em;
+          background: url(/static/img/event-tile-music.svg) left top 0.25em
+            no-repeat;
+          color: #b7b7b7;
+        }
+        .img {
+          overflow: hidden;
+          border-top-left-radius: ${dimensions.tileRadius};
+        }
+        .wide .img {
+          border-bottom-left-radius: ${dimensions.tileRadius};
+        }
+        :not(.wide) .img {
+          height: 8em;
+          border-top-right-radius: ${dimensions.tileRadius};
+        }
+        .date-location {
+          color: #b7b7b7;
+          line-height: 1.4em;
+          margin-bottom: 0.6em;
+        }
+        .date {
+          color: ${colors.yellowTextColor};
+        }
+        .buy-tickets {
+          border: 1px solid #686868;
+          display: block;
+          color: #fff;
+          text-align: center;
+          border-radius: 3px;
+          font-size: inherit;
+          box-sizing: border-box;
+          padding: 0.25em 0.5em;
+          margin: 0.5em 0 0.3em;
+        }
+        @media (min-width: 800px) {
+          .container {
+            font-size: 0.875em;
+          }
+          .title {
+            font-size: 1rem;
+          }
         }
       `}</style>
     </div>

@@ -28,7 +28,12 @@ function FiniteGrid(props) {
       <style jsx>{`
         .grid {
           display: grid;
-          grid-gap: ${dimensions.gridGap};
+          grid-gap: ${dimensions.gridGap.S};
+        }
+        @media (min-width: 800px) {
+          .grid {
+            grid-gap: ${dimensions.gridGap.L};
+          }
         }
       `}</style>
     </Fragment>
@@ -148,7 +153,12 @@ function InfiniteGrid(props) {
       <style jsx>{`
         .grid {
           display: grid;
-          grid-gap: ${dimensions.gridGap};
+          grid-gap: ${dimensions.gridGap.S};
+        }
+        @media (min-width: 800px) {
+          .grid {
+            grid-gap: ${dimensions.gridGap.L};
+          }
         }
       `}</style>
     </Fragment>

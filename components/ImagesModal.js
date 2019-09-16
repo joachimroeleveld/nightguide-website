@@ -110,10 +110,11 @@ function ImagesModal(props) {
           overflow: hidden;
         }
         .close {
-          width: 32px;
-          height: 32px;
-          padding: 1em;
-          margin-right: 1em;
+          width: 1em;
+          height: 1em;
+          padding: 0.5em;
+          background-size: cover;
+          margin-right: ${dimensions.bodyPadding};
           background: url(/static/img/close.svg) no-repeat center center;
         }
       `}</style>

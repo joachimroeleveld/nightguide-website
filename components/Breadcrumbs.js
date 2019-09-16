@@ -43,7 +43,6 @@ function Breadcrumbs(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          font-size: 0.9em;
           margin-top: 1rem;
         }
         li {

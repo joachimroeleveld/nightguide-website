@@ -5,6 +5,8 @@ import Router from 'next/router';
 import withGA from 'next-ga';
 import Modal from 'react-modal';
 import TagManager from 'react-gtm-module';
+import { Provider } from 'react-redux';
+import withReduxStore from '../state/withReduxStore';
 
 // TODO: https://github.com/zeit/next-plugins/issues/282
 import '../static/css/empty.css';
@@ -28,11 +30,13 @@ class NightGuideWebsite extends App {
   }
 
   render() {
-    const { Component, ...props } = this.props;
+    const { Component, reduxStore, ...props } = this.props;
 
     return (
       <Container>
-        <Component {...props} />
+        <Provider store={reduxStore}>
+          <Component {...props} />
+        </Provider>
       </Container>
     );
   }
@@ -40,4 +44,4 @@ class NightGuideWebsite extends App {
 
 export default withGA(process.env.REACT_APP_GA_TOKEN, Router, {
   localhost: 'disable',
-})(NightGuideWebsite);
+})(withReduxStore(NightGuideWebsite));

@@ -9,13 +9,18 @@ import GlobalStyles from '../styles/GlobalStyles';
 import dimensions from '../styles/dimensions';
 import { withNavigation } from './Navigation';
 import Breadcrumbs from './Breadcrumbs';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
+import HeaderImage from './HeaderImage';
+import colors from '../styles/colors';
 
 const withPageLayout = ({
   getBreadcrumbs,
   meta = {},
   hideBreadcrumbs,
   HeaderComponent,
+  headerImage,
+  title,
+  subtitle,
 } = {}) => Page => {
   function PageLayout(props) {
     const { currentUrl, pageSlug } = props;
@@ -39,6 +44,21 @@ const withPageLayout = ({
             <link rel="alternate" href={currentUrl} hrefLang="x-default" />
           </Head>
           {HeaderComponent && <HeaderComponent {...props} />}
+
+          <header className="header">
+            {!!headerImage && (
+              <div className="image">
+                <HeaderImage imageSrc={headerImage} />
+              </div>
+            )}
+            {(title || subtitle) && (
+              <div className="content">
+                {!!title && <h1 className="title">{title}</h1>}
+                {!!subtitle && <span className="subtitle">{subtitle}</span>}
+              </div>
+            )}
+          </header>
+
           <div className="page">
             {!hideBreadcrumbs && getBreadcrumbs && (
               <Breadcrumbs items={breadcrumbs} />
@@ -59,14 +79,41 @@ const withPageLayout = ({
               padding: 0 ${dimensions.bodyPadding};
               margin: auto;
             }
+            .header .content {
+              padding: 0 ${dimensions.bodyPadding};
+            }
+            .title {
+              margin: 0;
+            }
+            .subtitle {
+              display: block;
+              color: ${colors.textSecondary};
+            }
             .footer {
               margin-top: 6em;
               border-top: 1px solid #343434;
             }
             .footer .contents {
-              max-width: 56rem;
+              max-width: ${dimensions.pageWidth};
               margin: auto;
-              padding: 0rem 2rem 2em;
+              padding: 0rem ${dimensions.bodyPadding} ${dimensions.bodyPadding};
+            }
+            @media (min-width: 800px) {
+              .header .content {
+                position: relative;
+                margin: -6.5em auto 0;
+                max-width: ${dimensions.pageWidth};
+              }
+              .subtitle {
+                margin-top: 0.8em;
+              }
+              .title {
+                margin: 0;
+                font-size: 3.75em;
+              }
+              .subtitle {
+                font-size: 16px;
+              }
             }
           `}</style>
         </div>

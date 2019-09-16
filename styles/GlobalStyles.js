@@ -23,9 +23,9 @@ function GlobalStyles() {
           margin: 0;
           font-weight: 400;
           font-style: normal;
-          font-size: 16px;
           background-color: ${colors.bg};
           color: ${colors.text};
+          scroll-behavior: smooth;
         }
         a {
           text-decoration: none;

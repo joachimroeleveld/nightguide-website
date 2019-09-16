@@ -4,10 +4,10 @@ import { getEvents } from '../lib/api';
 import SectionLoader from '../components/SectionLoader';
 import EventDateFilterBar from '../components/events/EventDateFilterBar';
 import __, { __city } from '../lib/i18n';
-import EventRow from '../components/events/EventRow';
+import EventRow from '../components/events/EventRowOld';
 import withPageLayout from '../components/PageLayout';
 import { useDateFilter } from '../components/events/hooks';
-import { getListings } from './cities';
+import { getConfig } from './cities';
 
 function ExploreArtistsPage(props) {
   const { pageSlug, routeParams, preloadedEvents, query, listings } = props;
@@ -68,7 +68,7 @@ function ExploreArtistsPage(props) {
 
 ExploreArtistsPage.getInitialProps = async ({ query }) => {
   const { dateFrom, dateTo, pageSlug } = query;
-  const listings = getListings(pageSlug);
+  const listings = getConfig(pageSlug);
   const { ARTISTS } = listings;
 
   const preloadedEvents = await Promise.all(

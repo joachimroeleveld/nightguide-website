@@ -10,7 +10,6 @@ import dimensions from '../styles/dimensions';
 import PrimaryButton from '../components/PrimaryButton';
 import VenueTiles from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
-import TagList from '../components/TagList';
 import VenueGrid from '../components/venues/VenueGrid';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
@@ -92,11 +91,6 @@ function VenuePage(props) {
 
       <div className="content">
         <div className="main-content">
-          {pageSlug !== 'es/ibiza' && (
-            <div className="tags">
-              <TagList routeParams={routeParams} tags={tags} />
-            </div>
-          )}
           {description && (
             <ReadMoreLess initialHeight={400}>
               <div
@@ -185,7 +179,6 @@ function VenuePage(props) {
             filter={{ venue: venue.id }}
             events={events.results}
             totalCount={events.totalCount}
-            showBuy={true}
           />
         </section>
       )}
@@ -270,12 +263,12 @@ function VenuePage(props) {
         .facilities {
           margin-top: 2em;
         }
-        @media (max-width: 780px) {
+        @media (max-width: 800px) {
           .header .image-grid {
-            margin: 0 -2em;
+            margin: 0 -${dimensions.bodyPadding};
           }
         }
-        @media (min-width: 780px) {
+        @media (min-width: 800px) {
           .content {
             grid-template-columns: 2fr 1fr;
           }

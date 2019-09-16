@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
-import { Link } from '../routes';
-import __ from '../lib/i18n';
-import colors from '../styles/colors';
-import dimensions from '../styles/dimensions';
+import { Link } from '../../routes';
+import __ from '../../lib/i18n';
+import colors from '../../styles/colors';
+import dimensions from '../../styles/dimensions';
 
 const TILES = [
   {
@@ -59,7 +59,7 @@ function ExploreEventsTiles(props) {
           border-radius: ${dimensions.tileRadius};
         }
         li:not(:last-child) .tile {
-          margin-right: ${dimensions.gridGap};
+          margin-right: ${dimensions.gridGap.L};
         }
         li:last-child .tile {
           margin-right: ${dimensions.bodyPadding};

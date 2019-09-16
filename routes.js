@@ -10,8 +10,9 @@ routes.add('ticket-redirect');
 routes.add('company');
 
 // Cities
-routes.add('/es/ibiza', 'cities/ibiza');
-routes.add('/nl/utrecht', 'cities/utrecht');
+routes.add('/es/ibiza', 'city');
+routes.add('/nl/utrecht', 'city');
+routes.add('/nl/amsterdam', 'city');
 
 // Dynamic routes
 routes.add('event', '/:country/:city/events/:event');

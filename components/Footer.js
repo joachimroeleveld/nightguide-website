@@ -6,8 +6,9 @@ const LINK_SECTIONS = [
   {
     title: __('Footer.cities'),
     items: [
+      // { route: '/nl/amsterdam', title: 'Amsterdam' },
       { route: '/es/ibiza', title: 'Ibiza' },
-      { route: '/nl/utrecht', title: 'Utrecht' },
+      // { route: '/nl/utrecht', title: 'Utrecht' },
     ],
   },
   {
@@ -107,7 +108,7 @@ function Footer(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          font-size: 0.9375em;
+          font-size: 0.9em;
           padding: 3em 0 1em;
         }
         .bottom {
@@ -134,9 +135,8 @@ function Footer(props) {
           text-decoration: none;
         }
         .sections {
-          font-size: 0.85em;
           display: grid;
-          grid-template-columns: 50% 50%;
+          grid-template-columns: 1fr 1fr;
           grid-gap: 2em;
         }
         .sections {
@@ -159,7 +159,7 @@ function Footer(props) {
         @media (min-width: 800px) {
           .sections {
             font-size: 1em;
-            grid-template-columns: repeat(4, 25%);
+            grid-template-columns: repeat(4, 1fr);
           }
         }
       `}</style>

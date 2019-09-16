@@ -6,27 +6,20 @@ import __ from '../lib/i18n';
 export const withNavigation = Component => {
   function extendQuery(baseQuery, route, path) {
     const query = { ...baseQuery };
-    const { city, country, dateFrom, dateTo } = query;
+    const { city, country } = query;
 
     // If city sub-page
     if (city && country) {
       query.pageSlug = `${country}/${city}`;
     }
     // If city page
-    else if (route.match(/^\/cities\/[^/]+$/)) {
+    else if (route === '/city') {
       const [match, pageSlug, country, city] = path.match(/^\/((\w+)\/(\w+))/);
       Object.assign(query, {
         pageSlug,
         country,
         city,
       });
-    }
-
-    if (dateFrom) {
-      query.dateFrom = new Date(dateFrom);
-    }
-    if (dateTo) {
-      query.dateTo = new Date(dateTo);
     }
 
     return query;

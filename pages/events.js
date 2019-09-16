@@ -1,51 +1,155 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import pick from 'lodash/pick';
+import flatten from 'lodash/flatten';
+import qs from 'qs';
 
-import { reload } from '../lib/routing';
+import { setUrlParams } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
-import { getArtist, getEvents, getVenue } from '../lib/api';
+import { getArtist, getEvents, getTags, getVenue } from '../lib/api';
 import __ from '../lib/i18n';
-import EventGrid from '../components/events/EventGrid';
-import { getListings } from './cities';
-import EventDateFilterBar from '../components/events/EventDateFilterBar';
-import { useDateFilter } from '../components/events/hooks';
 import colors from '../styles/colors';
+import EventTile from '../components/events/EventTile';
+import { useEffectSkipFirst, useWindowWidth } from '../lib/hooks';
+import PrimaryButton from '../components/PrimaryButton';
+import dimensions from '../styles/dimensions';
+import Spinner from '../components/Spinner';
+import EventFilters from '../components/events/EventFilters';
+import { getConfig } from './cities';
+import CityMenu from '../components/CityMenu';
+
+const ITEMS_PER_PAGE = 20;
 
 function EventsPage(props) {
-  const { pageSlug, title, query, events: initialEvents, routeParams } = props;
+  const { pageSlug, events: initialEvents, routeParams, tags } = props;
+  const query = useMemo(() => parseQuery(props.query), [props.query]);
+  const {
+    dateFrom,
+    dateTo,
+    tags: tagIds,
+    venue: venueId,
+    artist: artistId,
+    dateFilterId,
+    page = 1,
+  } = query;
 
-  const [events, setEvents] = useState(initialEvents);
+  const windowWidth = useWindowWidth();
+  const previousWindowWidth = useRef(windowWidth);
+  const previousFilters = useRef(query);
+  const [events, setEvents] = useState({
+    [page]: initialEvents.results,
+  });
+  const [totalCount, setTotalCount] = useState(initialEvents.totalCount);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [searchSubjects, setSearchSubjects] = useState({
+    venue: props.venue,
+    artist: props.artist,
+  });
+  const { venue, artist } = searchSubjects;
 
-  const { setDateFilter, dateFilterId, dateFilter } = useDateFilter(
-    query,
-    props
-  );
+  const pageCount = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
-  // Reload page if essential query params change
+  useEffectSkipFirst(() => {
+    previousFilters.current = query;
+    resetContent();
+    resetScroll();
+  }, [
+    dateFrom && dateFrom.getTime(),
+    dateTo && dateTo.getTime(),
+    tagIds && tagIds.length,
+    venueId,
+    artistId,
+  ]);
+
+  // Update state if query param changes
   useEffect(() => {
-    if (
-      query.venue !== props.venueId ||
-      query.area !== props.areaId ||
-      query.artist !== props.artistId
-    ) {
-      reload();
+    setCurrentPage(page);
+  }, [page]);
+
+  // Load new items if page changes
+  useEffect(() => {
+    if (!events[currentPage]) {
+      loadCurrentPage();
     }
-  }, [query]);
+  }, [currentPage]);
 
-  // Update events if date filter changes
+  useEffectSkipFirst(() => {
+    if (windowWidth < 800) {
+      resetScroll();
+    }
+  }, [currentPage, windowWidth]);
+
+  // Reset to the first page page if changing to desktop mode
   useEffect(() => {
-    (async () => {
-      const events = await getEventPage({ query });
-      setEvents(events);
-    })();
-  }, [query]);
+    if (windowWidth > 800 && previousWindowWidth.current <= 800) {
+      changePage(1);
+    }
+  }, [windowWidth]);
 
-  const getItems = async (offset, limit) => {
-    return (await getEventPage({ query, offset, limit })).results;
+  const loadCurrentPage = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const newEvents = await getEventPage({
+        query,
+        offset: (currentPage - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+      });
+
+      setEvents({
+        ...events,
+        [currentPage]: newEvents.results,
+      });
+      setTotalCount(newEvents.totalCount);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cityName = __(`city.${pageSlug}.name`);
+
+  const changePage = newPage => {
+    if (newPage === 0 || newPage > pageCount) return;
+
+    setCurrentPage(newPage);
+    setUrlParams({ page: newPage });
+  };
+
+  const resetContent = async () => {
+    const searchSubjects = await getSearchSubjects(query);
+    setSearchSubjects(searchSubjects);
+    setEvents({});
+    changePage(1);
+    loadCurrentPage();
+  };
+
+  const resetScroll = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const onFiltersChange = filters => {
+    const urlParams = Object.keys(filters).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: filters[key] || null,
+      }),
+      {}
+    );
+    setUrlParams(urlParams);
+  };
+
+  const visibleEvents =
+    windowWidth < 800
+      ? events[currentPage] || []
+      : flatten(Object.values(events));
+
+  const reachedEnd = currentPage * ITEMS_PER_PAGE >= totalCount;
 
   return (
     <main>
@@ -57,39 +161,90 @@ function EventsPage(props) {
         />
       </Head>
 
-      <h1>
-        {!title && (
-          <span>
-            {' '}
-            {__('EventsPage.titles.eventsInCity', { city: cityName })}
-          </span>
-        )}
-        {title}
-      </h1>
+      <h1>{__('EventsPage.title', { city: cityName })}</h1>
 
-      <div className="filter">
-        <EventDateFilterBar
-          activeButton={dateFilterId}
-          startDate={dateFilter && dateFilter[0]}
-          endDate={dateFilter && dateFilter[1]}
-          onChange={setDateFilter}
-        />
+      <div className="menu">
+        <CityMenu pageSlug={pageSlug} routeParams={routeParams} />
       </div>
 
-      <EventGrid
-        routeParams={routeParams}
-        infinite={true}
-        events={events.results}
-        totalCount={events.totalCount}
-        getItems={getItems}
-      />
+      <div className="columns">
+        <div className="filters">
+          <EventFilters
+            values={{
+              dateFilterId,
+              dateFrom,
+              dateTo,
+              tags: tagIds,
+              artist: artistId,
+              venue: venueId,
+            }}
+            venue={venue}
+            artist={artist}
+            tags={tags}
+            onChange={onFiltersChange}
+            pageSlug={pageSlug}
+          />
+        </div>
 
-      {events.totalCount === 0 && (
-        <div className="empty-message">{__('EventsPage.noEvents')}</div>
-      )}
+        <div className="event-container">
+          <div className="events" id="events">
+            {visibleEvents.map(event => (
+              <EventTile
+                routeParams={routeParams}
+                key={event.id + event.dateIndex}
+                event={event}
+                wideQuery="(min-width: 25em)"
+              />
+            ))}
+          </div>
+
+          {windowWidth <= 800 && !loading && totalCount !== 0 && (
+            <div className="pager">
+              <a
+                className="button prev"
+                onClick={() => changePage(currentPage - 1)}
+              />
+              <span className="page-count">{`${currentPage}/${pageCount}`}</span>
+              <a
+                className="button next"
+                onClick={() => changePage(currentPage + 1)}
+              />
+            </div>
+          )}
+
+          {windowWidth > 800 && !loading && !reachedEnd && (
+            <div
+              className="load-more"
+              onClick={() => changePage(currentPage + 1)}
+            >
+              <PrimaryButton
+                title={__('EventsPage.loadNMoreEvents', {
+                  n: ITEMS_PER_PAGE,
+                })}
+              />
+            </div>
+          )}
+
+          {loading && (
+            <div className="spinner">
+              <Spinner />
+            </div>
+          )}
+
+          {totalCount === 0 && (
+            <div className="empty-message">{__('EventsPage.noEvents')}</div>
+          )}
+        </div>
+      </div>
 
       {/*language=CSS*/}
       <style jsx>{`
+        .events {
+          margin-top: 2em;
+          display: grid;
+          grid-template-columns: 100%;
+          grid-gap: ${dimensions.gridGap.S};
+        }
         .filter {
           margin-bottom: 4em;
         }
@@ -97,89 +252,115 @@ function EventsPage(props) {
           margin-top: -1em;
           color: ${colors.textSecondary};
         }
+        .pager {
+          display: flex;
+          align-items: center;
+        }
+        .pager .page-count {
+          text-align: center;
+          flex-grow: 1;
+        }
+        .pager .spacer {
+          flex-grow: 1;
+        }
+        .pager .button {
+          width: 4.5em;
+          height: 2.2em;
+          background: url(/static/img/events-pager-button.svg) no-repeat center
+            center;
+          background-size: cover;
+        }
+        .pager .button.next {
+          transform: rotateY(180deg);
+        }
+        .spinner {
+          display: flex;
+          justify-content: center;
+        }
+        .pager,
+        .load-more,
+        .spinner {
+          margin: 2em 0 0;
+        }
+        .menu {
+          margin: 2em 0 1.5em;
+        }
+        @media (max-width: 800px) {
+          .menu {
+            display: none;
+          }
+        }
+        @media (min-width: 800px) {
+          .events {
+            grid-gap: ${dimensions.gridGap.L};
+          }
+          .filters {
+            padding-right: 3em;
+          }
+          .columns {
+            display: grid;
+            grid-template-columns: 2fr 5fr;
+          }
+        }
       `}</style>
     </main>
   );
 }
 
-async function getAssociatedProps(query, { AREAS }) {
-  const { venue: venueId, artist: artistId, area: areaId } = query;
-  let venue, artist, area;
-  if (areaId) {
-    area = AREAS[areaId];
-  } else if (venueId) {
+async function getSearchSubjects(query) {
+  const { venue: venueId, artist: artistId } = query;
+  let venue, artist;
+  if (venueId) {
     venue = await getVenue(venueId);
-  } else if (artistId) {
+  }
+  if (artistId) {
     artist = await getArtist(artistId);
   }
-  return { venue, artist, area };
-}
-
-async function getTitle(data) {
-  const { venue, artist, area } = data;
-  let title;
-  if (area) {
-    title = __('EventsPage.titles.eventsAt', {
-      location: area.name,
-    });
-  } else if (artist) {
-    title = __('EventsPage.titles.eventsWith', {
-      artist: artist.name,
-    });
-  } else if (venue) {
-    title = __('EventsPage.titles.eventsAt', {
-      location: venue.name,
-    });
-  }
-  return title;
+  return { venue, artist };
 }
 
 function getEventPage({ query, ...otherOpts }) {
   return getEvents({
-    query: pick(query, ['pageSlug', 'dateFrom', 'dateTo', 'artist', 'venue']),
+    query: pick(query, [
+      'pageSlug',
+      'dateFrom',
+      'dateTo',
+      'artist',
+      'venue',
+      'tags',
+    ]),
     serialize: false,
     ...otherOpts,
   });
 }
 
-EventsPage.getInitialProps = async ({ query }) => {
-  const { pageSlug, venue: venueId, area: areaId, artist: artistId } = query;
-  const { AREAS } = getListings(pageSlug);
+EventsPage.getInitialProps = async ctx => {
+  const query = parseQuery(ctx.query);
+  const { page = 1, pageSlug } = query;
 
-  const associatedProps = await getAssociatedProps(query, { AREAS });
+  const associatedProps = await getSearchSubjects(query);
+  const config = getConfig(pageSlug);
 
   return {
-    venueId,
-    areaId,
-    artistId,
     ...associatedProps,
-    title: await getTitle(associatedProps),
+    tags: (await getTags({
+      query: { ids: config.genres },
+    })).results,
     events: await getEventPage({
-      limit: 8,
+      limit: ITEMS_PER_PAGE,
+      offset: (page - 1) * ITEMS_PER_PAGE,
       query,
     }),
   };
 };
 
-const getBreadcrumbs = props => {
-  const { venue, artist, area } = props;
+const parseQuery = ({ dateFrom, dateTo, page, ...query }) => ({
+  ...qs.parse(query),
+  page: page ? parseInt(page) : undefined,
+  dateFrom: dateFrom ? new Date(dateFrom) : undefined,
+  dateTo: dateTo ? new Date(dateTo) : undefined,
+});
 
-  let subLabel;
-  if (venue) {
-    subLabel = venue.name;
-  } else if (artist) {
-    subLabel = artist.name;
-  } else if (area) {
-    subLabel = area.name;
-  }
-
-  const breadcrumbs = [
-    { key: 'events', route: subLabel ? 'events' : undefined },
-  ];
-  if (subLabel) {
-    breadcrumbs.push({ label: subLabel });
-  }
-  return breadcrumbs;
-};
+const getBreadcrumbs = () => [{ key: 'events' }];
 
 export default withPageLayout({ getBreadcrumbs })(EventsPage);

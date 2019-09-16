@@ -21,6 +21,8 @@ function VenueGrid(props) {
     />
   );
 
+  const styles = getStyles(venues.length);
+
   return (
     <React.Fragment>
       <Grid
@@ -28,26 +30,21 @@ function VenueGrid(props) {
         keyExtractor={keyExtractor}
         items={venues}
         renderItem={renderItem}
-        className={gridStyles.className}
+        className={styles.className}
       />
-      {gridStyles.styles}
+      {styles.styles}
     </React.Fragment>
   );
 }
 
 /*language=CSS*/
-const gridStyles = css.resolve`
+const getStyles = columns => css.resolve`
   .grid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(${columns}, 9.2em);
   }
   @media (min-width: 41rem) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 56rem) {
-    .grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(${columns}, 10.81em);
     }
   }
 `;
