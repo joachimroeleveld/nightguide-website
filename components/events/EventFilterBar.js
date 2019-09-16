@@ -132,6 +132,11 @@ function EventFilterBar(props) {
           display: flex;
           flex-wrap: wrap;
           margin: -0.25em;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .buttons::-webkit-scrollbar {
+          display: none;
         }
         .picker-wrapper {
           position: relative;

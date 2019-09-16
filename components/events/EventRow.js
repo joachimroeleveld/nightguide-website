@@ -79,8 +79,14 @@ function EventRow(props) {
         .container > .inner {
           overflow-x: auto;
           overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
           display: flex;
           scroll-behavior: smooth;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .container > .inner::-webkit-scrollbar {
+          display: none;
         }
         .more {
           flex-basis: 15em;

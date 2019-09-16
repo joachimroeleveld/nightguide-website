@@ -57,6 +57,11 @@ function ArtistList(props) {
           overflow-x: auto;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .container.horizontal::-webkit-scrollbar {
+          display: none;
         }
         ul {
           display: flex;
