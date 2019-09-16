@@ -121,7 +121,7 @@ function EventFilters(props) {
         />
       ),
     },
-    {
+    tags.length && {
       id: 'tags',
       active: !!tagIds,
       label: __('EventFilters.genre'),
@@ -167,7 +167,7 @@ function EventFilters(props) {
       ),
       onClear: setValue('artist'),
     },
-  ];
+  ].filter(val => val);
 
   return (
     <div className="filters">

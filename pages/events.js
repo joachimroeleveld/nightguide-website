@@ -6,7 +6,13 @@ import qs from 'qs';
 
 import { setUrlParams } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
-import { getArtist, getEvents, getTags, getVenue } from '../lib/api';
+import {
+  getArtist,
+  getConfigByName,
+  getEvents,
+  getTags,
+  getVenue,
+} from '../lib/api';
 import __ from '../lib/i18n';
 import colors from '../styles/colors';
 import EventTile from '../components/events/EventTile';
@@ -15,13 +21,12 @@ import PrimaryButton from '../components/PrimaryButton';
 import dimensions from '../styles/dimensions';
 import Spinner from '../components/Spinner';
 import EventFilters from '../components/events/EventFilters';
-import { getConfig } from './cities';
 import CityMenu from '../components/CityMenu';
 
 const ITEMS_PER_PAGE = 20;
 
 function EventsPage(props) {
-  const { pageSlug, events: initialEvents, routeParams, tags } = props;
+  const { pageSlug, events: initialEvents, routeParams, tags = [] } = props;
   const query = useMemo(() => parseQuery(props.query), [props.query]);
   const {
     dateFrom,
@@ -339,13 +344,19 @@ EventsPage.getInitialProps = async ctx => {
   const { page = 1, pageSlug } = query;
 
   const associatedProps = await getSearchSubjects(query);
-  const config = getConfig(pageSlug);
+  const config = await getConfigByName('page_events', pageSlug);
+  const { genres } = config.payload || {};
+
+  let tags;
+  if (genres) {
+    tags = (await getTags({
+      query: { ids: genres },
+    })).results;
+  }
 
   return {
     ...associatedProps,
-    tags: (await getTags({
-      query: { ids: config.genres },
-    })).results,
+    tags,
     events: await getEventPage({
       limit: ITEMS_PER_PAGE,
       offset: (page - 1) * ITEMS_PER_PAGE,

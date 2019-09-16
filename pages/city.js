@@ -134,12 +134,12 @@ function CityPage(props) {
 CityPage.getInitialProps = async ctx => {
   const { pageSlug } = ctx.query;
 
-  const config = await getConfigByName('homepage', pageSlug);
+  const config = await getConfigByName('page_city', pageSlug);
   const {
     sponsoredEvent: sponsoredEventId,
     popularLocations: popularLocationIds,
     headerImage,
-  } = config.payload;
+  } = config.payload || {};
 
   const getEventsRow = async filter =>
     (await getEvents({

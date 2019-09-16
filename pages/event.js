@@ -18,7 +18,7 @@ import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions, useWindowWidth } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
-import ArtistList from '../components/tags/ArtistList';
+import ArtistList from '../components/artists/ArtistList';
 import { classNames, createMapsUrl } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import Header from '../components/Header';
