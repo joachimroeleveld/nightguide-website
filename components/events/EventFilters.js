@@ -148,6 +148,7 @@ function EventFilters(props) {
           loadOptions={fetchVenues}
           onChange={setValue('venue')}
           value={venueId}
+          defaultInputValue={venue && venue.name}
         />
       ),
       onClear: setValue('venue'),
@@ -163,6 +164,7 @@ function EventFilters(props) {
           loadOptions={fetchArtists}
           onChange={setValue('artist')}
           value={artistId}
+          defaultInputValue={artist && artist.name}
         />
       ),
       onClear: setValue('artist'),

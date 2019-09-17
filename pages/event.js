@@ -223,6 +223,16 @@ export function EventPage(props) {
             <span className="via">{ticketsViaString}</span>
           </section>
         )}
+        {!!tags.length && (
+          <section className="genre">
+            <header>
+              <h2>{__('eventPage.genres')}</h2>
+            </header>
+            <div className="list">
+              <TagList tags={tags} routeParams={routeParams} />
+            </div>
+          </section>
+        )}
         {date.artists && !!date.artists.length && (
           <section className="artists">
             <header>

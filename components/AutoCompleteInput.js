@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import SelectAsync from 'react-select/async';
 import find from 'lodash/find';
@@ -13,6 +13,7 @@ AutoCompleteInput.propTypes = {
 
 function AutoCompleteInput(props) {
   const loadedOptions = useRef([]);
+  const [isDirty, setIsDirty] = useState(false);
 
   const loadOptions = async (...opts) => {
     const options = await props.loadOptions(...opts);
@@ -20,43 +21,27 @@ function AutoCompleteInput(props) {
     return options;
   };
 
-  const onChange = ({ value }) => props.onChange(value);
-
-  const clear = () => props.onChange(null);
+  const onChange = val => {
+    setIsDirty(true);
+    props.onChange(val ? val.value : null);
+  };
 
   const currentValue =
-    find(loadedOptions.current, { value: props.value }) || null;
+    !isDirty && props.defaultInputValue
+      ? { value: props.value }
+      : find(loadedOptions.current, { value: props.value }) || null;
 
   return (
     <div className="container">
-      <div className="input">
-        <SelectAsync
-          {...props}
-          classNamePrefix={selectStyles.className + ' select'}
-          value={currentValue}
-          onChange={onChange}
-          loadOptions={loadOptions}
-        />
-      </div>
-      <button className="clear" onClick={clear} />
+      <SelectAsync
+        {...props}
+        classNamePrefix={selectStyles.className + ' select'}
+        value={currentValue}
+        onChange={onChange}
+        loadOptions={loadOptions}
+        isClearable={true}
+      />
       {selectStyles.styles}
-      {/*language=CSS*/}
-      <style jsx>{`
-        .container {
-          display: flex;
-          align-items: center;
-        }
-        .input {
-          flex-grow: 1;
-        }
-        .clear {
-          width: 1em;
-          height: 1em;
-          margin: 0.5em;
-          background: url(/static/img/input-clear.svg) no-repeat center center;
-          background-size: cover;
-        }
-      `}</style>
     </div>
   );
 }

@@ -179,6 +179,7 @@ function VenuePage(props) {
             filter={{ venue: venue.id }}
             events={events.results}
             totalCount={events.totalCount}
+            seeAllParams={{ venue: venue.id }}
           />
         </section>
       )}

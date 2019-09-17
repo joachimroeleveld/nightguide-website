@@ -7,6 +7,7 @@ import __ from '../lib/i18n';
 import colors from '../styles/colors';
 import { useDisableBodyScrolling } from '../lib/hooks';
 import dimensions from '../styles/dimensions';
+import PrimaryButton from './PrimaryButton';
 
 FilterModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -42,12 +43,20 @@ function FilterModal(props) {
           <strong className="label">{label}</strong>
           {children}
         </div>
+        <div className="footer">
+          <PrimaryButton
+            title={__('FilterModal.showResults')}
+            onClick={() => onClose()}
+          />
+        </div>
       </div>
       {modalStyles.styles}
       {/*language=CSS*/}
       <style jsx>{`
         .container {
           height: 100%;
+          display: flex;
+          flex-direction: column;
         }
         .header {
           display: flex;
@@ -66,7 +75,7 @@ function FilterModal(props) {
           font-size: 0.92em;
         }
         .content {
-          height: calc(100% - 3em);
+          flex-grow: 1;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
           padding: ${dimensions.bodyPadding};
@@ -88,6 +97,12 @@ function FilterModal(props) {
         .clear {
           position: absolute;
           color: ${colors.linkText};
+        }
+        .footer {
+          background: ${colors.bg};
+          width: 100%;
+          padding: ${dimensions.bodyPadding};
+          box-sizing: border-box;
         }
       `}</style>
     </Modal>

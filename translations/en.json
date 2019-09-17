@@ -114,7 +114,8 @@
     "getTickets": "Get tickets",
     "buyTicketsVia": "Via {{domain}}",
     "map": "Map",
-    "googleMaps": "Google Maps"
+    "googleMaps": "Google Maps",
+    "genres": "Genres"
   },
   "venuePage": {
     "meta": {
@@ -378,7 +379,8 @@
   },
   "FilterModal": {
     "filters": "Filters",
-    "clear": "Clear"
+    "clear": "Clear",
+    "showResults": "Show results"
   },
   "VenueRow": {
     "moreLocations": "Looking for more locations?",

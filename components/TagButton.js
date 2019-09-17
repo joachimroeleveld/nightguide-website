@@ -12,7 +12,7 @@ function TagButton(props) {
       <style jsx>{`
         a {
           display: inline-block;
-          padding: 0.3em 0.8em;
+          padding: 0.15em 0.8em;
           text-decoration: none;
           border: 2px solid ${colors.tagButtonBorderColor};
           border-radius: 16px;

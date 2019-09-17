@@ -3,7 +3,7 @@ import css from 'styled-jsx/css';
 import PropTypes from 'prop-types';
 
 import { Link } from '../../routes';
-import __ from '../../lib/i18n';
+import __, { _o } from '../../lib/i18n';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import { generateTicketRedirectUrl } from './util';
@@ -96,11 +96,8 @@ function EventTile(props) {
             <Link route="event" params={linkParams}>
               <a {...aProps}>
                 <h3 className="title">{title || facebook.title}</h3>
-                <div className="date-location">
-                  <span className="date">{formatEventDate(date.from)}</span>
-                  {' · '}
-                  <span className="venue">{organiser.venue.name}</span>
-                </div>
+                <div className="date">{formatEventDate(date.from)}</div>
+                <span className="venue">{organiser.venue.name}</span>
               </a>
             </Link>
           </div>
@@ -119,11 +116,13 @@ function EventTile(props) {
         </div>
         <div className="music">
           {!!tags.length && (
-            <span className="tags">{tags.map(tag => tag.name).join(', ')}</span>
+            <span className="tags">
+              {tags.map(tag => _o(tag.name)).join(', ')}
+            </span>
           )}
           {!!artists.length && (
             <span className="artists">
-              {!!tags.length && ' · '}
+              {!!tags.length && ' - '}
               {artists
                 .map(artist => artist.name)
                 .slice(0, 3)
@@ -155,7 +154,7 @@ function EventTile(props) {
           display: flex;
         }
         .title {
-          margin: 0 0 0.4em;
+          margin: 0 0 0.1em;
           height: 1.4em;
           overflow: hidden;
           white-space: nowrap;
@@ -190,13 +189,20 @@ function EventTile(props) {
           height: 8em;
           border-top-right-radius: ${dimensions.tileRadius};
         }
-        .date-location {
-          color: #b7b7b7;
-          line-height: 1.4em;
-          margin-bottom: 0.6em;
-        }
         .date {
           color: ${colors.yellowTextColor};
+          margin-bottom: 0.1em;
+        }
+        .venue {
+          color: #b7b7b7;
+          margin-bottom: 0.1em;
+          padding-left: 1.5em;
+          background: url(/static/img/event-tile-location.svg) left 0.1em center
+            no-repeat;
+        }
+        .date,
+        .venue {
+          line-height: 1.8em;
         }
         .buy-tickets {
           border: 1px solid #686868;

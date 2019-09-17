@@ -14,9 +14,9 @@ function TagList(props) {
 
   const getLinkParams = useMemo(
     () =>
-      memoize(tagSlug => ({
+      memoize(tagId => ({
         ...routeParams,
-        tag: tagSlug,
+        tags: [tagId],
       })),
     [routeParams]
   );
@@ -25,7 +25,7 @@ function TagList(props) {
     <React.Fragment>
       <ul className={'container'}>
         {tags.map(tag => (
-          <Link key={tag.slug} route="tag" params={getLinkParams(tag.slug)}>
+          <Link key={tag.slug} route="events" params={getLinkParams(tag.id)}>
             <a>
               <li className="tag">
                 <TagButton title={_o(tag.name)} />
