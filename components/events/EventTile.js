@@ -193,18 +193,15 @@ function EventTile(props) {
         }
         .date {
           color: ${colors.yellowTextColor};
-          margin-bottom: 0.1em;
+          margin-bottom: 0.5em;
         }
         .venue {
           color: #b7b7b7;
-          margin-bottom: 0.1em;
+          margin-bottom: 0.35em;
+          line-height: 1.3em;
           padding-left: 1.5em;
           background: url(/static/img/event-tile-location.svg) left 0.1em center
             no-repeat;
-        }
-        .date,
-        .venue {
-          line-height: 1.8em;
         }
         .buy-tickets {
           border: 1px solid #686868;

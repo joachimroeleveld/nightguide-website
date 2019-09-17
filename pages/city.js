@@ -6,7 +6,7 @@ import __, { __city } from '../lib/i18n';
 import React from 'react';
 import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
-import { getVenues, getEvents, getEvent, getConfigByName } from '../lib/api';
+import { getVenues, getEvents, getConfigByName } from '../lib/api';
 import { Link } from '../routes';
 import VenueRow from '../components/venues/VenueRow';
 import EventTile from '../components/events/EventTile';
