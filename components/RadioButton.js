@@ -51,6 +51,7 @@ function RadioButton(props) {
           display: inline-flex;
           justify-content: center;
           align-items: center;
+          position: relative;
         }
         .checkmark::before {
           content: '';

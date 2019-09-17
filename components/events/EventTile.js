@@ -99,7 +99,7 @@ function EventTile(props) {
               <a {...aProps}>
                 <h3 className="title">{title || facebook.title}</h3>
                 <div className="date">{formatEventDate(date.from)}</div>
-                <span className="venue">{organiser.venue.name}</span>
+                <div className="venue">{organiser.venue.name}</div>
               </a>
             </Link>
           </div>
@@ -149,7 +149,7 @@ function EventTile(props) {
           grid-template-columns: 25% 75%;
         }
         .body {
-          height: 8.4em;
+          height: 8.7em;
           padding: 0 ${dimensions.tilePadding} ${dimensions.tilePadding};
         }
         .top {

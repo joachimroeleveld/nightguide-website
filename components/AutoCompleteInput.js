@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import SelectAsync from 'react-select/async';
 import find from 'lodash/find';
 
+import __ from '../lib/i18n';
+
 import selectStyles from '../styles/selectStyles';
 
 AutoCompleteInput.propTypes = {
@@ -40,6 +42,7 @@ function AutoCompleteInput(props) {
         onChange={onChange}
         loadOptions={loadOptions}
         isClearable={true}
+        noOptionsMessage={() => __('AutoCompleteInput.startTyping')}
       />
       {selectStyles.styles}
     </div>

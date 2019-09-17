@@ -146,7 +146,6 @@ CityPage.getInitialProps = async ctx => {
       limit: 4,
       query: {
         pageSlug,
-        tagged: true,
         ...filter,
       },
     })).results;
@@ -160,7 +159,7 @@ CityPage.getInitialProps = async ctx => {
 
   let sponsoredEvent;
   if (sponsoredEventId) {
-    sponsoredEvent = await getEvent(sponsoredEventId);
+    sponsoredEvent = (await getEventsRow({ ids: [sponsoredEventId] }))[0];
   }
 
   let popularLocations;

@@ -412,5 +412,8 @@
   },
   "SeeOnMap": {
     "seeOnMap": "Click to see on map"
+  },
+  "AutoCompleteInput": {
+    "startTyping": "Type for suggestions..."
   }
 }

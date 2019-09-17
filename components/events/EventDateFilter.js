@@ -193,9 +193,6 @@ function EventDateFilter(props) {
 
       {/*language=CSS*/}
       <style jsx>{`
-        .container {
-          height: 100%;
-        }
         .picker {
           z-index: 150;
         }
