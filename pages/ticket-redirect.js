@@ -9,11 +9,13 @@ import Card from '../components/Card';
 function TicketRedirectPage(props) {
   const { event, dateIndex } = props;
   const { title, facebook = {}, dates, tickets } = event;
+
   const date = dates[dateIndex];
+  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
 
   useEffect(() => {
     setTimeout(() => {
-      const url = new URL(tickets.checkoutUrl);
+      const url = new URL(ticketsUrl);
       const search = new URLSearchParams(url.search);
       search.set('utm_source', 'nightguide');
       search.set('utm_medium', 'referral');
@@ -29,8 +31,8 @@ function TicketRedirectPage(props) {
       <div className="redirect-notice">
         <span className="notice">
           {__('ticketRedirectPage.youreRedirected') + ':'}
-          <a className="ticket-link" href={tickets.checkoutUrl}>
-            {tickets.checkoutUrl.match(/^(?:https?:\/\/)((?:[^/:]+))/).pop()}
+          <a className="ticket-link" href={ticketsUrl}>
+            {ticketsUrl.match(/^(?:https?:\/\/)((?:[^/:]+))/).pop()}
           </a>
         </span>
         <div className="loading-container">

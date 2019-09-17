@@ -153,7 +153,6 @@ CityPage.getInitialProps = async ctx => {
 
   const popularEvents = await getEventsRow({
     sortBy: SORT_POPULARITY,
-    dateFrom: moment().toISOString(),
     dateTo: moment()
       .add(7, 'days')
       .toISOString(),

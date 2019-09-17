@@ -41,7 +41,9 @@ function EventTile(props) {
   } else {
     date = event.date;
   }
-  const { artists = [] } = date;
+  const artists =
+    date.artists && date.artists.length ? date.artists : event.artists;
+  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
 
   const windowWidth = useWindowWidth();
   const isWide = wideQuery && useMatchMedia(wideQuery);
@@ -101,7 +103,7 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
-          {tickets.checkoutUrl && (
+          {ticketsUrl && (
             <div className="tickets">
               <a
                 rel="nofollow"
@@ -120,7 +122,7 @@ function EventTile(props) {
               {tags.map(tag => _o(tag.name)).join(', ')}
             </span>
           )}
-          {!!artists.length && (
+          {artists && !!artists.length && (
             <span className="artists">
               {!!tags.length && ' - '}
               {artists

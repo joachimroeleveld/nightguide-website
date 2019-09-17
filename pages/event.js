@@ -47,13 +47,24 @@ export function EventPage(props) {
     false
   );
 
+  const date = dates[dateIndex];
+  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
+  const artists =
+    date.artists && date.artists.length ? date.artists : event.artists;
+
+  const ticketsViaString =
+    ticketsUrl &&
+    __('eventPage.buyTicketsVia', {
+      domain: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
+    });
+
   const switchDateIndex = dateIndex => {
     setUrlParams({ dateIndex });
     setDateIndex(dateIndex);
   };
 
   useOnScroll(() => {
-    if (!tickets.checkoutUrl) return;
+    if (!ticketsUrl) return;
 
     const { top: headerElemTop } = document
       .querySelector('#buy-tickets-header')
@@ -67,16 +78,6 @@ export function EventPage(props) {
       footerElemTop - window.innerHeight > 0;
     setIsBottomTicketsButtonFixed(isFixed);
   }, [isBuyTicketsButtonFixed]);
-
-  const date = dates[dateIndex];
-
-  const ticketsViaString =
-    tickets.checkoutUrl &&
-    __('eventPage.buyTicketsVia', {
-      domain: tickets.checkoutUrl
-        .match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/)
-        .pop(),
-    });
 
   return (
     <main>
@@ -144,7 +145,7 @@ export function EventPage(props) {
             >
               {dates.length > 1 && (
                 <EventDateSelect
-                  onChange={switchDateIndex}
+                  onSelect={switchDateIndex}
                   value={dateIndex}
                   dates={dates}
                 />
@@ -153,7 +154,7 @@ export function EventPage(props) {
                 <span>{formatEventDate(date.from, date.to)}</span>
               )}
             </div>
-            {tickets && tickets.checkoutUrl && (
+            {ticketsUrl && (
               <div className="buy-tickets" id="buy-tickets-header">
                 <PrimaryButton
                   iconSrc={'/static/img/buy-tickets-arrow.svg'}
@@ -194,7 +195,7 @@ export function EventPage(props) {
         </div>
       </section>
       <aside className="sidebar">
-        {tickets && tickets.checkoutUrl && (
+        {ticketsUrl && (
           <section
             className={classNames([
               'buy-tickets',
@@ -233,13 +234,13 @@ export function EventPage(props) {
             </div>
           </section>
         )}
-        {date.artists && !!date.artists.length && (
+        {artists && !!artists.length && (
           <section className="artists">
             <header>
               <h2>{__('eventPage.artists')}</h2>
             </header>
             <div className="list">
-              <ArtistList routeParams={routeParams} artists={date.artists} />
+              <ArtistList routeParams={routeParams} artists={artists} />
             </div>
           </section>
         )}
