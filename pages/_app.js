@@ -34,9 +34,9 @@ class NightGuideWebsite extends App {
 
     return (
       <Container>
-        {/*<Provider store={reduxStore}>*/}
-        <Component {...props} />
-        {/*</Provider>*/}
+        <Provider store={reduxStore}>
+          <Component {...props} />
+        </Provider>
       </Container>
     );
   }
@@ -44,4 +44,4 @@ class NightGuideWebsite extends App {
 
 export default withGA(process.env.REACT_APP_GA_TOKEN, Router, {
   localhost: 'disable',
-})(NightGuideWebsite);
+})(withReduxStore(NightGuideWebsite));

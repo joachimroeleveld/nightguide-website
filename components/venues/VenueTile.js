@@ -63,7 +63,7 @@ function VenueTile(props) {
           <a {...aProps}>
             <h3>{name}</h3>
             <div className="distance">
-              {/*<DistanceIndicator {...location.coordinates} />*/}
+              <DistanceIndicator {...location.coordinates} />
             </div>
           </a>
         </Link>
