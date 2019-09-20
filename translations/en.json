@@ -112,7 +112,8 @@
     "venue": "Venue",
     "buyTickets": "Buy tickets",
     "getTickets": "Get tickets",
-    "buyTicketsVia": "Via {{domain}}",
+    "buyTicketsVia": "Via {{via}}",
+    "buyTicketsBy": "By {{by}}",
     "map": "Map",
     "googleMaps": "Google Maps",
     "genres": "Genres"
@@ -381,6 +382,9 @@
     "filters": "Filters",
     "clear": "Clear",
     "showResults": "Show results"
+  },
+  "EventTicketModal": {
+    "buyTicket": "Buy ticket"
   },
   "VenueRow": {
     "moreLocations": "Looking for more locations?",

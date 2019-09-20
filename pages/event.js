@@ -2,6 +2,7 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
+import find from 'lodash/find';
 
 import { Link, Router } from '../routes';
 import withPageLayout from '../components/PageLayout';
@@ -24,6 +25,8 @@ import { useOnScroll } from '../lib/hooks';
 import Header from '../components/Header';
 import { getRouteInfo, setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
+import EventTicketModal from '../components/events/EventTicketModal';
+import ticketProviders from '../components/events/ticket-providers';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -41,6 +44,7 @@ export function EventPage(props) {
   } = event;
 
   const [mediaRef, setMediaRef] = useState(null);
+  const [showTicketModal, setShowTicketModal] = useState(false);
   const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
   const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
@@ -48,15 +52,11 @@ export function EventPage(props) {
   );
 
   const date = dates[dateIndex];
-  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
   const artists =
     date.artists && date.artists.length ? date.artists : event.artists;
-
-  const ticketsViaString =
-    ticketsUrl &&
-    __('eventPage.buyTicketsVia', {
-      domain: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
-    });
+  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
+  const ticketProvider =
+    tickets.provider && find(ticketProviders, { id: tickets.provider });
 
   const switchDateIndex = dateIndex => {
     setUrlParams({ dateIndex });
@@ -78,6 +78,33 @@ export function EventPage(props) {
       footerElemTop - window.innerHeight > 0;
     setIsBottomTicketsButtonFixed(isFixed);
   }, [isBuyTicketsButtonFixed]);
+
+  let ticketButton = null;
+  let ticketsViaString;
+  if (ticketsUrl) {
+    ticketsViaString = __('eventPage.buyTicketsVia', {
+      via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
+    });
+    ticketButton = (
+      <PrimaryButton
+        iconSrc={'/static/img/buy-tickets-arrow.svg'}
+        href={generateTicketRedirectUrl(event.id, dateIndex)}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={__('eventPage.buyTickets')}
+      />
+    );
+  } else if (ticketProvider && date.providerEventId) {
+    ticketsViaString = __('eventPage.buyTicketsBy', {
+      by: ticketProvider.name,
+    });
+    ticketButton = (
+      <PrimaryButton
+        title={__('eventPage.buyTickets')}
+        onClick={() => setShowTicketModal(true)}
+      />
+    );
+  }
 
   return (
     <main>
@@ -154,15 +181,9 @@ export function EventPage(props) {
                 <span>{formatEventDate(date.from, date.to)}</span>
               )}
             </div>
-            {ticketsUrl && (
+            {ticketButton && (
               <div className="buy-tickets" id="buy-tickets-header">
-                <PrimaryButton
-                  iconSrc={'/static/img/buy-tickets-arrow.svg'}
-                  href={generateTicketRedirectUrl(event.id, dateIndex)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={__('eventPage.getTickets')}
-                />
+                {ticketButton}
                 <span className="via">{ticketsViaString}</span>
               </div>
             )}
@@ -195,7 +216,7 @@ export function EventPage(props) {
         </div>
       </section>
       <aside className="sidebar">
-        {ticketsUrl && (
+        {ticketButton && (
           <section
             className={classNames([
               'buy-tickets',
@@ -203,24 +224,8 @@ export function EventPage(props) {
             ])}
             id="buy-tickets-bottom"
           >
-            <div className="fixed-button">
-              <PrimaryButton
-                iconSrc={'/static/img/buy-tickets-arrow.svg'}
-                href={generateTicketRedirectUrl(event.id, dateIndex)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={__('buyTickets')}
-              />
-            </div>
-            {!isBuyTicketsButtonFixed && (
-              <PrimaryButton
-                iconSrc={'/static/img/buy-tickets-arrow.svg'}
-                href={generateTicketRedirectUrl(event.id, dateIndex)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={__('buyTickets')}
-              />
-            )}
+            <div className="fixed-button">{ticketButton}</div>
+            {!isBuyTicketsButtonFixed && ticketButton}
             <span className="via">{ticketsViaString}</span>
           </section>
         )}
@@ -274,6 +279,14 @@ export function EventPage(props) {
           </div>
         </section>
       </aside>
+      {!!date.providerEventId && (
+        <EventTicketModal
+          ticketProvider={tickets.provider}
+          eventId={date.providerEventId}
+          isOpen={showTicketModal}
+          onClose={() => setShowTicketModal(false)}
+        />
+      )}
       {/*language=CSS*/}
       <style jsx>{`
         .header {

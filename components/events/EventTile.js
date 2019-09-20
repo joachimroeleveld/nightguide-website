@@ -117,23 +117,28 @@ function EventTile(props) {
           )}
         </div>
         <div className="music">
-          {!!tags.length && (
-            <span className="tags">
-              {tags.map(tag => _o(tag.name)).join(', ')}
-            </span>
-          )}
-          {artists && !!artists.length && (
-            <span className="artists">
-              {!!tags.length && ' - '}
-              {artists
-                .map(artist => artist.name)
-                .slice(0, 3)
-                .join(', ')}
-              {artists.length > 3
-                ? ' ' + __('EventTile.andNOthers', { n: artists.length - 3 })
-                : ''}
-            </span>
-          )}
+          <Link route="event" params={linkParams}>
+            <a {...aProps}>
+              {!!tags.length && (
+                <span className="tags">
+                  {tags.map(tag => _o(tag.name)).join(', ')}
+                </span>
+              )}
+              {artists && !!artists.length && (
+                <span className="artists">
+                  {!!tags.length && ' - '}
+                  {artists
+                    .map(artist => artist.name)
+                    .slice(0, 3)
+                    .join(', ')}
+                  {artists.length > 3
+                    ? ' ' +
+                      __('EventTile.andNOthers', { n: artists.length - 3 })
+                    : ''}
+                </span>
+              )}
+            </a>
+          </Link>
         </div>
       </div>
       {/*language=CSS*/}
