@@ -4,9 +4,9 @@ import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
 import find from 'lodash/find';
 
-import { Link, Router } from '../routes';
+import { Link } from '../routes';
 import withPageLayout from '../components/PageLayout';
-import { getEvent, getEvents, getVenue } from '../lib/api';
+import { getEvent, getVenue } from '../lib/api';
 import colors from '../styles/colors';
 import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
@@ -16,14 +16,13 @@ import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
-import { useElemDimensions, useWindowWidth } from '../lib/hooks';
+import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/artists/ArtistList';
 import { classNames, createMapsUrl } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
-import Header from '../components/Header';
-import { getRouteInfo, setUrlParams } from '../lib/routing';
+import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
 import EventTicketModal from '../components/events/EventTicketModal';
 import ticketProviders from '../components/events/ticket-providers';
@@ -283,6 +282,7 @@ export function EventPage(props) {
         <EventTicketModal
           ticketProvider={tickets.provider}
           eventId={date.providerEventId}
+          providerData={tickets.providerData}
           isOpen={showTicketModal}
           onClose={() => setShowTicketModal(false)}
         />
@@ -544,53 +544,6 @@ export function EventPage(props) {
   );
 }
 
-const HeaderComponent = props => {
-  const { query } = props;
-
-  const windowWidth = useWindowWidth();
-
-  const onBackPress = () => {
-    if (query.srcRef) {
-      const info = getRouteInfo(query.srcRef);
-      if (info) {
-        return Router.replaceRoute(info);
-      }
-    }
-    history.back();
-  };
-
-  if (false) {
-    return (
-      <div className="header">
-        <button className="back" onClick={onBackPress} />
-        {/*language=CSS*/}
-        <style jsx>{`
-          .header {
-            position: fixed;
-            z-index: 110;
-            top: 0;
-            display: flex;
-            align-items: center;
-            height: 3em;
-            width: 100%;
-            box-shadow: ${colors.headerShadow};
-            background: ${colors.bg};
-          }
-          .back {
-            width: 9px;
-            height: 16px;
-            padding: 1em;
-            margin-left: 1em;
-            background: url(/static/img/modal-back.svg) no-repeat center center;
-          }
-        `}</style>
-      </div>
-    );
-  } else {
-    return <Header />;
-  }
-};
-
 EventPage.getInitialProps = async ctx => {
   const { event: eventId, pageSlug } = ctx.query;
 
@@ -600,17 +553,17 @@ EventPage.getInitialProps = async ctx => {
   return {
     event,
     venue: await getVenue(event.organiser.venue.id),
-    similarEvents: tags.length
-      ? (await getEvents({
-          limit: 4,
-          query: {
-            pageSlug: pageSlug,
-            exclude: event.id,
-            tags: event.tags.map(tag => tag.id),
-            sortBy: 'tagsMatchScore:desc',
-          },
-        })).results
-      : [],
+    // similarEvents: tags.length
+    //   ? (await getEvents({
+    //       limit: 4,
+    //       query: {
+    //         pageSlug: pageSlug,
+    //         exclude: event.id,
+    //         tags: event.tags.map(tag => tag.id),
+    //         sortBy: 'tagsMatchScore:desc',
+    //       },
+    //     })).results
+    //   : [],
   };
 };
 
@@ -621,5 +574,4 @@ const getBreadcrumbs = ({ event }) => [
 
 export default withPageLayout({
   getBreadcrumbs,
-  HeaderComponent,
 })(EventPage);

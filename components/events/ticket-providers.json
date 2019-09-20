@@ -1,7 +1,6 @@
 [
   {
     "id": "eventix",
-    "name": "Eventix",
-    "eventUrl": "https://shop.eventix.io/{{eventId}}/tickets"
+    "name": "Eventix"
   }
 ]

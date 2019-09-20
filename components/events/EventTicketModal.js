@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import { memo } from 'react';
 import Modal from 'react-modal';
-import find from 'lodash/find';
 import css from 'styled-jsx/css';
 
 import __ from '../../lib/i18n';
 import colors from '../../styles/colors';
 import { useDisableBodyScrolling } from '../../lib/hooks';
 import dimensions from '../../styles/dimensions';
-import ticketProviders from './ticket-providers';
+import { generateTicketPageUrl } from './util';
 
 EventTicketModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   eventId: PropTypes.string.isRequired,
   ticketProvider: PropTypes.string.isRequired,
+  providerData: PropTypes.object,
 };
 
 function EventTicketModal(props) {
@@ -23,12 +23,11 @@ function EventTicketModal(props) {
     onClose,
     eventId,
     ticketProvider: providerId,
+    providerData = {},
     ...modalProps
   } = props;
 
-  const provider = find(ticketProviders, { id: providerId });
-  const { eventUrl } = provider;
-  const iframeSrc = eventUrl.replace('{{eventId}}', eventId);
+  const iframeSrc = generateTicketPageUrl(providerId, eventId, providerData);
 
   useDisableBodyScrolling(isOpen);
 

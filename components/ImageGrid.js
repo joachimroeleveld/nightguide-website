@@ -58,7 +58,11 @@ function ImageGrid(props) {
         }
         @media (min-width: 800px) {
           .container {
-            grid-template: 1fr 1fr / 2fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-areas:
+              'main main . .'
+              'main main . .';
           }
           .grid-item {
             height: 175px;
@@ -66,7 +70,7 @@ function ImageGrid(props) {
             overflow: hidden;
           }
           .grid-item:nth-child(1) {
-            grid-area: 1 / 1 / 3 / 2;
+            grid-area: main;
             height: 350px;
           }
         }

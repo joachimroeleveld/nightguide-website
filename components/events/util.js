@@ -65,3 +65,16 @@ export function serializeFilter(filter) {
   }
   return serialized;
 }
+
+export function generateTicketPageUrl(provider, providerEventId, providerData) {
+  let eventUrl;
+  if (provider === 'eventix') {
+    const { shopId } = providerData;
+    if (shopId) {
+      eventUrl = `https://shop.eventix.io/${shopId}/tickets?eventId=${providerEventId}`;
+    } else {
+      eventUrl = `https://shop.eventix.io/${providerEventId}/tickets`;
+    }
+  }
+  return eventUrl;
+}
