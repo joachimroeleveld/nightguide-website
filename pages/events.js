@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import pick from 'lodash/pick';
 import flatten from 'lodash/flatten';
 import qs from 'qs';
+import moment from 'moment-timezone';
 
 import { setUrlParams } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
@@ -224,7 +225,7 @@ function EventsPage(props) {
             >
               <PrimaryButton
                 title={__('EventsPage.loadNMoreEvents', {
-                  n: ITEMS_PER_PAGE,
+                  n: Math.min(20, totalCount - ITEMS_PER_PAGE * currentPage),
                 })}
               />
             </div>
@@ -324,16 +325,23 @@ async function getSearchSubjects(query) {
   return { venue, artist };
 }
 
-function getEventPage({ query, ...otherOpts }) {
+function getEventPage({ query = {}, ...otherOpts }) {
   return getEvents({
-    query: pick(query, [
-      'pageSlug',
-      'dateFrom',
-      'dateTo',
-      'artist',
-      'venue',
-      'tags',
-    ]),
+    query: {
+      ...pick(query, [
+        'pageSlug',
+        'dateFrom',
+        'dateTo',
+        'artist',
+        'venue',
+        'tags',
+      ]),
+      dateTo:
+        query.dateTo ||
+        moment()
+          .add(1, 'weeks')
+          .toDate(),
+    },
     serialize: false,
     ...otherOpts,
   });

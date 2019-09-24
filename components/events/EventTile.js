@@ -1,6 +1,8 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import css from 'styled-jsx/css';
 import PropTypes from 'prop-types';
+import LinesEllipsis from 'react-lines-ellipsis';
+import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
 
 import { Link } from '../../routes';
 import __, { _o } from '../../lib/i18n';
@@ -11,6 +13,9 @@ import ResponsiveImage from '../ResponsiveImage';
 import dimensions from '../../styles/dimensions';
 import { useMatchMedia, useWindowWidth } from '../../lib/hooks';
 import { classNames } from '../../lib/util';
+import find from 'lodash/find';
+import ticketProviders from './ticket-providers';
+import EventTicketModal from './EventTicketModal';
 
 EventTile.propTypes = {
   event: PropTypes.object.isRequired,
@@ -42,11 +47,14 @@ function EventTile(props) {
     date = event.date;
   }
   const artists =
-    date.artists && date.artists.length ? date.artists : event.artists;
+    date.artists && date.artists.length ? date.artists : event.artists || [];
   const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
+  const ticketProvider =
+    tickets.provider && find(ticketProviders, { id: tickets.provider });
 
   const windowWidth = useWindowWidth();
   const isWide = wideQuery && useMatchMedia(wideQuery);
+  const [showTicketModal, setShowTicketModal] = useState(false);
 
   const imgProps = useMemo(
     () =>
@@ -71,9 +79,25 @@ function EventTile(props) {
   );
 
   const aProps = windowWidth > 800 ? { target: '_blank' } : {};
+  const hasTicketButton =
+    ticketsUrl || (ticketProvider && date.providerEventId);
+
+  const tagNames = tags.map(tag => _o(tag.name)).join(', ');
+  const artistNames = artists
+    .map(artist => artist.name)
+    .slice(0, 3)
+    .join(', ');
+
+  const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
 
   return (
-    <div className={classNames(['container', isWide && 'wide'])}>
+    <div
+      className={classNames([
+        'container',
+        isWide && 'wide',
+        hasTicketButton && 'has-tickets',
+      ])}
+    >
       <div className="img">
         <Link route="event" params={linkParams}>
           <a {...aProps}>
@@ -103,43 +127,58 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
-          {ticketsUrl && (
+          {hasTicketButton && (
             <div className="tickets">
-              <a
-                rel="nofollow"
-                target="_blank"
-                href={generateTicketRedirectUrl(event.id, dateIndex)}
-                className="buy-tickets"
-              >
-                {__('EventTile.tickets')}
-              </a>
+              {ticketsUrl && (
+                <a
+                  className="button"
+                  href={generateTicketRedirectUrl(event.id, dateIndex)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {__('EventTile.tickets')}
+                </a>
+              )}
+              {ticketProvider && date.providerEventId && (
+                <button
+                  className="button"
+                  onClick={() => setShowTicketModal(true)}
+                >
+                  {__('EventTile.tickets')}
+                </button>
+              )}
             </div>
           )}
         </div>
-        <div className="music">
-          <Link route="event" params={linkParams}>
-            <a {...aProps}>
-              {!!tags.length && (
-                <span className="tags">
-                  {tags.map(tag => _o(tag.name)).join(', ')}
-                </span>
-              )}
-              {artists && !!artists.length && (
-                <span className="artists">
-                  {!!tags.length && ' - '}
-                  {artists
-                    .map(artist => artist.name)
-                    .slice(0, 3)
-                    .join(', ')}
-                  {artists.length > 3
-                    ? ' ' +
-                      __('EventTile.andNOthers', { n: artists.length - 3 })
-                    : ''}
-                </span>
-              )}
-            </a>
-          </Link>
-        </div>
+        {(tagNames || artistNames) && (
+          <div className="music">
+            <Link route="event" params={linkParams}>
+              <a {...aProps}>
+                <ResponsiveEllipsis
+                  text={`${tagNames}${artistNames &&
+                    tagNames &&
+                    ' - '}${artistNames}${
+                    artists.length > 3
+                      ? ' ' +
+                        __('EventTile.andNOthers', { n: artists.length - 3 })
+                      : ''
+                  }`}
+                  maxLine={2}
+                  ellipsis="..."
+                />
+              </a>
+            </Link>
+          </div>
+        )}
+        {!!date.providerEventId && (
+          <EventTicketModal
+            ticketProvider={tickets.provider}
+            eventId={date.providerEventId}
+            providerData={tickets.providerData}
+            isOpen={showTicketModal}
+            onClose={() => setShowTicketModal(false)}
+          />
+        )}
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -170,6 +209,9 @@ function EventTile(props) {
         .title-date-location {
           padding: ${dimensions.tilePadding} 0.5em 0 0;
           box-sizing: border-box;
+          width: 99%;
+        }
+        .has-tickets .title-date-location {
           width: calc(100% - 5em);
         }
         .tickets {
@@ -208,7 +250,7 @@ function EventTile(props) {
           background: url(/static/img/event-tile-location.svg) left 0.1em center
             no-repeat;
         }
-        .buy-tickets {
+        .tickets .button {
           border: 1px solid #686868;
           display: block;
           color: #fff;

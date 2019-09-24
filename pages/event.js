@@ -206,7 +206,7 @@ export function EventPage(props) {
             <div
               dangerouslySetInnerHTML={{
                 __html: (_o(description) || facebook.description).replace(
-                  /(\/n)/g,
+                  /(\n)/g,
                   '<br/>'
                 ),
               }}
