@@ -47,7 +47,7 @@ function VenueSlider(props) {
 
   const [containerRef, setContainerRef] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [translateX, setTranslateX] = useState(getOffsetForSlide(currentSlide));
+  const [translateX, setTranslateX] = useState(0);
   const [swiping, setSwiping] = useState(false);
   const [isImageModalOpen, toggleIsImageModalOpen] = useToggleState(false);
   const offsetX = useRef(0);

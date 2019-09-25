@@ -1,19 +1,22 @@
+import ReactMarkdown from 'react-markdown';
+
 import withPageLayout from '../components/PageLayout';
-import { getGhostPageById } from '../lib/ghost';
+import { getContentBySlug } from '../lib/api';
+import { _o } from '../lib/i18n';
 
 function PrivacyPolicyPage(props) {
-  const { ghostPage } = props;
-  const { title, html } = ghostPage;
+  const { page } = props;
+  const { title, body } = page;
   return (
     <main>
-      <h1>{title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <h1>{_o(title)}</h1>
+      <ReactMarkdown source={_o(body)} />
     </main>
   );
 }
 
 PrivacyPolicyPage.getInitialProps = async () => ({
-  ghostPage: await getGhostPageById('5cf8e1dd372b3200012d8942'),
+  page: await getContentBySlug('pages', 'privacy-policy-and-cookie-statement'),
 });
 
 export default withPageLayout()(PrivacyPolicyPage);

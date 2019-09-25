@@ -15,6 +15,7 @@ ResponsiveImage.propTypes = {
   styles: PropTypes.any,
   className: PropTypes.string,
   scale: PropTypes.bool,
+  progressive: PropTypes.bool,
 };
 
 export default function ResponsiveImage(props) {
@@ -30,6 +31,7 @@ export default function ResponsiveImage(props) {
     styles = null,
     className = null,
     scale = false,
+    progressive = true,
   } = props;
 
   if (!url) {
@@ -82,7 +84,8 @@ export default function ResponsiveImage(props) {
       <picture
         className={`container ${containerClasses.join(' ')}`.trim()}
         style={{
-          backgroundImage: visible ? `url(${progressiveImgUrl})` : null,
+          backgroundImage:
+            progressive && visible ? `url(${progressiveImgUrl})` : null,
           ...style,
         }}
       >

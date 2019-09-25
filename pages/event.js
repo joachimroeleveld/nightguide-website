@@ -153,6 +153,7 @@ export function EventPage(props) {
                   maxWidth: '320px',
                 }}
                 alt={title || facebook.title}
+                progressive={false}
               />
             </div>
           )}
