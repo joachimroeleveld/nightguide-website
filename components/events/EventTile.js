@@ -228,7 +228,8 @@ function EventTile(props) {
           overflow: hidden;
           border-top-left-radius: ${dimensions.tileRadius};
         }
-        .img a {
+        .img a,
+        .img :global(.container) {
           display: block;
           width: 100%;
           height: 100%;
