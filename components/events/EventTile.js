@@ -249,6 +249,9 @@ function EventTile(props) {
           padding-left: 1.5em;
           background: url(/static/img/event-tile-location.svg) left 0.1em center
             no-repeat;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         .tickets .button {
           border: 1px solid #686868;
