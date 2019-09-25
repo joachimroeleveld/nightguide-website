@@ -199,7 +199,7 @@ function EventsPage(props) {
                 routeParams={routeParams}
                 key={event.id + event.dateIndex}
                 event={event}
-                wideQuery="(min-width: 25em)"
+                wideQuery="(min-width: 50em)"
               />
             ))}
           </div>

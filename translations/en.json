@@ -366,7 +366,7 @@
     "dateFilters": {
       "today": "Today",
       "tomorrow": "Tomorrow",
-      "thisWeek": "This week",
+      "next7Days": "Next 7 days",
       "thisWeekend": "This weekend"
     },
     "genres": {

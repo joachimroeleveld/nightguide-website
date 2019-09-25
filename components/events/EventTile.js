@@ -98,24 +98,15 @@ function EventTile(props) {
         hasTicketButton && 'has-tickets',
       ])}
     >
-      <div className="img">
-        <Link route="event" params={linkParams}>
-          <a {...aProps}>
-            <ResponsiveImage
-              scale={true}
-              /*language=CSS*/
-              {...css.resolve`
-            .container {
-              display: block;
-              width: 100%;  
-              height: 100%;
-            }
-          `}
-              {...imgProps}
-            />
-          </a>
-        </Link>
-      </div>
+      {!!images.length && (
+        <div className="img">
+          <Link route="event" params={linkParams}>
+            <a {...aProps}>
+              <ResponsiveImage scale={true} {...imgProps} />
+            </a>
+          </Link>
+        </div>
+      )}
       <div className="body">
         <div className="top">
           <div className="title-date-location">
@@ -228,8 +219,19 @@ function EventTile(props) {
           color: #b7b7b7;
         }
         .img {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: no-repeat ${colors.imagePlaceholder};
+          background-size: cover;
           overflow: hidden;
           border-top-left-radius: ${dimensions.tileRadius};
+        }
+        .img a {
+          display: block;
+          width: 100%;
+          height: 100%;
         }
         .wide .img {
           border-bottom-left-radius: ${dimensions.tileRadius};

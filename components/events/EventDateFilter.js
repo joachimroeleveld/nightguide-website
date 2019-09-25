@@ -41,7 +41,7 @@ function EventDateFilter(props) {
   }, [dateTo, dateFrom]);
 
   const onChange = dateFilterId => e => {
-    if (dateFilterId === 'thisWeek') {
+    if (dateFilterId === 'next7Days') {
       props.onChange({ dateFilterId: null, dateFrom: null, dateTo: null });
     } else if (dateFilterId !== 'custom') {
       const [dateFrom, dateTo] = getDateFilterById(dateFilterId);
@@ -134,8 +134,8 @@ function EventDateFilter(props) {
     <div className="container">
       <RadioButton
         checked={!dateFilterId}
-        onChange={onChange('thisWeek')}
-        label={__('EventFilters.dateFilters.thisWeek')}
+        onChange={onChange('next7Days')}
+        label={__('EventFilters.dateFilters.next7Days')}
       />
       <RadioButton
         checked={dateFilterId === 'today'}
