@@ -151,7 +151,7 @@ const withPageLayout = (opts = {}) => Component => {
                 max-width: ${dimensions.pageWidth};
               }
               .has-image .subtitle {
-                margin-top: 0.8em;
+                margin-top: 1.4em;
               }
               .has-image h1 {
                 margin: 0;
