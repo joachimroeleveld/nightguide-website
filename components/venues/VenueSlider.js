@@ -42,6 +42,10 @@ function VenueSlider(props) {
   const { name, images, description } = venue;
   const imgProps = { widths: imgWidths, sizes: imgSizes };
 
+  if (!images.length) {
+    return null;
+  }
+
   const getOffsetForSlide = slide =>
     -slide * (containerDimensions ? containerDimensions.width : 0);
 
@@ -173,9 +177,7 @@ function VenueSlider(props) {
                 <Pager itemCount={slidesCount} currentIndex={currentSlide} />
               </div>
               <div className="bg-image">
-                {images.length && (
-                  <Img bigOverlay={true} url={images[0].url} {...imgProps} />
-                )}
+                <Img bigOverlay={true} url={images[0].url} {...imgProps} />
               </div>
             </div>
           )}

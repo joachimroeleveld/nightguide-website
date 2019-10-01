@@ -1,1 +1,3 @@
+function initializeApp() {}
+
 export default [];

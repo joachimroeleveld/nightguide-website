@@ -16,7 +16,7 @@ function PrivacyPolicyPage(props) {
 }
 
 PrivacyPolicyPage.getInitialProps = async () => ({
-  page: await getContentBySlug('pages', 'privacy-policy-and-cookie-statement'),
+  page: await getContentBySlug('privacy-policy-and-cookie-statement'),
 });
 
 export default withPageLayout()(PrivacyPolicyPage);

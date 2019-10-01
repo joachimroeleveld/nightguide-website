@@ -304,6 +304,6 @@ VenuePage.getInitialProps = async ctx => {
   };
 };
 
-const getBreadcrumbs = ({ venue }) => [{ key: 'venue', title: venue.name }];
+const breadcrumbs = ({ venue }) => [{ key: 'venue', title: venue.name }];
 
-export default withPageLayout({ getBreadcrumbs })(VenuePage);
+export default withPageLayout({ breadcrumbs })(VenuePage);

@@ -13,23 +13,30 @@ CityMenu.propTypes = {
 function CityMenu(props) {
   const { routeParams, pageSlug, router } = props;
 
+  const menuItems = [
+    {
+      route: `/${pageSlug}`,
+      label: __('menu.discover'),
+      active: router.asPath === `/${pageSlug}`,
+    },
+    {
+      route: 'events',
+      label: __('menu.events'),
+      active: router.route === '/events',
+    },
+  ];
+
+  if (pageSlug === 'nl/amsterdam') {
+    menuItems.push({
+      route: 'articles',
+      label: __('menu.articles'),
+      active: router.route === '/articles',
+    });
+  }
+
   return (
     <div className="container">
-      <HorizontalMenu
-        items={[
-          {
-            route: `/${pageSlug}`,
-            label: __('menu.discover'),
-            active: router.asPath === `/${pageSlug}`,
-          },
-          {
-            route: 'events',
-            label: __('menu.events'),
-            active: router.route === '/events',
-          },
-        ]}
-        routeParams={routeParams}
-      />
+      <HorizontalMenu items={menuItems} routeParams={routeParams} />
       <div className="separator" />
       {/*language=CSS*/}
       <style jsx>{`

@@ -1,5 +1,4 @@
 import React, { memo, useMemo, useState } from 'react';
-import css from 'styled-jsx/css';
 import PropTypes from 'prop-types';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
@@ -98,15 +97,15 @@ function EventTile(props) {
         hasTicketButton && 'has-tickets',
       ])}
     >
-      {!!images.length && (
-        <div className="img">
+      <div className="img">
+        {!!images.length && (
           <Link route="event" params={linkParams}>
             <a {...aProps}>
               <ResponsiveImage scale={true} {...imgProps} />
             </a>
           </Link>
-        </div>
-      )}
+        )}
+      </div>
       <div className="body">
         <div className="top">
           <div className="title-date-location">

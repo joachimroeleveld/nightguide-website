@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import pick from 'lodash/pick';
 import flatten from 'lodash/flatten';
 import qs from 'qs';
-import moment from 'moment-timezone';
 
 import { setUrlParams } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
@@ -14,7 +13,7 @@ import {
   getTags,
   getVenue,
 } from '../lib/api';
-import __ from '../lib/i18n';
+import __, { __city } from '../lib/i18n';
 import colors from '../styles/colors';
 import EventTile from '../components/events/EventTile';
 import { useEffectSkipFirst, useWindowWidth } from '../lib/hooks';
@@ -24,7 +23,7 @@ import Spinner from '../components/Spinner';
 import EventFilters from '../components/events/EventFilters';
 import CityMenu from '../components/CityMenu';
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 function EventsPage(props) {
   const { pageSlug, events: initialEvents, routeParams, tags = [] } = props;
@@ -167,8 +166,6 @@ function EventsPage(props) {
         />
       </Head>
 
-      <h1>{__('EventsPage.title', { city: cityName })}</h1>
-
       <div className="menu">
         <CityMenu pageSlug={pageSlug} routeParams={routeParams} />
       </div>
@@ -225,7 +222,10 @@ function EventsPage(props) {
             >
               <PrimaryButton
                 title={__('EventsPage.loadNMoreEvents', {
-                  n: Math.min(20, totalCount - ITEMS_PER_PAGE * currentPage),
+                  n: Math.min(
+                    ITEMS_PER_PAGE,
+                    totalCount - ITEMS_PER_PAGE * currentPage
+                  ),
                 })}
               />
             </div>
@@ -292,6 +292,9 @@ function EventsPage(props) {
           margin: 2em 0 1.5em;
         }
         @media (max-width: 800px) {
+          .filters {
+            margin: -1em 0 0;
+          }
           .menu {
             display: none;
           }
@@ -327,21 +330,14 @@ async function getSearchSubjects(query) {
 
 function getEventPage({ query = {}, ...otherOpts }) {
   return getEvents({
-    query: {
-      ...pick(query, [
-        'pageSlug',
-        'dateFrom',
-        'dateTo',
-        'artist',
-        'venue',
-        'tags',
-      ]),
-      dateTo:
-        query.dateTo ||
-        moment()
-          .add(1, 'weeks')
-          .toDate(),
-    },
+    query: pick(query, [
+      'pageSlug',
+      'dateFrom',
+      'dateTo',
+      'artist',
+      'venue',
+      'tags',
+    ]),
     serialize: false,
     ...otherOpts,
   });
@@ -380,6 +376,10 @@ const parseQuery = ({ dateFrom, dateTo, page, ...query }) => ({
   dateTo: dateTo ? new Date(dateTo) : undefined,
 });
 
-const getBreadcrumbs = () => [{ key: 'events' }];
+const breadcrumbs = () => [{ key: 'events' }];
 
-export default withPageLayout({ getBreadcrumbs })(EventsPage);
+export default withPageLayout({
+  breadcrumbs,
+  title: ({ pageSlug }) =>
+    __('EventsPage.title', { city: __city(pageSlug)('name') }),
+})(EventsPage);

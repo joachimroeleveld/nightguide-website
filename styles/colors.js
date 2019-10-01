@@ -23,4 +23,5 @@ export default {
   placeholderColor: '#9A9A9A',
   focus: '#333333',
   imagePlaceholder: '#3d3d3d',
+  textPurple: '#CABCE8',
 };

@@ -10,6 +10,7 @@ function TextStyles() {
       h1 {
         font-weight: 700;
         font-size: 1.333em;
+        line-height: 1.3;
       }
       h2 {
         font-size: 1.167em;

@@ -1,7 +1,9 @@
-import { useMemo, memo, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import css from 'styled-jsx/css';
 import Modal from 'react-modal';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import find from 'lodash/find';
 
 import { Link } from '../routes';
 import { useWindowWidth } from '../lib/hooks';
@@ -9,6 +11,9 @@ import colors from '../styles/colors';
 import __, { __city } from '../lib/i18n';
 import { withNavigation } from './Navigation';
 import dimensions from '../styles/dimensions';
+import Select from './Select';
+import { getPageSlugs } from '../state/cities';
+import { getDateFilterById } from './events/util';
 
 /*language=CSS*/
 const createModalStyles = offsetTop => css.resolve`
@@ -42,30 +47,31 @@ const createModalStyles = offsetTop => css.resolve`
 `;
 
 function PrimaryMenu(props) {
-  const { open, onClose, pageSlug, routeParams, offsetTop } = props;
+  const { open, onClose, pageSlug, routeParams, offsetTop, pageSlugs } = props;
 
   const windowWidth = useWindowWidth();
 
   const items = useMemo(() => {
     let items = [];
-    if (pageSlug === 'nl/utrecht') {
-      items = items.concat([
-        { route: 'events', title: __('menu.events') },
-        { route: 'articles', title: __('menu.blog') },
-        {
-          route: 'explore',
-          title: __('menu.explore'),
-          className: 'explore',
-        },
-      ]);
+    if (pageSlug && windowWidth <= 800) {
+      items.push(
+        ...[
+          {
+            route: `/${pageSlug}`,
+            title: __('menu.discoverCity', { city: __city(pageSlug)('name') }),
+          },
+          {
+            route: `events`,
+            title: __('menu.events'),
+          },
+          {
+            route: `articles`,
+            title: __('menu.articles'),
+          },
+        ]
+      );
     }
-    if (pageSlug && windowWidth < 800) {
-      items.push({
-        route: `/${pageSlug}`,
-        title: __city(pageSlug)('name'),
-      });
-    }
-    if (!pageSlug || windowWidth < 800) {
+    if (!pageSlug) {
       items.push({ route: 'home', title: __('menu.home') });
     }
     return items;
@@ -78,7 +84,15 @@ function PrimaryMenu(props) {
     }
   }, [open, onClose]);
 
+  const onCitySelect = ({ value: pageSlug }) =>
+    Router.pushRoute(`/${pageSlug}`);
+
   const modalStyles = useMemo(() => createModalStyles(offsetTop), [offsetTop]);
+
+  const cityOptions = pageSlugs.map(pageSlug => ({
+    value: pageSlug,
+    label: __city(pageSlug)('name'),
+  }));
 
   if (windowWidth <= 800) {
     return (
@@ -90,12 +104,49 @@ function PrimaryMenu(props) {
         className={modalStyles.className}
       >
         <div className={'content'}>
+          <div className="cities">
+            <Select
+              options={cityOptions}
+              onSelect={onCitySelect}
+              value={find(cityOptions, { value: pageSlug })}
+              placeholder={__('PrimaryMenu.goToCity')}
+            />
+          </div>
           {!!items.length && (
-            <ul>
+            <ul className="menu">
               {items.map(({ route, title, className }) => (
                 <li key={route} className={className}>
                   <Link route={route} params={routeParams}>
-                    <a>{title}</a>
+                    <a>
+                      {title}
+                      {route === 'events' && (
+                        <ul className="submenu">
+                          {['today', 'tomorrow', 'thisWeekend'].map(
+                            (dateFilterId, index) => {
+                              const dateFilter = getDateFilterById(
+                                dateFilterId
+                              );
+                              return (
+                                <li key={index}>
+                                  {index !== 0 && '·'}
+                                  <Link
+                                    route="events"
+                                    params={{
+                                      ...routeParams,
+                                      dateFrom: dateFilter[0].toISOString(),
+                                      dateTo: dateFilter[1].toISOString(),
+                                      dateFilterId,
+                                    }}
+                                  >
+                                    <a>{__(`dates.${dateFilterId}`)}</a>
+                                  </Link>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      )}
+                    </a>
                   </Link>
                 </li>
               ))}
@@ -110,33 +161,37 @@ function PrimaryMenu(props) {
             display: flex;
             flex-direction: column;
           }
-          ul {
+          .menu {
             list-style: none;
             padding: 0.6em 0;
             flex-grow: 1;
           }
-          a {
+          .menu > li > a {
             display: block;
-            padding: 0.8em 2em;
+            padding: 1em ${dimensions.bodyPadding};
           }
-          a:focus {
+          .menu > li > a:focus {
             background: ${colors.focus};
           }
-          li:not(:first-of-type),
-          footer a {
-            border-top: 1px solid ${colors.separator};
+          .menu > li:not(:first-of-type)::before {
+            position: absolute;
+            background: ${colors.separator};
+            content: '';
+            width: calc(100% - ${dimensions.bodyPadding} * 2);
+            margin-left: ${dimensions.bodyPadding};
+            height: 1px;
           }
-          footer {
-            flex-grow: 1;
+          .submenu {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            margin: 0.5em -0.7em 0;
+            color: ${colors.textSecondary};
           }
-          footer a {
-            background: #171717;
+          .submenu a {
+            display: inline-block;
+            margin: 0 0.7em;
           }
-          footer.at-top a:first-child {
-            border-top: none;
+          .cities {
+            margin: 1.5em ${dimensions.bodyPadding} 0.5em;
           }
         `}</style>
       </Modal>
@@ -159,16 +214,11 @@ function PrimaryMenu(props) {
             justify-content: flex-end;
             align-items: center;
           }
-          .explore {
-            color: ${colors.textDark};
-            background-color: ${colors.primaryButton};
-            padding: 0 1em;
-            margin-left: 0.7em;
-            border-radius: 10px;
-          }
-          li a {
+          li > a {
             padding: 0 0.8em;
             font-size: 0.9em;
+          }
+          .submenu a {
           }
           li a:active,
           li a:hover {
@@ -180,4 +230,6 @@ function PrimaryMenu(props) {
   }
 }
 
-export default withNavigation(memo(PrimaryMenu));
+export default connect(state => ({
+  pageSlugs: getPageSlugs(state),
+}))(withNavigation(PrimaryMenu));

@@ -1,34 +1,25 @@
 {
   "menu": {
-    "blog": "Blog",
     "home": "Home",
-    "explore": "Explore",
     "discover": "Discover",
-    "areas": "Areas",
-    "exploreArtists": "Explore artists",
-    "exploreEvents": "Explore events",
-    "exploreVenues": "Explore venues",
-    "exploreAreas": "Explore areas",
+    "discoverCity": "Discover {{city}}",
     "events": "Events",
-    "venues": "Venues",
     "venue": "{{title}}",
-    "articles": "Articles",
     "article": "{{title}}",
     "event": "{{title}}",
-    "tag": "{{name}}"
+    "articles": "Clubs & bars"
   },
   "HomePage": {
     "meta": {
       "title": "Explore nightlife in your city | NightGuide",
-      "description": "Find the best bars, clubs & events for a great night out. Currently available in Ibiza and Utrecht."
+      "description": "Find the best bars, clubs & events for a great night out. Currently available in Ibiza."
     },
     "title": "Explore nightlife",
     "subtitle": "Find bars, clubs and events in your city for a great night out.",
     "cities": "Cities",
-    "eventsInCity": "Events in {{city}}",
-    "popularArticles": "Popular articles"
+    "eventsInCity": "Events in {{city}}"
   },
-  "cityPage": {
+  "CityPage": {
     "meta": {
       "title": "Discover bars, clubs & events in {{city}} - where to go out | NightGuide",
       "description": "Find the best nightlife in {{city}} based on your preferences."
@@ -37,16 +28,7 @@
     "popular": "Popular",
     "popularLocations": "Popular locations",
     "recommended": "Recommended",
-    "goPartyInCity": "Go party in {{city}}",
-    "cityIntro": "Find clubs, events and bars for the perfect night in Amsterdam",
-    "discoverBarsClubs": "Discover <strong>bars</strong>, <strong>clubs</strong> & <strong>events</strong> in",
-    "explore": "Explore",
-    "events": "Events",
-    "articles": "Articles",
-    "askOurStaff": "...or ask our staff where to go",
-    "startChat": "Start chat",
-    "trendingEvents": "Trending events",
-    "exploreEvents": "Explore events"
+    "cityIntro": "Find clubs, events and bars for the perfect night in Amsterdam"
   },
   "EventsPage": {
     "meta": {
@@ -57,56 +39,23 @@
     "noEvents": "No events could be found.",
     "loadNMoreEvents": "Load {{n}} more events"
   },
-  "cityExplorePage": {
+  "ArticlesPage": {
     "meta": {
-      "title": "Explore nightlife in {{city}} in {{tagCount}} categories - where to go out | NightGuide",
-      "description": "Find bars clubs and events by browsing our selection of nightlife in {{city}}."
+      "title": "Clubs & bars in {{city}} - where to go out | NightGuide",
+      "description": "Explore all clubs & bars in {{city}}."
     },
-    "explore": "Explore"
-  },
-  "cityTagPage": {
-    "exploreTagIn": "Explore <strong>{{tag}}</strong> in",
-    "explore": "Explore",
-    "events": "Events",
-    "articles": "Articles",
-    "venues": "Venues"
-  },
-  "ExploreVenuesPage": {
-    "title": "Explore venues in {{city}}",
-    "venues": "Venues"
-  },
-  "ExploreAreasPage": {
-    "title": "Explore areas in {{city}}",
-    "areas": "Areas"
-  },
-  "ExploreArtistsPage": {
-    "title": "Explore artists in {{city}}",
-    "artists": "Artists"
+    "title": "Clubs & bars in {{city}}",
+    "subtitle": "Find the best clubs and bars that {{city}} hosts."
   },
   "articlePage": {
     "meta": {
       "title": "{{title}} | NightGuide"
     }
   },
-  "cityArticlesPage": {
-    "meta": {
-      "title": "Read about nightlife in {{city}} - where to go out | NightGuide",
-      "description": "Read articles about nightlife in {{city}}"
-    },
-    "articlesAbout": "Articles about"
-  },
   "eventPage": {
     "meta": {
       "title": "{{event}} - events in {{city}} | NightGuide"
     },
-    "nDatesInPast": "{{n}} dates in past",
-    "nMoreDates": "+{{n}} more dates",
-    "noInterested": "Interested",
-    "noGoing": "Going",
-    "location": "Location",
-    "facebookPage": "Facebook page",
-    "organiser": "Organiser",
-    "similarEvents": "Similar events",
     "details": "Details",
     "artists": "Artists",
     "venue": "Venue",
@@ -166,94 +115,7 @@
     "thanksAlmostThere": "Thanks, we're almost there",
     "youreRedirected": "You are redirected to the ticket provider"
   },
-  "tag": {
-    "meta": {
-      "title": {
-        "casinos": "The best Casino's in Utrecht - where to go out | NightGuide",
-        "gay": "The best Gay bars in Utrecht - where to go out | NightGuide",
-        "international": "The best bars and pubs for Internationals - where to go out | NightGuide",
-        "locals": "Where do Locals go out in Utrecht | NightGuide",
-        "students": "The best Student Bars in Utrecht - where to go out | NightGuide",
-        "jazz": "The best Jazz bars in Utrecht - where to go out | NightGuide",
-        "live_music": "The best places for Live music in Utrecht - where to go out | NightGuide",
-        "rock": "The best places for Rock music in Utrecht - where to go out | NightGuide",
-        "techno": "The best Techno clubs in Utrecht - where to go out | NightGuide",
-        "salsa": "The best places for Salsa in Utrecht - where to go out | NightGuide",
-        "electronic": "The best places for Electronic in Utrecht - where to go out | NightGuide",
-        "bars": "The best Bars in Utrecht - where to go out | NightGuide",
-        "clubs": "The best Clubs in Utrecht - where to go out | NightGuide",
-        "cocktails": "The best Cocktail Bars in Utrecht - where to go out | NightGuide",
-        "comedy": "The best Comedy Clubs in Utrecht - where to go out | NightGuide",
-        "concerts": "The best Concert Venues in Utrecht - where to go out | NightGuide",
-        "dancing": "The best places for going out dancing in Utrecht | NightGuide",
-        "hookah": "The best Hookah Bars in Utrecht - where to go out | NightGuide",
-        "irish_pubs": "The best Irish Pubs in Utrecht - where to go out | NightGuide",
-        "karaoke": "The best Karaoke Bars in Utrecht - where to go out | NightGuide",
-        "piano": "The best Piano Bars in Utrecht - where to go out | NightGuide",
-        "craft_beer": "The best Craft Beer bars in Utrecht - where to go out | NightGuide",
-        "sports": "The best Sports Bars in Utrecht - where to go out | NightGuide",
-        "wine": "The best in Wine Bars in Utrecht - where to go out | NightGuide",
-        "beach_vibes": "The best beach clubs in Utrecht - where to go out | NightGuide",
-        "shots": "The best Shot Bars in Utrecht - where to go out | NightGuide",
-        "trendy": "Trendy places in Utrecht - where to go out | NightGuide",
-        "cheap": "The best cheap places to go out in Utrecht | NightGuide",
-        "popular": "The most popular places to go out in Utrecht | NightGuide",
-        "dating": "The best places to go on a Date in Utrecht - where to go out | NightGuide",
-        "alternative": "The best Alternative places in Utrecht  - where to go out | NightGuide",
-        "whisky": "The best Whisky bars in Utrecht - where to go out | NightGuide"
-      }
-    },
-    "titles": {
-      "casinos": "The best Casino's in",
-      "gay": "The best Gay bars in",
-      "international": "The best bars and pubs for Internationals",
-      "locals": "Where do Locals go out in",
-      "students": "The best Student Bars in",
-      "jazz": "The best Jazz bars in",
-      "live_music": "The best places for Live music in",
-      "rock": "The best places for Rock music in",
-      "techno": "The best Techno clubs in",
-      "salsa": "The best places for Salsa in",
-      "electronic": "The best places for Electronic in",
-      "bars": "The best Bars in",
-      "clubs": "The best Clubs in",
-      "cocktails": "The best Cocktail Bars in",
-      "comedy": "The best Comedy Clubs in",
-      "concerts": "The best Concert Venues in",
-      "dancing": "The best places for going out dancing in",
-      "hookah": "The best Hookah Bars in",
-      "irish_pubs": "The best Irish Pubs in",
-      "karaoke": "The best Karaoke Bars in",
-      "piano": "The best Piano Bars in",
-      "craft_beer": "The best Craft Beer bars in",
-      "sports": "The best Sports Bars in",
-      "wine": "The best in Wine Bars in",
-      "beach_vibes": "The best beach clubs in",
-      "shots": "The best Shot Bars in",
-      "trendy": "Trendy places in",
-      "cheap": "The best cheap places to go out in",
-      "popular": "The most popular places to go out in",
-      "dating": "The best places to go on a Date in",
-      "alternative": "The best Alternative places in ",
-      "whisky": "The best Whisky bars in"
-    }
-  },
   "venue": {
-    "dresscodes": {
-      "casual": "Casual",
-      "chique": "Chique",
-      "alternative": "Alternative"
-    },
-    "paymentMethods": {
-      "creditCard": "Credit card",
-      "debitCard": "Debit card",
-      "cash": "Cash"
-    },
-    "doorPolicies": {
-      "moderate": "Moderate",
-      "strict": "Strict",
-      "guestlist": "Guest list"
-    },
     "openingHours": {
       "openUntilTime": "Open until {{time}}",
       "opensAt": "Opens at {{date}}",
@@ -262,45 +124,7 @@
   },
   "city": {
     "nl/utrecht": {
-      "name": "Utrecht",
-      "intro": "Utrecht's nightlife has lots to see and do. Dynamic as it is, the city is full of bars, clubs, cafes, and more importantly things to do. With new events every week, it's hard to keep up with what's trending, what's new, or just plain and simple where to go out. Start by checking out our Trending Events.",
-      "exploreIntro": "You know what kind of person you are but have no idea what Utrecht has to offer? Then our Explorer categories were made for you. Click the one that you think fits your mood best and NightGuide will show you the best places to go.",
-      "articlesIntro": "Sometimes knowing where it is, or what's going on is not enough. Maybe you're new in town and you want to get to know how things work around here, or maybe you're an Utrecht veteran just looking for some inspiration. In any case, our Stories are here for you.",
-      "eventsIntro": "They add that little extra special to your go-to places. They are the social magnets of every season. Special events are all the rage and every place that's worth something keeps their agenda full of those evenings that are a little more out of the ordinary.",
-      "tagDescriptions": {
-        "casinos": "Driking, dancing or eating not what you're in the mood for? Then play the night away at Utrecht's top Casinos. Check out our top picks here!",
-        "gay": "The LGBTQ community has plenty of bars and clubs for you to explore. Our local guides have been to the best of them and these are their recommendations.",
-        "international": "New to the city? Ready to overcome your shyness and discover Utrecht's night live? We went ahead lined up all the best international-oriented bars, pubs and clubs in the city for you, which are sure to make you feel welcome. Whether your here as a student or a hard-working expat, we have something for you.",
-        "locals": "Don't feel like hitting the overpriced bars in the city center? Done with falling for all the tourist traps? If you're ready to experience the real, local Utrecht culture, then these are the places for you. These are NightGuide's top recommendations for bars where instead of bumping into lost tourists, you get a taste of what local life is all about.",
-        "students": "College, University, those \"best years of you life\", are well spent here in Utrecht. Whether you're looking to party every night of the week, have a quiet drink or just go out on the cheap, these recommendations are for you.",
-        "jazz": "Swanky, low-light locations. Jazz bars in Utrecht are among the best, if only you know which ones to go to. NightGuide has put together our top picks for the best places in town.",
-        "live_music": "See artists perform live remains one of the biggest spectacles on Earth. Whether in a small lost room in the middle of the city or a mega-venue filled with hundreds of thousands of screaming fans, live music remains one of the best options when deciding where to go out. NightGuide has put together the best places to listen to live music in Utrecht.",
-        "rock": "There's nothing like the energy of electric bass guitars nothing like feeling that sound shredding through the crowd. Utrecht has plenty of bars and pubs where you the focus is on the music and rock is no exception. These are NightGuide's recommendations for rock, alternative and indie in Utrecht.",
-        "techno": "The freedom to dream the night away, the thumping bass shaking your body all the way through your soul, in the cozy darkness of a club - is what techno is all about. And here, is where you can go out to techno in Utrecht.",
-        "salsa": "From the Caribbean to the world, Salsa's undeniable charm keeps attracting dancers to this day. Whether you're a beginner or a pro, Utrecht has some great places where you can show off your moves. These are NightGuide's recommendations for the best places to go salsa dancing in Utrecht.",
-        "electronic": "Electro, Electronica, EDM, House, Techno all have 1 thing in common: high-paced beats that fill the dance floor with energy. These are our top picks for the best places to go out to electronico music.",
-        "bars": "Where are the best bars, pubs, cafes and other regular places to quench your thirst with a good old beer or a nice juicy cocktail? In Utrecht there's plenty to choose from, and NightGuide is here to help!",
-        "clubs": "Whether you're more into HipHop & RnB or more into electronic music, Utrecht has a club waiting for you. These are NightGuide's recommendations for where to go out 7 nights a week in the city.",
-        "cocktails": "Martini's, Mai Tais, Caipirinhas, Margaritas, Pina Coladas. Cocktails are an art form and add that extra special touch to a good night out. Where to find good Cocktail bars can be difficult, but don't worry we've gone ahead and selected the best of Utrecht for you.",
-        "comedy": "Making a comeback around the world, comedy clubs as inspired by the american tradition, are more and more a great way to spend a night out. The usual food and drinks are available combined with the best laughs of the night. These are our picks for the best Comedy Clubs in Utrecht.",
-        "concerts": "Thousands of screaming fans, stadiums, halls decked with speakers all the way to the ceiling. Big and small, Utrecht has got some of the best concert venues in the country. These are the best ones.",
-        "dancing": "Dance your heart out in Utrecht's top dancing spots. From the traditional clubs, to bars where you can dance. Top 40, hits, Techno, RnB, HipHop. Whatever you want, Utrecht has it. These are our picks.",
-        "hookah": "Hookah lounges and Shisha bars are a great way to relax and socialize. Away from the loud music, these places can be crowded, yet they are always cozy. Get your best conversation going, order a drink and enjoy Utrecht's best hookah with our help. These are our top picks for Utrecht's hookah bars.",
-        "irish_pubs": "From Ireland to the world, there are very little variations on the concept of a pub that are so recognizable. It's dark brown wood, great beer and just overall Irish friendliness make these some of the best places to go out in Utrecht. These are our recommendations.",
-        "karaoke": "Off-key, on-key doesn't matter, sometimes the best plan is to just get in front of the mic and sing. These are the best places to go to in Utrecht for a Karaoke night.",
-        "piano": "Sometimes forgotten and hard to find, piano bars are a solid plan for a night that's out of the ordinary. With live performances that add to the atmosphere piano bars in Utrecht are waiting for you to discover them.",
-        "craft_beer": "Escape from the boring mainstream, normal, supermarket beer and dive into the world of flavors that Utrecht's craft beer scene has to offer. These are the best places to try local and international craft & specialty beers.",
-        "sports": "Whether it is the Champion's League, the Super Bowl, Formula 1, the Tour de France, the Permier League, the World Cup or the Olympics, Utrecht's sports bars are here for you.  Play a round of darts, pool or table football, order a beer and relax, these are the best places in Utrecht to do so.",
-        "wine": "Complicated for some, obvious for others, wine remains the drink of choice for many when on an night out. Whether you're looking for a tasting to discover new reds, or just want to sit back and casually sip easy wines, Utrecht is the place to be. These are our top picks for the best wine bars in Utrecht.",
-        "beach_vibes": "What if we would tell you that you can enjoy the best of the summer right here in the middle of the city? Utrecht's beach clubs are the best choice in the city for when the sun is out. Get your sunglasses on and set out to discover one of our top recommendations for the best beach clubs in Utrecht.",
-        "shots": "Shots! Shots! Shots! Shots! If you're looking for one of those nights you're sure to regret these are our recommendations for the best shot bars in Utrecht. Filled with strong liquor and people ready to party. Shot bars in Utrecht don't disappoint.",
-        "trendy": "If you're the type that struggles to be ahead of the curve with the latest spots in the city, this guide is for you. These are NightGuide's Utrecht spots that are trending right now.",
-        "cheap": "Cheap by nature, or just not feeling like breaking the bank for a beer. Utrecht's great selection of amazing places where you can go drink on the cheap will not disappoint you. These are our recommendations for places that ask for a little but give back a lot.",
-        "popular": "The classics of Utrecht's night, these spots are reliably full and good. If you're new to the city this is a great place to start. These are NightGuide's top picks for the most popular spots in Utrecht.",
-        "dating": "Did that Tinder match finally agree to go out with you but you're totally lost on where to go? NightGuide has got you covered. These are the best spots for a Date Night out in Utrecht.",
-        "alternative": "Hate the mainstream crowds and tired of drunk teenagers and crappy music? Our experts have put together the best guide in the city to guide you through the illusive alternative scene.",
-        "whisky": "Whether you're for Whisky or Whiskey Utrecht's got some of the best places to go to. Whether you're a connoisseur or a newbie trying to discover it, Utrecht's got enough bars to suit your needs."
-      }
+      "name": "Utrecht"
     },
     "es/ibiza": {
       "meta": {
@@ -329,11 +153,8 @@
   "yes": "Yes",
   "pickDate": "Pick dates",
   "pickADateRange": "Please select a date range",
-  "buyTickets": "Buy tickets",
-  "noEventsForDates": "No events exist for these dates",
   "readMore": "Read more",
   "readLess": "Read less",
-  "video": "Video",
   "dates": {
     "now": "Now",
     "today": "Today",
@@ -364,9 +185,9 @@
     "searchLocation": "Search a location...",
     "searchArtist": "Search an artist...",
     "dateFilters": {
+      "noFilter": "All events",
       "today": "Today",
       "tomorrow": "Tomorrow",
-      "next7Days": "Next 7 days",
       "thisWeekend": "This weekend"
     },
     "genres": {
@@ -375,7 +196,7 @@
     }
   },
   "EventDateFilters": {
-    "custom": "Custom",
+    "pickDates": "Pick dates",
     "dates": "Dates"
   },
   "FilterModal": {
@@ -419,5 +240,13 @@
   },
   "AutoCompleteInput": {
     "startTyping": "Type for suggestions..."
+  },
+  "PrimaryMenu": {
+    "goToCity": "Select a city..."
+  },
+  "VenuesArticle": {
+    "theList": "The list",
+    "seeAllEvents": "See all events",
+    "upcomingEvents": "Upcoming events"
   }
 }

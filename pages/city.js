@@ -10,10 +10,9 @@ import { getVenues, getEvents, getConfigByName } from '../lib/api';
 import { Link } from '../routes';
 import VenueRow from '../components/venues/VenueRow';
 import EventTile from '../components/events/EventTile';
-import colors from '../styles/colors';
 import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
-import { withNavigation } from '../components/Navigation';
+import SeeAllButton from '../components/SeeAllButton';
 
 function CityPage(props) {
   const {
@@ -29,10 +28,10 @@ function CityPage(props) {
   return (
     <main>
       <Head>
-        <title>{__('cityPage.meta.title', { city: cityName })}</title>
+        <title>{__('CityPage.meta.title', { city: cityName })}</title>
         <meta
           name="description"
-          content={__('cityPage.meta.description', { city: cityName })}
+          content={__('CityPage.meta.description', { city: cityName })}
         />
       </Head>
 
@@ -42,19 +41,18 @@ function CityPage(props) {
 
       {popularEvents && (
         <section>
-          <h2>{__('cityPage.popular')}</h2>
+          <h2>{__('CityPage.popular')}</h2>
           <EventRow events={popularEvents} routeParams={routeParams} />
+          <Link route="events" params={routeParams}>
+            <SeeAllButton title={__('CityPage.allEvents')} />
+          </Link>
         </section>
       )}
-
-      <Link route="events" params={routeParams}>
-        <a className="all-events">{__('cityPage.allEvents')}</a>
-      </Link>
 
       <div className="grid-2">
         {sponsoredEvent && (
           <section className="grid-area-b">
-            <h2>{__('cityPage.recommended')}</h2>
+            <h2>{__('CityPage.recommended')}</h2>
             <EventTile
               wideQuery={'(min-width: 25em)'}
               routeParams={routeParams}
@@ -65,7 +63,7 @@ function CityPage(props) {
 
         {popularLocations && (
           <section className="popular-locations grid-area-a">
-            <h2>{__('cityPage.popularLocations')}</h2>
+            <h2>{__('CityPage.popularLocations')}</h2>
             <VenueRow venues={popularLocations} routeParams={routeParams} />
           </section>
         )}
@@ -87,16 +85,6 @@ function CityPage(props) {
           .menu {
             display: none;
           }
-          .all-events {
-            display: block;
-            border: 2px solid #686868;
-            padding: 0.5em 2em;
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-            border-radius: 3px;
-            margin: 1em 0 0;
-          }
         }
         @media (min-width: 800px) {
           .grid-2 {
@@ -116,14 +104,6 @@ function CityPage(props) {
           }
           .popular-locations {
             padding-right: 3em;
-          }
-          .all-events {
-            display: block;
-            color: ${colors.linkText};
-            background: url(/static/img/see-all-button.svg) no-repeat left
-              center;
-            padding-left: 0.8em;
-            margin: 1em 0;
           }
         }
       `}</style>
@@ -179,19 +159,8 @@ CityPage.getInitialProps = async ctx => {
   };
 };
 
-// Use HOC to get access to page slug to supply it to withPageLayout() call
-function CityPageHoc(props) {
-  const { pageSlug, headerImage } = props;
-
-  const Page = withPageLayout({
-    title: __city(pageSlug)('name'),
-    subtitle: __city(pageSlug)('subtitle'),
-    headerImage: headerImage,
-  })(CityPage);
-
-  return <Page {...props} />;
-}
-
-CityPageHoc.getInitialProps = CityPage.getInitialProps;
-
-export default withNavigation(CityPageHoc);
+export default withPageLayout({
+  title: ({ pageSlug }) => __city(pageSlug)('name'),
+  subtitle: ({ pageSlug }) => __city(pageSlug)('subtitle'),
+  headerImage: ({ headerImage }) => headerImage,
+})(CityPage);

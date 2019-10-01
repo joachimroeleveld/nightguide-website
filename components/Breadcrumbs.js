@@ -42,9 +42,6 @@ function Breadcrumbs(props) {
       )}
       {/*language=CSS*/}
       <style jsx>{`
-        .container {
-          margin-top: 1rem;
-        }
         li {
           display: inline-block;
           list-style: none;

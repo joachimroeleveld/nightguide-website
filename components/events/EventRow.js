@@ -112,15 +112,15 @@ function EventRow(props) {
           align-items: center;
         }
         .more .button {
-          background-color: ${colors.primaryButton};
+          border: 1px solid #686868;
           display: block;
-          color: ${colors.textDark};
+          color: #fff;
           text-align: center;
           border-radius: 3px;
-          border: none;
+          font-size: inherit;
           box-sizing: border-box;
           padding: 0.25em 0.5em;
-          margin: 1em 0 0.3em;
+          margin: 0.5em 0 0.3em;
         }
         .events {
           display: grid;

@@ -568,11 +568,11 @@ EventPage.getInitialProps = async ctx => {
   };
 };
 
-const getBreadcrumbs = ({ event }) => [
+const breadcrumbs = ({ event }) => [
   { key: 'events', route: 'events' },
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
 export default withPageLayout({
-  getBreadcrumbs,
+  breadcrumbs,
 })(EventPage);
