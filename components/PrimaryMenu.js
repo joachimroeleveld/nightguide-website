@@ -64,12 +64,14 @@ function PrimaryMenu(props) {
             route: `events`,
             title: __('menu.events'),
           },
-          {
-            route: `articles`,
-            title: __('menu.articles'),
-          },
         ]
       );
+      if (pageSlug === 'nl/amsterdam') {
+        items.push({
+          route: `articles`,
+          title: __('menu.articles'),
+        });
+      }
     }
     if (!pageSlug) {
       items.push({ route: 'home', title: __('menu.home') });
@@ -110,6 +112,7 @@ function PrimaryMenu(props) {
               onSelect={onCitySelect}
               value={find(cityOptions, { value: pageSlug })}
               placeholder={__('PrimaryMenu.goToCity')}
+              isSearchable={false}
             />
           </div>
           {!!items.length && (
