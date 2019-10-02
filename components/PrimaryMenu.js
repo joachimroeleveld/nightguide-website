@@ -66,7 +66,7 @@ function PrimaryMenu(props) {
           },
         ]
       );
-      if (pageSlug !== 'es/ibiza') {
+      if (pageSlug === 'nl/amsterdam') {
         items.push({
           route: `articles`,
           title: __('menu.articles'),
