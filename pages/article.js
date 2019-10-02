@@ -16,7 +16,7 @@ ArticlePage.getInitialProps = async ctx => {
   const { query, res } = ctx;
   const article = await getContentBySlug(query.article);
 
-  const currentSlug = article.urlSlugs.slice(-1)[0];
+  const currentSlug = article.urlSlugs[0];
   if (res && currentSlug !== query.article) {
     return redirect(res, currentSlug);
   }

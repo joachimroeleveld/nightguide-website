@@ -18,7 +18,7 @@ function ArticleTile(props) {
   const { title, images, urlSlugs, thumbnail } = article;
 
   const image = thumbnail && find(images, { id: thumbnail });
-  const url = urlSlugs.slice(-1)[0];
+  const url = urlSlugs[0];
   const linkParams = { ...routeParams, article: url };
 
   return (
