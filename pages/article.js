@@ -2,6 +2,7 @@ import React from 'react';
 
 import { getContentBySlug } from '../lib/api';
 import VenuesArticle from './venuesArticle';
+import { redirect } from '../lib/routing';
 
 function ArticlePage(props) {
   const { article } = props;
@@ -12,8 +13,13 @@ function ArticlePage(props) {
 }
 
 ArticlePage.getInitialProps = async ctx => {
-  const { query } = ctx;
+  const { query, res } = ctx;
   const article = await getContentBySlug(query.article);
+
+  const currentSlug = article.urlSlugs.slice(-1)[0];
+  if (res && currentSlug !== query.article) {
+    return redirect(res, currentSlug);
+  }
 
   let PageComponent = getPageComponent(article.type);
 
