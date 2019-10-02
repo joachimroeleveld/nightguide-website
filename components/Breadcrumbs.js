@@ -31,7 +31,7 @@ function Breadcrumbs(props) {
       {breadcrumbs.map(
         ({ key, route, params = {}, label, disabled }, index) => {
           let elem;
-          if (!disabled && !(!isCompact && index !== breadcrumbs.length - 1)) {
+          if (!disabled && !(!isCompact && index === breadcrumbs.length - 1)) {
             elem = (
               <Link route={route} params={{ ...params, ...routeParams }}>
                 <a>{label}</a>
