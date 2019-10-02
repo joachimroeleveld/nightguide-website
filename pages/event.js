@@ -20,7 +20,7 @@ import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/artists/ArtistList';
-import { classNames, createMapsUrl } from '../lib/util';
+import { classNames, createMapsUrl, trimToDescription } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
@@ -116,12 +116,7 @@ export function EventPage(props) {
         </title>
         <meta
           name="description"
-          content={
-            (_o(description) || facebook.description)
-              .slice(0, 160)
-              .replace('\n', ' ')
-              .replace('  ', ' ') + '...'
-          }
+          content={trimToDescription(_o(description) || facebook.description)}
         />
       </Head>
       <header className="header">

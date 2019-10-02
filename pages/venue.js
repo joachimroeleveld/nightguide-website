@@ -17,7 +17,7 @@ import { useToggleState } from '../lib/hooks';
 import ImagesModal from '../components/ImagesModal';
 import SeeOnMap from '../components/SeeOnMap';
 import React from 'react';
-import { createMapsUrl } from '../lib/util';
+import { createMapsUrl, trimToDescription } from '../lib/util';
 
 function VenuePage(props) {
   const { venue, routeParams, events, similarVenues, pageSlug } = props;
@@ -64,12 +64,7 @@ function VenuePage(props) {
         {description && (
           <meta
             name="description"
-            content={
-              _o(description)
-                .slice(0, 160)
-                .replace('\n', ' ')
-                .replace('  ', ' ') + '...'
-            }
+            content={trimToDescription(_o(description))}
           />
         )}
       </Head>

@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import withPageLayout from '../components/PageLayout';
 import __, { _o } from '../lib/i18n';
 import { getEvents, getVenues } from '../lib/api';
@@ -10,7 +12,7 @@ import EventRow from '../components/events/EventRow';
 import { useScrollToId, useToggleState } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import StickyNavigation from '../components/StickyNavigation';
-import { classNames } from '../lib/util';
+import { classNames, trimToDescription } from '../lib/util';
 import SeeAllButton from '../components/SeeAllButton';
 
 function VenuesArticle(props) {
@@ -50,6 +52,11 @@ function VenuesArticle(props) {
 
   return (
     <main className="container">
+      <Head>
+        <title>{__('VenuesArticle.meta.title', { title: _o(title) })}</title>
+        <meta name="description" content={trimToDescription(_o(intro))} />
+      </Head>
+
       <header>
         <h1>{_o(title)}</h1>
         <p
