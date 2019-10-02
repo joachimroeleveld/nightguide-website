@@ -15,9 +15,9 @@ ArticleTile.propTypes = {
 
 function ArticleTile(props) {
   const { routeParams, article, imgWidths, imgSizes } = props;
-  const { title, images, urlSlugs, thumbnail } = article;
+  const { title, images, urlSlugs, coverImage } = article;
 
-  const image = thumbnail && find(images, { id: thumbnail });
+  const image = coverImage && find(images, { id: coverImage });
   const url = urlSlugs[0];
   const linkParams = { ...routeParams, article: url };
 

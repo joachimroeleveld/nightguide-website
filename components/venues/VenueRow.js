@@ -45,16 +45,6 @@ function VenueRow(props) {
             </div>
           ))}
         </div>
-        <div className="more">
-          <div className="inner">
-            <div className="content">
-              {__('VenueRow.moreLocations')}
-              <Link route="events" params={{ ...routeParams, ...seeAllParams }}>
-                <a className="button">{__('VenueRow.discoverMore')}</a>
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
       <div className="controls">
         <RowControls onBackPress={scrollLeft} onNextPress={scrollRight} />
@@ -77,44 +67,10 @@ function VenueRow(props) {
         .container > .inner::-webkit-scrollbar {
           display: none;
         }
-        .more {
-          flex-basis: 15em;
-          flex-shrink: 0;
-        }
         .venues {
           display: grid;
           grid-gap: ${dimensions.gridGap.S};
           grid-template-columns: repeat(${venues.length}, 9.2em);
-        }
-        .more .inner {
-          height: 100%;
-          font-size: 13px;
-          background: ${colors.tileBg};
-          border-radius: ${dimensions.tileRadius};
-          box-shadow: ${colors.tileShadow};
-          padding: 1em;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 0 ${dimensions.gridGap.S};
-        }
-        .more .content {
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .more .button {
-          border: 1px solid #686868;
-          display: block;
-          color: #fff;
-          text-align: center;
-          border-radius: 3px;
-          font-size: inherit;
-          box-sizing: border-box;
-          padding: 0.25em 0.5em;
-          margin: 0.5em 0 0.3em;
         }
         @media (max-width: 800px) {
           .controls {
@@ -125,9 +81,6 @@ function VenueRow(props) {
           .venues {
             grid-template-columns: repeat(${venues.length}, 10.81em);
             grid-gap: ${dimensions.gridGap.L};
-          }
-          .more .inner {
-            margin: 0 ${dimensions.gridGap.L};
           }
         }
       `}</style>

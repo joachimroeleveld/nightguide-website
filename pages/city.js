@@ -149,6 +149,11 @@ CityPage.getInitialProps = async ctx => {
         ids: popularLocationIds,
       },
     })).results;
+    popularLocations.sort((a, b) => {
+      return (
+        popularLocationIds.indexOf(a.id) - popularLocationIds.indexOf(b.id)
+      );
+    });
   }
 
   return {

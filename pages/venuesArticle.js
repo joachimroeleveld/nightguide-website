@@ -1,8 +1,6 @@
 import Head from 'next/head';
 
-import withPageLayout from '../components/PageLayout';
 import __, { _o } from '../lib/i18n';
-import { getEvents, getVenues } from '../lib/api';
 import colors from '../styles/colors';
 import ImageSlider from '../components/ImageSlider';
 import dimensions from '../styles/dimensions';
@@ -14,11 +12,16 @@ import { setUrlParams } from '../lib/routing';
 import StickyNavigation from '../components/StickyNavigation';
 import { classNames, trimToDescription } from '../lib/util';
 import SeeAllButton from '../components/SeeAllButton';
+import find from 'lodash/find';
+import { getEvents, getVenues } from '../lib/api';
+import withPageLayout from '../components/PageLayout';
 
 function VenuesArticle(props) {
   const { article, venues, events, routeParams, query } = props;
   const { section } = query;
-  const { intro, title, venues: sections } = article;
+  const { intro, title, venues: sections, coverImage, images } = article;
+
+  const image = coverImage && find(images, { id: coverImage });
 
   useScrollToId(section ? `venue-${section}` : null);
   const [showIntro, toggleShowIntro] = useToggleState(false);
@@ -55,6 +58,7 @@ function VenuesArticle(props) {
       <Head>
         <title>{__('VenuesArticle.meta.title', { title: _o(title) })}</title>
         <meta name="description" content={trimToDescription(_o(intro))} />
+        {image && <meta property="og:image" content={`${image.url}=s1200`} />}
       </Head>
 
       <header>
