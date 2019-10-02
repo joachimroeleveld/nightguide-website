@@ -13,25 +13,25 @@ import { getEvents } from '../lib/api';
 import SectionHeader from '../components/SectionHeader';
 
 const CITIES = [
-  // {
-  //   pageSlug: 'nl/amsterdam',
-  //   routeParams: { city: 'amsterdam', country: 'nl' },
-  //   imgSrc:
-  //     'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
-  // },
+  {
+    pageSlug: 'nl/amsterdam',
+    routeParams: { city: 'amsterdam', country: 'nl' },
+    imgSrc:
+      'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
+  },
   {
     pageSlug: 'es/ibiza',
     routeParams: { city: 'ibiza', country: 'es' },
     imgSrc:
       'https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg',
   },
-  // {
-  //   name: 'Utrecht',
-  //   pageSlug: 'nl/utrecht',
-  //   routeParams: { city: 'utrecht', country: 'nl' },
-  //   imgSrc:
-  //     'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
-  // },
+  {
+    name: 'Utrecht',
+    pageSlug: 'nl/utrecht',
+    routeParams: { city: 'utrecht', country: 'nl' },
+    imgSrc:
+      'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
+  },
 ];
 
 function HomePage(props) {

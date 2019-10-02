@@ -21,6 +21,7 @@ function CityPage(props) {
     popularLocations,
     routeParams,
     sponsoredEvent,
+    headerImage,
   } = props;
 
   const cityName = __city(pageSlug)('name');
@@ -33,6 +34,9 @@ function CityPage(props) {
           name="description"
           content={__('CityPage.meta.description', { city: cityName })}
         />
+        {headerImage && (
+          <meta property="og:image" content={`${headerImage}=s1200`} />
+        )}
       </Head>
 
       <div className="menu">

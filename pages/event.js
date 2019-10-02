@@ -118,6 +118,9 @@ export function EventPage(props) {
           name="description"
           content={trimToDescription(_o(description) || facebook.description)}
         />
+        {!!images.length && (
+          <meta property="og:image" content={`${images[0].url}=s1200`} />
+        )}
       </Head>
       <header className="header">
         <figure className="media" ref={setMediaRef}>

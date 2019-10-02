@@ -140,6 +140,9 @@ const withPageLayout = (opts = {}) => Component => {
               .breadcrumbs {
                 margin-bottom: 1.7em;
               }
+              .subtitle {
+                margin-top: 0.3em;
+              }
             }
             @media (min-width: 800px) {
               .menu {

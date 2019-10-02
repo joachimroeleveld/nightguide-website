@@ -67,6 +67,9 @@ function VenuePage(props) {
             content={trimToDescription(_o(description))}
           />
         )}
+        {!!images.length && (
+          <meta property="og:image" content={`${images[0].url}=s1200`} />
+        )}
       </Head>
 
       <header className={'header'}>
