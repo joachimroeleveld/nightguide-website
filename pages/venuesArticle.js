@@ -115,17 +115,19 @@ function VenuesArticle(props) {
                 <footer className="distance">
                   <DistanceIndicator {...location.coordinates} />
                 </footer>
-                <div className="events">
-                  <h3>{__('VenuesArticle.upcomingEvents')}</h3>
-                  <EventRow
-                    routeParams={routeParams}
-                    events={events[index]}
-                    seeAllParams={{ ...routeParams, venue: id }}
-                  />
-                  <Link route="events" params={{ ...routeParams, venue: id }}>
-                    <SeeAllButton title={__('VenuesArticle.seeAllEvents')} />
-                  </Link>
-                </div>
+                {!!events[index].length && (
+                  <div className="events">
+                    <h3>{__('VenuesArticle.upcomingEvents')}</h3>
+                    <EventRow
+                      routeParams={routeParams}
+                      events={events[index]}
+                      seeAllParams={{ ...routeParams, venue: id }}
+                    />
+                    <Link route="events" params={{ ...routeParams, venue: id }}>
+                      <SeeAllButton title={__('VenuesArticle.seeAllEvents')} />
+                    </Link>
+                  </div>
+                )}
               </section>
             );
           })}
