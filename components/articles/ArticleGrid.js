@@ -3,6 +3,7 @@ import css from 'styled-jsx/css';
 
 import Grid from '../Grid';
 import ArticleTile from './ArticleTile';
+import dimensions from '../../styles/dimensions';
 
 function ArticleGrid(props) {
   const { routeParams, articles, ...gridProps } = props;
@@ -13,9 +14,13 @@ function ArticleGrid(props) {
     <div key={article.id} className="article">
       <ArticleTile
         imgWidths={[290, 580, 1000, 2000]}
-        imgSizes={
-          '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
-        }
+        imgSizes={`(max-width: 41rem) calc(50vw - ${
+          dimensions.bodyPadding
+        }), (max-width: 56rem) calc((100vw - 2 * ${
+          dimensions.bodyPadding
+        }) / 3), (max-width: 72rem) calc((100vw - 2 * ${
+          dimensions.bodyPadding
+        }) / 4), calc((100vw - 2 * ${dimensions.bodyPadding}) / 5)`}
         article={article}
         routeParams={routeParams}
       />

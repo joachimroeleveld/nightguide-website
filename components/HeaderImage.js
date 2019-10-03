@@ -16,7 +16,7 @@ function HeaderImage(props) {
         <ResponsiveImage
           url={imageSrc}
           widths={[600, 1000, 2000]}
-          sizes="(max-width: 800px) 100vw, 960px"
+          sizes="100vw"
           /*language=CSS*/
           {...css.resolve`
               .container {

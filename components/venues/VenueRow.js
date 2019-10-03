@@ -1,9 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import __ from '../../lib/i18n';
-import { Link } from '../../routes';
 import dimensions from '../../styles/dimensions';
-import colors from '../../styles/colors';
 import PropTypes from 'prop-types';
 import RowControls from '../RowControls';
 import { useElemDimensions, useWindowWidth } from '../../lib/hooks';
@@ -15,7 +12,7 @@ VenueRow.propTypes = {
 };
 
 function VenueRow(props) {
-  const { seeAllParams, routeParams, venues } = props;
+  const { routeParams, venues } = props;
 
   const innerRef = useRef(null);
   const venuesRef = useRef(null);
@@ -41,7 +38,12 @@ function VenueRow(props) {
         <div className="venues" ref={venuesRef}>
           {venues.map((venue, index) => (
             <div key={venue.id} ref={index === 0 ? setVenueRef : undefined}>
-              <VenueTile venue={venue} routeParams={routeParams} />
+              <VenueTile
+                imgWidths={[160, 300, 600]}
+                imgSizes="(max-width: 800px) 9.2em, 10.81em"
+                venue={venue}
+                routeParams={routeParams}
+              />
             </div>
           ))}
         </div>

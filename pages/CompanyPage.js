@@ -1,4 +1,6 @@
 import React from 'react';
+import Head from 'next/head';
+
 import ResponsiveImage from '../components/ResponsiveImage';
 import PrimaryButton from '../components/PrimaryButton';
 import withPageLayout from '../components/PageLayout';
@@ -14,6 +16,10 @@ function CompanyPage(props) {
 
   return (
     <main>
+      <Head>
+        <title>Company | NightGuide</title>
+      </Head>
+
       <header className="header">
         <h1>NightGuide</h1>
         <div className="content">

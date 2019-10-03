@@ -47,10 +47,8 @@ function EventRow(props) {
               ref={index === 0 ? setEventRef : undefined}
             >
               <EventTile
-                imgWidths={[215, 320]}
-                imgSizes={
-                  '(max-width: 41rem) calc(50vw - 39px), (max-width: 56rem) calc(33vw - 20px), 214px'
-                }
+                imgWidths={[215, 320, 600]}
+                imgSizes={'20em'}
                 event={event}
                 routeParams={routeParams}
               />

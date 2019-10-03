@@ -13,9 +13,7 @@ function VenueGrid(props) {
     <VenueTile
       key={venue.id}
       imgWidths={[290, 580, 1000, 2000]}
-      imgSizes={
-        '(max-width: 41rem) calc(100vw - 64px), (max-width: 56rem) calc(50vw - 39px), 290px'
-      }
+      imgSizes={'(max-width: 41rem) 9.2em, 10.81em'}
       venue={venue}
       routeParams={routeParams}
     />

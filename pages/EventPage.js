@@ -254,6 +254,9 @@ export function EventPage(props) {
               routeParams={routeParams}
               venue={venue}
               imgWidths={[600, 1000, 2000]}
+              imgSizes={`(max-width: 800px) 100vw, calc(0.4 * 100vw - 4em - 2 * ${
+                dimensions.bodyPadding
+              })`}
             />
           </div>
         </section>

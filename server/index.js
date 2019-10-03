@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const _ = require('lodash');
 const Sentry = require('@sentry/node');
 
 if (process.env.NODE_ENV === 'production') {
@@ -12,7 +13,15 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const routes = require('../routes');
-const handle = routes.getRequestHandler(app);
+
+const handle = routes.getRequestHandler(app, ({ req, res, route, query }) => {
+  // Resolve page in pages folder
+  const page = route.page
+    .split('/')
+    .map(str => (str ? `${_.capitalize(str)}Page` : ''))
+    .join('/');
+  app.render(req, res, page, query);
+});
 
 const { PORT, HOST = undefined } = process.env;
 

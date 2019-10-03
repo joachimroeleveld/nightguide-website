@@ -244,6 +244,11 @@
   "PrimaryMenu": {
     "goToCity": "Select a city..."
   },
+  "ArticlePage": {
+    "meta": {
+      "title": "{{title}} | NightGuide"
+    }
+  },
   "VenuesArticle": {
     "meta": {
       "title": "{{title}} | NightGuide"

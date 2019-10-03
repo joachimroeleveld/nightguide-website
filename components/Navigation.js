@@ -13,7 +13,7 @@ export const withNavigation = Component => {
       query.pageSlug = `${country}/${city}`;
     }
     // If city page
-    else if (route === '/city') {
+    else if (route === '/CityPage') {
       const [match, pageSlug, country, city] = path.match(/^\/((\w+)\/(\w+))/);
       Object.assign(query, {
         pageSlug,

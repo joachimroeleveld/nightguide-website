@@ -5,10 +5,16 @@ import HeaderImage from '../components/HeaderImage';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
 import ResponsiveImage from '../components/ResponsiveImage';
+import Head from 'next/dist/next-server/lib/head';
+import React from 'react';
 
 function AffiliatePage(props) {
   return (
     <main>
+      <Head>
+        <title>Affiliate | NightGuide</title>
+      </Head>
+
       <div className="header-image">
         <HeaderImage
           baseHeight={'250px'}

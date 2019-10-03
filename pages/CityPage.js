@@ -60,7 +60,10 @@ function CityPage(props) {
             <EventTile
               wideQuery={'(min-width: 25em)'}
               routeParams={routeParams}
-              event={sponsoredEvent}
+              imgWidths={[300, 600, 900, 2000]}
+              imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
+                dimensions.bodyPadding
+              }), 215px`}
             />
           </section>
         )}

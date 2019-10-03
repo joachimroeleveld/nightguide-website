@@ -197,6 +197,10 @@ function EventsPage(props) {
                 key={event.id + event.dateIndex}
                 event={event}
                 wideQuery="(min-width: 50em)"
+                imgWidths={[300, 600, 900, 2000]}
+                imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
+                  dimensions.bodyPadding
+                }), 215px`}
               />
             ))}
           </div>

@@ -3,7 +3,6 @@ const routes = (module.exports = nextRoutes());
 
 // Static routes
 routes.add('home', '/');
-routes.add('expert-chat');
 routes.add('privacy-policy');
 routes.add('affiliate');
 routes.add('ticket-redirect');

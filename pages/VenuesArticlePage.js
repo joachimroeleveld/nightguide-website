@@ -1,5 +1,3 @@
-import Head from 'next/head';
-
 import __, { _o } from '../lib/i18n';
 import colors from '../styles/colors';
 import ImageSlider from '../components/ImageSlider';
@@ -10,18 +8,16 @@ import EventRow from '../components/events/EventRow';
 import { useScrollToId, useToggleState } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import StickyNavigation from '../components/StickyNavigation';
-import { classNames, trimToDescription } from '../lib/util';
+import { classNames } from '../lib/util';
 import SeeAllButton from '../components/SeeAllButton';
-import find from 'lodash/find';
 import { getEvents, getVenues } from '../lib/api';
 import withPageLayout from '../components/PageLayout';
+import ResponsiveImage from '../components/ResponsiveImage';
 
-function VenuesArticle(props) {
+function VenuesArticlePage(props) {
   const { article, venues, events, routeParams, query } = props;
   const { section } = query;
-  const { intro, title, venues: sections, coverImage, images } = article;
-
-  const image = coverImage && find(images, { id: coverImage });
+  const { intro, title, venues: sections } = article;
 
   useScrollToId(section ? `venue-${section}` : null);
   const [showIntro, toggleShowIntro] = useToggleState(false);
@@ -55,12 +51,6 @@ function VenuesArticle(props) {
 
   return (
     <main className="container">
-      <Head>
-        <title>{__('VenuesArticle.meta.title', { title: _o(title) })}</title>
-        <meta name="description" content={trimToDescription(_o(intro))} />
-        {image && <meta property="og:image" content={`${image.url}=s1200`} />}
-      </Head>
-
       <header>
         <h1>{_o(title)}</h1>
         <p
@@ -99,6 +89,9 @@ function VenuesArticle(props) {
                   <ImageSlider
                     slides={imageSlides}
                     imgWidths={[600, 900, 2000]}
+                    imgSizes={`(max-width: 47em) calc(100vw - 2 * ${
+                      dimensions.bodyPadding
+                    }), 35em`}
                   />
                 </div>
                 <header className="title">
@@ -213,7 +206,7 @@ function VenuesArticle(props) {
   );
 }
 
-VenuesArticle.getInitialProps = async ctx => {
+VenuesArticlePage.getInitialProps = async ctx => {
   const { article } = ctx;
 
   const venueIds = (article.venues || []).map(venue => venue.venueId);
@@ -241,9 +234,9 @@ VenuesArticle.getInitialProps = async ctx => {
 };
 
 export default withPageLayout({
-  pageWidth: dimensions.pageWidthArticle,
+  pageWidth: '47rem',
   breadcrumbs: ({ article }) => [
     { key: 'articles', route: 'articles' },
     { key: 'article', title: _o(article.title) },
   ],
-})(VenuesArticle);
+})(VenuesArticlePage);

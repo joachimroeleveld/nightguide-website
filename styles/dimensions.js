@@ -1,6 +1,5 @@
 export default {
   pageWidth: '72rem',
-  pageWidthArticle: '47rem',
   bodyPadding: '1rem',
   gridGap: {
     S: '10px',

@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
 import { getContentBySlug } from '../lib/api';
@@ -9,6 +10,9 @@ function PrivacyPolicyPage(props) {
   const { title, body } = page;
   return (
     <main>
+      <Head>
+        <title>Privacy Policy | NightGuide</title>
+      </Head>
       <h1>{_o(title)}</h1>
       <ReactMarkdown source={_o(body)} />
     </main>
