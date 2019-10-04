@@ -192,7 +192,7 @@ function VenuesArticlePage(props) {
             grid-area: a;
           }
           .container > header {
-            width: 43em;
+            width: 38em;
           }
           .columns {
             grid-template-columns: 43em 13em;

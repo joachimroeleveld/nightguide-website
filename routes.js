@@ -39,6 +39,6 @@ function addRoute(...args) {
       routes.add(args[0], args[1], getRoutePageFileName(args[0]));
     }
   } else {
-    routes.add(args[0], args[0], getRoutePageFileName(args[0]));
+    routes.add(args[0], `/${args[0]}`, getRoutePageFileName(args[0]));
   }
 }
