@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 import { classNames } from '../lib/util';
 import colors from '../styles/colors';
@@ -55,7 +55,6 @@ export default function ResponsiveImage(props) {
     return srcSet;
   };
 
-  const imgRef = useRef(null);
   const [visible, setVisible] = useState(!lazy);
   const [loaded, setLoaded] = useState(false);
 
@@ -64,7 +63,7 @@ export default function ResponsiveImage(props) {
 
   const onIntersect = ({ isIntersecting }) => {
     if (isIntersecting) {
-      imgRef.current.src = setVisible(true);
+      setVisible(true);
     }
   };
 
@@ -97,23 +96,22 @@ export default function ResponsiveImage(props) {
       >
         <source
           type="image/webp"
-          srcSet={visible ? webPSrcSet : undefined}
           sizes={sizes}
+          srcSet={visible ? webPSrcSet : undefined}
         />
         <source
           type="image/jpeg"
-          srcSet={visible ? jpegSrcSet : undefined}
           sizes={sizes}
+          srcSet={visible ? jpegSrcSet : undefined}
         />
         <img
-          ref={imgRef}
           style={imgStyle}
-          src={visible ? `${url}=s600-rj` : undefined}
           className={className}
           alt={alt}
           onLoad={onLoad}
           width={width}
           height={height}
+          src={visible ? `${url}=s600-rj` : undefined}
         />
         {showOverlay && <div className={classNames([className, 'overlay'])} />}
         {/*language=CSS*/}
