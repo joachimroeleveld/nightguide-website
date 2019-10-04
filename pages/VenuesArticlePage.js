@@ -12,7 +12,6 @@ import { classNames } from '../lib/util';
 import SeeAllButton from '../components/SeeAllButton';
 import { getEvents, getVenues } from '../lib/api';
 import withPageLayout from '../components/PageLayout';
-import ResponsiveImage from '../components/ResponsiveImage';
 
 function VenuesArticlePage(props) {
   const { article, venues, events, routeParams, query } = props;
@@ -81,15 +80,14 @@ function VenuesArticlePage(props) {
             }
 
             const { id, name, images, location } = venue;
-            const imageSlides = images.map(({ url }) => ({ imgSrc: url }));
 
             return (
               <section className="venue" key={id} id={`venue-${id}`}>
                 <div className="img-slider">
                   <ImageSlider
-                    slides={imageSlides}
+                    slides={images}
                     imgWidths={[600, 900, 2000]}
-                    imgSizes={`(max-width: 47em) calc(100vw - 2 * ${
+                    imgSizes={`(max-width: 56em) calc(100vw - 2 * ${
                       dimensions.bodyPadding
                     }), 35em`}
                   />
@@ -170,7 +168,7 @@ function VenuesArticlePage(props) {
         .venue .events {
           margin-top: 2em;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 56em) {
           .venue,
           .shortlist {
             max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
@@ -188,17 +186,16 @@ function VenuesArticlePage(props) {
               no-repeat right center;
           }
         }
-        @media (min-width: 768px) {
+        @media (min-width: 56em) {
           .sections {
             padding-right: 5em;
-            box-sizing: border-box;
             grid-area: a;
           }
           .container > header {
             width: 30em;
           }
           .columns {
-            grid-template-columns: 35em 13em;
+            grid-template-columns: 43em 13em;
           }
         }
       `}</style>
@@ -234,7 +231,7 @@ VenuesArticlePage.getInitialProps = async ctx => {
 };
 
 export default withPageLayout({
-  pageWidth: '47rem',
+  pageWidth: '56em',
   breadcrumbs: ({ article }) => [
     { key: 'articles', route: 'articles' },
     { key: 'article', title: _o(article.title) },

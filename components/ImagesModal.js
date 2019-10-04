@@ -28,8 +28,6 @@ function ImagesModal(props) {
   const [headerRef, setHeaderRef] = useState(null);
   const [imagesRef, setImagesRef] = useState(null);
 
-  const imagesContainerDimensions = useElemDimensions(imagesRef);
-
   useDisableBodyScrolling(isOpen);
 
   useOnClickOutside([imagesRef, headerRef], onClose);
@@ -48,30 +46,21 @@ function ImagesModal(props) {
         </header>
         <div className="content">
           <div className="images" ref={setImagesRef}>
-            {images.map(({ url, width, height }) => {
-              const style = {};
-              if (width && height) {
-                style.height =
-                  (imagesContainerDimensions.width / width) * height;
-              }
-              return (
-                <div key={url} className="image" style={style}>
-                  <ResponsiveImage
-                    url={url}
-                    widths={[600, 1000, 2000]}
-                    sizes="(max-width: 960px) 100vw, 896px"
-                    /*language=CSS*/
-                    {...css.resolve`
-                      .container {
-                        display: block;
-                        width: 100%;
-                        height: 100%;
-                      }
-                  `}
-                  />
-                </div>
-              );
-            })}
+            {images.map(({ url, width, height }) => (
+              <div key={url} className="image">
+                <ResponsiveImage
+                  url={url}
+                  width={width}
+                  height={height}
+                  widths={[600, 1000, 2000]}
+                  sizes={`(max-width: 960px) calc(100vw - 2 * ${
+                    dimensions.bodyPadding
+                  }), calc(${dimensions.pageWidth} - 2 * ${
+                    dimensions.bodyPadding
+                  })`}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

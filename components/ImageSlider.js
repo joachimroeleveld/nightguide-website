@@ -15,8 +15,7 @@ const SWIPE_TOLERANCE = 30;
 ImageSlider.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({
-      imgSrc: PropTypes.string,
-      render: PropTypes.func,
+      url: PropTypes.string,
     })
   ).isRequired,
   showMaximize: PropTypes.bool,
@@ -113,7 +112,7 @@ function ImageSlider(props) {
                   <ImagesModal
                     onClose={toggleIsImageModalOpen}
                     isOpen={isImageModalOpen}
-                    images={slides.map(({ imgSrc }) => ({ url: imgSrc }))}
+                    images={slides}
                   />
                 </div>
               )}
@@ -128,12 +127,28 @@ function ImageSlider(props) {
                   transform: `translateX(${translateX}px)`,
                 }}
               >
-                {slides.map(slide => (
-                  <div key={slide.imgSrc} className="slide">
-                    <Img
-                      url={slide.imgSrc}
+                {slides.map(({ width, height, url }) => (
+                  <div key={url} className="slide">
+                    <ResponsiveImage
+                      showOverlay={true}
                       imgWidths={imgWidths}
                       imgSizes={imgSizes}
+                      url={url}
+                      width={width}
+                      height={height}
+                      /*language=CSS*/
+                      {...css.resolve`
+                        .container {
+                          width: 100%;
+                          height: 100%;
+                        }
+                        .overlay {
+                          bottom: 0;
+                          height: 100%;
+                          width: 100%;
+                          background: linear-gradient(rgba(0, 0, 0, 0.01) 90%, rgba(0, 0, 0, 1));
+                        }
+                      `}
                     />
                   </div>
                 ))}
@@ -223,28 +238,5 @@ function ImageSlider(props) {
     </React.Fragment>
   );
 }
-
-const Img = ({ bigOverlay, ...imgProps }) => (
-  <ResponsiveImage
-    showOverlay={true}
-    /*language=CSS*/
-    {...css.resolve`
-      .container {
-        display: block;
-        width: 100%;  
-        height: 100%;
-      }
-      .overlay {
-        bottom: 0;
-        height: 100%;
-        width: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0.01) ${
-          bigOverlay ? '30%' : '90%'
-        }, rgba(0, 0, 0, 1));
-      }
-    `}
-    {...imgProps}
-  />
-);
 
 export default ImageSlider;

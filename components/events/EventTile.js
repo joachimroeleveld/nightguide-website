@@ -63,6 +63,8 @@ function EventTile(props) {
             widths: imgWidths,
             sizes: imgSizes,
             alt: title || facebook.title,
+            width: images[0].width,
+            height: images[0].height,
           }
         : undefined,
     [images]
@@ -222,8 +224,6 @@ function EventTile(props) {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: no-repeat ${colors.imagePlaceholder};
-          background-size: cover;
           overflow: hidden;
           border-top-left-radius: ${dimensions.tileRadius};
         }

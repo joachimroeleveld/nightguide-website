@@ -11,6 +11,7 @@ import { removeTags } from '../../lib/util';
 import { TileButton } from '../TileButton';
 import ImagesModal from '../ImagesModal';
 import { useElemDimensions, useToggleState } from '../../lib/hooks';
+import ImageSlider from '../ImageSlider';
 
 const SWIPE_TOLERANCE = 30;
 

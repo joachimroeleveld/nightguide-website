@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Observer from '@researchgate/react-intersection-observer';
 import { classNames } from '../lib/util';
+import colors from '../styles/colors';
 
 ResponsiveImage.propTypes = {
   url: PropTypes.string.isRequired,
@@ -16,6 +17,8 @@ ResponsiveImage.propTypes = {
   className: PropTypes.string,
   scale: PropTypes.bool,
   progressive: PropTypes.bool,
+  width: PropTypes.number,
+  height: PropTypes.number,
 };
 
 export default function ResponsiveImage(props) {
@@ -32,6 +35,8 @@ export default function ResponsiveImage(props) {
     className = null,
     scale = false,
     progressive = true,
+    width,
+    height,
   } = props;
 
   if (!url) {
@@ -91,21 +96,22 @@ export default function ResponsiveImage(props) {
       >
         <source type="image/webp" srcSet={webPSrcSet} sizes={sizes} />
         <source type="image/jpeg" srcSet={jpegSrcSet} sizes={sizes} />
-        {visible && (
-          <img
-            src={`${url}=s600-rj`}
-            className={className}
-            alt={alt}
-            style={imgStyle}
-            onLoad={onLoad}
-          />
-        )}
+        <img
+          style={imgStyle}
+          src={visible ? `${url}=s600-rj` : undefined}
+          className={className}
+          alt={alt}
+          onLoad={onLoad}
+          width={width}
+          height={height}
+        />
         {showOverlay && <div className={classNames([className, 'overlay'])} />}
         {/*language=CSS*/}
         <style jsx>{`
           picture {
-            background: no-repeat center center;
+            background: no-repeat center center ${colors.imagePlaceholder};
             background-size: cover;
+            display: block;
           }
           img {
             position: relative;

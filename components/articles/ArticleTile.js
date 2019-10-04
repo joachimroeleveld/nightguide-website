@@ -32,6 +32,8 @@ function ArticleTile(props) {
                 url={image.url}
                 widths={imgWidths}
                 sizes={imgSizes}
+                width={image.width}
+                height={image.height}
                 /*language=CSS*/
                 {...css.resolve`
                   .container {
@@ -49,7 +51,6 @@ function ArticleTile(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .img {
-          background: ${colors.imagePlaceholder};
           height: 8em;
           overflow: hidden;
         }

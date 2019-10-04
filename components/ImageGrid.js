@@ -15,6 +15,8 @@ function ImageGrid(props) {
           <div className="inner">
             <ResponsiveImage
               url={image.url}
+              width={image.width}
+              height={image.height}
               widths={index !== 0 ? IMG_WIDTHS_SMALL : IMG_WIDTHS_BIG}
               sizes={index !== 0 ? IMG_SIZES_SMALL : IMG_SIZES_BIG}
               scale={true}

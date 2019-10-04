@@ -50,6 +50,8 @@ function HomePage(props) {
             <ResponsiveImage
               url="https://lh3.googleusercontent.com/R05wp1YP7UVIr32g7ZsUBnIUyiQVof097YOJ9aUjlPDkCwRIhJc_N6RN2WdxBgwcuw0v-F0djtRSCCTYlkQW63qpB1r6D_yPvw"
               widths={[300, 600, 1000, 2000, 3000]}
+              width={1695}
+              height={1130}
               sizes="100vw"
               /*language=CSS*/
               {...css.resolve`
@@ -93,9 +95,7 @@ function HomePage(props) {
                             CITIES.length}px), 320px`}
                         />
                       </figure>
-                      <span className="name">
-                        {__city(city.pageSlug)('name')}
-                      </span>
+                      <h3 className="name">{__city(city.pageSlug)('name')}</h3>
                     </a>
                   </Link>
                 ))}
@@ -192,12 +192,16 @@ function HomePage(props) {
         .city-tiles .img {
           height: 11em;
           overflow: hidden;
+          width: 100%;
+        }
+        .city-tiles .img :global(.container) {
+          display: block;
+          height: 100%;
         }
         .city-tiles .name {
-          display: block;
           color: #fff;
           font-size: 1rem;
-          padding: 0.4em 0.6em;
+          margin: 0.4em 0.6em;
         }
         .city-events {
           margin-top: 3em;

@@ -152,6 +152,8 @@ export function EventPage(props) {
                 }}
                 alt={title || facebook.title}
                 progressive={false}
+                width={images[0].width}
+                height={images[0].height}
               />
             </div>
           )}

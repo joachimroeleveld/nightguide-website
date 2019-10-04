@@ -81,6 +81,8 @@ function CompanyPage(props) {
             <ResponsiveImage
               url="https://lh3.googleusercontent.com/LP_Vl_cX8wWfjecby_nvu2ZeHc53iklWgc6xjmkYXjrTmIkm57JJMHrH7e9hWXo-xU9_Z5_mUb8jzmcNKdyJzN8MXvhJc0yA6w"
               widths={[450, 900]}
+              width={1024}
+              height={947}
             />
           </div>
           <div className="sections">

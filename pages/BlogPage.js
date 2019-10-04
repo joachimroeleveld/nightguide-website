@@ -12,9 +12,20 @@ function BlogPage(props) {
 
   const headerImage = coverImage && find(images, { id: coverImage });
 
-  const resolveImageUri = uri => {
-    const image = find(images, { id: uri });
-    return (image && image.url) || uri;
+  const renderImage = ({ src }) => {
+    const { width, height, url } = find(images, { id: src }) || {};
+
+    return (
+      <ResponsiveImage
+        url={url || src}
+        widths={[360, 640, 1000, 2000]}
+        sizes={`(max-width: 38em) calc(100vw - 2 * ${
+          dimensions.bodyPadding
+        }), 38em`}
+        width={width}
+        height={height}
+      />
+    );
   };
 
   return (
@@ -38,18 +49,9 @@ function BlogPage(props) {
       <div className="content">
         <ReactMarkdown
           renderers={{
-            image: ({ src }) => (
-              <ResponsiveImage
-                url={src}
-                widths={[360, 640, 1000, 2000]}
-                sizes={`(max-width: 38em) calc(100vw - 2 * ${
-                  dimensions.bodyPadding
-                }), 38em`}
-              />
-            ),
+            image: renderImage,
           }}
           source={_o(body)}
-          transformImageUri={resolveImageUri}
         />
       </div>
 
