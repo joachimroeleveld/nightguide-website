@@ -131,8 +131,8 @@ function ImageSlider(props) {
                   <div key={url} className="slide">
                     <ResponsiveImage
                       showOverlay={true}
-                      imgWidths={imgWidths}
-                      imgSizes={imgSizes}
+                      widths={imgWidths}
+                      sizes={imgSizes}
                       url={url}
                       width={width}
                       height={height}
