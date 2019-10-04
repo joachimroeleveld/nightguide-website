@@ -87,9 +87,17 @@ function EventsPage(props) {
 
   // Reset to the first page page if changing to desktop mode
   useEffect(() => {
-    if (windowWidth > 800 && previousWindowWidth.current <= 800) {
+    if (
+      windowWidth > 800 &&
+      previousWindowWidth.current &&
+      previousWindowWidth.current <= 800
+    ) {
       changePage(1);
     }
+  }, [windowWidth]);
+
+  useEffect(() => {
+    previousWindowWidth.current = windowWidth;
   }, [windowWidth]);
 
   const loadCurrentPage = async () => {
@@ -383,6 +391,22 @@ const parseQuery = ({ dateFrom, dateTo, page, ...query }) => ({
 const breadcrumbs = () => [{ key: 'events' }];
 
 export default withPageLayout({
+  meta: ({ query, currentUrl }) => ({
+    canonical:
+      currentUrl +
+      '?' +
+      qs.stringify(
+        pick(query, [
+          'page',
+          'dateFilterId',
+          'dateFrom',
+          'dateTo',
+          'artist',
+          'venue',
+          'tags',
+        ])
+      ),
+  }),
   breadcrumbs,
   title: ({ pageSlug }) =>
     __('EventsPage.title', { city: __city(pageSlug)('name') }),

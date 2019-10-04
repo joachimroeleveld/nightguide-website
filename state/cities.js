@@ -10,5 +10,5 @@ export default handleActions(
   {
     [setCities]: (state, action) => action.payload,
   },
-  { 'nl/amsterdam': {}, 'es/ibiza': {}, 'nl/utrecht': {} }
+  { 'es/ibiza': {} }
 );

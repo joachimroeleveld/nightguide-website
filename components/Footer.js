@@ -6,9 +6,9 @@ const LINK_SECTIONS = [
   {
     title: __('Footer.cities'),
     items: [
-      { route: '/nl/amsterdam', title: 'Amsterdam' },
+      // { route: '/nl/amsterdam', title: 'Amsterdam' },
       { route: '/es/ibiza', title: 'Ibiza' },
-      { route: '/nl/utrecht', title: 'Utrecht' },
+      // { route: '/nl/utrecht', title: 'Utrecht' },
     ],
   },
   {
@@ -30,7 +30,13 @@ const LINK_SECTIONS = [
   },
   {
     title: __('Footer.legal'),
-    items: [{ route: 'privacy-policy', title: __('Footer.privacyPolicy') }],
+    items: [
+      {
+        route: 'privacy-policy',
+        title: __('Footer.privacyPolicy'),
+        linkAttrs: { rel: 'nofollow' },
+      },
+    ],
   },
   {
     title: __('Footer.followUs'),
@@ -38,12 +44,12 @@ const LINK_SECTIONS = [
       {
         href: 'https://www.linkedin.com/company/nightguideapp',
         title: __('Footer.linkedin'),
-        target: '_blank',
+        linkAttrs: { rel: 'noreferrer nofollow', target: '_blank' },
       },
       {
         href: 'https://www.facebook.com/nightguide.nl',
         title: __('Footer.facebook'),
-        target: '_blank',
+        linkAttrs: { rel: 'noreferrer nofollow', target: '_blank' },
       },
     ],
   },
@@ -59,10 +65,10 @@ function Footer(props) {
           <section key={index}>
             <strong>{title}</strong>
             <ul>
-              {items.map(({ title, target, ...linkProps }) => (
+              {items.map(({ title, linkAttrs = {}, ...linkProps }) => (
                 <li>
                   <Link {...linkProps}>
-                    <a {...{ target }}>{title}</a>
+                    <a {...linkAttrs}>{title}</a>
                   </Link>
                 </li>
               ))}

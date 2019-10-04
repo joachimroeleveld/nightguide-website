@@ -4,34 +4,34 @@ import { Link } from '../routes';
 
 import css from 'styled-jsx/css';
 import __, { __city } from '../lib/i18n';
-import Tile from '../components/Tile';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
 import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
 import { getEvents } from '../lib/api';
 import SectionHeader from '../components/SectionHeader';
+import colors from '../styles/colors';
 
 const CITIES = [
-  {
-    pageSlug: 'nl/amsterdam',
-    routeParams: { city: 'amsterdam', country: 'nl' },
-    imgSrc:
-      'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
-  },
+  // {
+  //   pageSlug: 'nl/amsterdam',
+  //   routeParams: { city: 'amsterdam', country: 'nl' },
+  //   imgSrc:
+  //     'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
+  // },
   {
     pageSlug: 'es/ibiza',
     routeParams: { city: 'ibiza', country: 'es' },
     imgSrc:
       'https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg',
   },
-  {
-    name: 'Utrecht',
-    pageSlug: 'nl/utrecht',
-    routeParams: { city: 'utrecht', country: 'nl' },
-    imgSrc:
-      'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
-  },
+  // {
+  //   name: 'Utrecht',
+  //   pageSlug: 'nl/utrecht',
+  //   routeParams: { city: 'utrecht', country: 'nl' },
+  //   imgSrc:
+  //     'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
+  // },
 ];
 
 function HomePage(props) {
@@ -79,34 +79,28 @@ function HomePage(props) {
         <section className="city-tiles">
           <h2>{__('HomePage.cities')}</h2>
           <nav>
-            {CITIES.map(city => (
-              <Link key={city.pageSlug} route={`/${city.pageSlug}`}>
-                <a className="city">
-                  <Tile
-                    imgProps={{
-                      url: city.imgSrc,
-                      widths: [320, 600],
-                      sizes: `(max-width: 960px) calc(100vw - 4em - ${14 *
-                        CITIES.length}px), 320px`,
-                    }}
-                    {...css.resolve`
-                      .top {
-                        height: 11em;
-                      }
-                    `}
-                    imgWidths={[300, 600, 1000]}
-                    borderRadius={'10px'}
-                    showOverlay={false}
-                    BodyContents={
-                      <div className={cityTileStyles.className}>
+            <ul>
+              <li className="tile">
+                {CITIES.map(city => (
+                  <Link key={city.pageSlug} route={`/${city.pageSlug}`}>
+                    <a>
+                      <figure className="img">
+                        <ResponsiveImage
+                          scale={true}
+                          url={city.imgSrc}
+                          widths={[320, 600]}
+                          sizes={`(max-width: 960px) calc(100vw - 4em - ${14 *
+                            CITIES.length}px), 320px`}
+                        />
+                      </figure>
+                      <span className="name">
                         {__city(city.pageSlug)('name')}
-                        {cityTileStyles.styles}
-                      </div>
-                    }
-                  />
-                </a>
-              </Link>
-            ))}
+                      </span>
+                    </a>
+                  </Link>
+                ))}
+              </li>
+            </ul>
           </nav>
         </section>
         <div className="city-events">
@@ -176,20 +170,34 @@ function HomePage(props) {
         h1 {
           margin: 0 0 0.3em;
         }
-        .city {
+        .city-tiles {
+          position: relative;
+        }
+        .city-tiles .tile {
           display: block;
           max-width: 17em;
           flex-basis: 20em;
           flex-wrap: wrap;
+          border-radius: 10px;
+          background: ${colors.tileBg};
+          box-shadow: ${colors.tileShadow};
+          overflow: hidden;
         }
-        .city:not(:last-child) {
+        .city-tiles .tile:not(:last-child) {
           margin-right: ${dimensions.gridGap.L};
         }
-        .city-tiles {
-          position: relative;
-        }
-        .city-tiles nav {
+        .city-tiles ul {
           display: flex;
+        }
+        .city-tiles .img {
+          height: 11em;
+          overflow: hidden;
+        }
+        .city-tiles .name {
+          display: block;
+          color: #fff;
+          font-size: 1rem;
+          padding: 0.4em 0.6em;
         }
         .city-events {
           margin-top: 3em;
@@ -211,14 +219,6 @@ function HomePage(props) {
     </div>
   );
 }
-
-const cityTileStyles = css.resolve`
-  div {
-    color: #fff;
-    font-size: 1rem;
-    padding: 0 0.25em;
-  }
-`;
 
 HomePage.getInitialProps = async () => {
   const promises = CITIES.map(({ pageSlug }) =>

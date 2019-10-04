@@ -22,7 +22,7 @@ function CityMenu(props) {
     {
       route: 'events',
       label: __('menu.events'),
-      active: router.route === '/events',
+      active: router.route === '/EventsPage',
     },
   ];
 
@@ -30,7 +30,7 @@ function CityMenu(props) {
     menuItems.push({
       route: 'articles',
       label: __('menu.articles'),
-      active: router.route === '/articles',
+      active: router.route === '/ArticlesPage',
     });
   }
 
