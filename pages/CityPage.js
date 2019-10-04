@@ -64,6 +64,7 @@ function CityPage(props) {
               imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
                 dimensions.bodyPadding
               }), 215px`}
+              event={sponsoredEvent}
             />
           </section>
         )}
