@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import pick from 'lodash/pick';
-import flatten from 'lodash/flatten';
 import qs from 'qs';
 
 import { setUrlParams } from '../lib/routing';
@@ -16,8 +15,7 @@ import {
 import __, { __city } from '../lib/i18n';
 import colors from '../styles/colors';
 import EventTile from '../components/events/EventTile';
-import { useEffectSkipFirst, useWindowWidth } from '../lib/hooks';
-import PrimaryButton from '../components/PrimaryButton';
+import { useEffectSkipFirst } from '../lib/hooks';
 import dimensions from '../styles/dimensions';
 import Spinner from '../components/Spinner';
 import EventFilters from '../components/events/EventFilters';
@@ -25,7 +23,7 @@ import CityMenu from '../components/CityMenu';
 
 const ITEMS_PER_PAGE = 10;
 
-function EventsPage(props) {
+function Events(props) {
   const { pageSlug, events: initialEvents, routeParams, tags = [] } = props;
   const query = useMemo(() => parseQuery(props.query), [props.query]);
   const {
@@ -38,11 +36,9 @@ function EventsPage(props) {
     page = 1,
   } = query;
 
-  const windowWidth = useWindowWidth();
-  const previousWindowWidth = useRef(windowWidth);
   const previousFilters = useRef(query);
   const [events, setEvents] = useState({
-    [page]: initialEvents.results,
+    [`p${page}`]: initialEvents.results,
   });
   const [totalCount, setTotalCount] = useState(initialEvents.totalCount);
   const [loading, setLoading] = useState(false);
@@ -77,28 +73,11 @@ function EventsPage(props) {
     if (!events[currentPage]) {
       loadCurrentPage();
     }
-  }, [currentPage]);
+  }, [currentPage, events]);
 
   useEffectSkipFirst(() => {
-    if (windowWidth < 800) {
-      resetScroll();
-    }
-  }, [currentPage, windowWidth]);
-
-  // Reset to the first page page if changing to desktop mode
-  useEffect(() => {
-    if (
-      windowWidth > 800 &&
-      previousWindowWidth.current &&
-      previousWindowWidth.current <= 800
-    ) {
-      changePage(1);
-    }
-  }, [windowWidth]);
-
-  useEffect(() => {
-    previousWindowWidth.current = windowWidth;
-  }, [windowWidth]);
+    resetScroll();
+  }, [currentPage]);
 
   const loadCurrentPage = async () => {
     if (loading) return;
@@ -113,7 +92,7 @@ function EventsPage(props) {
 
       setEvents({
         ...events,
-        [currentPage]: newEvents.results,
+        [`p${currentPage}`]: newEvents.results,
       });
       setTotalCount(newEvents.totalCount);
     } finally {
@@ -157,12 +136,7 @@ function EventsPage(props) {
     setUrlParams(urlParams);
   };
 
-  const visibleEvents =
-    windowWidth < 800
-      ? events[currentPage] || []
-      : flatten(Object.values(events));
-
-  const reachedEnd = currentPage * ITEMS_PER_PAGE >= totalCount;
+  const visibleEvents = events[`p${currentPage}`] || [];
 
   return (
     <main>
@@ -213,35 +187,17 @@ function EventsPage(props) {
             ))}
           </div>
 
-          {windowWidth <= 800 && !loading && totalCount !== 0 && (
-            <div className="pager">
-              <a
-                className="button prev"
-                onClick={() => changePage(currentPage - 1)}
-              />
-              <span className="page-count">{`${currentPage}/${pageCount}`}</span>
-              <a
-                className="button next"
-                onClick={() => changePage(currentPage + 1)}
-              />
-            </div>
-          )}
-
-          {windowWidth > 800 && !loading && !reachedEnd && (
-            <div
-              className="load-more"
+          <div className="pager">
+            <a
+              className="button prev"
+              onClick={() => changePage(currentPage - 1)}
+            />
+            <span className="page-count">{`${currentPage}/${pageCount}`}</span>
+            <a
+              className="button next"
               onClick={() => changePage(currentPage + 1)}
-            >
-              <PrimaryButton
-                title={__('EventsPage.loadNMoreEvents', {
-                  n: Math.min(
-                    ITEMS_PER_PAGE,
-                    totalCount - ITEMS_PER_PAGE * currentPage
-                  ),
-                })}
-              />
-            </div>
-          )}
+            />
+          </div>
 
           {loading && (
             <div className="spinner">
@@ -296,7 +252,6 @@ function EventsPage(props) {
           justify-content: center;
         }
         .pager,
-        .load-more,
         .spinner {
           margin: 2em 0 0;
         }
@@ -355,7 +310,7 @@ function getEventPage({ query = {}, ...otherOpts }) {
   });
 }
 
-EventsPage.getInitialProps = async ctx => {
+Events.getInitialProps = async ctx => {
   const query = parseQuery(ctx.query);
   const { page = 1, pageSlug } = query;
 
@@ -410,4 +365,4 @@ export default withPageLayout({
   breadcrumbs,
   title: ({ pageSlug }) =>
     __('EventsPage.title', { city: __city(pageSlug)('name') }),
-})(EventsPage);
+})(Events);

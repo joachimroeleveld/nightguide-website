@@ -47,6 +47,9 @@ function VenueRow(props) {
             </div>
           ))}
         </div>
+        <div className="spacer">
+          <div />
+        </div>
       </div>
       <div className="controls">
         <RowControls onBackPress={scrollLeft} onNextPress={scrollRight} />
@@ -77,6 +80,10 @@ function VenueRow(props) {
         @media (max-width: 800px) {
           .controls {
             display: none;
+          }
+          .spacer {
+            flex-basis: ${dimensions.gridGap.S};
+            flex-shrink: 0;
           }
         }
         @media (min-width: 800px) {

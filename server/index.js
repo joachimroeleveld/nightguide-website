@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 require('dotenv').config();
 
 const Sentry = require('@sentry/node');
@@ -15,18 +13,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const routes = require('../routes');
 
-const handle = routes.getRequestHandler(app, ({ req, res, route, query }) => {
-  const pascalCase = _.flow(
-    _.camelCase,
-    _.upperFirst
-  );
-  // Resolve page in pages folder
-  const page = route.page
-    .split('/')
-    .map(str => (str ? `${pascalCase(str)}Page` : ''))
-    .join('/');
-  app.render(req, res, page, query);
-});
+const handle = routes.getRequestHandler(app);
 
 const { PORT, HOST = undefined } = process.env;
 

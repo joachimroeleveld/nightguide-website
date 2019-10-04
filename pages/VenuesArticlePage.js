@@ -168,13 +168,13 @@ function VenuesArticlePage(props) {
           margin: 1em 0;
         }
         .venue .events {
-          max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
           margin-top: 2em;
         }
-        .venue {
-          max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
-        }
         @media (max-width: 768px) {
+          .venue,
+          .shortlist {
+            max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
+          }
           .shortlist {
             margin: -0.5em 0 2em;
           }

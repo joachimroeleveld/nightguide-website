@@ -27,6 +27,8 @@ function BlogPage(props) {
               url={headerImage.url}
               widths={[600, 900, 2000]}
               sizes={'(max-width: 38em) 100vw, 46em'}
+              width={headerImage.width}
+              height={headerImage.height}
             />
           )}
         </div>
@@ -61,7 +63,7 @@ function BlogPage(props) {
           color: ${colors.textSecondary};
           margin: 2em 0;
         }
-        .content :global(img) {
+        .content :global(picture) {
           margin: 2em 0;
         }
         @media (max-width: 800px) {

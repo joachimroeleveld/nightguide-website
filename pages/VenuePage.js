@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 import withPageLayout from '../components/PageLayout';
-import { getVenue, getEvents, getVenues } from '../lib/api';
+import { getVenue, getEvents } from '../lib/api';
 import __, { _o } from '../lib/i18n';
 import ImageGrid from '../components/ImageGrid';
 import colors from '../styles/colors';
@@ -10,7 +10,6 @@ import dimensions from '../styles/dimensions';
 import PrimaryButton from '../components/PrimaryButton';
 import VenueTiles from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
-import VenueGrid from '../components/venues/VenueGrid';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
 import { useToggleState } from '../lib/hooks';
@@ -20,7 +19,7 @@ import React from 'react';
 import { createMapsUrl, trimToDescription } from '../lib/util';
 
 function VenuePage(props) {
-  const { venue, routeParams, events, similarVenues, pageSlug } = props;
+  const { venue, routeParams, events, pageSlug } = props;
 
   const {
     name,
@@ -39,7 +38,6 @@ function VenuePage(props) {
     doorPolicy,
     currency,
     priceClass,
-    tags,
   } = venue;
   const {
     address1,
@@ -180,13 +178,6 @@ function VenuePage(props) {
         </section>
       )}
 
-      {!!similarVenues.length && (
-        <section>
-          <h2>{__('venuePage.similarVenues')}</h2>
-          <VenueGrid routeParams={routeParams} venues={similarVenues} />
-        </section>
-      )}
-
       {/*language=CSS*/}
       <style jsx>{`
         .header {
@@ -250,9 +241,6 @@ function VenuePage(props) {
           margin: 1.5em 0 1em;
           display: flex;
         }
-        .tags {
-          margin: -2em 0 2em;
-        }
         .price-class .label {
           margin-right: 0.5em;
           font-weight: 400;
@@ -279,7 +267,7 @@ function VenuePage(props) {
 }
 
 VenuePage.getInitialProps = async ctx => {
-  const { venue: venueId, pageSlug } = ctx.query;
+  const { venue: venueId } = ctx.query;
   const venue = await getVenue(venueId);
   return {
     venue,
@@ -289,16 +277,6 @@ VenuePage.getInitialProps = async ctx => {
         venue: venueId,
       },
     }),
-    similarVenues: venue.tags.length
-      ? (await getVenues({
-          limit: 3,
-          query: {
-            pageSlug,
-            exclude: venueId,
-            tags: venue.tags.map(tag => tag.id),
-          },
-        })).results
-      : [],
   };
 };
 
