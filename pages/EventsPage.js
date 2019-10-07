@@ -24,7 +24,13 @@ import CityMenu from '../components/CityMenu';
 const ITEMS_PER_PAGE = 10;
 
 function Events(props) {
-  const { pageSlug, events: initialEvents, routeParams, tags = [] } = props;
+  const {
+    pageSlug,
+    currentUrl,
+    events: initialEvents,
+    routeParams,
+    tags = [],
+  } = props;
   const query = useMemo(() => parseQuery(props.query), [props.query]);
   const {
     dateFrom,
@@ -106,7 +112,7 @@ function Events(props) {
     if (newPage === 0 || newPage > pageCount) return;
 
     setCurrentPage(newPage);
-    setUrlParams({ page: newPage });
+    setUrlParams({ page: newPage === 1 ? null : newPage });
   };
 
   const resetContent = async () => {
@@ -187,17 +193,45 @@ function Events(props) {
             ))}
           </div>
 
-          <div className="pager">
-            <a
-              className="button prev"
-              onClick={() => changePage(currentPage - 1)}
-            />
-            <span className="page-count">{`${currentPage}/${pageCount}`}</span>
-            <a
-              className="button next"
-              onClick={() => changePage(currentPage + 1)}
-            />
-          </div>
+          {totalCount !== 0 && (
+            <div className="pager">
+              {currentPage !== 1 && (
+                <a
+                  className="button prev"
+                  rel="prev"
+                  href={`${currentUrl}${qs.stringify(
+                    {
+                      ...getUrlQueryParams(query),
+                      page: page === 2 ? undefined : page - 1,
+                    },
+                    { addQueryPrefix: true }
+                  )}`}
+                  onClick={e => {
+                    e.preventDefault();
+                    changePage(currentPage - 1);
+                  }}
+                />
+              )}
+              <span className="page-count">{`${currentPage}/${pageCount}`}</span>
+              {pageCount !== currentPage && (
+                <a
+                  className="button next"
+                  rel="next"
+                  href={`${currentUrl}${qs.stringify(
+                    {
+                      ...getUrlQueryParams(query),
+                      page: page + 1,
+                    },
+                    { addQueryPrefix: true }
+                  )}`}
+                  onClick={e => {
+                    e.preventDefault();
+                    changePage(currentPage + 1);
+                  }}
+                />
+              )}
+            </div>
+          )}
 
           {loading && (
             <div className="spinner">
@@ -260,7 +294,7 @@ function Events(props) {
         }
         @media (max-width: 800px) {
           .filters {
-            margin: -1em 0 0;
+            margin: -0.6em 0 0;
           }
           .menu {
             display: none;
@@ -310,6 +344,18 @@ function getEventPage({ query = {}, ...otherOpts }) {
   });
 }
 
+function getUrlQueryParams(query) {
+  return pick(query, [
+    'page',
+    'dateFilterId',
+    'dateFrom',
+    'dateTo',
+    'artist',
+    'venue',
+    'tags',
+  ]);
+}
+
 Events.getInitialProps = async ctx => {
   const query = parseQuery(ctx.query);
   const { page = 1, pageSlug } = query;
@@ -349,18 +395,7 @@ export default withPageLayout({
   meta: ({ query, currentUrl }) => ({
     canonical:
       currentUrl +
-      '?' +
-      qs.stringify(
-        pick(query, [
-          'page',
-          'dateFilterId',
-          'dateFrom',
-          'dateTo',
-          'artist',
-          'venue',
-          'tags',
-        ])
-      ),
+      qs.stringify(getUrlQueryParams(query), { addQueryPrefix: true }),
   }),
   breadcrumbs,
   title: ({ pageSlug }) =>

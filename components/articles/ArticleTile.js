@@ -6,7 +6,6 @@ import css from 'styled-jsx/css';
 import { Link } from '../../routes';
 import { _o } from '../../lib/i18n';
 import ResponsiveImage from '../ResponsiveImage';
-import colors from '../../styles/colors';
 
 ArticleTile.propTypes = {
   article: PropTypes.object,
@@ -56,6 +55,7 @@ function ArticleTile(props) {
         }
         h3 {
           margin: 0.4em 0;
+          line-height: 1.3;
         }
       `}</style>
     </article>

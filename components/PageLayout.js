@@ -120,8 +120,8 @@ const withPageLayout = (opts = {}) => Component => {
               margin: 0;
             }
             .title {
-              margin-top: 1.5em;
-              margin-bottom: 1.5em;
+              margin-top: 1em;
+              margin-bottom: 1em;
             }
             .subtitle {
               display: block;
