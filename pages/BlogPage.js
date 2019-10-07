@@ -56,7 +56,7 @@ function BlogPage(props) {
         <div className="intro">{_o(intro)}</div>
       </header>
 
-      <div className={classNames(['content', blogStyles.classNames])}>
+      <div className={classNames(['content', blogStyles.className])}>
         <ReactMarkdown
           renderers={{
             image: renderImage,

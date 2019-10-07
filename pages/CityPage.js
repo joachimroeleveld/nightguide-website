@@ -55,9 +55,16 @@ function CityPage(props) {
         </section>
       )}
 
-      <div className="grid-2">
+      <div className="locations-sponsored">
+        {popularLocations && (
+          <section className="popular-locations">
+            <h2>{__('CityPage.popularLocations')}</h2>
+            <VenueRow venues={popularLocations} routeParams={routeParams} />
+          </section>
+        )}
+
         {sponsoredEvent && (
-          <section className="grid-area-b">
+          <section className="sponsored-event">
             <h2>{__('CityPage.recommended')}</h2>
             <EventTile
               wideQuery={'(min-width: 25em)'}
@@ -68,13 +75,6 @@ function CityPage(props) {
               }), 215px`}
               event={sponsoredEvent}
             />
-          </section>
-        )}
-
-        {popularLocations && (
-          <section className="popular-locations grid-area-a">
-            <h2>{__('CityPage.popularLocations')}</h2>
-            <VenueRow venues={popularLocations} routeParams={routeParams} />
           </section>
         )}
       </div>
@@ -104,7 +104,7 @@ function CityPage(props) {
           }
         }
         @media (min-width: 800px) {
-          .grid-2 {
+          .locations-sponsored {
             display: grid;
             grid-template-columns: repeat(
               2,
@@ -113,10 +113,7 @@ function CityPage(props) {
             grid-gap: ${dimensions.gridGap.L};
             grid-template-areas: 'a b';
           }
-          .grid-area-a {
-            grid-area: a;
-          }
-          .grid-area-b {
+          .sponsored-event {
             grid-area: b;
           }
           .popular-locations {
