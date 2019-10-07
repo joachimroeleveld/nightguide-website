@@ -6,13 +6,14 @@ import __, { __city } from '../lib/i18n';
 import React from 'react';
 import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
-import { getVenues, getEvents, getConfigByName } from '../lib/api';
+import { getVenues, getEvents, getConfigByName, getContent } from '../lib/api';
 import { Link } from '../routes';
 import VenueRow from '../components/venues/VenueRow';
 import EventTile from '../components/events/EventTile';
 import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
+import ArticleGrid from '../components/articles/ArticleGrid';
 
 function CityPage(props) {
   const {
@@ -22,6 +23,7 @@ function CityPage(props) {
     routeParams,
     sponsoredEvent,
     headerImage,
+    recentArticles,
   } = props;
 
   const cityName = __city(pageSlug)('name');
@@ -76,6 +78,13 @@ function CityPage(props) {
           </section>
         )}
       </div>
+
+      {!!recentArticles.length && (
+        <section>
+          <h2>{__('CityPage.recentArticles')}</h2>
+          <ArticleGrid articles={recentArticles} routeParams={routeParams} />
+        </section>
+      )}
 
       {/*language=CSS*/}
       <style jsx>{`
@@ -164,11 +173,17 @@ CityPage.getInitialProps = async ctx => {
     });
   }
 
+  const recentArticles = (await getContent({
+    limit: 4,
+    query: { pageSlug },
+  })).results;
+
   return {
     headerImage,
     sponsoredEvent,
     popularEvents,
     popularLocations,
+    recentArticles,
   };
 };
 

@@ -5,6 +5,9 @@ import ResponsiveImage from '../components/ResponsiveImage';
 import find from 'lodash/find';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
+import { classNames } from '../lib/util';
+import blogStyles from '../styles/blogStyles';
+import AnimatedLink from '../components/AnimatedLink';
 
 function BlogPage(props) {
   const { article } = props;
@@ -28,6 +31,13 @@ function BlogPage(props) {
     );
   };
 
+  const getLinkTarget = url => {
+    return url.charAt(0) === '/' ||
+      url.indexOf(process.env.REACT_APP_HOST) === 0
+      ? undefined
+      : '_blank';
+  };
+
   return (
     <main>
       <header>
@@ -46,13 +56,16 @@ function BlogPage(props) {
         <div className="intro">{_o(intro)}</div>
       </header>
 
-      <div className="content">
+      <div className={classNames(['content', blogStyles.classNames])}>
         <ReactMarkdown
           renderers={{
             image: renderImage,
+            link: AnimatedLink,
           }}
+          linkTarget={getLinkTarget}
           source={_o(body)}
         />
+        {blogStyles.styles}
       </div>
 
       {/*language=CSS*/}
@@ -63,9 +76,6 @@ function BlogPage(props) {
         .intro {
           font-size: 1.125em;
           color: ${colors.textSecondary};
-          margin: 2em 0;
-        }
-        .content :global(picture) {
           margin: 2em 0;
         }
         @media (max-width: 800px) {
