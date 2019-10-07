@@ -28,7 +28,7 @@
     "popular": "Popular",
     "popularLocations": "Popular locations",
     "recommended": "Recommended",
-    "cityIntro": "Find clubs, events and bars for the perfect night in Amsterdam"
+    "recentArticles": "Recent articles"
   },
   "EventsPage": {
     "meta": {
@@ -255,6 +255,6 @@
     },
     "theList": "The list",
     "seeAllEvents": "See all events",
-    "upcomingEvents": "Upcoming events"
+    "eventsAt": "Events at {{venue}}"
   }
 }

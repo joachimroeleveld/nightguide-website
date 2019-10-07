@@ -17,7 +17,7 @@ function CityMenu(props) {
     {
       route: `/${pageSlug}`,
       label: __('menu.discover'),
-      active: router.asPath === `/${pageSlug}`,
+      active: router.asPath.match(new RegExp(`^/${pageSlug}/?$`)),
     },
     {
       route: 'events',

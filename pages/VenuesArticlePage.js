@@ -112,7 +112,7 @@ function VenuesArticlePage(props) {
                 </footer>
                 {!!events[index].length && (
                   <div className="events">
-                    <h3>{__('VenuesArticle.upcomingEvents')}</h3>
+                    <h3>{__('VenuesArticle.eventsAt', { venue: name })}</h3>
                     <EventRow
                       routeParams={routeParams}
                       events={events[index]}

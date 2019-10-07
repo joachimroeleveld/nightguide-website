@@ -226,6 +226,7 @@ function EventTile(props) {
           align-items: center;
           overflow: hidden;
           border-top-left-radius: ${dimensions.tileRadius};
+          background: ${colors.imagePlaceholder};
         }
         .img a,
         .img :global(.container) {
