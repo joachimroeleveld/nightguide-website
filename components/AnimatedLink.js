@@ -16,9 +16,9 @@ function AnimatedLink(props) {
           width: 100%;
           position: absolute;
           z-index: 0;
-          bottom: -0.1em;
+          bottom: 0;
           left: 0;
-          height: 0.2em;
+          height: 3px;
           background: ${colors.linkText};
           opacity: 0.8;
           transition: height 0.3s;

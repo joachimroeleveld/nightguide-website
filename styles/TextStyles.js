@@ -20,6 +20,11 @@ function TextStyles() {
         font-size: 1.083em;
         font-weight: 600;
       }
+      h4 {
+        font-size: 0.95em;
+        font-weight: 600;
+        margin: 0.3em 0;
+      }
       p {
         line-height: 1.65;
       }

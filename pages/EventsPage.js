@@ -195,41 +195,45 @@ function Events(props) {
 
           {totalCount !== 0 && (
             <div className="pager">
-              {currentPage !== 1 && (
-                <a
-                  className="button prev"
-                  rel="prev"
-                  href={`${currentUrl}${qs.stringify(
-                    {
-                      ...getUrlQueryParams(query),
-                      page: page === 2 ? undefined : page - 1,
-                    },
-                    { addQueryPrefix: true }
-                  )}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    changePage(currentPage - 1);
-                  }}
-                />
-              )}
+              <div className="prev">
+                {currentPage !== 1 && (
+                  <a
+                    className="button"
+                    rel="prev"
+                    href={`${currentUrl}${qs.stringify(
+                      {
+                        ...getUrlQueryParams(query),
+                        page: page === 2 ? undefined : page - 1,
+                      },
+                      { addQueryPrefix: true }
+                    )}`}
+                    onClick={e => {
+                      e.preventDefault();
+                      changePage(currentPage - 1);
+                    }}
+                  />
+                )}
+              </div>
               <span className="page-count">{`${currentPage}/${pageCount}`}</span>
-              {pageCount !== currentPage && (
-                <a
-                  className="button next"
-                  rel="next"
-                  href={`${currentUrl}${qs.stringify(
-                    {
-                      ...getUrlQueryParams(query),
-                      page: page + 1,
-                    },
-                    { addQueryPrefix: true }
-                  )}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    changePage(currentPage + 1);
-                  }}
-                />
-              )}
+              <div className="next">
+                {pageCount !== currentPage && (
+                  <a
+                    className="button"
+                    rel="next"
+                    href={`${currentUrl}${qs.stringify(
+                      {
+                        ...getUrlQueryParams(query),
+                        page: page + 1,
+                      },
+                      { addQueryPrefix: true }
+                    )}`}
+                    onClick={e => {
+                      e.preventDefault();
+                      changePage(currentPage + 1);
+                    }}
+                  />
+                )}
+              </div>
             </div>
           )}
 
@@ -271,14 +275,19 @@ function Events(props) {
         .pager .spacer {
           flex-grow: 1;
         }
-        .pager .button {
+        .pager .next,
+        .pager .prev {
           width: 4.5em;
+        }
+        .pager .button {
+          display: block;
+          width: 100%;
           height: 2.2em;
           background: url(/static/img/events-pager-button.svg) no-repeat center
             center;
           background-size: cover;
         }
-        .pager .button.next {
+        .pager .next .button {
           transform: rotateY(180deg);
         }
         .spinner {

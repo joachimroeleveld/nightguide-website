@@ -72,6 +72,7 @@ function BlogPage(props) {
       <style jsx>{`
         h1 {
           margin-bottom: 1.1em;
+          font-weight: 800;
         }
         .intro {
           font-size: 1.125em;

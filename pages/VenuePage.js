@@ -8,7 +8,7 @@ import colors from '../styles/colors';
 import VenueOpeningHours from '../components/venues/VenueOpeningHours';
 import dimensions from '../styles/dimensions';
 import PrimaryButton from '../components/PrimaryButton';
-import VenueTiles from '../components/venues/VenueTiles';
+import VenueFacilities from '../components/venues/VenueTiles';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';
@@ -103,7 +103,7 @@ function VenuePage(props) {
           )}
           {pageSlug !== 'es/ibiza' && (
             <section className="facilities">
-              <VenueTiles
+              <VenueFacilities
                 facilities={facilities}
                 dresscode={dresscode}
                 fees={fees}

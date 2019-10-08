@@ -60,7 +60,7 @@ function VenueTile({ title, subtitle, iconId, dialogTitle, dialogContent }) {
   );
 }
 
-function VenueTiles({
+function VenueFacilities({
   facilities = [],
   dresscode,
   fees = {},
@@ -261,4 +261,4 @@ function VenueTiles({
   );
 }
 
-export default VenueTiles;
+export default VenueFacilities;

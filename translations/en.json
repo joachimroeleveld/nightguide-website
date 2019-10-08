@@ -52,7 +52,7 @@
       "title": "{{title}} | NightGuide"
     }
   },
-  "eventPage": {
+  "EventPage": {
     "meta": {
       "title": "{{event}} - events in {{city}} | NightGuide"
     },
@@ -65,7 +65,8 @@
     "buyTicketsBy": "By {{by}}",
     "map": "Map",
     "googleMaps": "Google Maps",
-    "genres": "Genres"
+    "genres": "Genres",
+    "aboutVenue": "About"
   },
   "venuePage": {
     "meta": {

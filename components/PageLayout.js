@@ -119,6 +119,9 @@ const withPageLayout = (opts = {}) => Component => {
             h1 {
               margin: 0;
             }
+            .has-image h1 {
+              text-shadow: 0 0 0.35em rgba(0, 0, 0, 0.6);
+            }
             .title {
               margin-top: 1em;
               margin-bottom: 1em;

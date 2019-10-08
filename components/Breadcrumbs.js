@@ -27,7 +27,6 @@ function Breadcrumbs(props) {
 
   return (
     <ol className="container">
-      {isCompact && <span className="prev-marker">{'<'}</span>}
       {breadcrumbs.map(
         ({ key, route, params = {}, label, disabled }, index) => {
           let elem;
@@ -44,7 +43,7 @@ function Breadcrumbs(props) {
             <li key={index}>
               {elem}
               {index !== breadcrumbs.length - 1 && (
-                <span className="separator">{isCompact ? '/' : '>'}</span>
+                <span className="separator">{'>'}</span>
               )}
             </li>
           );

@@ -18,14 +18,14 @@ import { generateTicketRedirectUrl } from '../components/events/util';
 import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
-import VenueSlider from '../components/venues/VenueSlider';
 import ArtistList from '../components/artists/ArtistList';
-import { classNames, createMapsUrl, trimToDescription } from '../lib/util';
+import { classNames, trimToDescription } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
 import EventTicketModal from '../components/events/EventTicketModal';
 import ticketProviders from '../components/events/ticket-providers';
+import ImageSlider from '../components/ImageSlider';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -81,7 +81,7 @@ export function EventPage(props) {
   let ticketButton = null;
   let ticketsViaString;
   if (ticketsUrl) {
-    ticketsViaString = __('eventPage.buyTicketsVia', {
+    ticketsViaString = __('EventPage.buyTicketsVia', {
       via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
     });
     ticketButton = (
@@ -90,16 +90,16 @@ export function EventPage(props) {
         href={generateTicketRedirectUrl(event.id, dateIndex)}
         target="_blank"
         rel="noopener noreferrer"
-        title={__('eventPage.buyTickets')}
+        title={__('EventPage.buyTickets')}
       />
     );
   } else if (ticketProvider && date.providerEventId) {
-    ticketsViaString = __('eventPage.buyTicketsBy', {
+    ticketsViaString = __('EventPage.buyTicketsBy', {
       by: ticketProvider.name,
     });
     ticketButton = (
       <PrimaryButton
-        title={__('eventPage.buyTickets')}
+        title={__('EventPage.buyTickets')}
         onClick={() => setShowTicketModal(true)}
       />
     );
@@ -109,7 +109,7 @@ export function EventPage(props) {
     <main>
       <Head>
         <title>
-          {__('eventPage.meta.title', {
+          {__('EventPage.meta.title', {
             event: title || facebook.title,
             city: location.city,
           })}
@@ -196,8 +196,15 @@ export function EventPage(props) {
         </section>
       </header>
       <section className="description">
-        <h2>{__('eventPage.details')}</h2>
+        <h2>{__('EventPage.details')}</h2>
         <div className="content">
+          {!!tags.length && (
+            <section className="tags">
+              <div className="list">
+                <TagList tags={tags} routeParams={routeParams} />
+              </div>
+            </section>
+          )}
           <ReadMoreLess
             initialHeight={300}
             backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
@@ -229,20 +236,10 @@ export function EventPage(props) {
             <span className="via">{ticketsViaString}</span>
           </section>
         )}
-        {!!tags.length && (
-          <section className="genre">
-            <header>
-              <h2>{__('eventPage.genres')}</h2>
-            </header>
-            <div className="list">
-              <TagList tags={tags} routeParams={routeParams} />
-            </div>
-          </section>
-        )}
         {artists && !!artists.length && (
           <section className="artists">
             <header>
-              <h2>{__('eventPage.artists')}</h2>
+              <h2>{__('EventPage.artists')}</h2>
             </header>
             <div className="list">
               <ArtistList routeParams={routeParams} artists={artists} />
@@ -250,32 +247,50 @@ export function EventPage(props) {
           </section>
         )}
         <section className="venue">
-          <h2>{__('eventPage.venue')}</h2>
-          <div className="tile">
-            <VenueSlider
-              routeParams={routeParams}
-              venue={venue}
-              imgWidths={[600, 1000, 2000]}
-              imgSizes={`(max-width: 800px) 100vw, calc(0.4 * 100vw - 4em - 2 * ${
-                dimensions.bodyPadding
-              })`}
-            />
+          <h2>{__('EventPage.venue')}</h2>
+          <div className="card">
+            <div className="images">
+              <ImageSlider
+                slides={venue.images}
+                imgWidths={[600, 1000, 2000]}
+                imgSizes={`(max-width: 800px) 100vw, calc(0.4 * 100vw - 4em - 2 * ${
+                  dimensions.bodyPadding
+                })`}
+              />
+            </div>
+            <section className="name-address">
+              <div className="name">{venue.name}</div>
+              <div className="address">
+                {[
+                  [venue.location.address1, venue.location.address2]
+                    .join(' ')
+                    .trim(),
+                  venue.location.city,
+                ].join(', ')}
+              </div>
+            </section>
+            {_o(venue.description) && (
+              <section className="about">
+                <h4>{__('EventPage.aboutVenue')}</h4>
+                <ReadMoreLess
+                  initialHeight={180}
+                  backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
+                    colors.cardBg
+                  } )`}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: _o(venue.description).replace(/(\n)/g, '<br/>'),
+                    }}
+                  />
+                </ReadMoreLess>
+              </section>
+            )}
           </div>
         </section>
         <section className="map">
           <header>
-            <h2>{__('eventPage.map')}</h2>
-            <a
-              className="google-maps"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={createMapsUrl({
-                ...location.coordinates,
-                googlePlaceId: venue.location.googlePlaceId,
-              })}
-            >
-              {__('eventPage.googleMaps')}
-            </a>
+            <h2>{__('EventPage.map')}</h2>
           </header>
           <div className="preview">
             <SeeOnMap {...location.coordinates} />
@@ -363,11 +378,8 @@ export function EventPage(props) {
         .when-where {
           padding: 0.8em ${dimensions.bodyPadding};
         }
-        .description h2 {
-          padding: 0 ${dimensions.bodyPadding};
-        }
         .description .content {
-          padding: 1.5em 2em;
+          padding: 1.5em ${dimensions.bodyPadding};
           word-break: break-word;
           background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
@@ -377,16 +389,6 @@ export function EventPage(props) {
         }
         .artists header {
           display: flex;
-        }
-        .artists .toggle-orientation {
-          background: url(/static/img/toggle-orientation.svg) center center
-            no-repeat;
-          width: 1em;
-          height: 1em;
-          transition: transform 0.3s;
-        }
-        .artists .toggle-orientation.vertical {
-          transform: rotate(90deg);
         }
         .buy-tickets .via {
           color: #5e5e5e;
@@ -405,8 +407,25 @@ export function EventPage(props) {
           flex-grow: 1;
           margin: 0;
         }
-        .map .google-maps {
-          color: ${colors.linkText};
+        .tags {
+          margin: -0.3em 0 1em;
+        }
+        .venue .card {
+          background: ${colors.cardBg};
+          box-shadow: ${colors.cardShadow};
+        }
+        .venue .name-address {
+          padding: ${dimensions.bodyPadding};
+          border-bottom: 1px solid ${colors.separator};
+        }
+        .venue .name {
+          font-weight: 600;
+        }
+        .venue .about {
+          padding: ${dimensions.bodyPadding};
+        }
+        .venue h4 {
+          margin-top: 0;
         }
         @media (max-width: 800px) {
           .header {
@@ -434,13 +453,18 @@ export function EventPage(props) {
             margin: 0;
             flex-grow: 1;
           }
-          .venue .tile {
+          .venue .card {
+            margin: 0 -${dimensions.bodyPadding};
+          }
+          .venue .images {
             width: 100vw;
             height: 230px;
-            margin: 0 -${dimensions.bodyPadding};
           }
           .description {
             margin: 0 -${dimensions.bodyPadding};
+          }
+          .description h2 {
+            padding: 0 ${dimensions.bodyPadding};
           }
           .sidebar {
             display: grid;
@@ -513,9 +537,9 @@ export function EventPage(props) {
           .description {
             grid-area: description;
           }
-          .venue .tile {
+          .venue .images {
             height: 205px;
-            border-radius: ${dimensions.tileRadius};
+            border-radius: ${dimensions.images};
             overflow: hidden;
           }
           .sidebar .buy-tickets {
@@ -530,9 +554,6 @@ export function EventPage(props) {
           .header .buy-tickets .via {
             display: none;
           }
-          .artists .toggle-orientation {
-            display: none;
-          }
           .when {
             display: flex;
           }
@@ -541,6 +562,11 @@ export function EventPage(props) {
           }
           .when .date.multiple {
             flex-grow: 1;
+          }
+          .description .content,
+          .venue .name-address,
+          .venue .about {
+            padding: 1.5em;
           }
         }
       `}</style>

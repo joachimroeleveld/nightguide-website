@@ -37,7 +37,7 @@ function TagList(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          margin: 1em -0.2em;
+          margin: 0 -0.2em;
           display: flex;
           flex-wrap: wrap;
         }
