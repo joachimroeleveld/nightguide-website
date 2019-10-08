@@ -8,7 +8,7 @@ import colors from '../styles/colors';
 import VenueOpeningHours from '../components/venues/VenueOpeningHours';
 import dimensions from '../styles/dimensions';
 import PrimaryButton from '../components/PrimaryButton';
-import VenueFacilities from '../components/venues/VenueTiles';
+import VenueFacilities from '../components/venues/VenueFacilities';
 import VenuePriceClass from '../components/venues/VenuePriceClass';
 import ReadMoreLess from '../components/ReadMoreLess';
 import EventRow from '../components/events/EventRow';

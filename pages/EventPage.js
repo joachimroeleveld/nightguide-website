@@ -106,7 +106,7 @@ export function EventPage(props) {
   }
 
   return (
-    <main>
+    <main className={classNames([ticketButton && 'has-tickets'])}>
       <Head>
         <title>
           {__('EventPage.meta.title', {
@@ -195,21 +195,23 @@ export function EventPage(props) {
           </div>
         </section>
       </header>
-      <section className="usps">
-        <ul>
-          <li>
-            <span>{__('EventPage.instantConfirmation')}</span>
-          </li>
-          <div className="separator" />
-          <li>
-            <span>{__('EventPage.officialPartner')}</span>
-          </li>
-          <div className="separator" />
-          <li>
-            <span>{__('EventPage.secureCheckout')}</span>
-          </li>
-        </ul>
-      </section>
+      {ticketButton && (
+        <section className="usps">
+          <ul>
+            <li>
+              <span>{__('EventPage.instantConfirmation')}</span>
+            </li>
+            <div className="separator" />
+            <li>
+              <span>{__('EventPage.officialPartner')}</span>
+            </li>
+            <div className="separator" />
+            <li>
+              <span>{__('EventPage.secureCheckout')}</span>
+            </li>
+          </ul>
+        </section>
+      )}
       <section className="description">
         <h2>{__('EventPage.details')}</h2>
         <div className="content">
@@ -284,7 +286,7 @@ export function EventPage(props) {
                 ].join(', ')}
               </div>
             </section>
-            {_o(venue.description) && (
+            {venue.description && (
               <section className="about">
                 <h4>{__('EventPage.aboutVenue')}</h4>
                 <ReadMoreLess
@@ -439,6 +441,9 @@ export function EventPage(props) {
         .venue .about {
           padding: ${dimensions.bodyPadding};
         }
+        .venue .about :global(p:first-child) {
+          margin-top: 0;
+        }
         .venue h4 {
           margin-top: 0;
         }
@@ -558,6 +563,7 @@ export function EventPage(props) {
               'sidebar header'
               'sidebar usps'
               'sidebar description';
+            align-content: start;
           }
           .header {
             grid-area: header;
@@ -584,6 +590,9 @@ export function EventPage(props) {
           }
           .description {
             grid-area: description;
+          }
+          :not(.has-tickets) .description {
+            grid-area: usps;
           }
           .venue .images {
             height: 205px;
@@ -622,6 +631,7 @@ export function EventPage(props) {
           }
           .usps .separator {
             flex-grow: 1;
+            padding: 0 1em;
             position: relative;
           }
           .usps .separator:before {

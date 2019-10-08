@@ -19,17 +19,17 @@ function Pager(props) {
           padding: 0.1em 0;
         }
         .dot {
-          margin: 0 0.15em;
+          margin: 0 0.3em;
           width: 6px;
           height: 6px;
           border-radius: 50%;
           background: #fff;
-          opacity: 0.6;
+          opacity: 0.8;
           transition: all 0.3s;
         }
         .dot.active {
-          transform: scale(1.2);
-          margin: 0 0.2em;
+          transform: scale(1.33);
+          margin: 0 0.35em;
           background: #fff;
           opacity: 1;
         }

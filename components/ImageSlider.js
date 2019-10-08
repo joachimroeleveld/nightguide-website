@@ -130,7 +130,6 @@ function ImageSlider(props) {
                 {slides.map(({ width, height, url }) => (
                   <div key={url} className="slide">
                     <ResponsiveImage
-                      showOverlay={true}
                       widths={imgWidths}
                       sizes={imgSizes}
                       url={url}
@@ -141,12 +140,6 @@ function ImageSlider(props) {
                         .container {
                           width: 100%;
                           height: 100%;
-                        }
-                        .overlay {
-                          bottom: 0;
-                          height: 100%;
-                          width: 100%;
-                          background: linear-gradient(rgba(0, 0, 0, 0.01) 90%, rgba(0, 0, 0, 1));
                         }
                       `}
                     />
@@ -178,7 +171,11 @@ function ImageSlider(props) {
           z-index: 2;
           width: 100%;
           left: 0;
-          bottom: 0.5em;
+          bottom: 0;
+          padding: 0.5em 0;
+          background: rgba(0, 0, 0, 0)
+            linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%) repeat
+            scroll 0% 0%;
         }
         .slides {
           height: 100%;
