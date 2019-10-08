@@ -195,6 +195,21 @@ export function EventPage(props) {
           </div>
         </section>
       </header>
+      <section className="usps">
+        <ul>
+          <li>
+            <span>{__('EventPage.instantConfirmation')}</span>
+          </li>
+          <div className="separator" />
+          <li>
+            <span>{__('EventPage.officialPartner')}</span>
+          </li>
+          <div className="separator" />
+          <li>
+            <span>{__('EventPage.secureCheckout')}</span>
+          </li>
+        </ul>
+      </section>
       <section className="description">
         <h2>{__('EventPage.details')}</h2>
         <div className="content">
@@ -427,6 +442,24 @@ export function EventPage(props) {
         .venue h4 {
           margin-top: 0;
         }
+        .usps li {
+          display: flex;
+          align-items: center;
+        }
+        .usps span {
+          display: inline-block;
+          background: no-repeat left center;
+          padding-left: 2em;
+        }
+        .usps li:nth-of-type(1) span {
+          background-image: url(/static/img/event-usps-instant-confirm.svg);
+        }
+        .usps li:nth-of-type(2) span {
+          background-image: url(/static/img/event-usps-partner.svg);
+        }
+        .usps li:nth-of-type(3) span {
+          background-image: url(/static/img/event-usps-secure.svg);
+        }
         @media (max-width: 800px) {
           .header {
             margin: 1em -${dimensions.bodyPadding} 2em;
@@ -496,6 +529,17 @@ export function EventPage(props) {
           .map .preview {
             margin: 0 -${dimensions.bodyPadding};
           }
+          .usps {
+            padding: 0.7em 1em;
+            border: 1px solid ${colors.separator};
+            border-radius: 3px;
+            display: flex;
+            justify-content: center;
+          }
+          .usps li {
+            padding-top: 0.3em;
+            padding-bottom: 0.3em;
+          }
         }
         @media (min-width: 800px) {
           h1 {
@@ -512,6 +556,7 @@ export function EventPage(props) {
             grid-template-rows: auto;
             grid-template-areas:
               'sidebar header'
+              'sidebar usps'
               'sidebar description';
           }
           .header {
@@ -526,6 +571,9 @@ export function EventPage(props) {
           }
           .header .title {
             grid-area: title;
+          }
+          .usps {
+            grid-area: usps;
           }
           .sidebar {
             grid-area: sidebar;
@@ -567,6 +615,23 @@ export function EventPage(props) {
           .venue .name-address,
           .venue .about {
             padding: 1.5em;
+          }
+          .usps ul {
+            display: flex;
+            margin: 1em 0 0;
+          }
+          .usps .separator {
+            flex-grow: 1;
+            position: relative;
+          }
+          .usps .separator:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            background: ${colors.separator};
           }
         }
       `}</style>
