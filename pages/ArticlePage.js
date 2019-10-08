@@ -7,7 +7,7 @@ import BlogPage from './BlogPage';
 import { redirect } from '../lib/routing';
 import __, { _o } from '../lib/i18n';
 import find from 'lodash/find';
-import { trimToDescription } from '../lib/util';
+import { generateMetaDescription } from '../lib/util';
 
 function ArticlePage(props) {
   const { article } = props;
@@ -25,7 +25,10 @@ function ArticlePage(props) {
         )}
         {image && <meta property="og:image" content={`${image.url}=s1200`} />}
         {intro && (
-          <meta name="description" content={trimToDescription(_o(intro))} />
+          <meta
+            name="description"
+            content={generateMetaDescription(_o(intro))}
+          />
         )}
       </Head>
       <PageComponent {...props} />

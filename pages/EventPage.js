@@ -19,7 +19,7 @@ import ReadMoreLess from '../components/ReadMoreLess';
 import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import ArtistList from '../components/artists/ArtistList';
-import { classNames, trimToDescription } from '../lib/util';
+import { classNames, generateMetaDescription } from '../lib/util';
 import { useOnScroll } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
@@ -116,129 +116,133 @@ export function EventPage(props) {
         </title>
         <meta
           name="description"
-          content={trimToDescription(_o(description) || facebook.description)}
+          content={generateMetaDescription(
+            _o(description) || facebook.description
+          )}
         />
         {!!images.length && (
           <meta property="og:image" content={`${images[0].url}=s1200`} />
         )}
       </Head>
-      <header className="header">
-        <figure className="media" ref={setMediaRef}>
-          {!!videoUrl && (
-            <ReactPlayer
-              light={true}
-              width={mediaDimensions.width}
-              height={(mediaDimensions.width / 16) * 9}
-              controls={true}
-              url={videoUrl}
-            />
-          )}
-          {!videoUrl && !!images.length && (
-            <div className="thumbnail">
-              <div
-                className="bg"
-                style={{
-                  backgroundImage: `url(${
-                    images[0].url
-                  }=s50-c-fSoften=1,100,0)`,
-                }}
+      <div className="main">
+        <header className="header">
+          <figure className="media" ref={setMediaRef}>
+            {!!videoUrl && (
+              <ReactPlayer
+                light={true}
+                width={mediaDimensions.width}
+                height={(mediaDimensions.width / 16) * 9}
+                controls={true}
+                url={videoUrl}
               />
-              <ResponsiveImage
-                lazy={false}
-                url={images[0].url}
-                widths={[320]}
-                imgStyle={{
-                  maxWidth: '320px',
-                }}
-                alt={title || facebook.title}
-                progressive={false}
-                width={images[0].width}
-                height={images[0].height}
-              />
-            </div>
-          )}
-        </figure>
-        <section className="title">
-          <div className="date">
-            <span className="day">{moment(date.from).format('D')}</span>
-            <span className="month">{moment(date.from).format('MMM')}</span>
-          </div>
-          <h1>{title || facebook.title}</h1>
-        </section>
-        <section className="when-where">
-          <div className="when">
-            <div
-              className={classNames(['date', dates.length > 1 && 'multiple'])}
-            >
-              {dates.length > 1 && (
-                <EventDateSelect
-                  onSelect={switchDateIndex}
-                  value={dateIndex}
-                  dates={dates}
+            )}
+            {!videoUrl && !!images.length && (
+              <div className="thumbnail">
+                <div
+                  className="bg"
+                  style={{
+                    backgroundImage: `url(${
+                      images[0].url
+                    }=s50-c-fSoften=1,100,0)`,
+                  }}
                 />
-              )}
-              {dates.length === 1 && (
-                <span>{formatEventDate(date.from, date.to)}</span>
-              )}
-            </div>
-            {ticketButton && (
-              <div className="buy-tickets" id="buy-tickets-header">
-                {ticketButton}
-                <span className="via">{ticketsViaString}</span>
+                <ResponsiveImage
+                  lazy={false}
+                  url={images[0].url}
+                  widths={[320]}
+                  imgStyle={{
+                    maxWidth: '320px',
+                  }}
+                  alt={title || facebook.title}
+                  progressive={false}
+                  width={images[0].width}
+                  height={images[0].height}
+                />
               </div>
             )}
-          </div>
-          <div className="where">
-            <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
-              <a target="_blank">{venue.name}</a>
-            </Link>
-          </div>
-        </section>
-      </header>
-      {ticketButton && (
-        <section className="usps">
-          <ul>
-            <li>
-              <span>{__('EventPage.instantConfirmation')}</span>
-            </li>
-            <div className="separator" />
-            <li>
-              <span>{__('EventPage.officialPartner')}</span>
-            </li>
-            <div className="separator" />
-            <li>
-              <span>{__('EventPage.secureCheckout')}</span>
-            </li>
-          </ul>
-        </section>
-      )}
-      <section className="description">
-        <h2>{__('EventPage.details')}</h2>
-        <div className="content">
-          {!!tags.length && (
-            <section className="tags">
-              <div className="list">
-                <TagList tags={tags} routeParams={routeParams} />
+          </figure>
+          <section className="title">
+            <div className="date">
+              <span className="day">{moment(date.from).format('D')}</span>
+              <span className="month">{moment(date.from).format('MMM')}</span>
+            </div>
+            <h1>{title || facebook.title}</h1>
+          </section>
+          <section className="when-where">
+            <div className="when">
+              <div
+                className={classNames(['date', dates.length > 1 && 'multiple'])}
+              >
+                {dates.length > 1 && (
+                  <EventDateSelect
+                    onSelect={switchDateIndex}
+                    value={dateIndex}
+                    dates={dates}
+                  />
+                )}
+                {dates.length === 1 && (
+                  <span>{formatEventDate(date.from, date.to)}</span>
+                )}
               </div>
-            </section>
-          )}
-          <ReadMoreLess
-            initialHeight={300}
-            backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
-              colors.cardBg
-            } )`}
-          >
-            <div
-              dangerouslySetInnerHTML={{
-                __html: (_o(description) || facebook.description).replace(
-                  /(\n)/g,
-                  '<br/>'
-                ),
-              }}
-            />
-          </ReadMoreLess>
-        </div>
-      </section>
+              {ticketButton && (
+                <div className="buy-tickets" id="buy-tickets-header">
+                  {ticketButton}
+                  <span className="via">{ticketsViaString}</span>
+                </div>
+              )}
+            </div>
+            <div className="where">
+              <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
+                <a target="_blank">{venue.name}</a>
+              </Link>
+            </div>
+          </section>
+        </header>
+        {ticketButton && (
+          <section className="usps">
+            <ul>
+              <li>
+                <span>{__('EventPage.instantConfirmation')}</span>
+              </li>
+              <div className="separator" />
+              <li>
+                <span>{__('EventPage.officialPartner')}</span>
+              </li>
+              <div className="separator" />
+              <li>
+                <span>{__('EventPage.secureCheckout')}</span>
+              </li>
+            </ul>
+          </section>
+        )}
+        <section className="description">
+          <h2>{__('EventPage.details')}</h2>
+          <div className="content">
+            {!!tags.length && (
+              <section className="tags">
+                <div className="list">
+                  <TagList tags={tags} routeParams={routeParams} />
+                </div>
+              </section>
+            )}
+            <ReadMoreLess
+              initialHeight={300}
+              backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
+                colors.cardBg
+              } )`}
+            >
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: (_o(description) || facebook.description).replace(
+                    /(\n)/g,
+                    '<br/>'
+                  ),
+                }}
+              />
+            </ReadMoreLess>
+          </div>
+        </section>
+      </div>
       <aside className="sidebar">
         {ticketButton && (
           <section
@@ -458,6 +462,7 @@ export function EventPage(props) {
         }
         .usps li:nth-of-type(1) span {
           background-image: url(/static/img/event-usps-instant-confirm.svg);
+          background-position-x: 2px;
         }
         .usps li:nth-of-type(2) span {
           background-image: url(/static/img/event-usps-partner.svg);
@@ -560,9 +565,9 @@ export function EventPage(props) {
             grid-template-columns: 40% 60%;
             grid-template-rows: auto;
             grid-template-areas:
-              'sidebar header'
-              'sidebar usps'
-              'sidebar description';
+              'sidebar main'
+              'sidebar main'
+              'sidebar main';
             align-content: start;
           }
           .header {
@@ -578,18 +583,12 @@ export function EventPage(props) {
           .header .title {
             grid-area: title;
           }
-          .usps {
-            grid-area: usps;
-          }
           .sidebar {
             grid-area: sidebar;
             margin-right: 4em;
           }
           .sidebar section:first-of-type h2 {
             margin-top: 0;
-          }
-          .description {
-            grid-area: description;
           }
           :not(.has-tickets) .description {
             grid-area: usps;
@@ -621,9 +620,11 @@ export function EventPage(props) {
             flex-grow: 1;
           }
           .description .content,
-          .venue .name-address,
           .venue .about {
             padding: 1.5em;
+          }
+          .venue .name-address {
+            padding: 1em 1.5em;
           }
           .usps ul {
             display: flex;

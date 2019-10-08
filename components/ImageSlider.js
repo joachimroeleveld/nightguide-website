@@ -160,6 +160,7 @@ function ImageSlider(props) {
       <style jsx>{`
         .container {
           height: 100%;
+          background: ${colors.imagePlaceholder};
         }
         .carousel {
           height: 100%;
@@ -186,7 +187,6 @@ function ImageSlider(props) {
           transition: ease-out 0.3s;
         }
         .slide {
-          background: ${colors.imagePlaceholder};
           position: relative;
           height: 100%;
         }

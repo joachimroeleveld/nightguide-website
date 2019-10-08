@@ -86,7 +86,8 @@ function MapModal(props) {
               style={{
                 position: 'absolute',
                 bottom: '2em',
-                right: '1em',
+                right: '1.5em',
+                boxShadow: '0px 0px 3px #000000',
               }}
             />
           </ReactMapGL>
@@ -109,17 +110,21 @@ function MapModal(props) {
           height: 100%;
           border-radius: 3px;
           overflow: hidden;
+          position: relative;
+          z-index: 0;
         }
         .close {
           position: absolute;
-          right: 0;
-          top: -2.5em;
+          z-index: 1;
+          right: 1.5em;
+          top: 1.5em;
           margin-bottom: 0.5em;
-          background: url(/static/img/close.svg) no-repeat center center;
-          width: 1em;
-          height: 1em;
+          background: #fff url(/static/img/close.svg) no-repeat center center;
+          border-radius: 3px;
+          width: 2em;
+          height: 2em;
           padding: 0.5em;
-          background-size: cover;
+          box-shadow: 0px 0px 3px #000000;
         }
         .marker {
           width: 30px;
@@ -144,11 +149,8 @@ const modalStyles = css.resolve`
   .ReactModal__Content {
       outline: none;
       WebkitOverflowScrolling: touch;
-      width: calc(100% - 4em);
-      height: calc(100% - 6em);
-      position: relative;
-      top: 4em;
-      left: 2em;
+      width: 100%;
+      height: 100%;
   }
 `;
 

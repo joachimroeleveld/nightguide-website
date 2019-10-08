@@ -16,7 +16,7 @@ import { useToggleState } from '../lib/hooks';
 import ImagesModal from '../components/ImagesModal';
 import SeeOnMap from '../components/SeeOnMap';
 import React from 'react';
-import { createMapsUrl, trimToDescription } from '../lib/util';
+import { createMapsUrl, generateMetaDescription } from '../lib/util';
 
 function VenuePage(props) {
   const { venue, routeParams, events, pageSlug } = props;
@@ -62,7 +62,7 @@ function VenuePage(props) {
         {description && (
           <meta
             name="description"
-            content={trimToDescription(_o(description))}
+            content={generateMetaDescription(_o(description))}
           />
         )}
         {!!images.length && (
