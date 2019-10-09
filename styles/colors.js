@@ -13,7 +13,7 @@ export default {
   tileShadow: '0 0 2px 0 rgba(0,0,0,0.4)',
   primaryButton: '#fff',
   linkBorder: '#4e4e4e',
-  linkText: '#9AB0E0',
+  linkText: '#BCD7FF',
   cardBg: '#2E2E2E',
   cardShadow: '0 0 5px 0 rgba(0,0,0,0.3)',
   cardSeparator: '#3D3D3D',

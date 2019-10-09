@@ -20,12 +20,12 @@ EventFilters.propTypes = {
 };
 
 function EventFilters(props) {
-  const { values, onChange, venue, artist, tags, pageSlug } = props;
+  const { values, onChange, venue, artist, genres, pageSlug } = props;
   const {
     dateFrom,
     dateTo,
     dateFilterId,
-    tags: tagIds,
+    genres: genreNames,
     venue: venueId,
     artist: artistId,
   } = values;
@@ -121,21 +121,28 @@ function EventFilters(props) {
         />
       ),
     },
-    tags.length && {
-      id: 'tags',
-      active: !!tagIds,
+    genres.length && {
+      id: 'genres',
+      active: !!genreNames,
       label: __('EventFilters.genre'),
       activeLabel:
-        tagIds &&
-        tagIds.map(tagId => _o(find(tags, { id: tagId }).name)).join(', '),
+        genreNames &&
+        genreNames
+          .map(
+            genreName => find(genres, genre => genre.name === genreName).name
+          )
+          .join(', '),
       render: () => (
         <EventCheckboxFilter
-          checked={tagIds || []}
-          items={tags.map(tag => ({ value: tag.id, label: _o(tag.name) }))}
-          onChange={setValue('tags')}
+          checked={genreNames || []}
+          items={genres.map(genre => ({
+            value: genre.name,
+            label: genre.name,
+          }))}
+          onChange={setValue('genres')}
         />
       ),
-      onClear: setValue('tags'),
+      onClear: setValue('genres'),
     },
     {
       id: 'venue',

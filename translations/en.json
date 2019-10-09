@@ -25,6 +25,7 @@
       "description": "Find the best nightlife in {{city}} based on your preferences."
     },
     "allEvents": "Browse all events",
+    "allFromGenre": "All {{genre}} events",
     "popular": "Popular",
     "popularLocations": "Popular locations",
     "recommended": "Recommended",
@@ -37,7 +38,8 @@
     },
     "title": "Nightlife events in {{city}}",
     "noEvents": "No events could be found.",
-    "loadNMoreEvents": "Load {{n}} more events"
+    "loadNMoreEvents": "Load {{n}} more events",
+    "nEventsFound": "{{n}} events found"
   },
   "ArticlesPage": {
     "meta": {
@@ -56,7 +58,7 @@
     "meta": {
       "title": "{{event}} - events in {{city}} | NightGuide"
     },
-    "details": "Details",
+    "description": "Description",
     "artists": "Artists",
     "venue": "Venue",
     "buyTickets": "Buy tickets",

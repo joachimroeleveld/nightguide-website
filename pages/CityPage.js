@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import moment from 'moment-timezone';
+import qs from 'querystring';
 
 import withPageLayout from '../components/PageLayout';
 import __, { __city } from '../lib/i18n';
@@ -14,6 +15,7 @@ import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
+import { route } from 'next/dist/next-server/server/router';
 
 function CityPage(props) {
   const {
@@ -24,6 +26,8 @@ function CityPage(props) {
     sponsoredEvent,
     headerImage,
     recentArticles,
+    genreEvents,
+    genres,
   } = props;
 
   const cityName = __city(pageSlug)('name');
@@ -86,6 +90,32 @@ function CityPage(props) {
         </section>
       )}
 
+      {genres &&
+        genres.map((genre, index) => {
+          const { name } = genre;
+          const events = genreEvents[index];
+          const seeAllParams = {
+            ...routeParams,
+            'genres[0]': name,
+          };
+          if (!events.length) return null;
+          return (
+            <section key={name}>
+              <h2>{name}</h2>
+              <EventRow
+                events={events}
+                routeParams={routeParams}
+                seeAllParams={seeAllParams}
+              />
+              <Link route="events" params={seeAllParams}>
+                <SeeAllButton
+                  title={__('CityPage.allFromGenre', { genre: name })}
+                />
+              </Link>
+            </section>
+          );
+        })}
+
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
@@ -134,6 +164,8 @@ CityPage.getInitialProps = async ctx => {
     popularLocations: popularLocationIds,
     headerImage,
   } = config.payload || {};
+  const eventsConfig = await getConfigByName('page_events', pageSlug);
+  const genres = (eventsConfig.payload || {}).genreFilters;
 
   const getEventsRow = async filter =>
     (await getEvents({
@@ -170,6 +202,18 @@ CityPage.getInitialProps = async ctx => {
     });
   }
 
+  let genreEvents;
+  if (genres) {
+    genreEvents = await Promise.all(
+      genres.map(
+        async ({ tags }) =>
+          (await getEvents({
+            query: { pageSlug, tags },
+          })).results
+      )
+    );
+  }
+
   const recentArticles = (await getContent({
     limit: 4,
     query: { pageSlug },
@@ -181,6 +225,8 @@ CityPage.getInitialProps = async ctx => {
     popularEvents,
     popularLocations,
     recentArticles,
+    genres,
+    genreEvents,
   };
 };
 

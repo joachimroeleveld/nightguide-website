@@ -1,37 +1,22 @@
-import React, { useMemo } from 'react';
-import memoize from 'lodash/memoize';
+import React from 'react';
 
-import { Link } from '../routes';
-import TagButton from './TagButton';
 import { _o } from '../lib/i18n';
+import colors from '../styles/colors';
 
 function TagList(props) {
-  const { tags, routeParams } = props;
+  const { tags } = props;
 
   if (!tags.length) {
     return null;
   }
 
-  const getLinkParams = useMemo(
-    () =>
-      memoize(tagId => ({
-        ...routeParams,
-        tags: [tagId],
-      })),
-    [routeParams]
-  );
-
   return (
     <React.Fragment>
       <ul className={'container'}>
         {tags.map(tag => (
-          <Link key={tag.slug} route="events" params={getLinkParams(tag.id)}>
-            <a>
-              <li className="tag">
-                <TagButton title={_o(tag.name)} />
-              </li>
-            </a>
-          </Link>
+          <li key={tag.id} className="tag">
+            {_o(tag.name)}
+          </li>
         ))}
       </ul>
       {/*language=CSS*/}
@@ -45,8 +30,14 @@ function TagList(props) {
           margin: 0.2em;
         }
         li {
-          padding: 0;
           list-style: none;
+          display: inline-block;
+          padding: 0.05em 1em;
+          text-decoration: none;
+          border: 2px solid ${colors.tagButtonBorderColor};
+          border-radius: 16px;
+          font-size: 0.9rem;
+          transition: all 0.3s;
         }
       `}</style>
     </React.Fragment>

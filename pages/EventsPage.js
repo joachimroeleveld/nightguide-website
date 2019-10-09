@@ -1,17 +1,13 @@
 import Head from 'next/head';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import pick from 'lodash/pick';
 import qs from 'qs';
+import flatten from 'lodash/flatten';
+import find from 'lodash/find';
 
 import { setUrlParams } from '../lib/routing';
 import withPageLayout from '../components/PageLayout';
-import {
-  getArtist,
-  getConfigByName,
-  getEvents,
-  getTags,
-  getVenue,
-} from '../lib/api';
+import { getArtist, getConfigByName, getEvents, getVenue } from '../lib/api';
 import __, { __city } from '../lib/i18n';
 import colors from '../styles/colors';
 import EventTile from '../components/events/EventTile';
@@ -29,13 +25,13 @@ function Events(props) {
     currentUrl,
     events: initialEvents,
     routeParams,
-    tags = [],
+    genreFilters = [],
   } = props;
   const query = useMemo(() => parseQuery(props.query), [props.query]);
   const {
     dateFrom,
     dateTo,
-    tags: tagIds,
+    genres: genres,
     venue: venueId,
     artist: artistId,
     dateFilterId,
@@ -64,7 +60,7 @@ function Events(props) {
   }, [
     dateFrom && dateFrom.getTime(),
     dateTo && dateTo.getTime(),
-    tagIds && tagIds.length,
+    genres && genres.length,
     venueId,
     artistId,
   ]);
@@ -76,7 +72,7 @@ function Events(props) {
 
   // Load new items if page changes
   useEffect(() => {
-    if (!events[currentPage]) {
+    if (!events[`p${currentPage}`]) {
       loadCurrentPage();
     }
   }, [currentPage, events]);
@@ -90,11 +86,14 @@ function Events(props) {
 
     setLoading(true);
     try {
-      const newEvents = await getEventPage({
-        query,
-        offset: (currentPage - 1) * ITEMS_PER_PAGE,
-        limit: ITEMS_PER_PAGE,
-      });
+      const newEvents = await getEventPage(
+        {
+          query,
+          offset: (currentPage - 1) * ITEMS_PER_PAGE,
+          limit: ITEMS_PER_PAGE,
+        },
+        genreFilters
+      );
 
       setEvents({
         ...events,
@@ -165,19 +164,22 @@ function Events(props) {
               dateFilterId,
               dateFrom,
               dateTo,
-              tags: tagIds,
+              genres,
               artist: artistId,
               venue: venueId,
             }}
             venue={venue}
             artist={artist}
-            tags={tags}
+            genres={genreFilters}
             onChange={onFiltersChange}
             pageSlug={pageSlug}
           />
         </div>
 
         <div className="event-container">
+          <div className="event-count">
+            {__('EventsPage.nEventsFound', { n: totalCount })}
+          </div>
           <div className="events" id="events">
             {visibleEvents.map(event => (
               <EventTile
@@ -214,7 +216,16 @@ function Events(props) {
                   />
                 )}
               </div>
-              <span className="page-count">{`${currentPage}/${pageCount}`}</span>
+              {loading && (
+                <div className="spinner">
+                  <Spinner />
+                </div>
+              )}
+              {!loading && (
+                <span className="page-count">
+                  {`${currentPage}/${pageCount}`}
+                </span>
+              )}
               <div className="next">
                 {pageCount !== currentPage && (
                   <a
@@ -236,16 +247,6 @@ function Events(props) {
               </div>
             </div>
           )}
-
-          {loading && (
-            <div className="spinner">
-              <Spinner />
-            </div>
-          )}
-
-          {totalCount === 0 && (
-            <div className="empty-message">{__('EventsPage.noEvents')}</div>
-          )}
         </div>
       </div>
 
@@ -260,16 +261,14 @@ function Events(props) {
         .filter {
           margin-bottom: 4em;
         }
-        .empty-message {
-          margin-top: -1em;
-          color: ${colors.textSecondary};
-        }
         .pager {
           display: flex;
           align-items: center;
         }
-        .pager .page-count {
-          text-align: center;
+        .pager .page-count,
+        .spinner {
+          display: flex;
+          justify-content: center;
           flex-grow: 1;
         }
         .pager .spacer {
@@ -290,16 +289,16 @@ function Events(props) {
         .pager .next .button {
           transform: rotateY(180deg);
         }
-        .spinner {
-          display: flex;
-          justify-content: center;
-        }
-        .pager,
-        .spinner {
+        .pager {
           margin: 2em 0 0;
         }
         .menu {
           margin: 2em 0 1.5em;
+        }
+        .event-count {
+          color: ${colors.textSecondary};
+          font-size: 0.9em;
+          margin: 1.5em 0 -0.4em;
         }
         @media (max-width: 800px) {
           .filters {
@@ -338,16 +337,27 @@ async function getSearchSubjects(query) {
   return { venue, artist };
 }
 
-function getEventPage({ query = {}, ...otherOpts }) {
+function getEventPage({ query = {}, ...otherOpts }, genreFilters) {
+  const { pageSlug, dateFrom, dateTo, artist, venue, genres } = query;
+
+  let tags;
+  if (genres) {
+    tags = flatten(
+      genres.map(
+        name => find(genreFilters, filter => filter.name === name).tags
+      )
+    );
+  }
+
   return getEvents({
-    query: pick(query, [
-      'pageSlug',
-      'dateFrom',
-      'dateTo',
-      'artist',
-      'venue',
-      'tags',
-    ]),
+    query: {
+      pageSlug,
+      dateFrom,
+      dateTo,
+      artist,
+      venue,
+      tags,
+    },
     serialize: false,
     ...otherOpts,
   });
@@ -361,7 +371,7 @@ function getUrlQueryParams(query) {
     'dateTo',
     'artist',
     'venue',
-    'tags',
+    'genres',
   ]);
 }
 
@@ -371,23 +381,19 @@ Events.getInitialProps = async ctx => {
 
   const associatedProps = await getSearchSubjects(query);
   const config = await getConfigByName('page_events', pageSlug);
-  const { genres } = config.payload || {};
-
-  let tags;
-  if (genres) {
-    tags = (await getTags({
-      query: { ids: genres },
-    })).results;
-  }
+  const genreFilters = (config.payload || {}).genreFilters;
 
   return {
     ...associatedProps,
-    tags,
-    events: await getEventPage({
-      limit: ITEMS_PER_PAGE,
-      offset: (page - 1) * ITEMS_PER_PAGE,
-      query,
-    }),
+    genreFilters,
+    events: await getEventPage(
+      {
+        limit: ITEMS_PER_PAGE,
+        offset: (page - 1) * ITEMS_PER_PAGE,
+        query,
+      },
+      genreFilters
+    ),
   };
 };
 

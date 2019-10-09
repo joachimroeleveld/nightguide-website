@@ -97,6 +97,7 @@ function EventTile(props) {
         'container',
         isWide && 'wide',
         hasTicketButton && 'has-tickets',
+        date.isHot && 'hot',
       ])}
     >
       <div className="img">
@@ -179,6 +180,7 @@ function EventTile(props) {
           box-shadow: ${colors.tileShadow};
           border-radius: ${dimensions.tileRadius};
           font-size: 0.928em;
+          position: relative;
         }
         .container.wide {
           display: grid;
@@ -266,6 +268,16 @@ function EventTile(props) {
           box-sizing: border-box;
           padding: 0.25em 0.5em;
           margin: 0.5em 0 0.3em;
+        }
+        .hot:after {
+          content: '';
+          position: absolute;
+          right: 1em;
+          top: 0;
+          background: url(/static/img/event-badge-hot.svg);
+          background-size: cover;
+          width: 2.2em;
+          height: 2.9em;
         }
         @media (min-width: 800px) {
           .container {

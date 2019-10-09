@@ -168,7 +168,7 @@ export function EventPage(props) {
             </div>
             <h1>{title || facebook.title}</h1>
           </section>
-          <section className="when-where">
+          <section className="details">
             <div className="when">
               <div
                 className={classNames(['date', dates.length > 1 && 'multiple'])}
@@ -196,6 +196,11 @@ export function EventPage(props) {
                 <a target="_blank">{venue.name}</a>
               </Link>
             </div>
+            {!!tags.length && (
+              <section className="genres">
+                {tags.map(tag => _o(tag.name)).join(', ')}
+              </section>
+            )}
           </section>
         </header>
         {ticketButton && (
@@ -216,15 +221,8 @@ export function EventPage(props) {
           </section>
         )}
         <section className="description">
-          <h2>{__('EventPage.details')}</h2>
+          <h2>{__('EventPage.description')}</h2>
           <div className="content">
-            {!!tags.length && (
-              <section className="tags">
-                <div className="list">
-                  <TagList tags={tags} routeParams={routeParams} />
-                </div>
-              </section>
-            )}
             <ReadMoreLess
               initialHeight={300}
               backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
@@ -382,7 +380,7 @@ export function EventPage(props) {
           padding: 0.5em 0;
         }
         .when .date {
-          padding-left: 2em;
+          padding-left: 2.2em;
           display: flex;
           align-items: center;
           background: url(/static/img/event-date.svg) left center no-repeat;
@@ -391,12 +389,15 @@ export function EventPage(props) {
           width: 100%;
         }
         .where {
-          padding: 0.5em 0 0.5em 2em;
-          background: url(/static/img/event-location.svg) left 3px center
-            no-repeat;
+          padding: 0.5em 0 0.5em 2.2em;
+          background: url(/static/img/event-location.svg) left center no-repeat;
           color: ${colors.linkText};
         }
-        .when-where {
+        .genres {
+          padding: 0.5em 0 0.5em 2.2em;
+          background: url(/static/img/event-music.svg) left center no-repeat;
+        }
+        .details {
           padding: 0.8em ${dimensions.bodyPadding};
         }
         .description .content {
@@ -429,7 +430,7 @@ export function EventPage(props) {
           margin: 0;
         }
         .tags {
-          margin: -0.3em 0 1em;
+          margin: -0.3em 0 1.5em;
         }
         .venue .card {
           background: ${colors.cardBg};
@@ -536,6 +537,11 @@ export function EventPage(props) {
           .when .buy-tickets {
             margin-top: 1em;
           }
+          .when .date,
+          .where,
+          .genres {
+            background-size: 1em;
+          }
           .map .preview {
             margin: 0 -${dimensions.bodyPadding};
           }
@@ -612,6 +618,9 @@ export function EventPage(props) {
           }
           .when {
             display: flex;
+          }
+          .where {
+            background-position-x: 0.1em;
           }
           .when .date {
             padding-right: 1em;

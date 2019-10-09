@@ -21,7 +21,7 @@ function TextStyles() {
         font-weight: 600;
       }
       h4 {
-        font-size: 0.95em;
+        font-size: 0.9em;
         font-weight: 600;
         margin: 0.3em 0;
       }
