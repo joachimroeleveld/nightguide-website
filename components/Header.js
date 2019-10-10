@@ -98,14 +98,16 @@ function Header(props) {
             />
           </div>
         )}
-        <div className="buttons">
+        <div className={classNames(['buttons', searchOpen && 'hide'])}>
           <Link route="help-center">
             <a className="help" />
           </Link>
-          <button
-            className={classNames(['search-toggle', searchOpen && 'hide'])}
-            onClick={() => setSearchOpen(!searchOpen)}
-          />
+          {!!pageSlug && (
+            <button
+              className={'search-toggle'}
+              onClick={() => setSearchOpen(!searchOpen)}
+            />
+          )}
         </div>
       </div>
       {/*language=CSS*/}
@@ -185,20 +187,21 @@ function Header(props) {
           align-items: center;
         }
         .search-toggle {
-          width: 14px;
-          height: 14px;
-          padding: 1em;
+          width: 1.125em;
+          height: 1.125em;
+          margin-left: 2.5em;
           background: url(/static/img/search-icon.svg) no-repeat center center;
+          background-size: cover;
         }
         .help {
           display: block;
-          width: 20px;
-          height: 20px;
-          margin: 0 1.5em 0 1.5em;
-          padding: 1em;
+          width: 1.125em;
+          height: 1.125em;
+          margin-left: 2.5em;
           background: url(/static/img/header-help.svg) no-repeat center center;
+          background-size: cover;
         }
-        .search-toggle.hide {
+        .buttons.hide {
           display: none;
         }
         @media (min-width: 400px) {
