@@ -53,7 +53,7 @@ function Breadcrumbs(props) {
         li {
           list-style: none;
           align-items: center;
-          font-size: 0.9em;
+          font-size: 0.85em;
           white-space: nowrap;
         }
         li:last-child {

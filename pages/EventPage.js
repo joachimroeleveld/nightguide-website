@@ -521,7 +521,10 @@ export function EventPage(props) {
             display: grid;
           }
           .sidebar .buy-tickets {
-            grid-area: 3 / 1 / 4 / 2;
+            grid-area: 5 / 1 / 6 / 2;
+          }
+          .similar-events {
+            grid-area: 6 / 1 / 7 / 2;
           }
           .sidebar .buy-tickets {
             margin-top: 3em;

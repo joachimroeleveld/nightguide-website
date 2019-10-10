@@ -191,15 +191,15 @@ function Header(props) {
           height: 1.125em;
           margin-left: 2.5em;
           background: url(/static/img/search-icon.svg) no-repeat center center;
-          background-size: cover;
+          background-size: contain;
         }
         .help {
           display: block;
-          width: 1.125em;
+          width: 1.3em;
           height: 1.125em;
           margin-left: 2.5em;
           background: url(/static/img/header-help.svg) no-repeat center center;
-          background-size: cover;
+          background-size: contain;
         }
         .buttons.hide {
           display: none;
