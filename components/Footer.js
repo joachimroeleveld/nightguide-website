@@ -76,7 +76,7 @@ function Footer(props) {
           </section>
         ))}
       </nav>
-      <footer className={'bottom'}>
+      <aside className={'branding'}>
         {pageSlug === 'nl/utrecht' && (
           <div className={'app-buttons'}>
             <a
@@ -110,22 +110,21 @@ function Footer(props) {
         <span className="copyright">
           &copy; NightGuide 2019. All rights reserved.
         </span>
-      </footer>
+      </aside>
       {/*language=CSS*/}
       <style jsx>{`
         .container {
           font-size: 0.9em;
-          padding: 3em 0 1em;
+          padding: 3em 0;
+          display: grid;
         }
-        .bottom {
+        .branding {
           display: flex;
           flex-direction: column;
-          align-items: center;
-          margin-top: 3em;
         }
         .copyright {
-          text-align: center;
           font-size: 0.75em;
+          color: ${colors.textSecondary};
         }
         .app-buttons {
           display: flex;
@@ -153,7 +152,7 @@ function Footer(props) {
           margin: 0;
         }
         .sections strong {
-          margin-bottom: 0.3em;
+          margin-branding: 0.3em;
           display: block;
         }
         .sections a {
@@ -162,7 +161,30 @@ function Footer(props) {
           display: block;
           padding: 0.15em 0;
         }
+        @media (max-width: 800px) {
+          .container {
+            padding: 3em 0 1em;
+          }
+          .copyright {
+            background: url(/static/img/logo.svg) no-repeat center center;
+            background-size: 10em;
+            margin-top: 1em;
+            padding-top: 11em;
+            width: 100%;
+            text-align: center;
+          }
+        }
         @media (min-width: 800px) {
+          .container {
+            grid-template-columns: 2fr 5fr;
+            grid-template-areas: 'branding links';
+          }
+          .branding {
+            background: url(/static/img/logo.svg) no-repeat left top 2em;
+            background-size: 7em;
+            padding: 7em 5em 0 0;
+            grid-area: branding;
+          }
           .sections {
             font-size: 1em;
             grid-template-columns: repeat(4, 1fr);

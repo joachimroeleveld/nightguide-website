@@ -299,7 +299,7 @@ function Events(props) {
         .event-count {
           color: ${colors.textSecondary};
           font-size: 0.9em;
-          margin: 1.5em 0 -0.4em;
+          margin: 1.5em 0 -1.4em;
         }
         @media (max-width: 800px) {
           .filters {
