@@ -316,7 +316,7 @@ export function EventPage(props) {
           </div>
         </section>
         {!!similarEvents.length && (
-          <section>
+          <section className="similar-events">
             <h2>{__('EventPage.similarEvents')}</h2>
             <EventRow routeParams={routeParams} events={similarEvents} />
           </section>
@@ -461,7 +461,7 @@ export function EventPage(props) {
         .usps li {
           display: flex;
           align-items: center;
-          opacity: 0.5;
+          opacity: 0.4;
         }
         .usps span {
           display: inline-block;
@@ -562,6 +562,9 @@ export function EventPage(props) {
           .usps li {
             padding-top: 0.3em;
             padding-bottom: 0.3em;
+          }
+          .similar-events {
+            max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
           }
         }
         @media (min-width: 800px) {
