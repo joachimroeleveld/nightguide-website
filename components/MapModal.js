@@ -119,7 +119,8 @@ function MapModal(props) {
           right: 1.5em;
           top: 1.5em;
           margin-bottom: 0.5em;
-          background: #fff url(/static/img/close.svg) no-repeat center center;
+          background: #fff url(/static/img/map-close.svg) no-repeat center
+            center;
           border-radius: 3px;
           width: 2em;
           height: 2em;

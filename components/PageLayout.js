@@ -11,21 +11,17 @@ import dimensions from '../styles/dimensions';
 import { withNavigation } from './Navigation';
 import Breadcrumbs from './Breadcrumbs';
 import React, { Fragment } from 'react';
-import HeaderImage from './HeaderImage';
-import colors from '../styles/colors';
 import { classNames } from '../lib/util';
 
 const withPageLayout = (opts = {}) => Component => {
   function PageLayout(props) {
     const { currentUrl, pageSlug } = props;
+    let { TitleComponent, HeaderComponent } = opts;
 
     // Check opts for functions and call them with props if so
     let {
-      title,
-      subtitle,
       headerImage,
       meta = {},
-      HeaderComponent,
       breadcrumbs,
       pageWidth = dimensions.pageWidth,
     } = [
@@ -33,7 +29,6 @@ const withPageLayout = (opts = {}) => Component => {
       'subtitle',
       'headerImage',
       'meta',
-      'HeaderComponent',
       'breadcrumbs',
       'pageWidth',
     ].reduce((acc, optKey) => {
@@ -70,18 +65,7 @@ const withPageLayout = (opts = {}) => Component => {
               </div>
             )}
 
-            {!!headerImage && (
-              <div className="image">
-                <HeaderImage imageSrc={headerImage} />
-              </div>
-            )}
-
-            {!!title && (
-              <div className="title">
-                {!!title && <h1>{title}</h1>}
-                {!!subtitle && <span className="subtitle">{subtitle}</span>}
-              </div>
-            )}
+            {TitleComponent && <TitleComponent {...props} />}
           </header>
 
           <div className="page">
@@ -99,15 +83,11 @@ const withPageLayout = (opts = {}) => Component => {
           <GlobalStyles />
           {/*language=CSS*/}
           <style jsx>{`
-            .title,
             .breadcrumbs {
               padding: 0 ${dimensions.bodyPadding};
-            }
-            .breadcrumbs {
-              margin-top: 0.5em;
+              margin: 0.5em 0;
             }
             .breadcrumbs,
-            .title,
             .page {
               max-width: ${pageWidth};
               margin-left: auto;
@@ -115,20 +95,6 @@ const withPageLayout = (opts = {}) => Component => {
             }
             .page {
               padding: 0 ${dimensions.bodyPadding};
-            }
-            h1 {
-              margin: 0;
-            }
-            .has-image h1 {
-              text-shadow: 0 0 0.35em rgba(0, 0, 0, 0.6);
-            }
-            .title {
-              margin-top: 1em;
-              margin-bottom: 1em;
-            }
-            .subtitle {
-              display: block;
-              color: ${colors.textSecondary};
             }
             .footer {
               margin-top: 6em;
@@ -138,38 +104,6 @@ const withPageLayout = (opts = {}) => Component => {
               max-width: ${dimensions.pageWidth};
               margin: auto;
               padding: 0rem ${dimensions.bodyPadding} ${dimensions.bodyPadding};
-            }
-            @media (max-width: 800px) {
-              .breadcrumbs {
-                margin-bottom: 1.7em;
-              }
-              .subtitle {
-                margin-top: 0.3em;
-              }
-            }
-            @media (min-width: 800px) {
-              .menu {
-                margin: 2em 0 1.5em;
-              }
-              .header.has-image .title {
-                position: relative;
-                margin: -6.5em auto 0;
-                max-width: ${dimensions.pageWidth};
-              }
-              .has-image .subtitle {
-                margin-top: 1.4em;
-              }
-              .has-image h1 {
-                margin: 0;
-                font-size: 3.75em;
-              }
-              .title {
-                margin-top: 2em;
-                margin-bottom: 2em;
-              }
-              .subtitle {
-                font-size: 16px;
-              }
             }
           `}</style>
         </div>

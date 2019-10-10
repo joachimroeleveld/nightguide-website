@@ -17,13 +17,13 @@ const CITIES = [
   //   pageSlug: 'nl/amsterdam',
   //   routeParams: { city: 'amsterdam', country: 'nl' },
   //   imgSrc:
-  //     'https://lh3.googleusercontent.com/llIYkeCt9tNuXZUwZKXYztmtUIIAQ_wzQMmagU_xizxD7qWmIhKpX2GKxqT1Gaf_GXe4J7u5Hu_fQnjORMmUz9XAnIQjgkTQ8g',
+  //     'https://lh3.googleusercontent.com/YKoke-X-1GiCTD_egewXsX421duN9bwEWqtNNrMpobYRiPPQen1bgrA0hTT6wUwr7d5TJLV61kSROm0uoDrRiqYXkSamyQm9',
   // },
   {
     pageSlug: 'es/ibiza',
     routeParams: { city: 'ibiza', country: 'es' },
     imgSrc:
-      'https://lh3.googleusercontent.com/JIvV5nfuJZUffg1SxB2Ibn_1YE0ovrX_1yH32cjuONue7maTtVZ6mAqDVq0uZGN3I0SKgcbI8d0p9k16wDp73I7w0NCJoUAfKg',
+      'https://lh3.googleusercontent.com/604tHVXy-5c71Opi7pg7MrXnkLi4Exor0HVUS9Z_KwMhJpiAI6ofJpR5v1W4i9CTmUoVwuCH6xaFxn4QyzB4q-D1egJtQ89NdA',
   },
   // {
   //   name: 'Utrecht',

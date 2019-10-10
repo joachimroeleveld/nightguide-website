@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import moment from 'moment-timezone';
-import qs from 'querystring';
 
 import withPageLayout from '../components/PageLayout';
 import __, { __city } from '../lib/i18n';
@@ -15,9 +14,10 @@ import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
-import { route } from 'next/dist/next-server/server/router';
+import HeaderImage from '../components/HeaderImage';
+import colors from '../styles/colors';
 
-function CityPage(props) {
+function DiscoverPage(props) {
   const {
     pageSlug,
     popularEvents,
@@ -35,10 +35,10 @@ function CityPage(props) {
   return (
     <main>
       <Head>
-        <title>{__('CityPage.meta.title', { city: cityName })}</title>
+        <title>{__('DiscoverPage.meta.title', { city: cityName })}</title>
         <meta
           name="description"
-          content={__('CityPage.meta.description', { city: cityName })}
+          content={__('DiscoverPage.meta.description', { city: cityName })}
         />
         {headerImage && (
           <meta property="og:image" content={`${headerImage}=s1200`} />
@@ -51,10 +51,10 @@ function CityPage(props) {
 
       {popularEvents && (
         <section>
-          <h2>{__('CityPage.popular')}</h2>
+          <h2>{__('DiscoverPage.popular')}</h2>
           <EventRow events={popularEvents} routeParams={routeParams} />
           <Link route="events" params={routeParams}>
-            <SeeAllButton title={__('CityPage.allEvents')} />
+            <SeeAllButton title={__('DiscoverPage.allEvents')} />
           </Link>
         </section>
       )}
@@ -62,14 +62,14 @@ function CityPage(props) {
       <div className="locations-sponsored">
         {popularLocations && (
           <section className="popular-locations">
-            <h2>{__('CityPage.popularLocations')}</h2>
+            <h2>{__('DiscoverPage.popularLocations')}</h2>
             <VenueRow venues={popularLocations} routeParams={routeParams} />
           </section>
         )}
 
         {sponsoredEvent && (
           <section className="sponsored-event">
-            <h2>{__('CityPage.recommended')}</h2>
+            <h2>{__('DiscoverPage.recommended')}</h2>
             <EventTile
               wideQuery={'(min-width: 25em)'}
               routeParams={routeParams}
@@ -85,7 +85,7 @@ function CityPage(props) {
 
       {!!recentArticles.length && (
         <section>
-          <h2>{__('CityPage.recentArticles')}</h2>
+          <h2>{__('DiscoverPage.recentArticles')}</h2>
           <ArticleGrid articles={recentArticles} routeParams={routeParams} />
         </section>
       )}
@@ -109,7 +109,7 @@ function CityPage(props) {
               />
               <Link route="events" params={seeAllParams}>
                 <SeeAllButton
-                  title={__('CityPage.allFromGenre', { genre: name })}
+                  title={__('DiscoverPage.allFromGenre', { genre: name })}
                 />
               </Link>
             </section>
@@ -119,11 +119,15 @@ function CityPage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
-          margin: 1.2em 0;
+          margin: 1.2em 0 0;
           line-height: 1.6;
+          box-shadow: 0 0 0.35em rgba(0, 0, 0, 0.6);
         }
         section {
-          margin: 2em 0;
+          margin: 2.5em 0;
+        }
+        .menu + section {
+          margin-top: 2em;
         }
         .menu {
           margin: 2em 0 4em;
@@ -134,7 +138,11 @@ function CityPage(props) {
           }
         }
         @media (min-width: 800px) {
+          section {
+            margin: 4em 0;
+          }
           .locations-sponsored {
+            margin: -4em 0;
             display: grid;
             grid-template-columns: repeat(
               2,
@@ -155,7 +163,7 @@ function CityPage(props) {
   );
 }
 
-CityPage.getInitialProps = async ctx => {
+DiscoverPage.getInitialProps = async ctx => {
   const { pageSlug } = ctx.query;
 
   const config = await getConfigByName('page_city', pageSlug);
@@ -230,8 +238,65 @@ CityPage.getInitialProps = async ctx => {
   };
 };
 
+const TitleComponent = props => {
+  const { pageSlug, headerImage } = props;
+  return (
+    <div>
+      <div className="image">
+        <HeaderImage imageSrc={headerImage} />
+      </div>
+      <div className="title">
+        <h1>{__city(pageSlug)('name')}</h1>
+        <span className="subtitle">{__('DiscoverPage.subtitle')}</span>
+      </div>
+      {/*language=CSS*/}
+      <style jsx>{`
+        h1 {
+          margin: 0;
+        }
+        .title {
+          max-width: ${dimensions.pageWidth};
+          padding: 0 ${dimensions.bodyPadding};
+          margin: 1em auto;
+        }
+        .subtitle {
+          display: block;
+          color: ${colors.textSecondary};
+        }
+        @media (max-width: 800px) {
+          .subtitle {
+            margin-top: 0.3em;
+          }
+          .image {
+            height: 200px;
+          }
+        }
+        @media (min-width: 800px) {
+          .image {
+            height: 30vh;
+          }
+          .title {
+            position: relative;
+            margin: -5.5em auto 0;
+            max-width: ${dimensions.pageWidth};
+          }
+          .subtitle {
+            margin-top: 1.4em;
+            font-size: 16px;
+          }
+          h1 {
+            margin: 0;
+            font-size: 3.75em;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 export default withPageLayout({
-  title: ({ pageSlug }) => __city(pageSlug)('name'),
-  subtitle: ({ pageSlug }) => __city(pageSlug)('subtitle'),
-  headerImage: ({ headerImage }) => headerImage,
-})(CityPage);
+  // title: ({ pageSlug }) => __city(pageSlug)('name'),
+  // subtitle: ({ pageSlug }) => __city(pageSlug)('subtitle'),
+  // headerImage: ({ headerImage }) => headerImage,
+  TitleComponent,
+})(DiscoverPage);

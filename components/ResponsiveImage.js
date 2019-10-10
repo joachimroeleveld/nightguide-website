@@ -19,6 +19,7 @@ ResponsiveImage.propTypes = {
   progressive: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
+  imageParams: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default function ResponsiveImage(props) {
@@ -37,6 +38,7 @@ export default function ResponsiveImage(props) {
     progressive = true,
     width,
     height,
+    imageParams = [],
   } = props;
 
   if (!url) {
@@ -46,7 +48,7 @@ export default function ResponsiveImage(props) {
   const getSrcSet = (url, widths = [], additionalParams = null) => {
     const sources = widths.map(size => {
       let params = [`s${size}`];
-      params = params.concat(additionalParams);
+      params = params.concat(additionalParams).concat(imageParams);
       return `${url}=${params.join('-')}`;
     });
     const srcSet = sources

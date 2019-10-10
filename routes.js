@@ -11,9 +11,9 @@ addRoute('ticket-redirect');
 addRoute('company');
 
 // Cities
-addRoute('/es/ibiza', 'CityPage');
-addRoute('/nl/utrecht', 'CityPage');
-addRoute('/nl/amsterdam', 'CityPage');
+addRoute('/es/ibiza', 'DiscoverPage');
+addRoute('/nl/utrecht', 'DiscoverPage');
+addRoute('/nl/amsterdam', 'DiscoverPage');
 
 // Dynamic routes
 addRoute('events', '/:country/:city/events');

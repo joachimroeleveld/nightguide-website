@@ -19,11 +19,12 @@
     "cities": "Cities",
     "eventsInCity": "Events in {{city}}"
   },
-  "CityPage": {
+  "DiscoverPage": {
     "meta": {
       "title": "Discover bars, clubs & events in {{city}} - where to go out | NightGuide",
-      "description": "Find the best nightlife in {{city}} based on your preferences."
+      "description": "Discover nightlife in {{city}}. See what's popular. Browse by genre. Find the best gigs and events. Buy your ticket."
     },
+    "subtitle": "Find clubs, events and artists - get your tickets in one place.",
     "allEvents": "Browse all events",
     "allFromGenre": "All {{genre}} events",
     "popular": "Popular",
@@ -34,9 +35,10 @@
   "EventsPage": {
     "meta": {
       "title": "Events in {{city}} - where to go out | NightGuide",
-      "description": "Explore events in {{city}}."
+      "description": "Find the best nightlife events in {{city}} with NightGuide's handpicked collection of events."
     },
-    "title": "Nightlife events in {{city}}",
+    "title": "Go party in {{city}}",
+    "subtitle": "Find the best events in {{city}} with our handpicked collection of events",
     "noEvents": "No events could be found.",
     "loadNMoreEvents": "Load {{n}} more events",
     "nEventsFound": "{{n}} events found"
@@ -44,10 +46,10 @@
   "ArticlesPage": {
     "meta": {
       "title": "Clubs & bars in {{city}} - where to go out | NightGuide",
-      "description": "Explore all clubs & bars in {{city}}."
+      "description": "Get inspired by our collections of clubs & bars in {{city}}."
     },
     "title": "Clubs & bars in {{city}}",
-    "subtitle": "Find the best clubs and bars that {{city}} hosts."
+    "subtitle": "Get inspired by our collection of clubs & bars in {{city}}."
   },
   "articlePage": {
     "meta": {
@@ -138,12 +140,10 @@
         "description": "Find all events, clubs and artists in Ibiza. Make the best out of your days in Ibiza with our comprehensive guide."
       },
       "name": "Ibiza",
-      "title": "Go party in Ibiza",
-      "subtitle": "Find clubs, events and artists - get your tickets in one place."
+      "title": "Go party in Ibiza"
     },
     "nl/amsterdam": {
-      "name": "Amsterdam",
-      "subtitle": "Find clubs, events and bars for the perfect night in Amsterdam"
+      "name": "Amsterdam"
     }
   },
   "search": {

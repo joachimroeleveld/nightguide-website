@@ -4,11 +4,11 @@ import css from 'styled-jsx/css';
 
 HeaderImage.propTypes = {
   imageSrc: PropTypes.string.isRequired,
-  baseHeight: PropTypes.string,
+  imageParams: PropTypes.arrayOf(PropTypes.string),
 };
 
 function HeaderImage(props) {
-  const { children, imageSrc, baseHeight = '200px' } = props;
+  const { children, imageSrc, imageParams } = props;
 
   return (
     <header className="container">
@@ -17,6 +17,7 @@ function HeaderImage(props) {
           url={imageSrc}
           widths={[600, 1000, 2000]}
           sizes="100vw"
+          imageParams={imageParams}
           /*language=CSS*/
           {...css.resolve`
               .container {
@@ -31,7 +32,7 @@ function HeaderImage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .container {
-          height: ${baseHeight};
+          height: 100%;
           margin: 0 0 1em;
           box-sizing: border-box;
           position: relative;
@@ -50,7 +51,6 @@ function HeaderImage(props) {
         }
         @media (min-width: 800px) {
           .container {
-            height: 30vh;
             display: flex;
             align-items: flex-end;
           }

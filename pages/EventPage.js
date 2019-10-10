@@ -11,7 +11,6 @@ import colors from '../styles/colors';
 import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
 import ResponsiveImage from '../components/ResponsiveImage';
-import TagList from '../components/TagList';
 import { formatEventDate } from '../lib/dates';
 import PrimaryButton from '../components/PrimaryButton';
 import { generateTicketRedirectUrl } from '../components/events/util';
@@ -191,16 +190,16 @@ export function EventPage(props) {
                 </div>
               )}
             </div>
-            <div className="where">
-              <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
-                <a target="_blank">{venue.name}</a>
-              </Link>
-            </div>
             {!!tags.length && (
               <section className="genres">
                 {tags.map(tag => _o(tag.name)).join(', ')}
               </section>
             )}
+            <div className="where">
+              <Link route="venue" params={{ venue: venue.id, ...routeParams }}>
+                <a target="_blank">{venue.name}</a>
+              </Link>
+            </div>
           </section>
         </header>
         {ticketButton && (
@@ -566,7 +565,7 @@ export function EventPage(props) {
             font-size: 18px;
           }
           main {
-            margin-top: 2em;
+            margin-top: 2.5em;
             display: grid;
             grid-template-columns: 40% 60%;
             grid-template-rows: auto;
