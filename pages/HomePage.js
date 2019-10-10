@@ -168,7 +168,8 @@ function HomePage(props) {
           height: 300px;
         }
         h1 {
-          margin: 0 0 0.3em;
+          margin: 0 0 0.2em;
+          font-size: 2em;
         }
         .city-tiles {
           position: relative;
@@ -217,6 +218,10 @@ function HomePage(props) {
           .header .img {
             min-height: 300px;
             height: 35vh;
+          }
+          h1 {
+            margin: 0 0 0.1em;
+            font-size: 2.75em;
           }
         }
       `}</style>

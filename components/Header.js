@@ -98,10 +98,15 @@ function Header(props) {
             />
           </div>
         )}
-        <button
-          className={classNames(['search-toggle', searchOpen && 'hide'])}
-          onClick={() => setSearchOpen(!searchOpen)}
-        />
+        <div className="buttons">
+          <Link route="help-center">
+            <a className="help" />
+          </Link>
+          <button
+            className={classNames(['search-toggle', searchOpen && 'hide'])}
+            onClick={() => setSearchOpen(!searchOpen)}
+          />
+        </div>
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -175,12 +180,23 @@ function Header(props) {
           height: 2em;
           background: url(/static/img/close.svg) no-repeat center center;
         }
+        .buttons {
+          display: flex;
+          align-items: center;
+        }
         .search-toggle {
           width: 14px;
-          margin-left: 1.5em;
           height: 14px;
           padding: 1em;
           background: url(/static/img/search-icon.svg) no-repeat center center;
+        }
+        .help {
+          display: block;
+          width: 20px;
+          height: 20px;
+          margin: 0 1.5em 0 1.5em;
+          padding: 1em;
+          background: url(/static/img/header-help.svg) no-repeat center center;
         }
         .search-toggle.hide {
           display: none;

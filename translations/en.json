@@ -119,6 +119,16 @@
       "terraceHeated": "Heated"
     }
   },
+  "HelpCenterPage": {
+    "meta": {
+      "title": "Help Center | NightGuide"
+    },
+    "title": "Help Center",
+    "stillHelp": "Still need help?",
+    "stillHelpDescription": "Start a chat and our customer service team will come back to you as soon  as possible.",
+    "startChat": "Start chat",
+    "sendEmail": "You can also send an email to"
+  },
   "ticketRedirectPage": {
     "thanksAlmostThere": "Thanks, we're almost there",
     "youreRedirected": "You are redirected to the ticket provider"
@@ -235,7 +245,8 @@
     "contact": "Contact",
     "affiliate": "Affiliate",
     "careers": "Careers",
-    "legal": "Legal",
+    "services": "Services",
+    "helpCenter": "Help Center",
     "privacyPolicy": "Privacy Policy",
     "followUs": "Follow us",
     "facebook": "Facebook",

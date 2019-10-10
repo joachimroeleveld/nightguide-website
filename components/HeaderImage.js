@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import ResponsiveImage from './ResponsiveImage';
 import css from 'styled-jsx/css';
+import colors from '../styles/colors';
 
 HeaderImage.propTypes = {
   imageSrc: PropTypes.string.isRequired,
@@ -36,6 +37,7 @@ function HeaderImage(props) {
           margin: 0 0 1em;
           box-sizing: border-box;
           position: relative;
+          background: ${colors.imagePlaceholder};
         }
         .img {
           z-index: 0;

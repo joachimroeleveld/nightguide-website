@@ -7,7 +7,7 @@ export default {
   },
   eventHeight: '8em',
   articleHeight: '10em',
-  cardPadding: '1.3em',
+  cardPadding: '1.5rem',
   tileRadius: '3px',
   tilePadding: '0.8em',
 };

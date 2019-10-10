@@ -429,7 +429,7 @@ export function EventPage(props) {
           margin: 0;
         }
         .tags {
-          margin: -0.3em 0 1.5em;
+          margin: -0.3em 0 ${dimensions.cardPadding};
         }
         .venue .card {
           background: ${colors.cardBg};
@@ -607,7 +607,7 @@ export function EventPage(props) {
             position: static;
             background: ${colors.cardBg};
             box-shadow: ${colors.cardShadow};
-            padding: 1em 1.5em 0.4em;
+            padding: 1em ${dimensions.cardPadding} 0.4em;
           }
           .sidebar .buy-tickets .fixed-button {
             display: none;
@@ -629,10 +629,10 @@ export function EventPage(props) {
           }
           .description .content,
           .venue .about {
-            padding: 1.5em;
+            padding: ${dimensions.cardPadding};
           }
           .venue .name-address {
-            padding: 1em 1.5em;
+            padding: 1em ${dimensions.cardPadding};
           }
           .usps ul {
             display: flex;

@@ -9,6 +9,7 @@ addRoute('privacy-policy');
 addRoute('affiliate');
 addRoute('ticket-redirect');
 addRoute('company');
+addRoute('help-center');
 
 // Cities
 addRoute('/es/ibiza', 'DiscoverPage');

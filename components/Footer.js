@@ -29,8 +29,12 @@ const LINK_SECTIONS = [
     ],
   },
   {
-    title: __('Footer.legal'),
+    title: __('Footer.services'),
     items: [
+      {
+        route: 'help-center',
+        title: __('Footer.helpCenter'),
+      },
       {
         route: 'privacy-policy',
         title: __('Footer.privacyPolicy'),
@@ -152,14 +156,14 @@ function Footer(props) {
           margin: 0;
         }
         .sections strong {
-          margin-branding: 0.3em;
+          margin-bottom: 0.5em;
           display: block;
         }
         .sections a {
           color: ${colors.textSecondary};
           text-decoration: none;
           display: block;
-          padding: 0.15em 0;
+          padding: 0.2em 0;
         }
         @media (max-width: 800px) {
           .container {
