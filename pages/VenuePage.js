@@ -180,9 +180,6 @@ function VenuePage(props) {
 
       {/*language=CSS*/}
       <style jsx>{`
-        .header {
-          margin-top: 1em;
-        }
         h1 {
           margin: 1.2em 0 0.1em;
         }
@@ -254,6 +251,9 @@ function VenuePage(props) {
           }
         }
         @media (min-width: 800px) {
+          .header {
+            margin-top: 1em;
+          }
           .content {
             grid-template-columns: 2fr 1fr;
           }

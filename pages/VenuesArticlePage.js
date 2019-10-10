@@ -138,6 +138,7 @@ function VenuesArticlePage(props) {
             'b';
         }
         h1 {
+          margin-top: 1.2em;
           font-weight: 800;
         }
         .intro {

@@ -71,7 +71,7 @@ function BlogPage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         h1 {
-          margin-bottom: 1.1em;
+          margin: 1.2em 0 1.1em;
           font-weight: 800;
         }
         .intro {

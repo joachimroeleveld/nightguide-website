@@ -6,7 +6,7 @@ import find from 'lodash/find';
 
 import { Link } from '../routes';
 import withPageLayout from '../components/PageLayout';
-import { getEvent, getVenue } from '../lib/api';
+import { getEvent, getEvents, getVenue } from '../lib/api';
 import colors from '../styles/colors';
 import __, { _o } from '../lib/i18n';
 import dimensions from '../styles/dimensions';
@@ -25,6 +25,7 @@ import SeeOnMap from '../components/SeeOnMap';
 import EventTicketModal from '../components/events/EventTicketModal';
 import ticketProviders from '../components/events/ticket-providers';
 import ImageSlider from '../components/ImageSlider';
+import EventRow from '../components/events/EventRow';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -223,7 +224,7 @@ export function EventPage(props) {
           <h2>{__('EventPage.description')}</h2>
           <div className="content">
             <ReadMoreLess
-              initialHeight={300}
+              initialHeight={400}
               backgroundImage={`linear-gradient(to bottom, rgba(46, 46, 46, 0.44), ${
                 colors.cardBg
               } )`}
@@ -314,6 +315,12 @@ export function EventPage(props) {
             <SeeOnMap {...location.coordinates} />
           </div>
         </section>
+        {!!similarEvents.length && (
+          <section>
+            <h2>{__('EventPage.similarEvents')}</h2>
+            <EventRow routeParams={routeParams} events={similarEvents} />
+          </section>
+        )}
       </aside>
       {!!date.providerEventId && (
         <EventTicketModal
@@ -454,6 +461,7 @@ export function EventPage(props) {
         .usps li {
           display: flex;
           align-items: center;
+          opacity: 0.5;
         }
         .usps span {
           display: inline-block;
@@ -472,7 +480,7 @@ export function EventPage(props) {
         }
         @media (max-width: 800px) {
           .header {
-            margin: 1em -${dimensions.bodyPadding} 2em;
+            margin: 0 -${dimensions.bodyPadding} 2em;
           }
           .header .media {
             width: 100vw;
@@ -513,7 +521,7 @@ export function EventPage(props) {
             display: grid;
           }
           .sidebar .buy-tickets {
-            grid-area: 4 / 1 / 5 / 2;
+            grid-area: 3 / 1 / 4 / 2;
           }
           .sidebar .buy-tickets {
             margin-top: 3em;
@@ -667,17 +675,17 @@ EventPage.getInitialProps = async ctx => {
   return {
     event,
     venue: await getVenue(event.organiser.venue.id),
-    // similarEvents: tags.length
-    //   ? (await getEvents({
-    //       limit: 4,
-    //       query: {
-    //         pageSlug: pageSlug,
-    //         exclude: event.id,
-    //         tags: event.tags.map(tag => tag.id),
-    //         sortBy: 'tagsMatchScore:desc',
-    //       },
-    //     })).results
-    //   : [],
+    similarEvents: tags.length
+      ? (await getEvents({
+          limit: 4,
+          query: {
+            pageSlug,
+            exclude: event.id,
+            tags: tags.map(tag => tag.id),
+            sortBy: 'tagsMatchScore:desc',
+          },
+        })).results
+      : [],
   };
 };
 
