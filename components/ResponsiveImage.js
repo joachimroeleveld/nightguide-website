@@ -85,6 +85,7 @@ export default function ResponsiveImage(props) {
   }
 
   const progressiveImgUrl = `${url}=s10-c-fSoften=1,100,0`;
+  const aspectRatio = height / width;
 
   return (
     <Observer disabled={!lazy} onChange={onIntersect}>
@@ -96,6 +97,10 @@ export default function ResponsiveImage(props) {
           ...style,
         }}
       >
+        <div
+          className="placeholder"
+          style={{ paddingTop: Math.round(aspectRatio * 100000) / 1000 + '%' }}
+        />
         <source
           type="image/webp"
           sizes={sizes}
@@ -107,10 +112,7 @@ export default function ResponsiveImage(props) {
           srcSet={visible ? jpegSrcSet : undefined}
         />
         <img
-          style={{
-            ...imgStyle,
-            paddingTop: !loaded ? (height / width) * 100 + '%' : 0,
-          }}
+          style={imgStyle}
           className={className}
           alt={alt}
           onLoad={onLoad}
@@ -125,9 +127,11 @@ export default function ResponsiveImage(props) {
             background: no-repeat center center ${colors.imagePlaceholder};
             background-size: cover;
             display: block;
+            position: relative;
           }
           img {
-            position: relative;
+            position: absolute;
+            top: 0;
             z-index: 0;
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
