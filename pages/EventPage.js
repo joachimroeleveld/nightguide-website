@@ -135,6 +135,9 @@ export function EventPage(props) {
                     progressive={false}
                     width={images[0].width}
                     height={images[0].height}
+                    sizes={`(max-width: 800px) 100vw, calc(0.6 * ${
+                      dimensions.pageWidth
+                    })`}
                   />
                 </div>
               </div>
