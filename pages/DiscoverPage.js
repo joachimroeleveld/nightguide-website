@@ -253,7 +253,7 @@ export default withPageLayout({
         {...css.resolve`
           @media (max-width: 800px) {
             :global(h1) {
-              font-size: 2.2em;
+              font-size: 2.2em !important;
             }
             .container {
               height: 300px !important;
@@ -261,7 +261,7 @@ export default withPageLayout({
           }
           @media (min-width: 800px) {
             :global(h1) {
-              font-size: 3.75em;
+              font-size: 3.75em !important;
             }
             .container {
               height: 30vh !important;
