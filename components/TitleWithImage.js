@@ -44,7 +44,7 @@ function TitleWithImage(props) {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 12em;
+          height: 14em;
           width: 100%;
         }
         h1 {
@@ -71,7 +71,7 @@ function TitleWithImage(props) {
           display: block;
           text-align: center;
           justify-content: center;
-          margin-top: 0.5em;
+          margin-top: 0.7em;
           padding: 0 2em;
         }
         .image {

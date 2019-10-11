@@ -83,9 +83,11 @@ ArticlesPage.getInitialProps = async ({ query }) => {
   const cityConfig = await getConfigByName('page_city', pageSlug);
   const { sections } = config.payload;
 
-  const articlePromises = sections.map(section =>
-    getContent({ query: { ids: section.articles } }).then(res => res.results)
-  );
+  const articlePromises = sections
+    .filter(section => (section.articles || []).length)
+    .map(section =>
+      getContent({ query: { ids: section.articles } }).then(res => res.results)
+    );
 
   const articles = await Promise.all(articlePromises);
 
