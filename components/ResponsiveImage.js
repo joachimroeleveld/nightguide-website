@@ -99,7 +99,10 @@ export default function ResponsiveImage(props) {
       >
         <div
           className="placeholder"
-          style={{ paddingTop: Math.round(aspectRatio * 100000) / 1000 + '%' }}
+          style={{
+            paddingTop: Math.round(aspectRatio * 100000) / 1000 + '%',
+            width,
+          }}
         />
         <source
           type="image/webp"
@@ -153,6 +156,9 @@ export default function ResponsiveImage(props) {
           }
           .container.scale:hover img {
             transform: scale(1.05);
+          }
+          .placeholder {
+            max-width: 100%;
           }
         `}</style>
         {styles}

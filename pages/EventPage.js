@@ -129,10 +129,7 @@ export function EventPage(props) {
                 <ResponsiveImage
                   lazy={false}
                   url={images[0].url}
-                  widths={[320]}
-                  imgStyle={{
-                    maxWidth: '320px',
-                  }}
+                  widths={[600, 900, 2000]}
                   alt={title || facebook.title}
                   progressive={false}
                   width={images[0].width}
@@ -305,10 +302,10 @@ export function EventPage(props) {
           background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
         }
-        .header .media {
+        .media {
           width: 100%;
         }
-        .header .media .thumbnail {
+        .media .thumbnail {
           min-height: 160px;
           position: relative;
           display: flex;
@@ -317,12 +314,15 @@ export function EventPage(props) {
           background: no-repeat ${colors.imagePlaceholder};
           background-size: cover;
         }
-        .header .media .thumbnail .bg {
+        .media .thumbnail .bg {
           position: absolute;
           width: 100%;
           height: 100%;
           background: no-repeat;
           background-size: cover;
+        }
+        .media :global(picture) {
+          background: none;
         }
         .header .title {
           display: flex;
