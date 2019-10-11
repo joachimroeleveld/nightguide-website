@@ -71,7 +71,9 @@ function HomePage(props) {
             alt="NightGuide"
           />
           <div className="title">
-            <h1>{__('HomePage.title')}</h1>
+            <h1>
+              <span>{__('HomePage.title')}</span>
+            </h1>
             <span
               className="subtitle"
               dangerouslySetInnerHTML={{ __html: __('HomePage.subtitle') }}
@@ -174,9 +176,12 @@ function HomePage(props) {
         h1 {
           margin: 0 0 0.3em;
           font-size: 2em;
-          background: ${colors.bg};
-          padding: 0.1em 0.2em;
           text-align: center;
+        }
+        h1 span {
+          background: ${colors.bg};
+          padding: 0 0.2em;
+          line-height: 1.6;
         }
         .subtitle {
           margin-top: 0.5em;

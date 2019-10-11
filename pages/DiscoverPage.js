@@ -130,7 +130,7 @@ function DiscoverPage(props) {
           margin-top: 2em;
         }
         .menu {
-          margin: 2em 0 4em;
+          margin: 1em 0 4em;
         }
         @media (max-width: 800px) {
           .menu {
