@@ -19,7 +19,6 @@ import { useElemDimensions } from '../lib/hooks';
 import EventDateSelect from '../components/events/DateSelector';
 import ArtistList from '../components/artists/ArtistList';
 import { classNames, generateMetaDescription } from '../lib/util';
-import { useOnScroll } from '../lib/hooks';
 import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
 import EventTicketModal from '../components/events/EventTicketModal';
@@ -46,9 +45,6 @@ export function EventPage(props) {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
-  const [isBuyTicketsButtonFixed, setIsBottomTicketsButtonFixed] = useState(
-    false
-  );
 
   const date = dates[dateIndex];
   const artists =
@@ -61,22 +57,6 @@ export function EventPage(props) {
     setUrlParams({ dateIndex });
     setDateIndex(dateIndex);
   };
-
-  useOnScroll(() => {
-    if (!ticketsUrl) return;
-
-    const { top: headerElemTop } = document
-      .querySelector('#buy-tickets-header')
-      .getBoundingClientRect();
-    const { top: footerElemTop } = document
-      .querySelector('#buy-tickets-bottom')
-      .getBoundingClientRect();
-    const headerHeight = document.querySelector('#header-height');
-    const isFixed =
-      headerElemTop - headerHeight <= 0 &&
-      footerElemTop - window.innerHeight > 0;
-    setIsBottomTicketsButtonFixed(isFixed);
-  }, [isBuyTicketsButtonFixed]);
 
   let ticketButton = null;
   let ticketsViaString;
@@ -203,23 +183,6 @@ export function EventPage(props) {
             </div>
           </section>
         </header>
-        {ticketButton && (
-          <section className="usps">
-            <ul>
-              <li>
-                <span>{__('EventPage.instantConfirmation')}</span>
-              </li>
-              <div className="separator" />
-              <li>
-                <span>{__('EventPage.officialPartner')}</span>
-              </li>
-              <div className="separator" />
-              <li>
-                <span>{__('EventPage.secureCheckout')}</span>
-              </li>
-            </ul>
-          </section>
-        )}
         <section className="description">
           <h2>{__('EventPage.description')}</h2>
           <div className="content">
@@ -240,19 +203,30 @@ export function EventPage(props) {
             </ReadMoreLess>
           </div>
         </section>
+        {!!similarEvents.length && (
+          <section className="similar-events">
+            <h2>{__('EventPage.similarEvents')}</h2>
+            <EventRow routeParams={routeParams} events={similarEvents} />
+          </section>
+        )}
       </div>
       <aside className="sidebar">
         {ticketButton && (
-          <section
-            className={classNames([
-              'buy-tickets',
-              isBuyTicketsButtonFixed && 'fixed',
-            ])}
-            id="buy-tickets-bottom"
-          >
-            <div className="fixed-button">{ticketButton}</div>
-            {!isBuyTicketsButtonFixed && ticketButton}
-            <span className="via">{ticketsViaString}</span>
+          <section className={'buy-tickets'} id="buy-tickets-bottom">
+            {ticketButton}
+            <ul className="usps">
+              <li>
+                <span>{__('EventPage.instantConfirmation')}</span>
+              </li>
+              <div className="separator" />
+              <li>
+                <span>{__('EventPage.officialPartner')}</span>
+              </li>
+              <div className="separator" />
+              <li>
+                <span>{__('EventPage.secureCheckout')}</span>
+              </li>
+            </ul>
           </section>
         )}
         {artists && !!artists.length && (
@@ -315,12 +289,6 @@ export function EventPage(props) {
             <SeeOnMap {...location.coordinates} />
           </div>
         </section>
-        {!!similarEvents.length && (
-          <section className="similar-events">
-            <h2>{__('EventPage.similarEvents')}</h2>
-            <EventRow routeParams={routeParams} events={similarEvents} />
-          </section>
-        )}
       </aside>
       {!!date.providerEventId && (
         <EventTicketModal
@@ -458,10 +426,24 @@ export function EventPage(props) {
         .venue h4 {
           margin-top: 0;
         }
+        .sidebar .buy-tickets {
+          position: static;
+          background: ${colors.cardBg};
+          box-shadow: ${colors.cardShadow};
+          padding: 1em ${dimensions.cardPadding} 0.4em;
+        }
+        .usps {
+          margin: 0.7em 0 0.3em;
+          font-size: 0.9em;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
         .usps li {
           display: flex;
           align-items: center;
           opacity: 0.4;
+          margin: 0.2em 0;
         }
         .usps span {
           display: inline-block;
@@ -521,28 +503,7 @@ export function EventPage(props) {
             display: grid;
           }
           .sidebar .buy-tickets {
-            grid-area: 5 / 1 / 6 / 2;
-          }
-          .similar-events {
-            grid-area: 6 / 1 / 7 / 2;
-          }
-          .sidebar .buy-tickets {
             margin-top: 3em;
-          }
-          .sidebar .buy-tickets .fixed-button :global(.button) {
-            left: 0;
-            box-sizing: border-box;
-            transition: transform 0.3s ease-in;
-            z-index: 100;
-            position: fixed;
-            transform: translateY(60px);
-            margin: 0.7em ${dimensions.bodyPadding} 0.2em;
-            bottom: 10px;
-            width: calc(100% - 2 * ${dimensions.bodyPadding});
-          }
-          .sidebar .buy-tickets.fixed .fixed-button :global(.button) {
-            transform: translateY(0);
-            transition-timing-function: ease-out;
           }
           .when .buy-tickets {
             margin-top: 1em;
@@ -554,17 +515,6 @@ export function EventPage(props) {
           }
           .map .preview {
             margin: 0 -${dimensions.bodyPadding};
-          }
-          .usps {
-            padding: 0.7em 1em;
-            border: 1px solid ${colors.separator};
-            border-radius: 3px;
-            display: flex;
-            justify-content: center;
-          }
-          .usps li {
-            padding-top: 0.3em;
-            padding-bottom: 0.3em;
           }
           .similar-events {
             max-width: calc(100vw - 2 * ${dimensions.bodyPadding});
@@ -617,15 +567,6 @@ export function EventPage(props) {
             border-radius: ${dimensions.images};
             overflow: hidden;
           }
-          .sidebar .buy-tickets {
-            position: static;
-            background: ${colors.cardBg};
-            box-shadow: ${colors.cardShadow};
-            padding: 1em ${dimensions.cardPadding} 0.4em;
-          }
-          .sidebar .buy-tickets .fixed-button {
-            display: none;
-          }
           .header .buy-tickets .via {
             display: none;
           }
@@ -647,24 +588,6 @@ export function EventPage(props) {
           }
           .venue .name-address {
             padding: 1em ${dimensions.cardPadding};
-          }
-          .usps ul {
-            display: flex;
-            margin: 1em 0 0;
-          }
-          .usps .separator {
-            flex-grow: 1;
-            padding: 0 1em;
-            position: relative;
-          }
-          .usps .separator:before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            height: 100%;
-            width: 1px;
-            background: ${colors.separator};
           }
         }
       `}</style>

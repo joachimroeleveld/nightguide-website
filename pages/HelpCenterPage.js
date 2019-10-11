@@ -65,6 +65,7 @@ function HelpCenterPage(props) {
         <style jsx>{`
           header {
             color: ${colors.linkText};
+            cursor: pointer;
           }
           .body {
             height: 0;
