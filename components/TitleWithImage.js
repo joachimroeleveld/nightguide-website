@@ -18,7 +18,6 @@ function TitleWithImage(props) {
     imgSrc,
     title,
     subtitle,
-    imageOpacity = 1,
     blurImage = true,
     styles,
     className,
@@ -76,7 +75,7 @@ function TitleWithImage(props) {
           padding: 0 2em;
         }
         .image {
-          opacity: ${imageOpacity};
+          opacity: ${blurImage ? 0.6 : 1};
           position: absolute;
           z-index: 0;
           left: 0;
