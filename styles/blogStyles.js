@@ -1,4 +1,5 @@
 import css from 'styled-jsx/css';
+import colors from './colors';
 
 {
   /*language=CSS*/
@@ -23,5 +24,11 @@ export default css.resolve`
   }
   * :global(h2, h3, h4, h5, h6) {
     margin-top: 2em;
+  }
+  * :global(picture + em) {
+    margin: -1.7rem 0 2rem;
+    display: block;
+    color: ${colors.textSecondary};
+    font-size: 0.9em;
   }
 `;
