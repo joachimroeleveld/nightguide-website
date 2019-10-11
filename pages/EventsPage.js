@@ -17,6 +17,7 @@ import Spinner from '../components/Spinner';
 import EventFilters from '../components/events/EventFilters';
 import CityMenu from '../components/CityMenu';
 import HeaderImage from '../components/HeaderImage';
+import TitleWithImage from '../components/TitleWithImage';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -326,62 +327,6 @@ function Events(props) {
   );
 }
 
-const TitleComponent = props => {
-  const { pageSlug, cityConfig } = props;
-  const { headerImage } = cityConfig;
-  const cityName = __city(pageSlug)('name');
-  return (
-    <div>
-      <div className="container">
-        <div className="image">
-          <HeaderImage
-            imageSrc={headerImage}
-            imageParams={['fSoften=1,10,0']}
-          />
-        </div>
-        <div className="title">
-          <h1>{__('EventsPage.title', { city: cityName })}</h1>
-          <span className="subtitle">
-            {__('EventsPage.subtitle', { city: cityName })}
-          </span>
-        </div>
-      </div>
-      {/*language=CSS*/}
-      <style jsx>{`
-        .container {
-          position: relative;
-          display: flex;
-          align-items: center;
-          height: 12em;
-        }
-        h1 {
-          margin: 0;
-        }
-        .title {
-          flex-basis: ${dimensions.pageWidth};
-          padding: 0 ${dimensions.bodyPadding};
-          margin: 0 auto;
-          position: relative;
-          z-index: 1;
-        }
-        .subtitle {
-          display: block;
-          margin-top: 0.5em;
-        }
-        .image {
-          opacity: 0.5;
-          position: absolute;
-          z-index: 0;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
-    </div>
-  );
-};
-
 async function getSearchSubjects(query) {
   const { venue: venueId, artist: artistId } = query;
   let venue, artist;
@@ -474,5 +419,16 @@ export default withPageLayout({
   breadcrumbs,
   title: ({ pageSlug }) =>
     __('EventsPage.title', { city: __city(pageSlug)('name') }),
-  TitleComponent,
+  TitleComponent: props => {
+    const { pageSlug, cityConfig } = props;
+    const { headerImage } = cityConfig;
+    const cityName = __city(pageSlug)('name');
+    return (
+      <TitleWithImage
+        imgSrc={headerImage}
+        title={__('EventsPage.title', { city: cityName })}
+        subtitle={__('EventsPage.subtitle', { city: cityName })}
+      />
+    );
+  },
 })(Events);

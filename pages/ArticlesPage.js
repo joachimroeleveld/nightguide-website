@@ -9,6 +9,7 @@ import React from 'react';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import HeaderImage from '../components/HeaderImage';
 import dimensions from '../styles/dimensions';
+import TitleWithImage from '../components/TitleWithImage';
 
 function ArticlesPage(props) {
   const { sections, articles, pageSlug, routeParams } = props;
@@ -75,62 +76,6 @@ function ArticlesPage(props) {
   );
 }
 
-const TitleComponent = props => {
-  const { pageSlug, cityConfig } = props;
-  const { headerImage } = cityConfig;
-  const cityName = __city(pageSlug)('name');
-  return (
-    <div>
-      <div className="container">
-        <div className="image">
-          <HeaderImage
-            imageSrc={headerImage}
-            imageParams={['fSoften=1,10,0']}
-          />
-        </div>
-        <div className="title">
-          <h1>{__('ArticlesPage.title', { city: cityName })}</h1>
-          <span className="subtitle">
-            {__('ArticlesPage.subtitle', { city: cityName })}
-          </span>
-        </div>
-      </div>
-      {/*language=CSS*/}
-      <style jsx>{`
-        .container {
-          position: relative;
-          display: flex;
-          align-items: center;
-          height: 12em;
-        }
-        h1 {
-          margin: 0;
-        }
-        .title {
-          flex-basis: ${dimensions.pageWidth};
-          padding: 0 ${dimensions.bodyPadding};
-          margin: 0 auto;
-          position: relative;
-          z-index: 1;
-        }
-        .subtitle {
-          display: block;
-          margin-top: 0.5em;
-        }
-        .image {
-          opacity: 0.5;
-          position: absolute;
-          z-index: 0;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
-    </div>
-  );
-};
-
 ArticlesPage.getInitialProps = async ({ query }) => {
   const { pageSlug } = query;
 
@@ -155,5 +100,16 @@ const breadcrumbs = () => [{ key: 'articles' }];
 
 export default withPageLayout({
   breadcrumbs,
-  TitleComponent,
+  TitleComponent: props => {
+    const { pageSlug, cityConfig } = props;
+    const { headerImage } = cityConfig;
+    const cityName = __city(pageSlug)('name');
+    return (
+      <TitleWithImage
+        imgSrc={headerImage}
+        title={__('ArticlesPage.title', { city: cityName })}
+        subtitle={__('ArticlesPage.subtitle', { city: cityName })}
+      />
+    );
+  },
 })(ArticlesPage);

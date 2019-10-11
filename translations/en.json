@@ -37,7 +37,7 @@
       "title": "Events in {{city}} - where to go out | NightGuide",
       "description": "Find the best nightlife events in {{city}} with NightGuide's handpicked collection of events."
     },
-    "title": "Go party in {{city}}",
+    "title": "Nightlife events in {{city}}",
     "subtitle": "Find the best events in {{city}} with our handpicked collection of events",
     "noEvents": "No events could be found.",
     "loadNMoreEvents": "Load {{n}} more events",
@@ -150,8 +150,7 @@
         "title": "Ibiza party planner - events, clubs, artists and tickets | NightGuide",
         "description": "Find all events, clubs and artists in Ibiza. Make the best out of your days in Ibiza with our comprehensive guide."
       },
-      "name": "Ibiza",
-      "title": "Go party in Ibiza"
+      "name": "Ibiza"
     },
     "nl/amsterdam": {
       "name": "Amsterdam"

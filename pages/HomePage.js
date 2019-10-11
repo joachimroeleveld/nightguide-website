@@ -128,21 +128,25 @@ function HomePage(props) {
         }
         .header {
           display: flex;
-          align-items: flex-end;
+          align-items: center;
           box-sizing: border-box;
           margin-bottom: -0.5em;
         }
         .header .title {
-          padding-bottom: 3em;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           position: relative;
           z-index: 1;
         }
         .logo {
           position: absolute;
-          left: 2em;
+          left: 1em;
           top: 1em;
           z-index: 1;
           width: 6em;
+          height: auto;
         }
         .header .img {
           position: absolute;
@@ -168,8 +172,17 @@ function HomePage(props) {
           height: 300px;
         }
         h1 {
-          margin: 0 0 0.2em;
+          margin: 0 0 0.3em;
           font-size: 2em;
+          background: ${colors.bg};
+          padding: 0.1em 0.2em;
+          text-align: center;
+        }
+        .subtitle {
+          margin-top: 0.5em;
+          font-size: 1.1em;
+          text-align: center;
+          padding: 0 1em;
         }
         .city-tiles {
           position: relative;
@@ -212,7 +225,8 @@ function HomePage(props) {
         }
         @media (min-width: 960px) {
           .logo {
-            width: auto;
+            left: 2em;
+            width: 8em;
           }
           .header,
           .header .img {

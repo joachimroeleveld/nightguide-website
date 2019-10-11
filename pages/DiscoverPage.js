@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import moment from 'moment-timezone';
+import css from 'styled-jsx/css';
 
 import withPageLayout from '../components/PageLayout';
 import __, { __city } from '../lib/i18n';
@@ -14,8 +15,7 @@ import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
-import HeaderImage from '../components/HeaderImage';
-import colors from '../styles/colors';
+import TitleWithImage from '../components/TitleWithImage';
 
 function DiscoverPage(props) {
   const {
@@ -238,65 +238,37 @@ DiscoverPage.getInitialProps = async ctx => {
   };
 };
 
-const TitleComponent = props => {
-  const { pageSlug, headerImage } = props;
-  return (
-    <div>
-      <div className="image">
-        <HeaderImage imageSrc={headerImage} />
-      </div>
-      <div className="title">
-        <h1>{__city(pageSlug)('name')}</h1>
-        <span className="subtitle">{__('DiscoverPage.subtitle')}</span>
-      </div>
-      {/*language=CSS*/}
-      <style jsx>{`
-        h1 {
-          margin: 0;
-        }
-        .title {
-          max-width: ${dimensions.pageWidth};
-          padding: 0 ${dimensions.bodyPadding};
-          margin: 1em auto;
-        }
-        .subtitle {
-          display: block;
-          color: ${colors.textSecondary};
-        }
-        @media (max-width: 800px) {
-          .subtitle {
-            margin-top: 0.3em;
-          }
-          .image {
-            height: 200px;
-          }
-        }
-        @media (min-width: 800px) {
-          .image {
-            height: 30vh;
-          }
-          .title {
-            position: relative;
-            margin: -5.5em auto 0;
-            max-width: ${dimensions.pageWidth};
-          }
-          .subtitle {
-            margin-top: 1.4em;
-            font-size: 16px;
-          }
-          h1 {
-            margin: 0;
-            font-size: 3.75em;
-          }
-        }
-      `}</style>
-    </div>
-  );
-};
-
 export default withPageLayout({
-  // title: ({ pageSlug }) => __city(pageSlug)('name'),
-  // subtitle: ({ pageSlug }) => __city(pageSlug)('subtitle'),
-  // headerImage: ({ headerImage }) => headerImage,
-  TitleComponent,
+  TitleComponent: props => {
+    const { pageSlug, headerImage } = props;
+    const cityName = __city(pageSlug)('name');
+    return (
+      <TitleWithImage
+        imgSrc={headerImage}
+        title={cityName}
+        blurImage={false}
+        titleFontSize={'3.75em'}
+        height={'20em'}
+        /*language=CSS*/
+        {...css.resolve`
+          @media (max-width: 800px) {
+            :global(h1) {
+              font-size: 2.2em;
+            }
+            .container {
+              height: 300px !important;
+            }
+          }
+          @media (min-width: 800px) {
+            :global(h1) {
+              font-size: 3.75em;
+            }
+            .container {
+              height: 30vh !important;
+            }
+          }
+        `}
+      />
+    );
+  },
 })(DiscoverPage);
