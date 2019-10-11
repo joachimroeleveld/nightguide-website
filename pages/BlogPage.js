@@ -18,6 +18,10 @@ function BlogPage(props) {
   const renderImage = ({ src }) => {
     const { width, height, url } = find(images, { id: src }) || {};
 
+    if (!url) {
+      return null;
+    }
+
     return (
       <ResponsiveImage
         url={url || src}

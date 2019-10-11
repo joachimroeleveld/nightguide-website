@@ -107,7 +107,10 @@ export default function ResponsiveImage(props) {
           srcSet={visible ? jpegSrcSet : undefined}
         />
         <img
-          style={imgStyle}
+          style={{
+            ...imgStyle,
+            paddingTop: !loaded ? (height / width) * 100 + '%' : 0,
+          }}
           className={className}
           alt={alt}
           onLoad={onLoad}
@@ -127,7 +130,7 @@ export default function ResponsiveImage(props) {
             position: relative;
             z-index: 0;
             opacity: 0;
-            transition: all 0.3s;
+            transition: opacity 0.3s, transform 0.3s;
             vertical-align: middle;
             object-fit: cover;
             width: 100%;
