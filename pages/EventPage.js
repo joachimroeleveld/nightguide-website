@@ -126,15 +126,17 @@ export function EventPage(props) {
                     }=s50-c-fSoften=1,100,0)`,
                   }}
                 />
-                <ResponsiveImage
-                  lazy={false}
-                  url={images[0].url}
-                  widths={[600, 900, 2000]}
-                  alt={title || facebook.title}
-                  progressive={false}
-                  width={images[0].width}
-                  height={images[0].height}
-                />
+                <div className="img" style={{ maxWidth: images[0].width }}>
+                  <ResponsiveImage
+                    lazy={false}
+                    url={images[0].url}
+                    widths={[600, 900, 2000]}
+                    alt={title || facebook.title}
+                    progressive={false}
+                    width={images[0].width}
+                    height={images[0].height}
+                  />
+                </div>
               </div>
             )}
           </figure>
@@ -320,6 +322,9 @@ export function EventPage(props) {
           height: 100%;
           background: no-repeat;
           background-size: cover;
+        }
+        .media .img {
+          width: 100%;
         }
         .media :global(picture) {
           background: none;

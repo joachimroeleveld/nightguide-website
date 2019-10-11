@@ -101,7 +101,7 @@ export default function ResponsiveImage(props) {
           className="placeholder"
           style={{
             paddingTop: Math.round(aspectRatio * 100000) / 1000 + '%',
-            width,
+            maxHeight: height,
           }}
         />
         <source
@@ -158,7 +158,7 @@ export default function ResponsiveImage(props) {
             transform: scale(1.05);
           }
           .placeholder {
-            max-width: 100%;
+            width: 100%;
           }
         `}</style>
         {styles}
