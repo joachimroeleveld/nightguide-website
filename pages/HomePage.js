@@ -155,6 +155,7 @@ function HomePage(props) {
           left: 0;
           top: 0;
           width: 100vw;
+          overflow: hidden;
         }
         .header .img:after {
           content: '';

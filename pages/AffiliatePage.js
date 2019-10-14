@@ -16,10 +16,7 @@ function AffiliatePage(props) {
       </Head>
 
       <div className="header-image">
-        <HeaderImage
-          baseHeight={'250px'}
-          imageSrc="https://lh3.googleusercontent.com/CIX4yMmVDYZ7W_9wmSSPfDDr2SAm-lG3pzmoCo2zJ_qiFyqpXiABfmGIbDlfheYdM-3_JtpHR_5ji83c1PezG4UnROituqN-zw"
-        >
+        <HeaderImage imageSrc="https://lh3.googleusercontent.com/CIX4yMmVDYZ7W_9wmSSPfDDr2SAm-lG3pzmoCo2zJ_qiFyqpXiABfmGIbDlfheYdM-3_JtpHR_5ji83c1PezG4UnROituqN-zw">
           <div className="header">
             <div className="content">
               <h1 className="title">{__('AffiliatePage.title')}</h1>
@@ -141,6 +138,7 @@ function AffiliatePage(props) {
       {/*language=CSS*/}
       <style jsx>{`
         .header-image {
+          height: 300px;
           margin: 0 -${dimensions.bodyPadding};
         }
         .header {
