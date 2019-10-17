@@ -6,6 +6,7 @@ export default {
   text: '#fff',
   textDark: '#222222',
   textSoft: '#e0e0e0',
+  textError: '#fd7979',
   textSecondary: '#8A8A8A',
   thickBorder: '#404040',
   separator: '#343434',
@@ -24,4 +25,5 @@ export default {
   focus: '#333333',
   imagePlaceholder: '#3d3d3d',
   textPurple: '#CABCE8',
+  inputBg: '#3D3D3D',
 };

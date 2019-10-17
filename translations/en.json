@@ -66,7 +66,7 @@
     "buyTickets": "Buy tickets",
     "getTickets": "Get tickets",
     "buyTicketsVia": "Via {{via}}",
-    "buyTicketsBy": "By {{by}}",
+    "buyTicketsBy": "Via {{by}}",
     "map": "Map",
     "googleMaps": "Google Maps",
     "genres": "Genres",
@@ -221,7 +221,16 @@
     "showResults": "Show results"
   },
   "EventTicketModal": {
-    "buyTicket": "Buy ticket"
+    "titles": {
+      "cart": "Cart",
+      "checkout": "Checkout",
+      "orderStatus": "Order status"
+    }
+  },
+  "EventTicketExternalCheckoutModal": {
+    "buyTicket": "Buy ticket",
+    "checkout": "Checkout",
+    "cart": "Cart"
   },
   "VenueRow": {
     "moreLocations": "Looking for more locations?",
@@ -273,5 +282,49 @@
     "theList": "The list",
     "seeAllEvents": "See all events",
     "eventsAt": "Events at {{venue}}"
+  },
+  "BuyTicketButton": {
+    "buyTickets": "Buy tickets"
+  },
+  "FormItem": {
+    "fieldIsRequired": "This field is required"
+  },
+  "TicketForm": {
+    "bookingFee": "Booking fee",
+    "cart": "Cart",
+    "bookingDetails": "Booking details",
+    "paymentMethod": "Payment method",
+    "paymentDetails": "Payment details",
+    "name": "Name",
+    "email": "Email",
+    "country": "Country",
+    "zip": "ZIP",
+    "address": "Address",
+    "address2": "Address line 2",
+    "city": "City",
+    "state": "State",
+    "postCode": "Postcode",
+    "postalCode": "Postal code",
+    "cardDetails": "Card details",
+    "bank": "Bank",
+    "selectCountry": "Select a country...",
+    "selectBank": "Select your bank...",
+    "ticketsForEvent": "Tickets for {{event}}",
+    "enterValidEmail": "Please enter a valid email address",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "errorMessage": "Error message:",
+    "goBack": "Back to checkout",
+    "contactUs": "Contact us",
+    "verifyingOrderStatus": "Verifying order status",
+    "orderStatusTitles": {
+      "succeeded": "Thanks!",
+      "canceled": "Oops",
+      "error": "Oops"
+    },
+    "orderStatusMessages": {
+      "succeeded": "Your order has been placed successfully. You will receive your tickets at your email address.",
+      "canceled": "The payment for your order was canceled.",
+      "error": "Something went wrong while placing your order."
+    }
   }
 }

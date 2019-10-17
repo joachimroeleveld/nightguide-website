@@ -1,17 +1,20 @@
 import PropTypes from 'prop-types';
+import { classNames } from '../lib/util';
 
 RadioButton.propTypes = {
   value: PropTypes.string,
   checked: PropTypes.bool.isRequired,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 function RadioButton(props) {
   const { value, checked, label, onChange } = props;
 
   return (
-    <div className="container form-radio">
+    <div
+      className={classNames(['container', 'form-radio', label && 'has-label'])}
+    >
       <label>
         <input
           type="radio"
@@ -45,13 +48,15 @@ function RadioButton(props) {
         .checkmark {
           width: 1em;
           height: 1em;
-          margin-right: 0.5em;
           border-radius: 100%;
           border: 1px solid #fff;
           display: inline-flex;
           justify-content: center;
           align-items: center;
           position: relative;
+        }
+        .has-label .checkmark {
+          margin-right: 0.5em;
         }
         .checkmark::before {
           content: '';

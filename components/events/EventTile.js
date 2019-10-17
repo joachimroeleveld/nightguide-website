@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
@@ -7,14 +7,10 @@ import { Link } from '../../routes';
 import __, { _o } from '../../lib/i18n';
 import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
-import { generateTicketRedirectUrl } from './util';
 import ResponsiveImage from '../ResponsiveImage';
 import dimensions from '../../styles/dimensions';
 import { useMatchMedia, useWindowWidth } from '../../lib/hooks';
 import { classNames } from '../../lib/util';
-import find from 'lodash/find';
-import ticketProviders from './ticket-providers';
-import EventTicketModal from './EventTicketModal';
 
 EventTile.propTypes = {
   event: PropTypes.object.isRequired,
@@ -47,13 +43,9 @@ function EventTile(props) {
   }
   const artists =
     date.artists && date.artists.length ? date.artists : event.artists || [];
-  const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
-  const ticketProvider =
-    tickets.provider && find(ticketProviders, { id: tickets.provider });
 
   const windowWidth = useWindowWidth();
   const isWide = wideQuery && useMatchMedia(wideQuery);
-  const [showTicketModal, setShowTicketModal] = useState(false);
 
   const imgProps = useMemo(
     () =>
@@ -80,8 +72,6 @@ function EventTile(props) {
   );
 
   const aProps = windowWidth > 800 ? { target: '_blank' } : {};
-  const hasTicketButton =
-    ticketsUrl || (ticketProvider && date.providerEventId);
 
   const tagNames = tags.map(tag => _o(tag.name)).join(', ');
   const artistNames = artists
@@ -96,7 +86,6 @@ function EventTile(props) {
       className={classNames([
         'container',
         isWide && 'wide',
-        hasTicketButton && 'has-tickets',
         date.isHot && 'hot',
       ])}
     >
@@ -120,28 +109,6 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
-          {hasTicketButton && (
-            <div className="tickets">
-              {ticketsUrl && (
-                <a
-                  className="button"
-                  href={generateTicketRedirectUrl(event.id, dateIndex)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {__('EventTile.tickets')}
-                </a>
-              )}
-              {ticketProvider && date.providerEventId && (
-                <button
-                  className="button"
-                  onClick={() => setShowTicketModal(true)}
-                >
-                  {__('EventTile.tickets')}
-                </button>
-              )}
-            </div>
-          )}
         </div>
         {(tagNames || artistNames) && (
           <div className="music">
@@ -162,15 +129,6 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
-        )}
-        {!!date.providerEventId && (
-          <EventTicketModal
-            ticketProvider={tickets.provider}
-            eventId={date.providerEventId}
-            providerData={tickets.providerData}
-            isOpen={showTicketModal}
-            onClose={() => setShowTicketModal(false)}
-          />
         )}
       </div>
       {/*language=CSS*/}
@@ -204,15 +162,6 @@ function EventTile(props) {
           padding: ${dimensions.tilePadding} 0.5em 0 0;
           box-sizing: border-box;
           width: 99%;
-        }
-        .has-tickets .title-date-location {
-          width: calc(100% - 5em);
-        }
-        .tickets {
-          width: 5em;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
         .music {
           line-height: 1.3em;
@@ -257,17 +206,6 @@ function EventTile(props) {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-        }
-        .tickets .button {
-          border: 1px solid #686868;
-          display: block;
-          color: #fff;
-          text-align: center;
-          border-radius: 3px;
-          font-size: inherit;
-          box-sizing: border-box;
-          padding: 0.25em 0.5em;
-          margin: 0.5em 0 0.3em;
         }
         .hot:after {
           content: '';

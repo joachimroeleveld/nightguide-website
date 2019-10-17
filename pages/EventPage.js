@@ -1,8 +1,9 @@
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
 import find from 'lodash/find';
+import { connect } from 'react-redux';
 
 import { Link } from '../routes';
 import withPageLayout from '../components/PageLayout';
@@ -21,13 +22,17 @@ import ArtistList from '../components/artists/ArtistList';
 import { classNames, generateMetaDescription } from '../lib/util';
 import { setUrlParams } from '../lib/routing';
 import SeeOnMap from '../components/SeeOnMap';
-import EventTicketModal from '../components/events/EventTicketModal';
+import EventTicketExternalCheckoutModal from '../components/events/EventTicketExternalCheckoutModal';
 import ticketProviders from '../components/events/ticket-providers';
 import ImageSlider from '../components/ImageSlider';
 import EventRow from '../components/events/EventRow';
+import BuyTicketButton from '../components/events/BuyTicketButton';
+import EventTicketModal from '../components/events/EventTicketModal';
+import TicketUsps from '../components/events/TicketUsps';
+import Spinner from '../components/Spinner';
 
 export function EventPage(props) {
-  const { event, routeParams, similarEvents, venue, query } = props;
+  const { event, routeParams, similarEvents, venue, query, currency } = props;
 
   const {
     title,
@@ -40,11 +45,40 @@ export function EventPage(props) {
     description = {},
     videoUrl,
   } = event;
+  const { products = [] } = tickets;
 
   const [mediaRef, setMediaRef] = useState(null);
-  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [showExternalTicketModal, setShowExternalTicketModal] = useState(
+    query.externalCheckout !== undefined
+  );
+  const [ticketModalStep, setTicketModalStep] = useState(
+    query.checkoutStep || null
+  );
   const [dateIndex, setDateIndex] = useState(query.dateIndex || 0);
   const mediaDimensions = useElemDimensions(mediaRef);
+
+  useEffect(() => {
+    setTicketModalStep(query.checkoutStep);
+  }, [query.checkoutStep]);
+
+  useEffect(() => {
+    setShowExternalTicketModal(query.externalCheckout !== undefined);
+  }, [query.externalCheckout]);
+
+  const changeCheckoutStep = step => {
+    setUrlParams({
+      checkoutStep: step,
+      client_secret: null,
+      livemode: null,
+      source: null,
+    });
+  };
+
+  const toggleExternalCheckout = () => {
+    setUrlParams({
+      externalCheckout: showExternalTicketModal ? null : '',
+    });
+  };
 
   const date = dates[dateIndex];
   const artists =
@@ -60,7 +94,15 @@ export function EventPage(props) {
 
   let ticketButton = null;
   let ticketsViaString;
-  if (ticketsUrl) {
+  if (products.length) {
+    ticketButton = (
+      <BuyTicketButton
+        currency={currency}
+        price={products[0].price}
+        onClick={() => changeCheckoutStep('cart')}
+      />
+    );
+  } else if (ticketsUrl) {
     ticketsViaString = __('EventPage.buyTicketsVia', {
       via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
     });
@@ -80,7 +122,7 @@ export function EventPage(props) {
     ticketButton = (
       <PrimaryButton
         title={__('EventPage.buyTickets')}
-        onClick={() => setShowTicketModal(true)}
+        onClick={toggleExternalCheckout}
       />
     );
   }
@@ -105,6 +147,11 @@ export function EventPage(props) {
         )}
       </Head>
       <div className="main">
+        {!!ticketModalStep && (
+          <div className="spinner-overlay">
+            <Spinner />
+          </div>
+        )}
         <header className="header">
           <figure className="media" ref={setMediaRef}>
             {!!videoUrl && (
@@ -216,19 +263,10 @@ export function EventPage(props) {
         {ticketButton && (
           <section className={'buy-tickets'} id="buy-tickets-bottom">
             {ticketButton}
-            <ul className="usps">
-              <li>
-                <span>{__('EventPage.instantConfirmation')}</span>
-              </li>
-              <div className="separator" />
-              <li>
-                <span>{__('EventPage.officialPartner')}</span>
-              </li>
-              <div className="separator" />
-              <li>
-                <span>{__('EventPage.secureCheckout')}</span>
-              </li>
-            </ul>
+            <span className="via">{ticketsViaString}</span>
+            <div className="usps">
+              <TicketUsps />
+            </div>
           </section>
         )}
         {artists && !!artists.length && (
@@ -293,16 +331,40 @@ export function EventPage(props) {
         </section>
       </aside>
       {!!date.providerEventId && (
-        <EventTicketModal
+        <EventTicketExternalCheckoutModal
           ticketProvider={tickets.provider}
           eventId={date.providerEventId}
           providerData={tickets.providerData}
-          isOpen={showTicketModal}
-          onClose={() => setShowTicketModal(false)}
+          isOpen={showExternalTicketModal}
+          onClose={toggleExternalCheckout}
+        />
+      )}
+      {!!products.length && (
+        <EventTicketModal
+          step={ticketModalStep}
+          onStepChange={changeCheckoutStep}
+          event={event}
+          dateIndex={dateIndex}
+          sourceId={query.source}
+          clientSecret={query.client_secret}
         />
       )}
       {/*language=CSS*/}
       <style jsx>{`
+        .spinner-overlay {
+          z-index: 300;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: fixed;
+          pointer-events: none;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: ${colors.bgOverlay};
+          transition: opacity 0.3s;
+        }
         .header {
           background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
@@ -440,33 +502,11 @@ export function EventPage(props) {
           box-shadow: ${colors.cardShadow};
           padding: 1em ${dimensions.cardPadding} 0.4em;
         }
+        .sidebar .buy-tickets :global(button) {
+          width: 100%;
+        }
         .usps {
           margin: 0.7em 0 0.3em;
-          font-size: 0.9em;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .usps li {
-          display: flex;
-          align-items: center;
-          opacity: 0.4;
-          margin: 0.2em 0;
-        }
-        .usps span {
-          display: inline-block;
-          background: no-repeat left center;
-          padding-left: 2em;
-        }
-        .usps li:nth-of-type(1) span {
-          background-image: url(/static/img/event-usps-instant-confirm.svg);
-          background-position-x: 2px;
-        }
-        .usps li:nth-of-type(2) span {
-          background-image: url(/static/img/event-usps-partner.svg);
-        }
-        .usps li:nth-of-type(3) span {
-          background-image: url(/static/img/event-usps-secure.svg);
         }
         @media (max-width: 800px) {
           .header {
@@ -631,6 +671,10 @@ const breadcrumbs = ({ event }) => [
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
+const ConnectedEventPage = connect(state => ({
+  currency: state.shop.currency,
+}))(EventPage);
+
 export default withPageLayout({
   breadcrumbs,
-})(EventPage);
+})(ConnectedEventPage);

@@ -1,51 +1,100 @@
 import PropTypes from 'prop-types';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import css from 'styled-jsx/css';
+import { Elements, StripeProvider } from 'react-stripe-elements';
 
 import __ from '../../lib/i18n';
 import colors from '../../styles/colors';
 import { useDisableBodyScrolling } from '../../lib/hooks';
 import dimensions from '../../styles/dimensions';
-import { generateTicketPageUrl } from './util';
+import TicketForm from './TicketForm';
+import Spinner from '../Spinner';
+
+const STRIPE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
 
 EventTicketModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  eventId: PropTypes.string.isRequired,
-  ticketProvider: PropTypes.string.isRequired,
-  providerData: PropTypes.object,
+  step: PropTypes.oneOf(['cart', 'checkout', 'result']),
+  onStepChange: PropTypes.func.isRequired,
+  event: PropTypes.object.isRequired,
+  clientSecret: PropTypes.string,
+  sourceId: PropTypes.string,
 };
 
 function EventTicketModal(props) {
   const {
-    isOpen,
-    onClose,
-    eventId,
-    ticketProvider: providerId,
-    providerData = {},
+    step = null,
+    sourceId,
+    clientSecret,
+    onStepChange,
+    event,
     ...modalProps
   } = props;
 
-  const iframeSrc = generateTicketPageUrl(providerId, eventId, providerData);
+  const [stripe, setStripe] = useState(null);
 
-  useDisableBodyScrolling(isOpen);
+  useEffect(() => {
+    if (step === null) return;
+
+    if (!window.Stripe) {
+      let stripeScript = document.createElement('script');
+      stripeScript.setAttribute('id', 'stripe-js');
+      stripeScript.type = 'text/javascript';
+      stripeScript.async = true;
+      stripeScript.src = 'https://js.stripe.com/v3/';
+      stripeScript.onload = () => {
+        setStripe(window.Stripe(STRIPE_KEY));
+      };
+      document.getElementsByTagName('head')[0].appendChild(stripeScript);
+    } else {
+      setStripe(window.Stripe(STRIPE_KEY));
+    }
+
+    return () => {
+      if (document.getElementById('stripe-js')) {
+        document.getElementById('stripe-js').remove();
+      }
+    };
+  }, [step]);
+
+  useDisableBodyScrolling(step !== null);
 
   return (
     <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
+      isOpen={step !== null}
       overlayClassName={modalStyles.className}
       className={modalStyles.className}
       {...modalProps}
     >
       <div className="container">
         <header className="header">
-          <button className="close" onClick={() => onClose()} />
-          <span className="title">{__('EventTicketModal.buyTicket')}</span>
+          {step === 'checkout' && (
+            <button className="back" onClick={() => onStepChange('cart')} />
+          )}
+          {step !== 'checkout' && (
+            <button className="close" onClick={() => onStepChange(null)} />
+          )}
+          <span className="title">{__(`EventTicketModal.titles.${step}`)}</span>
         </header>
         <div className="content">
-          <iframe className="iframe" src={iframeSrc} />
+          {!stripe && <Spinner style={{ margin: '2em' }} />}
+          {stripe && (
+            <div className="form">
+              <StripeProvider stripe={stripe}>
+                <Elements
+                  fonts={[{ cssSrc: 'https://use.typekit.net/adw5jeb.css' }]}
+                >
+                  <TicketForm
+                    step={step}
+                    event={event}
+                    onStepChange={onStepChange}
+                    sourceId={sourceId}
+                    clientSecret={clientSecret}
+                  />
+                </Elements>
+              </StripeProvider>
+            </div>
+          )}
         </div>
       </div>
       {modalStyles.styles}
@@ -61,6 +110,7 @@ function EventTicketModal(props) {
           align-items: center;
           justify-content: flex-end;
           height: 3em;
+          min-height: 3em;
           width: 100%;
           box-sizing: border-box;
           box-shadow: ${colors.headerShadow};
@@ -74,27 +124,40 @@ function EventTicketModal(props) {
         }
         .content {
           flex-grow: 1;
+          width: 100%;
+          display: flex;
           justify-content: center;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
         }
-        .iframe {
-          width: ${dimensions.pageWidth};
-          max-width: 100%;
-          height: 100%;
-          border: none;
-          margin: 0 auto;
-          display: block;
+        .form {
+          width: 100%;
+          margin: 0 ${dimensions.bodyPadding};
         }
-        .close {
+        .back {
           position: absolute;
           left: ${dimensions.bodyPadding};
           width: 1em;
           height: 1em;
           padding: 0.5em;
           margin-right: 1em;
+          background: url(/static/img/modal-back.svg) no-repeat center center;
+          background-size: contain;
+        }
+        .close {
+          position: absolute;
+          right: ${dimensions.bodyPadding};
+          width: 1em;
+          height: 1em;
+          padding: 0.5em;
+          margin-right: 1em;
           background: url(/static/img/close.svg) no-repeat center center;
-          background-size: cover;
+          background-size: contain;
+        }
+        @media (min-width: 800px) {
+          .form {
+            max-width: 45em;
+          }
         }
       `}</style>
     </Modal>

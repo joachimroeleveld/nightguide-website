@@ -1,9 +1,28 @@
+import PropTypes from 'prop-types';
+import { classNames } from '../lib/util';
+
+Spinner.propTypes = {
+  size: PropTypes.number,
+  center: PropTypes.bool,
+  style: PropTypes.object,
+};
+
 function Spinner(props) {
-  const { size = 20 } = props;
+  const { size = 20, style, center = false } = props;
+
   return (
-    <div className="spinner">
+    <div
+      className={classNames(['container', center && 'center'])}
+      style={style}
+    >
+      <div className="spinner" />
       {/*language=CSS*/}
       <style jsx>{`
+        .container.center {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+        }
         .spinner,
         .spinner:after {
           border-radius: 50%;

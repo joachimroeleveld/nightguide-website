@@ -10,4 +10,7 @@ export default {
   cardPadding: '1.5rem',
   tileRadius: '3px',
   tilePadding: '0.8em',
+  inputRadius: '3px',
+  inputPadding: '0.5em',
+  inputLineHeight: '1.4',
 };

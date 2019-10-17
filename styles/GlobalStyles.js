@@ -55,6 +55,11 @@ function GlobalStyles() {
           font-size: 1em;
           color: inherit;
         }
+        fieldset {
+          margin: 0;
+          padding: 0;
+          border: none;
+        }
       `}</style>
       {/*language=CSS*/}
       <style jsx global>{`

@@ -12,6 +12,7 @@ const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const routes = require('../routes');
+const shopRoutes = require('./routes/shop');
 
 const handle = routes.getRequestHandler(app);
 
@@ -25,6 +26,8 @@ app
     server.get('/health', (req, res) => {
       res.json({ status: 'OK' });
     });
+
+    server.use('/api/shop', shopRoutes);
 
     server.get('*', (req, res) => {
       return handle(req, res);

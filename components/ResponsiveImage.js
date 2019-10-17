@@ -6,8 +6,8 @@ import colors from '../styles/colors';
 
 ResponsiveImage.propTypes = {
   url: PropTypes.string.isRequired,
-  widths: PropTypes.string.isRequired,
-  sizes: PropTypes.arrayOf(PropTypes.string),
+  widths: PropTypes.arrayOf(PropTypes.number),
+  sizes: PropTypes.string.isRequired,
   alt: PropTypes.string,
   style: PropTypes.object,
   imgStyle: PropTypes.object,
@@ -166,14 +166,3 @@ export default function ResponsiveImage(props) {
     </Observer>
   );
 }
-
-ResponsiveImage.propTypes = {
-  url: PropTypes.string.isRequired,
-  widths: PropTypes.arrayOf(PropTypes.number).isRequired,
-  sizes: PropTypes.string,
-  alt: PropTypes.string,
-  imgStyle: PropTypes.any,
-  style: PropTypes.any,
-  OverlayComponent: PropTypes.element,
-  showOverlay: PropTypes.bool,
-};
