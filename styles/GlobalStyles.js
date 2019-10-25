@@ -9,6 +9,14 @@ function GlobalStyles() {
       <TextStyles />
       {/*language=CSS*/}
       <style jsx global>{`
+        html[class*='noscroll--'],
+        html[class*='noscroll--'] body,
+        html[class*='noscroll--'] #__next {
+          height: 100%;
+        }
+        html[class*='noscroll--'] #__next {
+          overflow: hidden;
+        }
         #__next {
           position: relative;
           z-index: 0;

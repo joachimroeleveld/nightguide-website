@@ -57,6 +57,7 @@ function TicketForm(props) {
         quantity: index === 0 ? 1 : 0,
       }))
       .concat({
+        sku: '5da9a8623291fa4d6727d60d',
         name: __('TicketForm.bookingFee'),
         price: 1.9,
         quantity: 1,
@@ -156,7 +157,10 @@ function TicketForm(props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: cart,
+          items: cart.map(item => ({
+            sku: item.sku,
+            quantity: item.quantity,
+          })),
           eventId: event.id,
         }),
       });
@@ -208,7 +212,10 @@ function TicketForm(props) {
     const paymentIntent = await createPaymentIntent();
 
     if (paymentIntent.error) {
-      alert(`${__('TicketForm.somethingWentWrong')} (${paymentIntent.error})`);
+      setIsProcessing(false);
+      return alert(
+        `${__('TicketForm.somethingWentWrong')} (${paymentIntent.error})`
+      );
     }
 
     if (values.paymentMethod === 'card') {
@@ -219,8 +226,8 @@ function TicketForm(props) {
           payment_method_data: {
             billing_details: {
               address: {
-                city: values.city,
                 country: values.country,
+                city: values.city,
                 line1: values.address1,
                 line2: values.address2,
                 postal_code: values.postalCode,
@@ -242,6 +249,9 @@ function TicketForm(props) {
         owner: {
           name: values.name,
           email: values.email,
+          address: {
+            country: values.country,
+          },
         },
         redirect: {
           return_url: getRedirectUrl(),

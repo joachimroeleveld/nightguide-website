@@ -28,7 +28,7 @@ function ImagesModal(props) {
   const [headerRef, setHeaderRef] = useState(null);
   const [imagesRef, setImagesRef] = useState(null);
 
-  useDisableBodyScrolling(isOpen);
+  useDisableBodyScrolling(ImagesModal.name, isOpen);
 
   useOnClickOutside([imagesRef, headerRef], onClose);
 

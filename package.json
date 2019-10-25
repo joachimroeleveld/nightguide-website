@@ -5,7 +5,7 @@
   "main": "routes.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "nodemon $NODE_DEBUG_OPTION --watch routes.js server/ server/index.js",
+    "dev": "nodemon $NODE_DEBUG_OPTION --watch routes.js --watch server server/index.js",
     "build": "next build",
     "prettier": "prettier --write \"**/*.js\"}",
     "lint": "eslint"
@@ -35,7 +35,7 @@
     "object-fit-images": "^3.2.4",
     "prop-types": "^15.7.2",
     "qs": "^6.7.0",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-dates": "^20.2.5",
     "react-dom": "^16.8.6",
     "react-easy-swipe": "0.0.18",

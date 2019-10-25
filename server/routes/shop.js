@@ -1,12 +1,15 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const request = require('request-promise');
 const express = require('express');
-const find = require('lodash/find');
 const bodyParser = require('body-parser');
 
-const PAYMENT_METHODS = ['card', 'ideal'];
-const BOOKING_FEE = 190; // €1,90
-const CURRENCY = 'eur';
+const {
+  getEvent,
+  createOrder,
+  updateOrder,
+  updateOrderMeta,
+} = require('../lib/api');
+const { calculatePaymentAmount, populateItemPrices } = require('../lib/shop');
+const { CURRENCY, PAYMENT_METHODS } = require('../constants');
 
 stripe.setApiVersion('2019-10-08');
 
@@ -24,47 +27,51 @@ router.use(
   })
 );
 
-// Calculate total payment amount based on items in basket.
-const calculatePaymentAmount = async (eventId, items) => {
-  const event = await request(`${process.env.NG_API_HOST}/events/${eventId}`, {
-    json: true,
-  });
-
-  const total = items.reduce((total, { sku, quantity }) => {
-    if (!sku) {
-      return total;
-    }
-    const price = find(event.tickets.products, { id: sku }).price;
-    return total + price * quantity * 100; // Amount in cents
-  }, 0);
-
-  return total + BOOKING_FEE;
-};
-
-// Create the PaymentIntent on the backend.
+/**
+ * Create payment intent
+ */
 router.post('/payment-intents', async (req, res, next) => {
   let { items, eventId } = req.body;
 
   try {
-    const amount = await calculatePaymentAmount(eventId, items);
-    const paymentIntent = await stripe.paymentIntents.create({
+    const event = await getEvent(eventId);
+    const itemsWithPrice = await populateItemPrices(event, items);
+    const amount = await calculatePaymentAmount(itemsWithPrice);
+
+    const order = await createOrder({
+      status: 'pending',
       amount,
       currency: CURRENCY,
+      items: itemsWithPrice,
+      metadata: {
+        eventId,
+      },
+    });
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // Amount in cents
+      currency: CURRENCY.toLowerCase(),
       payment_method_types: PAYMENT_METHODS,
+      metadata: {
+        order_id: order.id,
+      },
     });
     return res.status(200).json({ paymentIntent });
   } catch (err) {
+    console.error(err);
     return res.status(500).json({ error: err.message });
   }
 });
 
-// Webhook handler to process payments for sources asynchronously.
+/**
+ * Webhook handler to process payments for sources asynchronously.
+ */
 router.post('/webhook', async (req, res) => {
   let data;
+  let event;
   // Check if webhook signing is configured.
   if (process.env.STRIPE_WEBHOOK_SECRET) {
     // Retrieve the event by verifying the signature using the raw body and secret.
-    let event;
     let signature = req.headers['stripe-signature'];
     try {
       event = stripe.webhooks.constructEvent(
@@ -87,6 +94,7 @@ router.post('/webhook', async (req, res) => {
 
   // Monitor `source.chargeable` events.
   if (
+    event.type === 'source.chargeable' &&
     object.object === 'source' &&
     object.status === 'chargeable' &&
     object.metadata.paymentIntent
@@ -108,6 +116,7 @@ router.post('/webhook', async (req, res) => {
 
   // Monitor `source.failed` and `source.canceled` events.
   if (
+    ['source.failed', 'source.canceled'].includes(event.type) &&
     object.object === 'source' &&
     ['failed', 'canceled'].includes(object.status) &&
     object.metadata.paymentIntent
@@ -118,11 +127,49 @@ router.post('/webhook', async (req, res) => {
     await stripe.paymentIntents.cancel(source.metadata.paymentIntent);
   }
 
+  if (event.type === 'payment_intent.succeeded') {
+    const {
+      billing_details: billingDetails,
+      receipt_url: receiptUrl,
+    } = object.charges.data[0];
+    const orderId = object.metadata.order_id;
+
+    const order = {
+      status: 'processing',
+      billingDetails: {
+        address: {
+          country: billingDetails.address.country,
+          // Optional address fields
+          ...(billingDetails.address.city !== null
+            ? {
+                city: billingDetails.address.city,
+                line1: billingDetails.address.line1,
+                line2: billingDetails.address.line2,
+                postalCode: billingDetails.address.postal_code,
+                state: billingDetails.address.state,
+              }
+            : {}),
+        },
+        email: billingDetails.email,
+        name: billingDetails.name,
+      },
+    };
+    try {
+      await updateOrder(orderId, order);
+      await updateOrderMeta(orderId, 'stripeReceiptUrl', receiptUrl);
+    } catch (e) {
+      console.error(e);
+      return res.sendStatus(502);
+    }
+  }
+
   // Return a 200 success code to Stripe.
   res.sendStatus(200);
 });
 
-// Retrieve the PaymentIntent status.
+/**
+ * Retrieve payment intent status
+ */
 router.get('/payment-intents/:id/status', async (req, res) => {
   const paymentIntent = await stripe.paymentIntents.retrieve(req.params.id);
   res.json({ paymentIntent: { status: paymentIntent.status } });
