@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const express = require('express');
 const next = require('next');
+const device = require('express-device');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -28,6 +29,8 @@ app
     });
 
     server.use('/api/shop', shopRoutes);
+
+    server.use(device.capture());
 
     server.get('*', (req, res) => {
       return handle(req, res);

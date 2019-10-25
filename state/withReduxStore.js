@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import customMiddleware from './middleware';
 import rootReducer from './rootReducer';
@@ -11,9 +13,18 @@ function getOrCreateStore(initialState) {
   const composeEnhancers =
     (!isServer && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose; // eslint-disable-line no-undef
 
+  const persistedReducer = persistReducer(
+    {
+      key: 'root',
+      whitelist: ['device'],
+      storage,
+    },
+    rootReducer
+  );
+
   const initializeStore = initialState =>
     createStore(
-      rootReducer,
+      persistedReducer,
       initialState,
       composeEnhancers(applyMiddleware(...customMiddleware))
     );
@@ -35,7 +46,9 @@ export default App => {
     static async getInitialProps(appContext) {
       // Get or Create the store with `undefined` as initialState
       // This allows you to set a custom default initialState
-      const reduxStore = getOrCreateStore();
+      const reduxStore = getOrCreateStore(
+        AppWithRedux.getInitialState(appContext)
+      );
 
       // Provide the store to getInitialProps of pages
       appContext.ctx.reduxStore = reduxStore;
@@ -49,6 +62,15 @@ export default App => {
         ...appProps,
         initialReduxState: reduxStore.getState(),
       };
+    }
+
+    static getInitialState(appContext) {
+      if (isServer) {
+        return {
+          device: { type: appContext.ctx.req.device.type },
+        };
+      }
+      return {};
     }
 
     constructor(props) {

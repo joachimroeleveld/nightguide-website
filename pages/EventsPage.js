@@ -11,12 +11,11 @@ import { getArtist, getConfigByName, getEvents, getVenue } from '../lib/api';
 import __, { __city } from '../lib/i18n';
 import colors from '../styles/colors';
 import EventTile from '../components/events/EventTile';
-import { useEffectSkipFirst } from '../lib/hooks';
+import { useEffectSkipFirst, useWindowWidth } from '../lib/hooks';
 import dimensions from '../styles/dimensions';
 import Spinner from '../components/Spinner';
 import EventFilters from '../components/events/EventFilters';
 import CityMenu from '../components/CityMenu';
-import HeaderImage from '../components/HeaderImage';
 import TitleWithImage from '../components/TitleWithImage';
 
 const ITEMS_PER_PAGE = 10;
@@ -40,6 +39,7 @@ function Events(props) {
     page = 1,
   } = query;
 
+  const windowWidth = useWindowWidth();
   const previousFilters = useRef(query);
   const [events, setEvents] = useState({
     [`p${page}`]: initialEvents.results,
@@ -188,7 +188,7 @@ function Events(props) {
                 routeParams={routeParams}
                 key={event.id + event.dateIndex}
                 event={event}
-                wideQuery="(min-width: 50em)"
+                isWide={windowWidth > 800}
                 imgWidths={[300, 600, 900, 2000]}
                 imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
                   dimensions.bodyPadding

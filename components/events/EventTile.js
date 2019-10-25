@@ -17,11 +17,11 @@ EventTile.propTypes = {
   imgWidths: PropTypes.arrayOf(PropTypes.string).isRequired,
   imgSizes: PropTypes.string,
   routeParams: PropTypes.object,
-  wideQuery: PropTypes.string,
+  isWide: PropTypes.bool,
 };
 
 function EventTile(props) {
-  const { wideQuery = null, event, imgWidths, imgSizes, routeParams } = props;
+  const { event, imgWidths, imgSizes, routeParams, isWide } = props;
 
   const {
     organiser,
@@ -45,7 +45,6 @@ function EventTile(props) {
     date.artists && date.artists.length ? date.artists : event.artists || [];
 
   const windowWidth = useWindowWidth();
-  const isWide = wideQuery && useMatchMedia(wideQuery);
 
   const imgProps = useMemo(
     () =>

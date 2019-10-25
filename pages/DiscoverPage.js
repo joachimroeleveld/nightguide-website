@@ -16,6 +16,7 @@ import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import TitleWithImage from '../components/TitleWithImage';
+import { useWindowWidth } from '../lib/hooks';
 
 function DiscoverPage(props) {
   const {
@@ -29,6 +30,8 @@ function DiscoverPage(props) {
     genreEvents,
     genres,
   } = props;
+
+  const windowWidth = useWindowWidth();
 
   const cityName = __city(pageSlug)('name');
 
@@ -71,7 +74,7 @@ function DiscoverPage(props) {
           <section className="sponsored-event">
             <h2>{__('DiscoverPage.recommended')}</h2>
             <EventTile
-              wideQuery={'(min-width: 25em)'}
+              isWide={windowWidth > 400}
               routeParams={routeParams}
               imgWidths={[300, 600, 900, 2000]}
               imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
