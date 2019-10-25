@@ -19,7 +19,7 @@ FilterModal.propTypes = {
 function FilterModal(props) {
   const { children, onClear, isOpen, label, onClose, ...modalProps } = props;
 
-  useDisableBodyScrolling(FilterModal.name, isOpen);
+  useDisableBodyScrolling('FilterModal', isOpen);
 
   return (
     <Modal

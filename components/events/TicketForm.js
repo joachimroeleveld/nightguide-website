@@ -177,16 +177,19 @@ function TicketForm(props) {
 
   const validate = () => {
     const errors = {
-      city: !values.city,
-      country: !values.country,
-      address1: !values.address1,
-      postalCode: !values.postalCode,
-      state: values.country === 'US' && !values.state,
+      name: !values.name,
       email:
         !(values.email || '').match(/.+@.+/) &&
         __('TicketForm.enterValidEmail'),
-      name: !values.name,
+      country: !values.country,
       paymentMethod: !values.paymentMethod,
+      city: values.paymentMethod === 'card' && !values.city,
+      address1: values.paymentMethod === 'card' && !values.address1,
+      postalCode: values.paymentMethod === 'card' && !values.postalCode,
+      state:
+        values.paymentMethod === 'card' &&
+        values.country === 'US' &&
+        !values.state,
       idealBank: values.paymentMethod === 'ideal' && !values.idealBank,
     };
     setFormErrors(errors);
@@ -241,6 +244,7 @@ function TicketForm(props) {
       );
       setPaymentResponse(response);
       onStepChange('result');
+      setIsProcessing(false);
     } else if (values.paymentMethod === 'ideal') {
       const genericSourceData = {
         type: values.paymentMethod,
@@ -270,11 +274,10 @@ function TicketForm(props) {
       if (!error) {
         handleSourceActivation(source);
       } else {
+        setIsProcessing(false);
         alert(`${__('TicketForm.somethingWentWrong')} (${error.message})`);
       }
     }
-
-    setIsProcessing(false);
   };
 
   // Handle activation of payment sources not yet supported by PaymentIntents
@@ -607,6 +610,9 @@ function TicketForm(props) {
         </div>
         {/*language=CSS*/}
         <style jsx>{`
+          .container {
+            padding-bottom: 1px;
+          }
           .footer {
             border-top: 1px solid ${colors.separator};
             padding-top: 1em;

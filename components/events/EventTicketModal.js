@@ -57,7 +57,7 @@ function EventTicketModal(props) {
     };
   }, [step]);
 
-  useDisableBodyScrolling(EventTicketModal.name, step !== null);
+  useDisableBodyScrolling('EventTicketModal', step !== null);
 
   return (
     <Modal

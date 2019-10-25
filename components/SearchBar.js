@@ -137,7 +137,7 @@ function SearchBar(props) {
     }
   }, [inputRef, isOpen]);
 
-  useDisableBodyScrolling(SearchBar.name, isOpen);
+  useDisableBodyScrolling('SearchBar', isOpen);
 
   useEffect(() => {
     if (isOpen) {

@@ -29,7 +29,7 @@ function EventTicketExternalCheckoutModal(props) {
 
   const iframeSrc = generateTicketPageUrl(providerId, eventId, providerData);
 
-  useDisableBodyScrolling(EventTicketExternalCheckoutModal.name, isOpen);
+  useDisableBodyScrolling('EventTicketExternalCheckoutModal', isOpen);
 
   return (
     <Modal
