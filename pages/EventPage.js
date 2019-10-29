@@ -99,7 +99,7 @@ export function EventPage(props) {
 
   let ticketButton = null;
   let ticketsViaString;
-  if (isPast) {
+  if (!isPast) {
     if (products.length) {
       ticketButton = (
         <BuyTicketButton
