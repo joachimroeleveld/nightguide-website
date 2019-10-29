@@ -18,7 +18,7 @@ function TextStyles() {
       }
       h3 {
         font-size: 1.083em;
-        font-weight: 600;
+        font-weight: 500;
       }
       h4 {
         font-size: 0.9em;

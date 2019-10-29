@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
+import { useSelector } from 'react-redux';
 
 import { Link } from '../../routes';
 import __, { _o } from '../../lib/i18n';
@@ -9,8 +10,10 @@ import colors from '../../styles/colors';
 import { formatEventDate } from '../../lib/dates';
 import ResponsiveImage from '../ResponsiveImage';
 import dimensions from '../../styles/dimensions';
-import { useMatchMedia, useWindowWidth } from '../../lib/hooks';
+import { useWindowWidth } from '../../lib/hooks';
 import { classNames } from '../../lib/util';
+import { formatAmount } from '../../lib/currencies';
+import { getCurrency } from '../../state/shop';
 
 EventTile.propTypes = {
   event: PropTypes.object.isRequired,
@@ -22,6 +25,8 @@ EventTile.propTypes = {
 
 function EventTile(props) {
   const { event, imgWidths, imgSizes, routeParams, isWide } = props;
+
+  const currency = useSelector(getCurrency);
 
   const {
     organiser,
@@ -108,6 +113,16 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
+          {(tickets.products && tickets.products.length) ||
+            (tickets.displayPrice && (
+              <div className="price">
+                {formatAmount(
+                  tickets.displayPrice || tickets.products[0].price,
+                  currency,
+                  0
+                )}
+              </div>
+            ))}
         </div>
         {(tagNames || artistNames) && (
           <div className="music">
@@ -160,7 +175,20 @@ function EventTile(props) {
         .title-date-location {
           padding: ${dimensions.tilePadding} 0.5em 0 0;
           box-sizing: border-box;
-          width: 99%;
+          width: calc(100% - 3em);
+        }
+        .price {
+          width: 3em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 1rem;
+        }
+        .wide .price {
+          position: absolute;
+          right: ${dimensions.tilePadding};
+          height: 100%;
         }
         .music {
           line-height: 1.3em;

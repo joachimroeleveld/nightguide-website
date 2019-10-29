@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import moment from 'moment-timezone';
 import find from 'lodash/find';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Link } from '../routes';
 import withPageLayout from '../components/PageLayout';
@@ -30,9 +30,13 @@ import BuyTicketButton from '../components/events/BuyTicketButton';
 import EventTicketModal from '../components/events/EventTicketModal';
 import TicketUsps from '../components/events/TicketUsps';
 import Spinner from '../components/Spinner';
+import { getCurrency } from '../state/shop';
+import { isEventDatePast } from '../lib/events';
 
 export function EventPage(props) {
-  const { event, routeParams, similarEvents, venue, query, currency } = props;
+  const { event, routeParams, similarEvents, venue, query } = props;
+
+  const currency = useSelector(getCurrency);
 
   const {
     title,
@@ -86,6 +90,7 @@ export function EventPage(props) {
   const ticketsUrl = date.ticketsUrl || (tickets && tickets.checkoutUrl);
   const ticketProvider =
     tickets.provider && find(ticketProviders, { id: tickets.provider });
+  const isPast = isEventDatePast(date);
 
   const switchDateIndex = dateIndex => {
     setUrlParams({ dateIndex });
@@ -94,41 +99,45 @@ export function EventPage(props) {
 
   let ticketButton = null;
   let ticketsViaString;
-  if (products.length) {
-    ticketButton = (
-      <BuyTicketButton
-        currency={currency}
-        price={products[0].price}
-        onClick={() => changeCheckoutStep('cart')}
-      />
-    );
-  } else if (ticketsUrl) {
-    ticketsViaString = __('EventPage.buyTicketsVia', {
-      via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
-    });
-    ticketButton = (
-      <PrimaryButton
-        iconSrc={'/static/img/buy-tickets-arrow.svg'}
-        href={generateTicketRedirectUrl(event.id, dateIndex)}
-        target="_blank"
-        rel="noopener noreferrer"
-        title={__('EventPage.buyTickets')}
-      />
-    );
-  } else if (ticketProvider && date.providerEventId) {
-    ticketsViaString = __('EventPage.buyTicketsBy', {
-      by: ticketProvider.name,
-    });
-    ticketButton = (
-      <PrimaryButton
-        title={__('EventPage.buyTickets')}
-        onClick={toggleExternalCheckout}
-      />
-    );
+  if (isPast) {
+    if (products.length) {
+      ticketButton = (
+        <BuyTicketButton
+          currency={currency}
+          price={products[0].price}
+          onClick={() => changeCheckoutStep('cart')}
+        />
+      );
+    } else if (ticketsUrl) {
+      ticketsViaString = __('EventPage.buyTicketsVia', {
+        via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
+      });
+      ticketButton = (
+        <PrimaryButton
+          iconSrc={'/static/img/buy-tickets-arrow.svg'}
+          href={generateTicketRedirectUrl(event.id, dateIndex)}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={__('EventPage.buyTickets')}
+        />
+      );
+    } else if (ticketProvider && date.providerEventId) {
+      ticketsViaString = __('EventPage.buyTicketsBy', {
+        by: ticketProvider.name,
+      });
+      ticketButton = (
+        <PrimaryButton
+          title={__('EventPage.buyTickets')}
+          onClick={toggleExternalCheckout}
+        />
+      );
+    }
   }
 
   return (
-    <main className={classNames([ticketButton && 'has-tickets'])}>
+    <main
+      className={classNames([ticketButton && 'has-tickets', isPast && 'past'])}
+    >
       <Head>
         <title>
           {__('EventPage.meta.title', {
@@ -423,6 +432,9 @@ export function EventPage(props) {
         .when {
           padding: 0.5em 0;
         }
+        .past .when .date {
+          text-decoration: line-through;
+        }
         .when .date {
           padding-left: 2.2em;
           display: flex;
@@ -671,10 +683,6 @@ const breadcrumbs = ({ event }) => [
   { key: 'event', title: event.title || event.facebook.title },
 ];
 
-const ConnectedEventPage = connect(state => ({
-  currency: state.shop.currency,
-}))(EventPage);
-
 export default withPageLayout({
   breadcrumbs,
-})(ConnectedEventPage);
+})(EventPage);

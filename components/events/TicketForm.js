@@ -4,7 +4,6 @@ import { injectStripe, CardElement } from 'react-stripe-elements';
 import update from 'immutability-helper';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
-import { connect } from 'react-redux';
 import { Link } from '../../routes';
 
 import __ from '../../lib/i18n';
@@ -22,6 +21,8 @@ import RadioButton from '../RadioButton';
 import Spinner from '../Spinner';
 import { classNames } from '../../lib/util';
 import { useEffectSkipFirst } from '../../lib/hooks';
+import { useSelector } from 'react-redux';
+import { getCurrency } from '../../state/shop';
 
 TicketForm.propTypes = {
   step: PropTypes.oneOf(['cart', 'checkout', 'result']),
@@ -39,10 +40,10 @@ function TicketForm(props) {
     sourceId = null,
     stripe,
     onStepChange,
-    currency,
   } = props;
   const { tickets } = event;
 
+  const currency = useSelector(getCurrency);
   const [values, setValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -925,6 +926,4 @@ const IDEAL_BANKS = {
   van_lanschot: 'Van Lanschot',
 };
 
-export default connect(state => ({
-  currency: state.shop.currency,
-}))(injectStripe(TicketForm));
+export default injectStripe(TicketForm);

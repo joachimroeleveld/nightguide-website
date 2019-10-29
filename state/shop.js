@@ -5,6 +5,8 @@ export const SET_CURRENCY = 'SET_CURRENCY';
 
 export const { setCurrency } = createActions(SET_CURRENCY);
 
+export const getCurrency = state => state.shop.currency;
+
 export default handleActions(
   {
     [setCurrency]: (state, action) =>
