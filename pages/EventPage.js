@@ -569,6 +569,9 @@ export function EventPage(props) {
           .when .buy-tickets {
             margin-top: 1em;
           }
+          .when .buy-tickets :global(button) {
+            width: 100%;
+          }
           .when .date,
           .where,
           .genres {
@@ -631,14 +634,11 @@ export function EventPage(props) {
           .header .buy-tickets .via {
             display: none;
           }
-          .when {
-            display: flex;
+          .when .buy-tickets {
+            margin: 0.7em 0 0.3em 2.2em;
           }
           .where {
             background-position-x: 0.1em;
-          }
-          .when .date {
-            padding-right: 1em;
           }
           .when .date.multiple {
             flex-grow: 1;

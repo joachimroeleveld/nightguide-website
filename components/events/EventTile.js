@@ -165,7 +165,7 @@ function EventTile(props) {
           padding: 0 ${dimensions.tilePadding} ${dimensions.tilePadding};
         }
         .top {
-          padding: ${dimensions.tilePadding} 0.5em 0 0;
+          padding-top: ${dimensions.tilePadding};
           box-sizing: border-box;
         }
         .title {
