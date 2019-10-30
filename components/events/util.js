@@ -67,14 +67,48 @@ export function serializeFilter(filter) {
 }
 
 export function generateTicketPageUrl(provider, providerEventId, providerData) {
-  let eventUrl;
+  let url;
+  const search = new URLSearchParams();
+  let addUtmParams = true;
+
   if (provider === 'eventix') {
     const { shopId } = providerData;
     if (shopId) {
-      eventUrl = `https://shop.eventix.io/${shopId}/tickets?eventId=${providerEventId}`;
+      url = `https://shop.eventix.io/${shopId}/tickets`;
+      search.set('eventId', providerEventId);
     } else {
-      eventUrl = `https://shop.eventix.io/${providerEventId}/tickets`;
+      url = `https://shop.eventix.io/${providerEventId}/tickets`;
+    }
+  } else if (provider === 'eventbrite') {
+    const { partnerId, programName } = providerData;
+    if (partnerId && programName) {
+      url = `https://www.eventbrite.com/e/${providerEventId}`;
+      search.set('aff', programName);
+      search.set('afu', partnerId);
+      addUtmParams = false;
+    }
+  } else if (provider === 'paylogic') {
+    url = `https://frontoffice.paylogic.nl`;
+    search.set('event_id', providerEventId);
+  } else if (provider === 'tibbaa') {
+    url = `https://tibbaa.com/order/${providerEventId}`;
+  } else if (provider === 'ticketmaster') {
+    url = `https://www.ticketmaster.nl/event/${providerEventId}`;
+  } else if (provider === 'gaygo') {
+    const { promotorId } = providerData;
+    if (promotorId) {
+      url = `https://shop.gaygotickets.com/#/promotor/${promotorId}/events/${providerEventId}`;
     }
   }
-  return eventUrl;
+
+  if (addUtmParams) {
+    search.set('utm_source', 'nightguide');
+    search.set('utm_medium', 'referral');
+    search.set('utm_campaign', 'buy_tickets');
+  }
+
+  const eventUrl = new URL(url);
+  eventUrl.search = search.toString();
+
+  return eventUrl.toString();
 }

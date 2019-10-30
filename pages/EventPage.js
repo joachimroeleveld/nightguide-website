@@ -156,7 +156,7 @@ export function EventPage(props) {
         )}
       </Head>
       <div className="main">
-        {!!ticketModalStep && (
+        {(!!ticketModalStep || showExternalTicketModal) && (
           <div className="spinner-overlay">
             <Spinner />
           </div>
