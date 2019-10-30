@@ -104,25 +104,27 @@ function EventTile(props) {
       </div>
       <div className="body">
         <div className="top">
-          <div className="title-date-location">
-            <Link route="event" params={linkParams}>
-              <a {...aProps}>
-                <h3 className="title">{title || facebook.title}</h3>
-                <div className="date">{formatEventDate(date.from)}</div>
-                <div className="venue">{organiser.venue.name}</div>
-              </a>
-            </Link>
-          </div>
-          {((tickets.products && tickets.products.length) ||
-            tickets.displayPrice) && (
-            <div className="price">
-              {formatAmount(
-                tickets.displayPrice || tickets.products[0].price,
-                currency,
-                0
-              )}
-            </div>
-          )}
+          <Link route="event" params={linkParams}>
+            <a {...aProps} className="">
+              <h3 className="title">{title || facebook.title}</h3>
+              <div className="details">
+                <div className="date-location">
+                  <div className="date">{formatEventDate(date.from)}</div>
+                  <div className="venue">{organiser.venue.name}</div>
+                </div>
+                {((tickets.products && tickets.products.length) ||
+                  tickets.displayPrice) && (
+                  <div className="price">
+                    {formatAmount(
+                      tickets.displayPrice || tickets.products[0].price,
+                      currency,
+                      0
+                    )}
+                  </div>
+                )}
+              </div>
+            </a>
+          </Link>
         </div>
         {(tagNames || artistNames) && (
           <div className="music">
@@ -163,7 +165,8 @@ function EventTile(props) {
           padding: 0 ${dimensions.tilePadding} ${dimensions.tilePadding};
         }
         .top {
-          display: flex;
+          padding: ${dimensions.tilePadding} 0.5em 0 0;
+          box-sizing: border-box;
         }
         .title {
           margin: 0 0 0.1em;
@@ -172,23 +175,15 @@ function EventTile(props) {
           white-space: nowrap;
           text-overflow: ellipsis;
         }
-        .title-date-location {
-          padding: ${dimensions.tilePadding} 0.5em 0 0;
-          box-sizing: border-box;
-          width: calc(100% - 3em);
+        .details {
+          display: flex;
         }
         .price {
-          width: 3em;
           display: flex;
           align-items: center;
-          justify-content: center;
           font-weight: 600;
           font-size: 1rem;
-        }
-        .wide .price {
-          position: absolute;
-          right: ${dimensions.tilePadding};
-          height: 100%;
+          padding-left: 0.5em;
         }
         .music {
           line-height: 1.3em;
@@ -222,6 +217,10 @@ function EventTile(props) {
         .date {
           color: ${colors.yellowTextColor};
           margin-bottom: 0.5em;
+        }
+        .date-location {
+          flex-grow: 1;
+          min-width: 0;
         }
         .venue {
           color: #b7b7b7;
