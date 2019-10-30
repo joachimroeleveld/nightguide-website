@@ -338,6 +338,7 @@ function TicketForm(props) {
           price={cartTotal}
           onClick={gotoNextStep}
         />
+        {step === 'cart' && <div className="payment-methods" />}
       </div>
       {/*language=CSS*/}
       <style jsx>{`
@@ -351,6 +352,16 @@ function TicketForm(props) {
           padding-bottom: 1em;
           width: 100%;
           border-bottom: 1px solid ${colors.cardSeparator};
+        }
+        .payment-methods {
+          margin: 0.5em 0 -0.3em;
+          width: 100%;
+          height: 1em;
+          display: flex;
+          justify-content: center;
+          background: url(/static/img/payment-methods.png) no-repeat center
+            center;
+          background-size: contain;
         }
         @media (max-width: 800px) {
           .button {
@@ -381,7 +392,7 @@ function TicketForm(props) {
           onRemove={onRemove}
         />
         <div className="footer">
-          <Footer />
+          <Footer step={'cart'} />
         </div>
         {/*language=CSS*/}
         <style jsx>{`

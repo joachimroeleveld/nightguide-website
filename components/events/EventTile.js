@@ -113,16 +113,16 @@ function EventTile(props) {
               </a>
             </Link>
           </div>
-          {(tickets.products && tickets.products.length) ||
-            (tickets.displayPrice && (
-              <div className="price">
-                {formatAmount(
-                  tickets.displayPrice || tickets.products[0].price,
-                  currency,
-                  0
-                )}
-              </div>
-            ))}
+          {((tickets.products && tickets.products.length) ||
+            tickets.displayPrice) && (
+            <div className="price">
+              {formatAmount(
+                tickets.displayPrice || tickets.products[0].price,
+                currency,
+                0
+              )}
+            </div>
+          )}
         </div>
         {(tagNames || artistNames) && (
           <div className="music">

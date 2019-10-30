@@ -218,9 +218,9 @@ DiscoverPage.getInitialProps = async ctx => {
     genreEvents = await Promise.all(
       genres.map(
         async ({ tags }) =>
-          (await getEvents({
-            query: { pageSlug, tags },
-          })).results
+          await getEventsRow({
+            tags,
+          })
       )
     );
   }
