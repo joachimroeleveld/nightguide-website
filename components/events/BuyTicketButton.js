@@ -36,9 +36,11 @@ function BuyTicketButton(props) {
         {!showSpinner && (
           <Fragment>
             <span className="title">{title}</span>
-            <span className="price">
-              {formatAmount(price, currency, 2, true)}
-            </span>
+            {price && (
+              <span className="price">
+                {formatAmount(price, currency, 2, true)}
+              </span>
+            )}
           </Fragment>
         )}
       </button>
@@ -57,11 +59,9 @@ function BuyTicketButton(props) {
           cursor: pointer;
           transition: transform 0.3s, opacity 0.3s;
         }
-        .title {
-          padding-right: 0.6em;
-        }
         .price {
           font-weight: 600;
+          padding-left: 0.6em;
         }
         .disabled {
           opacity: 0.4;

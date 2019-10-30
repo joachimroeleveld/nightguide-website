@@ -104,7 +104,7 @@ export function EventPage(props) {
       ticketButton = (
         <BuyTicketButton
           currency={currency}
-          price={products[0].price}
+          price={products[0].price || tickets.displayPrice}
           onClick={() => changeCheckoutStep('cart')}
         />
       );
@@ -126,8 +126,9 @@ export function EventPage(props) {
         by: ticketProvider.name,
       });
       ticketButton = (
-        <PrimaryButton
-          title={__('EventPage.buyTickets')}
+        <BuyTicketButton
+          currency={currency}
+          price={tickets.displayPrice}
           onClick={toggleExternalCheckout}
         />
       );
