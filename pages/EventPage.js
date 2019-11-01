@@ -108,6 +108,17 @@ export function EventPage(props) {
           onClick={() => changeCheckoutStep('cart')}
         />
       );
+    } else if (ticketProvider && date.providerEventId) {
+      ticketsViaString = __('EventPage.buyTicketsBy', {
+        by: ticketProvider.name,
+      });
+      ticketButton = (
+        <BuyTicketButton
+          currency={currency}
+          price={tickets.displayPrice}
+          onClick={toggleExternalCheckout}
+        />
+      );
     } else if (ticketsUrl) {
       ticketsViaString = __('EventPage.buyTicketsVia', {
         via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
@@ -119,17 +130,6 @@ export function EventPage(props) {
           target="_blank"
           rel="noopener noreferrer"
           title={__('EventPage.buyTickets')}
-        />
-      );
-    } else if (ticketProvider && date.providerEventId) {
-      ticketsViaString = __('EventPage.buyTicketsBy', {
-        by: ticketProvider.name,
-      });
-      ticketButton = (
-        <BuyTicketButton
-          currency={currency}
-          price={tickets.displayPrice}
-          onClick={toggleExternalCheckout}
         />
       );
     }
@@ -634,8 +634,11 @@ export function EventPage(props) {
           .header .buy-tickets .via {
             display: none;
           }
+          .when {
+            display: flex;
+          }
           .when .buy-tickets {
-            margin: 0.7em 0 0.3em 2.2em;
+            margin-left: 1em;
           }
           .where {
             background-position-x: 0.1em;
