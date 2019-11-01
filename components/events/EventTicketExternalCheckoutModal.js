@@ -75,18 +75,19 @@ function EventTicketExternalCheckoutModal(props) {
           font-size: 0.92em;
         }
         .content {
+          height: 100%;
           flex-grow: 1;
           justify-content: center;
-          overflow-y: auto;
+          overflow: auto;
           -webkit-overflow-scrolling: touch;
         }
         .iframe {
           width: ${dimensions.pageWidth};
           max-width: 100%;
-          height: 100%;
           border: none;
           margin: 0 auto;
           display: block;
+          min-height: 100%;
         }
         .close {
           position: absolute;
