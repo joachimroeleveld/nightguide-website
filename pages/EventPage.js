@@ -128,12 +128,13 @@ export function EventPage(props) {
         via: ticketsUrl.match(/^(?:https?:\/\/)(?:www.)?((?:[^/:]+))/).pop(),
       });
       ticketButton = (
-        <PrimaryButton
-          iconSrc={'/static/img/buy-tickets-arrow.svg'}
+        <BuyTicketButton
+          currency={currency}
+          price={tickets.displayPrice}
+          onClick={toggleExternalCheckout}
           href={generateTicketRedirectUrl(event.id, dateIndex)}
           target="_blank"
           rel="noopener noreferrer"
-          title={__('EventPage.buyTickets')}
         />
       );
     }

@@ -24,18 +24,31 @@ function BuyTicketButton(props) {
     disabled,
     title = __('BuyTicketButton.buyTickets'),
     currency,
+    href,
+    ...aProps
   } = props;
+
+  const Elem = href ? 'a' : 'button';
+  const elemProps = {};
+  if (href) {
+    Object.assign(elemProps, { href, ...aProps });
+  } else {
+    Object.assign(elemProps, { onClick });
+  }
 
   return (
     <React.Fragment>
-      <button
+      <Elem
         className={classNames(['button', disabled && 'disabled'])}
-        onClick={onClick}
+        {...elemProps}
       >
         {showSpinner && <Spinner size={16} center={true} />}
         {!showSpinner && (
           <Fragment>
-            <span className="title">{title}</span>
+            <span className="title">
+              <div className="external" />
+              {title}
+            </span>
             {price && (
               <span className="price">
                 {formatAmount(price, currency, 2, true)}
@@ -43,10 +56,10 @@ function BuyTicketButton(props) {
             )}
           </Fragment>
         )}
-      </button>
+      </Elem>
       {/*language=CSS*/}
       <style jsx>{`
-        button {
+        .button {
           display: flex;
           justify-content: center;
           padding: 0.5em 1em;
@@ -65,6 +78,17 @@ function BuyTicketButton(props) {
         }
         .disabled {
           opacity: 0.4;
+        }
+        .title {
+          display: flex;
+          align-items: center;
+        }
+        .external {
+          width: 0.7em;
+          height: 0.7em;
+          margin-right: 1em;
+          background: url(/static/img/buy-tickets-arrow.svg) center center
+            no-repeat;
         }
       `}</style>
     </React.Fragment>
