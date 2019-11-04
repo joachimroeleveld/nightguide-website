@@ -100,7 +100,11 @@ export function EventPage(props) {
   let ticketButton = null;
   let ticketsViaString;
   if (!isPast) {
-    if (products.length) {
+    if (tickets.soldOut) {
+      ticketButton = (
+        <PrimaryButton title={__('EventPage.soldOut')} disabled={true} />
+      );
+    } else if (products.length) {
       ticketButton = (
         <BuyTicketButton
           currency={currency}

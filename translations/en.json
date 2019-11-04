@@ -74,7 +74,8 @@
     "instantConfirmation": "Instant confirmation",
     "officialPartner": "NightGuide official partner",
     "secureCheckout": "Secure checkout",
-    "similarEvents": "Similar events"
+    "similarEvents": "Similar events",
+    "soldOut": "Sold out"
   },
   "venuePage": {
     "meta": {
@@ -187,7 +188,8 @@
   },
   "EventTile": {
     "andNOthers": "& {{n}} others",
-    "tickets": "Tickets"
+    "tickets": "Tickets",
+    "soldOut": "Sold out"
   },
   "EventRow": {
     "moreEvents": "Looking for more events?",

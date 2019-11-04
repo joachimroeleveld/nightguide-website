@@ -2,21 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import colors from '../styles/colors';
+import { classNames } from '../lib/util';
+
+PrimaryButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  href: PropTypes.string,
+  disabled: PropTypes.bool,
+};
 
 function PrimaryButton(props) {
-  const { title, onClick, href, iconSrc, ...otherProps } = props;
+  const { title, onClick, href, disabled, iconSrc, ...otherProps } = props;
   const aProps = {
     ...otherProps,
-    ...(href ? { href } : { onClick }),
+    ...(!disabled ? (href ? { href } : { onClick }) : {}),
   };
   return (
-    <React.Fragment>
-      <a className="button" {...aProps}>
-        <span>
-          {iconSrc && <img src={iconSrc} className="icon" />}
-          {title}
-        </span>
-      </a>
+    <a className={classNames(['button', disabled && 'disabled'])} {...aProps}>
+      <span>
+        {iconSrc && <img src={iconSrc} className="icon" />}
+        {title}
+      </span>
       {/*language=CSS*/}
       <style jsx>{`
         a {
@@ -39,15 +45,13 @@ function PrimaryButton(props) {
         .icon {
           margin-right: 1em;
         }
+        .disabled {
+          opacity: 0.4;
+          cursor: default;
+        }
       `}</style>
-    </React.Fragment>
+    </a>
   );
 }
 
 export default PrimaryButton;
-
-PrimaryButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  href: PropTypes.string,
-};
