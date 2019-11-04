@@ -92,7 +92,6 @@ function EventRow(props) {
         }
         .more .inner {
           height: 100%;
-          font-size: 13px;
           background: ${colors.tileBg};
           border-radius: ${dimensions.tileRadius};
           box-shadow: ${colors.tileShadow};
@@ -115,10 +114,10 @@ function EventRow(props) {
           color: #fff;
           text-align: center;
           border-radius: 3px;
-          font-size: inherit;
           box-sizing: border-box;
           padding: 0.25em 0.5em;
           margin: 0.5em 0 0.3em;
+          font-size: 0.875em;
         }
         .events {
           display: grid;

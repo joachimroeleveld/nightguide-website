@@ -6,9 +6,9 @@ const LINK_SECTIONS = [
   {
     title: __('Footer.cities'),
     items: [
-      // { route: '/nl/amsterdam', title: 'Amsterdam' },
-      { route: '/es/ibiza', title: 'Ibiza' },
-      // { route: '/nl/utrecht', title: 'Utrecht' },
+      { route: '/nl/amsterdam', title: 'Amsterdam' },
+      // { route: '/es/ibiza', title: 'Ibiza' },
+      { route: '/nl/utrecht', title: 'Utrecht' },
     ],
   },
   {
