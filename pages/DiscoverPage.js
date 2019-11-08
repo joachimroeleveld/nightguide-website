@@ -119,7 +119,7 @@ function DiscoverPage(props) {
               />
               <Link route="events" params={seeAllParams}>
                 <SeeAllButton
-                  title={__('DiscoverPage.allFromGenre', { genre: name })}
+                  title={__('DiscoverPage.allFromGenre')}
                   count={totalCount}
                 />
               </Link>

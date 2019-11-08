@@ -25,8 +25,8 @@
       "description": "Discover nightlife in {{city}}. See what's popular. Browse by genre. Find the best gigs and events. Buy your ticket."
     },
     "subtitle": "Find clubs, events and artists - get your tickets in one place.",
-    "allEvents": "Browse all events",
-    "allFromGenre": "All {{genre}} events",
+    "allEvents": "Show all",
+    "allFromGenre": "Show all",
     "popular": "Popular",
     "popularLocations": "Popular locations",
     "recommended": "Recommended",

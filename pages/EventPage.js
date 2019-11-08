@@ -267,10 +267,14 @@ export function EventPage(props) {
             </ReadMoreLess>
           </div>
         </section>
-        {!!similarEvents.length && (
+        {similarEvents && similarEvents.results.length && (
           <section className="similar-events">
             <h2>{__('EventPage.similarEvents')}</h2>
-            <EventRow routeParams={routeParams} events={similarEvents} />
+            <EventRow
+              routeParams={routeParams}
+              events={similarEvents.results}
+              totalCount={similarEvents.totalCount}
+            />
           </section>
         )}
       </div>
@@ -673,17 +677,17 @@ EventPage.getInitialProps = async ctx => {
   return {
     event,
     venue: await getVenue(event.organiser.venue.id),
-    similarEvents: tags.length
-      ? (await getEvents({
-          limit: 4,
-          query: {
-            pageSlug,
-            exclude: event.id,
-            tags: tags.map(tag => tag.id),
-            sortBy: 'tagsMatchScore:desc',
-          },
-        })).results
-      : [],
+    similarEvents:
+      tags.length &&
+      (await getEvents({
+        limit: 4,
+        query: {
+          pageSlug,
+          exclude: event.id,
+          tags: tags.map(tag => tag.id),
+          sortBy: 'tagsMatchScore:desc',
+        },
+      })),
   };
 };
 

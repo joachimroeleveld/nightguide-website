@@ -110,13 +110,14 @@ function VenuesArticlePage(props) {
                 <footer className="distance">
                   <DistanceIndicator {...location.coordinates} />
                 </footer>
-                {!!events[index].length && (
+                {!!events[index].results.length && (
                   <div className="events">
                     <h3>{__('VenuesArticle.eventsAt', { venue: name })}</h3>
                     <EventRow
                       routeParams={routeParams}
-                      events={events[index]}
+                      events={events[index].results}
                       seeAllParams={{ ...routeParams, venue: id }}
+                      totalCount={events[index].totalCount}
                     />
                     <Link route="events" params={{ ...routeParams, venue: id }}>
                       <SeeAllButton title={__('VenuesArticle.seeAllEvents')} />
@@ -221,7 +222,7 @@ VenuesArticlePage.getInitialProps = async ctx => {
       getEvents({
         query: { venue: venueId },
         limit: 5,
-      }).then(res => res.results)
+      })
     )
   );
 

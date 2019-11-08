@@ -117,6 +117,7 @@ function HomePage(props) {
               <EventRow
                 key={pageSlug}
                 events={cityEvents[pageSlug].results}
+                totalCount={cityEvents[pageSlug].totalCount}
                 routeParams={routeParams}
               />
             </section>
