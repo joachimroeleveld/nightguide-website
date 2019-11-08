@@ -112,19 +112,18 @@ function EventTile(props) {
                   <div className="date">{formatEventDate(date.from)}</div>
                   <div className="venue">{organiser.venue.name}</div>
                 </div>
-                {((!tickets.soldOut &&
-                  tickets.products &&
-                  tickets.products.length) ||
-                  tickets.displayPrice) && (
-                  <div className="price">
-                    {formatAmount(
-                      tickets.displayPrice || tickets.products[0].price,
-                      currency,
-                      2,
-                      true
-                    )}
-                  </div>
-                )}
+                {!tickets.soldOut &&
+                  ((tickets.products && tickets.products.length) ||
+                    tickets.displayPrice) && (
+                    <div className="price">
+                      {formatAmount(
+                        tickets.displayPrice || tickets.products[0].price,
+                        currency,
+                        2,
+                        true
+                      )}
+                    </div>
+                  )}
                 {tickets.soldOut && (
                   <div className="price">{__('EventTile.soldOut')}</div>
                 )}

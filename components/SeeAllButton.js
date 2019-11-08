@@ -12,7 +12,7 @@ function SeeAllButton(props) {
   const { count, title, ...aProps } = props;
   return (
     <a {...aProps}>
-      {title || __('SeeAllButton.seeAll') + (count ? ` (${count})` : '')}
+      {(title || __('SeeAllButton.seeAll')) + (count ? ` (${count})` : '')}
       {/*language=CSS*/}
       <style jsx>{`
         @media (max-width: 800px) {

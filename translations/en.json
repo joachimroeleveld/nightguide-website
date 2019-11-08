@@ -192,8 +192,8 @@
     "soldOut": "Sold out"
   },
   "EventRow": {
-    "moreEvents": "Looking for more events?",
-    "seeMore": "More events"
+    "seeMore": "See more events",
+    "moreEvents": "more events"
   },
   "EventFilters": {
     "dates": "Dates",

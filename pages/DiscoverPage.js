@@ -21,6 +21,7 @@ import { useWindowWidth } from '../lib/hooks';
 function DiscoverPage(props) {
   const {
     pageSlug,
+    popularTotalCount,
     popularEvents,
     popularLocations,
     routeParams,
@@ -52,15 +53,20 @@ function DiscoverPage(props) {
         <CityMenu pageSlug={pageSlug} routeParams={routeParams} />
       </div>
 
-      {popularEvents && (
-        <section>
-          <h2>{__('DiscoverPage.popular')}</h2>
-          <EventRow events={popularEvents} routeParams={routeParams} />
-          <Link route="events" params={routeParams}>
-            <SeeAllButton title={__('DiscoverPage.allEvents')} />
-          </Link>
-        </section>
-      )}
+      <section>
+        <h2>{__('DiscoverPage.popular')}</h2>
+        <EventRow
+          events={popularEvents}
+          routeParams={routeParams}
+          totalCount={popularTotalCount}
+        />
+        <Link route="events" params={routeParams}>
+          <SeeAllButton
+            title={__('DiscoverPage.allEvents')}
+            count={popularTotalCount}
+          />
+        </Link>
+      </section>
 
       <div className="locations-sponsored">
         {popularLocations && (
@@ -96,7 +102,7 @@ function DiscoverPage(props) {
       {genres &&
         genres.map((genre, index) => {
           const { name } = genre;
-          const events = genreEvents[index];
+          const { results: events, totalCount } = genreEvents[index];
           const seeAllParams = {
             ...routeParams,
             'genres[0]': name,
@@ -109,10 +115,12 @@ function DiscoverPage(props) {
                 events={events}
                 routeParams={routeParams}
                 seeAllParams={seeAllParams}
+                totalCount={totalCount}
               />
               <Link route="events" params={seeAllParams}>
                 <SeeAllButton
                   title={__('DiscoverPage.allFromGenre', { genre: name })}
+                  count={totalCount}
                 />
               </Link>
             </section>
@@ -178,25 +186,27 @@ DiscoverPage.getInitialProps = async ctx => {
   const eventsConfig = await getConfigByName('page_events', pageSlug);
   const genres = (eventsConfig.payload || {}).genreFilters;
 
-  const getEventsRow = async filter =>
-    (await getEvents({
-      limit: 4,
+  const getEventsRow = async (filter, limit = 4) =>
+    getEvents({
+      limit,
       query: {
         pageSlug,
         ...filter,
       },
-    })).results;
+    });
 
-  const popularEvents = await getEventsRow({
+  const popularTotalCount = (await getEventsRow({}, 1)).totalCount;
+  const popularEvents = (await getEventsRow({
     sortBy: SORT_POPULARITY,
     dateTo: moment()
       .add(7, 'days')
       .toISOString(),
-  });
+  })).results;
 
   let sponsoredEvent;
   if (sponsoredEventId) {
-    sponsoredEvent = (await getEventsRow({ ids: [sponsoredEventId] }))[0];
+    sponsoredEvent = (await getEventsRow({ ids: [sponsoredEventId] }))
+      .results[0];
   }
 
   let popularLocations;
@@ -220,6 +230,7 @@ DiscoverPage.getInitialProps = async ctx => {
         async ({ tags }) =>
           await getEventsRow({
             tags,
+            exclude: popularEvents.map(event => event.id),
           })
       )
     );
@@ -234,6 +245,7 @@ DiscoverPage.getInitialProps = async ctx => {
     headerImage,
     sponsoredEvent,
     popularEvents,
+    popularTotalCount,
     popularLocations,
     recentArticles,
     genres,

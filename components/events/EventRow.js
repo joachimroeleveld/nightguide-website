@@ -13,10 +13,11 @@ EventRow.propTypes = {
   routeParams: PropTypes.object.isRequired,
   events: PropTypes.array.isRequired,
   seeAllParams: PropTypes.object,
+  totalCount: PropTypes.number,
 };
 
 function EventRow(props) {
-  const { events, seeAllParams, routeParams } = props;
+  const { totalCount, events, seeAllParams, routeParams } = props;
 
   const innerRef = useRef(null);
   const eventsRef = useRef(null);
@@ -57,10 +58,17 @@ function EventRow(props) {
         </div>
         <div className="more">
           <div className="inner">
+            <div className="top">
+              <div className="count">
+                <span className="number">{totalCount + '+'}</span>
+                {__('EventRow.moreEvents')}
+              </div>
+            </div>
             <div className="content">
-              {__('EventRow.moreEvents')}
               <Link route="events" params={{ ...routeParams, ...seeAllParams }}>
-                <a className="button">{__('EventRow.seeMore')}</a>
+                <a className="button">
+                  {__('EventRow.seeMore', { n: totalCount })}
+                </a>
               </Link>
             </div>
           </div>
@@ -95,29 +103,50 @@ function EventRow(props) {
           background: ${colors.tileBg};
           border-radius: ${dimensions.tileRadius};
           box-shadow: ${colors.tileShadow};
-          padding: 1em;
           box-sizing: border-box;
+          margin: 0 ${dimensions.gridGap.S};
+          position: relative;
+          overflow: hidden;
+          font-size: 0.928em;
+          display: flex;
+          flex-direction: column;
+        }
+        .more .top {
+          width: 100%;
+          height: 8em;
+          background: ${colors.imagePlaceholder};
+          color: #8d8d8d;
+          font-weight: 600;
           display: flex;
           justify-content: center;
           align-items: center;
-          margin: 0 ${dimensions.gridGap.S};
         }
-        .more .content {
-          text-align: center;
+        .more .count {
           display: flex;
           flex-direction: column;
           align-items: center;
         }
+        .more .number {
+          font-size: 2em;
+          line-height: 1em;
+          font-weight: 400;
+        }
+        .more .content {
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-grow: 1;
+        }
         .more .button {
-          border: 1px solid #686868;
           display: block;
-          color: #fff;
+          color: #000;
+          background: ${colors.primaryButton};
           text-align: center;
           border-radius: 3px;
           box-sizing: border-box;
           padding: 0.25em 0.5em;
           margin: 0.5em 0 0.3em;
-          font-size: 0.875em;
         }
         .events {
           display: grid;
@@ -135,6 +164,7 @@ function EventRow(props) {
         @media (min-width: 800px) {
           .more .inner {
             margin: 0 ${dimensions.gridGap.L};
+            font-size: 0.875em;
           }
           .events {
             grid-template-columns: repeat(
