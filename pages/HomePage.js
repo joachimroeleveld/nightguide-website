@@ -13,25 +13,25 @@ import SectionHeader from '../components/SectionHeader';
 import colors from '../styles/colors';
 
 const CITIES = [
-  // {
-  //   pageSlug: 'nl/amsterdam',
-  //   routeParams: { city: 'amsterdam', country: 'nl' },
-  //   imgSrc:
-  //     'https://lh3.googleusercontent.com/YKoke-X-1GiCTD_egewXsX421duN9bwEWqtNNrMpobYRiPPQen1bgrA0hTT6wUwr7d5TJLV61kSROm0uoDrRiqYXkSamyQm9',
-  // },
   {
-    pageSlug: 'es/ibiza',
-    routeParams: { city: 'ibiza', country: 'es' },
+    pageSlug: 'nl/amsterdam',
+    routeParams: { city: 'amsterdam', country: 'nl' },
     imgSrc:
-      'https://lh3.googleusercontent.com/604tHVXy-5c71Opi7pg7MrXnkLi4Exor0HVUS9Z_KwMhJpiAI6ofJpR5v1W4i9CTmUoVwuCH6xaFxn4QyzB4q-D1egJtQ89NdA',
+      'https://lh3.googleusercontent.com/YKoke-X-1GiCTD_egewXsX421duN9bwEWqtNNrMpobYRiPPQen1bgrA0hTT6wUwr7d5TJLV61kSROm0uoDrRiqYXkSamyQm9',
   },
   // {
-  //   name: 'Utrecht',
-  //   pageSlug: 'nl/utrecht',
-  //   routeParams: { city: 'utrecht', country: 'nl' },
+  //   pageSlug: 'es/ibiza',
+  //   routeParams: { city: 'ibiza', country: 'es' },
   //   imgSrc:
-  //     'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
+  //     'https://lh3.googleusercontent.com/604tHVXy-5c71Opi7pg7MrXnkLi4Exor0HVUS9Z_KwMhJpiAI6ofJpR5v1W4i9CTmUoVwuCH6xaFxn4QyzB4q-D1egJtQ89NdA',
   // },
+  {
+    name: 'Utrecht',
+    pageSlug: 'nl/utrecht',
+    routeParams: { city: 'utrecht', country: 'nl' },
+    imgSrc:
+      'https://lh3.googleusercontent.com/jzaMHPflMSmS-6n9lerUthF5ZlJOzwIBcdHQsrDm0ztNCq5KBZTafoWArrMfMgUrNHhnUULHwd5Va4sVbCi0Cj7z4F5Xx1H2',
+  },
 ];
 
 function HomePage(props) {
@@ -84,9 +84,9 @@ function HomePage(props) {
           <h2>{__('HomePage.cities')}</h2>
           <nav>
             <ul>
-              <li className="tile">
-                {CITIES.map(city => (
-                  <Link key={city.pageSlug} route={`/${city.pageSlug}`}>
+              {CITIES.map(city => (
+                <li key={city.pageSlug} className="tile">
+                  <Link route={`/${city.pageSlug}`}>
                     <a>
                       <figure className="img">
                         <ResponsiveImage
@@ -100,8 +100,8 @@ function HomePage(props) {
                       <h3 className="name">{__city(city.pageSlug)('name')}</h3>
                     </a>
                   </Link>
-                ))}
-              </li>
+                </li>
+              ))}
             </ul>
           </nav>
         </section>
