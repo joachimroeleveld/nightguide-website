@@ -81,10 +81,12 @@ export function generateTicketPageUrl(provider, providerEventId, providerData) {
     }
   } else if (provider === 'eventbrite') {
     const { partnerId, programName } = providerData;
-    if (partnerId && programName) {
+    if (programName) {
       url = `https://www.eventbrite.com/e/${providerEventId}`;
       search.set('aff', programName);
-      search.set('afu', partnerId);
+      if (partnerId) {
+        search.set('afu', partnerId);
+      }
       addUtmParams = false;
     }
   } else if (provider === 'paylogic') {

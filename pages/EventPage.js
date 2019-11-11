@@ -104,6 +104,15 @@ export function EventPage(props) {
       ticketButton = (
         <PrimaryButton title={__('EventPage.soldOut')} disabled={true} />
       );
+    } else if (tickets.doorSale) {
+      ticketButton = (
+        <BuyTicketButton
+          title={__('EventPage.doorSale')}
+          currency={currency}
+          price={tickets.displayPrice}
+          disabled={true}
+        />
+      );
     } else if (products.length) {
       ticketButton = (
         <BuyTicketButton
@@ -267,7 +276,7 @@ export function EventPage(props) {
             </ReadMoreLess>
           </div>
         </section>
-        {similarEvents && similarEvents.results.length && (
+        {similarEvents && !!similarEvents.results.length && (
           <section className="similar-events">
             <h2>{__('EventPage.similarEvents')}</h2>
             <EventRow

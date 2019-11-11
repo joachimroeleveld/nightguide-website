@@ -7,9 +7,8 @@ import __, { __city } from '../lib/i18n';
 import React from 'react';
 import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
-import { getVenues, getEvents, getConfigByName, getContent } from '../lib/api';
+import { getEvents, getConfigByName, getContent } from '../lib/api';
 import { Link } from '../routes';
-import VenueRow from '../components/venues/VenueRow';
 import EventTile from '../components/events/EventTile';
 import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
@@ -23,11 +22,10 @@ function DiscoverPage(props) {
     pageSlug,
     popularTotalCount,
     popularEvents,
-    popularLocations,
+    articles = [],
     routeParams,
     sponsoredEvent,
     headerImage,
-    recentArticles,
     genreEvents,
     genres,
   } = props;
@@ -68,34 +66,32 @@ function DiscoverPage(props) {
         </Link>
       </section>
 
-      <div className="locations-sponsored">
-        {popularLocations && (
-          <section className="popular-locations">
-            <h2>{__('DiscoverPage.popularLocations')}</h2>
-            <VenueRow venues={popularLocations} routeParams={routeParams} />
-          </section>
-        )}
+      {sponsoredEvent && (
+        <div className="locations-sponsored">
+          {sponsoredEvent && (
+            <section className="sponsored-event">
+              <h2>{__('DiscoverPage.recommended')}</h2>
+              <EventTile
+                isWide={windowWidth > 400}
+                routeParams={routeParams}
+                imgWidths={[300, 600, 900, 2000]}
+                imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
+                  dimensions.bodyPadding
+                }), 215px`}
+                event={sponsoredEvent}
+              />
+            </section>
+          )}
+        </div>
+      )}
 
-        {sponsoredEvent && (
-          <section className="sponsored-event">
-            <h2>{__('DiscoverPage.recommended')}</h2>
-            <EventTile
-              isWide={windowWidth > 400}
-              routeParams={routeParams}
-              imgWidths={[300, 600, 900, 2000]}
-              imgSizes={`(max-width: 50em) calc(100vw - 2 * ${
-                dimensions.bodyPadding
-              }), 215px`}
-              event={sponsoredEvent}
-            />
-          </section>
-        )}
-      </div>
-
-      {!!recentArticles.length && (
+      {articles.length && (
         <section>
-          <h2>{__('DiscoverPage.recentArticles')}</h2>
-          <ArticleGrid articles={recentArticles} routeParams={routeParams} />
+          <h2>{__('DiscoverPage.clubsAndBars')}</h2>
+          <ArticleGrid articles={articles} routeParams={routeParams} />
+          <Link route="articles" params={routeParams}>
+            <SeeAllButton title={__('DiscoverPage.showMore')} />
+          </Link>
         </section>
       )}
 
@@ -163,7 +159,7 @@ function DiscoverPage(props) {
             grid-template-areas: 'a b';
           }
           .sponsored-event {
-            grid-area: b;
+            grid-area: a;
           }
           .popular-locations {
             padding-right: 3em;
@@ -178,11 +174,8 @@ DiscoverPage.getInitialProps = async ctx => {
   const { pageSlug } = ctx.query;
 
   const config = await getConfigByName('page_city', pageSlug);
-  const {
-    sponsoredEvent: sponsoredEventId,
-    popularLocations: popularLocationIds,
-    headerImage,
-  } = config.payload || {};
+  const { sponsoredEvent: sponsoredEventId, headerImage, clubsAndBars } =
+    config.payload || {};
   const eventsConfig = await getConfigByName('page_events', pageSlug);
   const genres = (eventsConfig.payload || {}).genreFilters;
 
@@ -209,20 +202,6 @@ DiscoverPage.getInitialProps = async ctx => {
       .results[0];
   }
 
-  let popularLocations;
-  if (popularLocationIds) {
-    popularLocations = (await getVenues({
-      query: {
-        ids: popularLocationIds,
-      },
-    })).results;
-    popularLocations.sort((a, b) => {
-      return (
-        popularLocationIds.indexOf(a.id) - popularLocationIds.indexOf(b.id)
-      );
-    });
-  }
-
   let genreEvents;
   if (genres) {
     genreEvents = await Promise.all(
@@ -236,18 +215,23 @@ DiscoverPage.getInitialProps = async ctx => {
     );
   }
 
-  const recentArticles = (await getContent({
-    limit: 4,
-    query: { pageSlug },
-  })).results;
+  let articles;
+  if (clubsAndBars) {
+    articles = (await getContent({
+      limit: 4,
+      query: { pageSlug, ids: clubsAndBars },
+    })).results;
+    articles.sort((a, b) => {
+      return clubsAndBars.indexOf(a.id) - clubsAndBars.indexOf(b.id);
+    });
+  }
 
   return {
     headerImage,
     sponsoredEvent,
     popularEvents,
     popularTotalCount,
-    popularLocations,
-    recentArticles,
+    articles,
     genres,
     genreEvents,
   };

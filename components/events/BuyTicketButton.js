@@ -46,7 +46,7 @@ function BuyTicketButton(props) {
         {!showSpinner && (
           <Fragment>
             <span className="title">
-              <div className="external" />
+              {href && <div className="external" />}
               {title}
             </span>
             {price && (
@@ -78,6 +78,7 @@ function BuyTicketButton(props) {
         }
         .disabled {
           opacity: 0.4;
+          cursor: default;
         }
         .title {
           display: flex;

@@ -30,7 +30,8 @@
     "popular": "Popular",
     "popularLocations": "Popular locations",
     "recommended": "Recommended",
-    "recentArticles": "Recent articles"
+    "clubsAndBars": "Clubs & Bars",
+    "showMore": "Show more"
   },
   "EventsPage": {
     "meta": {
@@ -75,7 +76,8 @@
     "officialPartner": "NightGuide official partner",
     "secureCheckout": "Secure checkout",
     "similarEvents": "Similar events",
-    "soldOut": "Sold out"
+    "soldOut": "Sold out",
+    "doorSale": "Sale at the door"
   },
   "venuePage": {
     "meta": {
