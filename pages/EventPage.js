@@ -285,7 +285,7 @@ export function EventPage(props) {
             </ReadMoreLess>
           </div>
         </section>
-        {similarEvents && !!similarEvents.results.length && (
+        {!!similarEvents && similarEvents.results.length && (
           <section className="similar-events">
             <h2>{__('EventPage.similarEvents')}</h2>
             <EventRow
