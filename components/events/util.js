@@ -101,6 +101,10 @@ export function generateTicketPageUrl(provider, providerEventId, providerData) {
     if (promotorId) {
       url = `https://shop.gaygotickets.com/#/promotor/${promotorId}/events/${providerEventId}`;
     }
+  } else if (provider === 'yourticketprovider') {
+    url = `https://widget.yourticketprovider.nl/?productid=${providerEventId}#/tickets/${providerEventId}`;
+  } else {
+    return null;
   }
 
   if (addUtmParams) {
