@@ -209,7 +209,7 @@ DiscoverPage.getInitialProps = async ctx => {
   }
 
   const genreEvents = [];
-  for (const genre in genres) {
+  for (const genre of genres) {
     const result = await getEventsRow({
       tags: genre.tags,
       exclude: eventsSoFar.slice(0, 20).map(event => event.id),
