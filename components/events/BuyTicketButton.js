@@ -49,7 +49,7 @@ function BuyTicketButton(props) {
               {href && <div className="external" />}
               {title}
             </span>
-            {price && (
+            {price !== undefined && (
               <span className="price">
                 {formatAmount(price, currency, 2, true)}
               </span>

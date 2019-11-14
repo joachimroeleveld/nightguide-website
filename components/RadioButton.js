@@ -32,8 +32,11 @@ function RadioButton(props) {
         }
         label {
           cursor: pointer;
+          align-items: center;
+          position: relative;
           display: flex;
           align-items: center;
+          padding-left: 1.5em;
         }
         input {
           position: absolute;
@@ -46,6 +49,8 @@ function RadioButton(props) {
           background: #fff;
         }
         .checkmark {
+          position: absolute;
+          left: 0;
           width: 1em;
           height: 1em;
           border-radius: 100%;
@@ -53,7 +58,6 @@ function RadioButton(props) {
           display: inline-flex;
           justify-content: center;
           align-items: center;
-          position: relative;
         }
         .has-label .checkmark {
           margin-right: 0.5em;

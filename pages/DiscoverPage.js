@@ -85,7 +85,7 @@ function DiscoverPage(props) {
         </div>
       )}
 
-      {articles.length && (
+      {!!articles.length && (
         <section>
           <h2>{__('DiscoverPage.clubsAndBars')}</h2>
           <ArticleGrid articles={articles} routeParams={routeParams} />
@@ -177,7 +177,9 @@ DiscoverPage.getInitialProps = async ctx => {
   const { sponsoredEvent: sponsoredEventId, headerImage, clubsAndBars } =
     config.payload || {};
   const eventsConfig = await getConfigByName('page_events', pageSlug);
-  const genres = (eventsConfig.payload || {}).genreFilters;
+  const genres = (eventsConfig.payload || {}).genreFilters || [];
+
+  const eventsSoFar = [];
 
   const getEventsRow = async (filter, limit = 4) =>
     getEvents({
@@ -189,12 +191,16 @@ DiscoverPage.getInitialProps = async ctx => {
     });
 
   const popularTotalCount = (await getEventsRow({}, 1)).totalCount;
-  const popularEvents = (await getEventsRow({
-    sortBy: SORT_POPULARITY,
-    dateTo: moment()
-      .add(7, 'days')
-      .toISOString(),
-  })).results;
+  const popularEvents = (await getEventsRow(
+    {
+      sortBy: SORT_POPULARITY,
+      dateTo: moment()
+        .add(7, 'days')
+        .toISOString(),
+    },
+    8
+  )).results;
+  eventsSoFar.push(...popularEvents);
 
   let sponsoredEvent;
   if (sponsoredEventId) {
@@ -202,17 +208,14 @@ DiscoverPage.getInitialProps = async ctx => {
       .results[0];
   }
 
-  let genreEvents;
-  if (genres) {
-    genreEvents = await Promise.all(
-      genres.map(
-        async ({ tags }) =>
-          await getEventsRow({
-            tags,
-            exclude: popularEvents.map(event => event.id),
-          })
-      )
-    );
+  const genreEvents = [];
+  for (const genre in genres) {
+    const result = await getEventsRow({
+      tags: genre.tags,
+      exclude: eventsSoFar.slice(0, 20).map(event => event.id),
+    });
+    eventsSoFar.push(...result.results);
+    genreEvents.push(result);
   }
 
   let articles;

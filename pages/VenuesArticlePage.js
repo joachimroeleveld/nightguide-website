@@ -12,6 +12,7 @@ import { classNames } from '../lib/util';
 import SeeAllButton from '../components/SeeAllButton';
 import { getEvents, getVenues } from '../lib/api';
 import withPageLayout from '../components/PageLayout';
+import DiscoverCityBlock from '../components/DiscoverCityBlock';
 
 function VenuesArticlePage(props) {
   const { article, venues, events, routeParams, query } = props;
@@ -127,6 +128,9 @@ function VenuesArticlePage(props) {
               </section>
             );
           })}
+          <footer className="discover-block">
+            <DiscoverCityBlock />
+          </footer>
         </div>
       </div>
 
@@ -151,7 +155,7 @@ function VenuesArticlePage(props) {
           overflow: hidden;
           border-radius: ${dimensions.tileRadius};
         }
-        .venue:not(:last-child) {
+        .venue:not(:last-of-type) {
           margin-bottom: 2.5em;
           padding-bottom: 2.5em;
           border-bottom: 1px solid ${colors.separator};
@@ -169,6 +173,9 @@ function VenuesArticlePage(props) {
         }
         .venue .events {
           margin-top: 2em;
+        }
+        .discover-block {
+          margin-top: 4em;
         }
         @media (max-width: 56em) {
           .venue,

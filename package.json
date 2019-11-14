@@ -53,6 +53,7 @@
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-persist": "^6.0.0",
+    "remark-shortcodes": "^0.2.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "reselect": "^4.0.0",

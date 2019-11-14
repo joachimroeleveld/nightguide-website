@@ -77,7 +77,8 @@
     "secureCheckout": "Secure checkout",
     "similarEvents": "Similar events",
     "soldOut": "Sold out",
-    "doorSale": "Sale at the door"
+    "doorSale": "Sale at the door",
+    "free": "Free"
   },
   "venuePage": {
     "meta": {
@@ -191,7 +192,8 @@
   "EventTile": {
     "andNOthers": "& {{n}} others",
     "tickets": "Tickets",
-    "soldOut": "Sold out"
+    "soldOut": "Sold out",
+    "free": "Free"
   },
   "EventRow": {
     "seeMore": "See more events",
@@ -330,5 +332,10 @@
       "canceled": "The payment for your order was canceled.",
       "error": "Something went wrong while placing your order."
     }
+  },
+  "DiscoverCityShortcode": {
+    "parties&Events": "Parties & Events",
+    "clubs&Bars": "Clubs & Bars",
+    "startDiscovering": "Start discovering {{city}}"
   }
 }

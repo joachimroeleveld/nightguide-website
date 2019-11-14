@@ -12,6 +12,7 @@ import RadioButton from '../RadioButton';
 import { classNames } from '../../lib/util';
 import { useOnResize } from '../../lib/hooks';
 import { getDateFilterById } from './util';
+import colors from '../../styles/colors';
 
 EventDateFilter.propTypes = {
   dateFrom: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]),
@@ -40,9 +41,13 @@ function EventDateFilter(props) {
     setEndDate(dateTo ? moment(dateTo) : null);
   }, [dateTo, dateFrom]);
 
+  const reset = () => {
+    props.onChange({ dateFilterId: null, dateFrom: null, dateTo: null });
+  };
+
   const onChange = dateFilterId => e => {
     if (dateFilterId === 'noFilter') {
-      props.onChange({ dateFilterId: null, dateFrom: null, dateTo: null });
+      reset();
     } else if (dateFilterId !== 'custom') {
       const [dateFrom, dateTo] = getDateFilterById(dateFilterId);
       props.onChange({
@@ -152,16 +157,19 @@ function EventDateFilter(props) {
         onChange={onChange('thisWeekend')}
         label={__('EventFilters.dateFilters.thisWeekend')}
       />
-      <RadioButton
-        checked={dateFilterId === 'custom'}
-        onChange={onChange('custom')}
-        label={
-          __('EventDateFilters.pickDates') +
-          (dateFilterId === 'custom' && endDate
-            ? ` (${startDate.format('L')} - ${endDate.format('L')})`
-            : '')
-        }
-      />
+      <div className="custom-filter">
+        <RadioButton
+          checked={dateFilterId === 'custom'}
+          onChange={onChange('custom')}
+          label={
+            __('EventDateFilters.pickDates') +
+            (dateFilterId === 'custom' && endDate
+              ? ` (${startDate.format('L')} - ${endDate.format('L')})`
+              : '')
+          }
+        />
+        {dateFilterId === 'custom' && <button onClick={reset}>(clear)</button>}
+      </div>
       {showDatePicker && (
         <div
           className={classNames([
@@ -219,6 +227,14 @@ function EventDateFilter(props) {
           height: 100%;
           z-index: 140;
           background: rgba(0, 0, 0, 0.7);
+        }
+        .custom-filter {
+          display: flex;
+          margin: -0.3em 0;
+        }
+        .custom-filter button {
+          color: ${colors.linkText};
+          margin-left: 0.5em;
         }
       `}</style>
     </div>

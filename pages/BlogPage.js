@@ -1,39 +1,22 @@
 import ReactMarkdown from 'react-markdown';
+import find from 'lodash/find';
+import shortcodes from 'remark-shortcodes';
+
 import withPageLayout from '../components/PageLayout';
 import { _o } from '../lib/i18n';
 import ResponsiveImage from '../components/ResponsiveImage';
-import find from 'lodash/find';
 import dimensions from '../styles/dimensions';
 import colors from '../styles/colors';
 import { classNames } from '../lib/util';
 import blogStyles from '../styles/blogStyles';
 import AnimatedLink from '../components/AnimatedLink';
+import { getImageRenderer, getShortcodeRenderer } from '../lib/markdown';
 
 function BlogPage(props) {
   const { article } = props;
   const { title, coverImage, images = [], intro, body } = article;
 
   const headerImage = coverImage && find(images, { id: coverImage });
-
-  const renderImage = ({ src }) => {
-    const { width, height, url } = find(images, { id: src }) || {};
-
-    if (!url) {
-      return null;
-    }
-
-    return (
-      <ResponsiveImage
-        url={url || src}
-        widths={[360, 640, 1000, 2000]}
-        sizes={`(max-width: 38em) calc(100vw - 2 * ${
-          dimensions.bodyPadding
-        }), 38em`}
-        width={width}
-        height={height}
-      />
-    );
-  };
 
   const getLinkTarget = url => {
     return url.charAt(0) === '/' ||
@@ -63,11 +46,13 @@ function BlogPage(props) {
       <div className={classNames(['content', blogStyles.className])}>
         <ReactMarkdown
           renderers={{
-            image: renderImage,
+            image: getImageRenderer(images),
             link: AnimatedLink,
+            shortcode: getShortcodeRenderer(['DiscoverCity']),
           }}
           linkTarget={getLinkTarget}
           source={_o(body)}
+          plugins={[shortcodes]}
         />
         {blogStyles.styles}
       </div>

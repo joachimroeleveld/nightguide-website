@@ -124,8 +124,12 @@ function EventTile(props) {
                       )}
                     </div>
                   )}
-                {tickets.soldOut && (
-                  <div className="price">{__('EventTile.soldOut')}</div>
+                {(tickets.soldOut || tickets.free) && (
+                  <div className="price">
+                    {tickets.soldOut
+                      ? __('EventTile.soldOut')
+                      : __('EventTile.free')}
+                  </div>
                 )}
               </div>
             </a>

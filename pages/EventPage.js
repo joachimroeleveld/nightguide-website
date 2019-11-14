@@ -104,6 +104,15 @@ export function EventPage(props) {
       ticketButton = (
         <PrimaryButton title={__('EventPage.soldOut')} disabled={true} />
       );
+    } else if (tickets.free) {
+      ticketButton = (
+        <BuyTicketButton
+          title={__('EventPage.free')}
+          currency={currency}
+          price={0}
+          disabled={true}
+        />
+      );
     } else if (tickets.doorSale) {
       ticketButton = (
         <BuyTicketButton

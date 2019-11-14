@@ -171,6 +171,7 @@ function VenuePage(props) {
         <section>
           <h2>{__('venuePage.events')}</h2>
           <EventRow
+            totalCount={events.totalCount}
             routeParams={routeParams}
             events={events.results}
             seeAllParams={{ venue: venue.id }}
