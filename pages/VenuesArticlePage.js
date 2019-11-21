@@ -17,7 +17,7 @@ import DiscoverCityBlock from '../components/DiscoverCityBlock';
 function VenuesArticlePage(props) {
   const { article, venues, events, routeParams, query } = props;
   const { section } = query;
-  const { intro, title, venues: sections } = article;
+  const { intro, title, venues: sections, footer } = article;
 
   useScrollToId(section ? `venue-${section}` : null);
   const [showIntro, toggleShowIntro] = useToggleState(false);
@@ -128,7 +128,8 @@ function VenuesArticlePage(props) {
               </section>
             );
           })}
-          <footer className="discover-block">
+          <footer className="footer">
+            <div className="text">{_o(footer)}</div>
             <DiscoverCityBlock />
           </footer>
         </div>
@@ -174,8 +175,13 @@ function VenuesArticlePage(props) {
         .venue .events {
           margin-top: 2em;
         }
-        .discover-block {
+        .footer {
           margin-top: 4em;
+        }
+        .footer .text {
+          color: ${colors.textSecondary};
+          margin-bottom: 3em;
+          font-style: italic;
         }
         @media (max-width: 56em) {
           .venue,
