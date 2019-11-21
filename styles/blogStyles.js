@@ -5,7 +5,7 @@ import colors from './colors';
   /*language=CSS*/
 }
 export default css.resolve`
-  * :global(picture) {
+  * :global(picture), * :global(figure) {
     margin: 2em 0;
   }
   * :global(li) {
@@ -25,7 +25,7 @@ export default css.resolve`
   * :global(h2, h3, h4, h5, h6) {
     margin-top: 2em;
   }
-  * :global(picture + em) {
+  * :global(picture + em), * :global(figure + em) {
     margin: -1.7rem 0 2rem;
     display: block;
     color: ${colors.textSecondary};
