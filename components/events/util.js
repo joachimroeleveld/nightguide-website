@@ -95,7 +95,11 @@ export function generateTicketPageUrl(provider, providerEventId, providerData) {
   } else if (provider === 'tibbaa') {
     url = `https://tibbaa.com/order/${providerEventId}`;
   } else if (provider === 'ticketmaster') {
-    url = `https://www.ticketmaster.nl/event/${providerEventId}`;
+    if (providerEventId.startsWith('https://')) {
+      url = providerEventId;
+    } else {
+      url = `https://www.ticketmaster.nl/event/${providerEventId}`;
+    }
   } else if (provider === 'gaygo') {
     const { promotorId } = providerData;
     if (promotorId) {

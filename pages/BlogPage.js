@@ -48,7 +48,7 @@ function BlogPage(props) {
           renderers={{
             image: getImageRenderer(images),
             link: AnimatedLink,
-            shortcode: getShortcodeRenderer(['DiscoverCity']),
+            shortcode: getShortcodeRenderer(article, ['DiscoverCity', 'Video']),
           }}
           linkTarget={getLinkTarget}
           source={_o(body)}
