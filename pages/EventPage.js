@@ -475,7 +475,6 @@ export function EventPage(props) {
         .where {
           padding: 0.5em 0 0.5em 2.2em;
           background: url(/static/img/event-location.svg) left center no-repeat;
-          color: ${colors.linkText};
         }
         .genres {
           padding: 0.5em 0 0.5em 2.2em;

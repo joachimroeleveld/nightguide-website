@@ -94,18 +94,8 @@ function VenuesArticlePage(props) {
                   />
                 </div>
                 <header className="title">
-                  <Link
-                    route="venue"
-                    params={{
-                      ...routeParams,
-                      venue: id,
-                    }}
-                  >
-                    <a>
-                      <h2 className="name">{name}</h2>
-                      <p className="tagline">{_o(tagLine)}</p>
-                    </a>
-                  </Link>
+                  <h2 className="name">{name}</h2>
+                  <p className="tagline">{_o(tagLine)}</p>
                 </header>
                 <p className="description">{_o(body)}</p>
                 <footer className="distance">
@@ -164,10 +154,6 @@ function VenuesArticlePage(props) {
         .venue .tagline {
           color: ${colors.textPurple};
           margin-top: -1.2em;
-        }
-        .venue .title {
-          background: no-repeat right center
-            url(/static/img/venue-article-title-arrow.svg);
         }
         .venue .distance {
           margin: 1em 0;

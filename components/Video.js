@@ -25,7 +25,7 @@ function Video(props) {
           <style jsx>{`
             .video {
               width: 100%;
-              padding-top: 66%;
+              padding-top: 56.25%;
               background: ${colors.imagePlaceholder};
               position: relative;
             }
