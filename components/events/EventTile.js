@@ -109,7 +109,9 @@ function EventTile(props) {
               <h3 className="title">{title || facebook.title}</h3>
               <div className="details">
                 <div className="date-location">
-                  <div className="date">{formatEventDate(date.from)}</div>
+                  <div className="date">
+                    {formatEventDate(date.from, date.to, { showDateTo: false })}
+                  </div>
                   <div className="venue">{organiser.venue.name}</div>
                 </div>
                 {!tickets.soldOut &&

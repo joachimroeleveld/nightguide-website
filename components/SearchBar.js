@@ -86,7 +86,7 @@ const SEARCH_SECTIONS = [
         query: { text: query, ...opts.query },
       }),
     renderItem: (
-      { id, date, dateIndex, facebook, title },
+      { id, date, dateIndex, facebook = {}, title },
       routeParams,
       highlight
     ) => (
