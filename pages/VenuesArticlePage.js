@@ -129,7 +129,7 @@ function VenuesArticlePage(props) {
             );
           })}
           <footer className="footer">
-            <div className="text">{_o(footer)}</div>
+            {footer && <div className="text">{_o(footer)}</div>}
             <DiscoverCityBlock />
           </footer>
         </div>
