@@ -78,7 +78,9 @@
     "similarEvents": "Similar events",
     "soldOut": "Sold out",
     "doorSale": "Sale at the door",
-    "free": "Free"
+    "free": "Free",
+    "getQrCode": "Get QR code",
+    "joinGuestList": "Join guest list"
   },
   "venuePage": {
     "meta": {
@@ -233,6 +235,14 @@
       "orderStatus": "Order status"
     }
   },
+  "EventGuestListModal": {
+    "title": "Join the guest list of {{venue}}",
+    "joinGuestList": "Join guest list"
+  },
+  "EventQrCodeModal": {
+    "title": "Get a QR code for {{venue}}",
+    "getQrCode": "Get QR code"
+  },
   "EventTicketExternalCheckoutModal": {
     "buyTicket": "Buy ticket",
     "checkout": "Checkout",
@@ -337,5 +347,8 @@
     "parties&Events": "Parties & Events",
     "clubs&Bars": "Clubs & Bars",
     "startDiscovering": "Start discovering {{city}}"
+  },
+  "EmailForm": {
+    "emailAddress": "Email address"
   }
 }

@@ -19,6 +19,7 @@ function PrimaryButton(props) {
     href,
     disabled,
     iconSrc,
+    icon = null,
     ...otherProps
   } = props;
   const aProps = {
@@ -28,9 +29,9 @@ function PrimaryButton(props) {
   return (
     <a className={classNames(['button', disabled && 'disabled'])} {...aProps}>
       <span>
+        {icon}
         {iconSrc && <img src={iconSrc} className="icon" />}
-        {!children && title}
-        {children}
+        {children || title}
       </span>
       {/*language=CSS*/}
       <style jsx>{`

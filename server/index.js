@@ -14,6 +14,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const routes = require('../routes');
 const shopRoutes = require('./routes/shop');
+const mailRoutes = require('./routes/mails');
 
 const handle = routes.getRequestHandler(app);
 
@@ -29,6 +30,7 @@ app
     });
 
     server.use('/api/shop', shopRoutes);
+    server.use('/api/mails', mailRoutes);
 
     server.use(device.capture());
 

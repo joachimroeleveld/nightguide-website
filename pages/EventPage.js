@@ -32,6 +32,8 @@ import TicketUsps from '../components/events/TicketUsps';
 import Spinner from '../components/Spinner';
 import { getCurrency } from '../state/shop';
 import { isEventDatePast } from '../lib/events';
+import EventQrCodeModal from '../components/events/EventQrCodeModal';
+import EventGuestListModal from '../components/events/EventGuestListModal';
 
 export function EventPage(props) {
   const { event, routeParams, similarEvents, venue, query } = props;
@@ -55,6 +57,12 @@ export function EventPage(props) {
   const [showExternalTicketModal, setShowExternalTicketModal] = useState(
     query.externalCheckout !== undefined
   );
+  const [showQrCodeModal, setShowQrCodeModal] = useState(
+    query.qrCode !== undefined
+  );
+  const [showGuestListModal, setShowGuestListModal] = useState(
+    query.qrCode !== undefined
+  );
   const [ticketModalStep, setTicketModalStep] = useState(
     query.checkoutStep || null
   );
@@ -69,6 +77,14 @@ export function EventPage(props) {
     setShowExternalTicketModal(query.externalCheckout !== undefined);
   }, [query.externalCheckout]);
 
+  useEffect(() => {
+    setShowQrCodeModal(query.qrCode !== undefined);
+  }, [query.qrCode]);
+
+  useEffect(() => {
+    setShowGuestListModal(query.guestList !== undefined);
+  }, [query.guestList]);
+
   const changeCheckoutStep = step => {
     setUrlParams({
       checkoutStep: step,
@@ -81,6 +97,18 @@ export function EventPage(props) {
   const toggleExternalCheckout = () => {
     setUrlParams({
       externalCheckout: showExternalTicketModal ? null : '',
+    });
+  };
+
+  const toggleQrCodeModal = () => {
+    setUrlParams({
+      qrCode: showQrCodeModal ? null : '',
+    });
+  };
+
+  const toggleGuestListModal = () => {
+    setUrlParams({
+      guestList: showGuestListModal ? null : '',
     });
   };
 
@@ -111,6 +139,20 @@ export function EventPage(props) {
           currency={currency}
           price={0}
           disabled={true}
+        />
+      );
+    } else if (tickets.qrCode) {
+      ticketButton = (
+        <PrimaryButton
+          onClick={toggleQrCodeModal}
+          title={__('EventPage.getQrCode')}
+        />
+      );
+    } else if (tickets.guestList) {
+      ticketButton = (
+        <PrimaryButton
+          onClick={toggleGuestListModal}
+          title={__('EventPage.joinGuestList')}
         />
       );
     } else if (tickets.doorSale) {
@@ -301,9 +343,17 @@ export function EventPage(props) {
           <section className={'buy-tickets'} id="buy-tickets-bottom">
             {ticketButton}
             <span className="via">{ticketsViaString}</span>
-            <div className="usps">
-              <TicketUsps />
-            </div>
+            {!tickets.free && !tickets.soldOut && (
+              <div className="usps">
+                <TicketUsps
+                  hideCheckout={tickets.qrCode || tickets.guestList}
+                />
+              </div>
+            )}
+            <span className="info">
+              {tickets.guestList && _o(tickets.guestListInfo)}
+              {tickets.qrCode && _o(tickets.qrCodeInfo)}
+            </span>
           </section>
         )}
         {artists && !!artists.length && (
@@ -374,6 +424,20 @@ export function EventPage(props) {
           providerData={tickets.providerData}
           isOpen={showExternalTicketModal}
           onClose={toggleExternalCheckout}
+        />
+      )}
+      {tickets.qrCode && (
+        <EventQrCodeModal
+          event={event}
+          isOpen={showQrCodeModal}
+          onClose={toggleQrCodeModal}
+        />
+      )}
+      {tickets.guestList && (
+        <EventGuestListModal
+          event={event}
+          isOpen={showGuestListModal}
+          onClose={toggleGuestListModal}
         />
       )}
       {!!products.length && (
@@ -539,13 +603,20 @@ export function EventPage(props) {
           position: static;
           background: ${colors.cardBg};
           box-shadow: ${colors.cardShadow};
-          padding: 1em ${dimensions.cardPadding} 0.4em;
+          padding: 1em ${dimensions.cardPadding};
         }
         .sidebar .buy-tickets :global(button) {
           width: 100%;
         }
+        .sidebar .buy-tickets .info {
+          display: block;
+          background: url(/static/img/event-ticket-info.svg) no-repeat left -0.3em
+            center;
+          margin: 1.2em 0 0;
+          padding-left: 1.8em;
+        }
         .usps {
-          margin: 0.7em 0 0.3em;
+          margin: 0.7em 0 -0.3em;
         }
         @media (max-width: 800px) {
           .header {

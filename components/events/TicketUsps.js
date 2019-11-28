@@ -1,19 +1,22 @@
 import __ from '../../lib/i18n';
 
 export default function TicketUsps(props) {
+  const { hideCheckout } = props;
   return (
     <ul className="usps">
-      <li>
-        <span>{__('EventPage.instantConfirmation')}</span>
-      </li>
-      <div className="separator" />
       <li>
         <span>{__('EventPage.officialPartner')}</span>
       </li>
       <div className="separator" />
       <li>
-        <span>{__('EventPage.secureCheckout')}</span>
+        <span>{__('EventPage.instantConfirmation')}</span>
       </li>
+      <div className="separator" />
+      {!hideCheckout && (
+        <li>
+          <span>{__('EventPage.secureCheckout')}</span>
+        </li>
+      )}
       {/*language=CSS*/}
       <style jsx>{`
         .usps {
@@ -34,11 +37,11 @@ export default function TicketUsps(props) {
           padding-left: 2em;
         }
         .usps li:nth-of-type(1) span {
-          background-image: url(/static/img/event-usps-instant-confirm.svg);
-          background-position-x: 2px;
+          background-image: url(/static/img/event-usps-partner.svg);
         }
         .usps li:nth-of-type(2) span {
-          background-image: url(/static/img/event-usps-partner.svg);
+          background-image: url(/static/img/event-usps-instant-confirm.svg);
+          background-position-x: 2px;
         }
         .usps li:nth-of-type(3) span {
           background-image: url(/static/img/event-usps-secure.svg);

@@ -41,9 +41,9 @@ function FormItem(props) {
           display: block;
         }
         .error {
+          display: block;
           font-size: 0.9em;
           color: ${colors.textError};
-          margin: 0.8em 0;
         }
       `}</style>
     </label>
