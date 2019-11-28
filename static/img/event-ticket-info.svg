@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>flaticon1574952889-svg</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-3.3%" y="-9.0%" width="106.6%" height="117.9%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-Copy-2" transform="translate(-42.000000, -236.000000)" fill="#989898" fill-rule="nonzero">
+            <g id="Group-Copy" filter="url(#filter-1)" transform="translate(33.000000, 156.000000)">
+                <g id="flaticon1574952889-svg" transform="translate(14.000000, 85.000000)">
+                    <path d="M9,0 C4.0374,0 0,4.03745455 0,9.00005455 C0,13.9626545 4.0374,18 9,18 C13.9626,18 18,13.9626545 18,9.00005455 C18,4.03745455 13.9626,0 9,0 Z M9,16.3636364 C4.93963636,16.3636364 1.63636364,13.0603636 1.63636364,9.00005455 C1.63636364,4.93974545 4.93963636,1.63636364 9,1.63636364 C13.0603636,1.63636364 16.3636364,4.93974545 16.3636364,9.00005455 C16.3636364,13.0603636 13.0603091,16.3636364 9,16.3636364 Z" id="Shape"></path>
+                    <path d="M9,4 C8.44858972,4 8,4.4488 8,5.00045 C8,5.5516 8.44858972,6 9,6 C9.55141028,6 10,5.5516 10,5.00045 C10,4.4488 9.55141028,4 9,4 Z" id="Path"></path>
+                    <path d="M9,8 C8.44773333,8 8,8.3358 8,8.75 L8,13.25 C8,13.6642 8.44773333,14 9,14 C9.55226667,14 10,13.6642 10,13.25 L10,8.75 C10,8.3358 9.55226667,8 9,8 Z" id="Path"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

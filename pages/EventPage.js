@@ -350,10 +350,12 @@ export function EventPage(props) {
                 />
               </div>
             )}
-            <span className="info">
-              {tickets.guestList && _o(tickets.guestListInfo)}
-              {tickets.qrCode && _o(tickets.qrCodeInfo)}
-            </span>
+            {(tickets.guestListInfo || tickets.qrCodeInfo) && (
+              <span className="info">
+                {tickets.guestList && _o(tickets.guestListInfo)}
+                {tickets.qrCode && _o(tickets.qrCodeInfo)}
+              </span>
+            )}
           </section>
         )}
         {artists && !!artists.length && (
