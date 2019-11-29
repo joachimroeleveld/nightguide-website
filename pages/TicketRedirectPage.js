@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getEvent } from '../lib/api';
 import __ from '../lib/i18n';
 import { formatEventDate } from '../lib/dates';
 import Card from '../components/Card';
+import Head from 'next/dist/next-server/lib/head';
 
 function TicketRedirectPage(props) {
   const { event, dateIndex } = props;
@@ -27,6 +28,13 @@ function TicketRedirectPage(props) {
 
   return (
     <main className="container">
+      <Head>
+        <title>
+          {__('TicketRedirectPage.meta.title', {
+            event: title || facebook.title,
+          })}
+        </title>
+      </Head>
       <h1>{__('ticketRedirectPage.thanksAlmostThere')}</h1>
       <div className="redirect-notice">
         <span className="notice">

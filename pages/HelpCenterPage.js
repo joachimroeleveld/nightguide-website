@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
 
 import withPageLayout from '../components/PageLayout';
 import { getConfigByName } from '../lib/api';
@@ -9,46 +8,13 @@ import { useToggleState } from '../lib/hooks';
 import { classNames } from '../lib/util';
 import dimensions from '../styles/dimensions';
 import PrimaryButton from '../components/PrimaryButton';
+import { useChat } from '../lib/hooks/zoho';
 
 function HelpCenterPage(props) {
   const { config } = props;
   const { sections } = config.payload;
 
-  useEffect(() => {
-    let dataScript = document.createElement('script');
-    dataScript.setAttribute('id', 'zsiqscript-data');
-    dataScript.type = 'text/javascript';
-    dataScript.innerHTML = `var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || 
-{widgetcode:"2ec8007b909bea50fdf290d463df875ae63a33a1b36c413de416285a6db6e780", values:{},ready:function(){document.getElementById('start-chat').classList.add('enabled')}};`;
-    document.getElementsByTagName('head')[0].appendChild(dataScript);
-
-    let loaderScript = document.createElement('script');
-    loaderScript.setAttribute('id', 'zsiqscript');
-    loaderScript.type = 'text/javascript';
-    loaderScript.defer = true;
-    loaderScript.src = 'https://salesiq.zoho.com/widget';
-    document.getElementsByTagName('head')[0].appendChild(loaderScript);
-
-    let elem = document.createElement('div');
-    elem.setAttribute('id', 'zsiqwidget');
-    document.body.appendChild(elem);
-
-    return () => {
-      document.getElementById('zsiqscript-data').remove();
-      document.getElementById('zsiqscript').remove();
-      document.getElementById('zsiqwidget').remove();
-      if (document.getElementById('zsiqbtn')) {
-        document.getElementById('zsiqbtn').remove();
-      }
-      if (document.querySelector('.siqembed')) {
-        document.querySelector('.siqembed').remove();
-      }
-    };
-  }, []);
-
-  const showChat = () => {
-    document.getElementById('zsiqbtn').click();
-  };
+  const { showChat, initialized } = useChat();
 
   const HelpItem = props => {
     const { title, body } = props;
@@ -106,7 +72,10 @@ function HelpCenterPage(props) {
       <section className="contact">
         <h2>{__('HelpCenterPage.stillHelp')}</h2>
         <p>{__('HelpCenterPage.stillHelpDescription')}</p>
-        <div className="button" id="start-chat">
+        <div
+          className={classNames(['button', initialized && 'enabled'])}
+          id="start-chat"
+        >
           <PrimaryButton
             title={__('HelpCenterPage.startChat')}
             onClick={showChat}

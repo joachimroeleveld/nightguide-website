@@ -137,6 +137,9 @@
     "sendEmail": "You can also send an email to"
   },
   "ticketRedirectPage": {
+    "meta": {
+      "title": "Ticket redirect - {{event}} | NightGuide"
+    },
     "thanksAlmostThere": "Thanks, we're almost there",
     "youreRedirected": "You are redirected to the ticket provider"
   },
@@ -350,5 +353,10 @@
   },
   "EmailForm": {
     "emailAddress": "Email address"
+  },
+  "ChatCta": {
+    "title": "Chat with us",
+    "sub": "Looking for advice from a human expert? Start a chat with us and we'll offer you our best advice.",
+    "buttonText": "Start chat"
   }
 }

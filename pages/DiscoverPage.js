@@ -16,6 +16,7 @@ import SeeAllButton from '../components/SeeAllButton';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import TitleWithImage from '../components/TitleWithImage';
 import { useWindowWidth } from '../lib/hooks';
+import ChatCta from '../components/ChatCta';
 
 function DiscoverPage(props) {
   const {
@@ -28,6 +29,7 @@ function DiscoverPage(props) {
     headerImage,
     genreEvents,
     genres,
+    showChat,
   } = props;
 
   const windowWidth = useWindowWidth();
@@ -66,8 +68,13 @@ function DiscoverPage(props) {
         </Link>
       </section>
 
-      {sponsoredEvent && (
+      {(sponsoredEvent || showChat) && (
         <div className="locations-sponsored">
+          {showChat && (
+            <section className="chat">
+              <ChatCta />
+            </section>
+          )}
           {sponsoredEvent && (
             <section className="sponsored-event">
               <h2>{__('DiscoverPage.recommended')}</h2>
@@ -164,6 +171,13 @@ function DiscoverPage(props) {
           .popular-locations {
             padding-right: 3em;
           }
+          .chat {
+            justify-content: flex-end;
+            display: flex;
+          }
+          .chat > :global(*) {
+            width: 80%;
+          }
         }
       `}</style>
     </main>
@@ -174,8 +188,12 @@ DiscoverPage.getInitialProps = async ctx => {
   const { pageSlug } = ctx.query;
 
   const config = await getConfigByName('page_city', pageSlug);
-  const { sponsoredEvent: sponsoredEventId, headerImage, clubsAndBars } =
-    config.payload || {};
+  const {
+    sponsoredEvent: sponsoredEventId,
+    headerImage,
+    clubsAndBars,
+    showChat,
+  } = config.payload || {};
   const eventsConfig = await getConfigByName('page_events', pageSlug);
   const genres = (eventsConfig.payload || {}).genreFilters || [];
 
@@ -237,6 +255,7 @@ DiscoverPage.getInitialProps = async ctx => {
     articles,
     genres,
     genreEvents,
+    showChat,
   };
 };
 

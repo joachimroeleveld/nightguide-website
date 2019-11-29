@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { memo } from 'react';
+import { memo, useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import css from 'styled-jsx/css';
 
@@ -8,6 +8,7 @@ import colors from '../../styles/colors';
 import { useDisableBodyScrolling } from '../../lib/hooks';
 import dimensions from '../../styles/dimensions';
 import { generateTicketPageUrl } from './util';
+import Spinner from '../Spinner';
 
 EventTicketExternalCheckoutModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -27,9 +28,15 @@ function EventTicketExternalCheckoutModal(props) {
     ...modalProps
   } = props;
 
+  const [iframeLoading, setIframeLoading] = useState(true);
+
   const iframeSrc = generateTicketPageUrl(providerId, eventId, providerData);
 
   useDisableBodyScrolling('EventTicketExternalCheckoutModal', isOpen);
+
+  useEffect(() => {
+    setIframeLoading(isOpen);
+  }, [isOpen]);
 
   return (
     <Modal
@@ -47,7 +54,16 @@ function EventTicketExternalCheckoutModal(props) {
           </span>
         </header>
         <div className="content">
-          <iframe className="iframe" src={iframeSrc} />
+          {iframeLoading && (
+            <div className="spinner">
+              <Spinner size={25} center={true} />
+            </div>
+          )}
+          <iframe
+            onLoad={() => setIframeLoading(false)}
+            className="iframe"
+            src={iframeSrc}
+          />
         </div>
       </div>
       {modalStyles.styles}
@@ -88,6 +104,8 @@ function EventTicketExternalCheckoutModal(props) {
           margin: 0 auto;
           display: block;
           min-height: 100%;
+          position: relative;
+          z-index: 1;
         }
         .close {
           position: absolute;
@@ -98,6 +116,12 @@ function EventTicketExternalCheckoutModal(props) {
           margin-right: 1em;
           background: url(/static/img/close.svg) no-repeat center center;
           background-size: cover;
+        }
+        .spinner {
+          margin: 2em 0;
+          position: absolute;
+          width: 100%;
+          z-index: 0;
         }
       `}</style>
     </Modal>
