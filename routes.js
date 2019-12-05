@@ -13,6 +13,7 @@ addRoute('help-center');
 
 // Cities
 addRoute('/es/ibiza', 'DiscoverPage');
+addRoute('/es/madrid', 'DiscoverPage');
 addRoute('/nl/utrecht', 'DiscoverPage');
 addRoute('/nl/amsterdam', 'DiscoverPage');
 
