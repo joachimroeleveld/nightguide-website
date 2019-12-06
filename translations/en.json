@@ -163,6 +163,9 @@
     },
     "nl/amsterdam": {
       "name": "Amsterdam"
+    },
+    "es/madrid": {
+      "name": "Madrid"
     }
   },
   "search": {
