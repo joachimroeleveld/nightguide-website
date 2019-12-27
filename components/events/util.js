@@ -107,6 +107,9 @@ export function generateTicketPageUrl(provider, providerEventId, providerData) {
     }
   } else if (provider === 'yourticketprovider') {
     url = `https://widget.yourticketprovider.nl/?productid=${providerEventId}#/tickets/${providerEventId}`;
+  } else if (provider === 'exceed') {
+    const { list } = providerData;
+    url = `https://xceed.me/list/${list}/event/${providerEventId}`;
   } else {
     return null;
   }
