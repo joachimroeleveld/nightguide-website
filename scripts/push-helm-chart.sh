@@ -3,7 +3,7 @@
 CHART_VERSION=${VERSION//v/}
 
 helm init --client-only
-helm plugin install https://github.com/nouney/helm-gcs
+helm plugin install https://github.com/nouney/helm-gcs --version 0.2.2
 helm repo add repo $REPO
 helm package infra/helm/$CHART_NAME --version=$CHART_VERSION
 helm gcs push $CHART_NAME-$CHART_VERSION.tgz repo
