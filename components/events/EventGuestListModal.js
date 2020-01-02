@@ -19,6 +19,7 @@ function EventGuestListModal(props) {
   const { event, isOpen, onClose, ...modalProps } = props;
 
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useDisableBodyScrolling('EventGuestListModal', isOpen);
 
@@ -34,14 +35,9 @@ function EventGuestListModal(props) {
           eventId: event.id,
         }),
       });
-      const data = await response.json();
-      if (data.error) {
-        return { error: data.error };
-      } else {
-        return data.paymentIntent;
-      }
+      setSuccess(true);
     } catch (err) {
-      return { error: err.message };
+      alert('Something went wrong, please try again.');
     } finally {
       setLoading(false);
     }
@@ -60,17 +56,22 @@ function EventGuestListModal(props) {
           <button className="close" onClick={onClose} />
         </header>
         <div className="content">
-          <h1>
-            {__('EventGuestListModal.title', {
-              venue: event.organiser.venue.name,
-            })}
-          </h1>
-          <p>{_o(event.tickets.guestListInfo)}</p>
-          <EmailForm
-            onSubmit={onSubmit}
-            submitButtonText={__('EventGuestListModal.joinGuestList')}
-            showProgress={loading}
-          />
+          {success && <h1>{__('EventGuestListModal.titleJoined')}</h1>}
+          {!success && (
+            <>
+              <h1>
+                {__('EventGuestListModal.title', {
+                  venue: event.organiser.venue.name,
+                })}
+              </h1>
+              <p>{_o(event.tickets.guestListInfo)}</p>
+              <EmailForm
+                onSubmit={onSubmit}
+                submitButtonText={__('EventGuestListModal.joinGuestList')}
+                showProgress={loading}
+              />
+            </>
+          )}
         </div>
       </div>
       {modalStyles.styles}

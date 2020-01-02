@@ -243,6 +243,7 @@
   },
   "EventGuestListModal": {
     "title": "Join the guest list of {{venue}}",
+    "titleJoined": "You successfully joined the guest list",
     "joinGuestList": "Join guest list"
   },
   "EventQrCodeModal": {
