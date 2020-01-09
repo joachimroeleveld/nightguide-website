@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useMemo, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getDistance } from 'geolib';
+import getDistance from 'geolib/es/getDistance';
 
 import __ from '../lib/i18n';
 import { getCurrentLocation, setLocation } from '../state/location';

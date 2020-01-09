@@ -7,12 +7,13 @@ import __, { __city } from '../lib/i18n';
 import React from 'react';
 import EventRow from '../components/events/EventRow';
 import { SORT_POPULARITY } from '../components/events/util';
-import { getEvents, getConfigByName, getContent } from '../lib/api';
+import { getEvents, getConfigByName, getContent, getVenues } from '../lib/api';
 import { Link } from '../routes';
 import EventTile from '../components/events/EventTile';
 import dimensions from '../styles/dimensions';
 import CityMenu from '../components/CityMenu';
 import SeeAllButton from '../components/SeeAllButton';
+import VenueRow from '../components/venues/VenueRow';
 import ArticleGrid from '../components/articles/ArticleGrid';
 import TitleWithImage from '../components/TitleWithImage';
 import { useWindowWidth } from '../lib/hooks';
@@ -22,6 +23,7 @@ function DiscoverPage(props) {
   const {
     pageSlug,
     popularTotalCount,
+    popularLocations,
     popularEvents,
     articles = [],
     routeParams,
@@ -90,6 +92,13 @@ function DiscoverPage(props) {
             </section>
           )}
         </div>
+      )}
+
+      {popularLocations && (
+        <section className="popular-locations">
+          <h2>{__('DiscoverPage.popularLocations')}</h2>
+          <VenueRow venues={popularLocations} routeParams={routeParams} />
+        </section>
       )}
 
       {!!articles.length && (
@@ -190,6 +199,7 @@ DiscoverPage.getInitialProps = async ctx => {
   const config = await getConfigByName('page_city', pageSlug);
   const {
     sponsoredEvent: sponsoredEventId,
+    popularLocations: popularLocationIds,
     headerImage,
     clubsAndBars,
     showChat,
@@ -247,6 +257,20 @@ DiscoverPage.getInitialProps = async ctx => {
     });
   }
 
+  let popularLocations;
+  if (popularLocationIds) {
+    popularLocations = (await getVenues({
+      query: {
+        ids: popularLocationIds,
+      },
+    })).results;
+    popularLocations.sort((a, b) => {
+      return (
+        popularLocationIds.indexOf(a.id) - popularLocationIds.indexOf(b.id)
+      );
+    });
+  }
+
   return {
     headerImage,
     sponsoredEvent,
@@ -256,6 +280,7 @@ DiscoverPage.getInitialProps = async ctx => {
     genres,
     genreEvents,
     showChat,
+    popularLocations,
   };
 };
 

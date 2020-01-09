@@ -36,13 +36,13 @@ function VenueTile(props) {
 
   const windowWidth = useWindowWidth();
 
-  const aProps = windowWidth > 800 ? { target: '_blank' } : {};
+  // const aProps = windowWidth > 800 ? { target: '_blank' } : {};
 
   return (
     <div className="container">
       <div className="img">
-        <Link route="venue" params={linkParams}>
-          <a {...aProps}>
+        <Link route="events" params={linkParams}>
+          <a>
             <ResponsiveImage
               scale={true}
               /*language=CSS*/
@@ -60,7 +60,7 @@ function VenueTile(props) {
       </div>
       <div className="body">
         <Link route="venue" params={linkParams}>
-          <a {...aProps}>
+          <a>
             <h3>{name}</h3>
             <div className="distance">
               <DistanceIndicator {...location.coordinates} />

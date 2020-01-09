@@ -26,7 +26,7 @@ function CityMenu(props) {
     },
   ];
 
-  if (pageSlug !== 'es/ibiza') {
+  if (pageSlug !== 'es/madrid') {
     menuItems.push({
       route: 'articles',
       label: __('menu.articles'),
