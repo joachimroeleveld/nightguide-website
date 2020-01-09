@@ -59,7 +59,7 @@ function VenueTile(props) {
         </Link>
       </div>
       <div className="body">
-        <Link route="venue" params={linkParams}>
+        <Link route="events" params={linkParams}>
           <a>
             <h3>{name}</h3>
             <div className="distance">
